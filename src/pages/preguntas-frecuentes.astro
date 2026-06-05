@@ -1,0 +1,163 @@
+---
+import Base from '../layouts/Base.astro';
+import BotonWhatsApp from '../components/BotonWhatsApp.astro';
+
+const seo = {
+  title: 'Preguntas frecuentes · TomContable: contabilidad, SII y empresas en Chile',
+  description: 'Resuelve dudas sobre contabilidad mensual, constitución de empresas, SII, asesorías, proyección tributaria y los servicios de TomContable para pymes chilenas.',
+};
+
+const grupos = [
+  {
+    titulo: 'Sobre TomContable',
+    items: [
+      { q: '¿Qué es TomContable?', a: 'TomContable es una empresa contable chilena enfocada en emprendedores, profesionales independientes y pymes. Ayudamos con contabilidad mensual, constitución de empresas, asesorías, proyección tributaria, revisión de situación tributaria y problemas con el SII.' },
+      { q: '¿Atienden en todo Chile?', a: 'Sí. Trabajamos de forma online con clientes de todo Chile. La coordinación es principalmente por WhatsApp, correo y reuniones online cuando corresponde.' },
+      { q: '¿TomContable es solo Tom?', a: 'No. Tom es el fundador y la cara visible de la marca, pero detrás hay un equipo contable y tributario con experiencia real. La forma de trabajo está liderada por Tom y respaldada por ese equipo.' },
+      { q: '¿Qué los diferencia de un contador tradicional?', a: 'La claridad y la cercanía. No queremos que el cliente se sienta perdido ni que tenga que perseguir respuestas. Explicamos en simple, respondemos a tiempo y mantenemos tu empresa ordenada.' },
+      { q: '¿Trabajan con cualquier tipo de empresa?', a: 'Trabajamos principalmente con emprendedores, profesionales independientes y pymes. Si tu empresa tiene operaciones muy complejas o necesidades corporativas específicas, primero revisamos si tiene sentido trabajar juntos.' },
+    ],
+  },
+  {
+    titulo: 'Constitución de empresas',
+    items: [
+      { q: '¿Qué incluye el servicio de constitución?', a: 'Dejamos tu empresa constituida, iniciada ante el SII y técnicamente lista para facturar. No es solo la escritura: también considera las etapas posteriores necesarias para que puedas operar.' },
+      { q: '¿Por qué no basta con crear la sociedad?', a: 'Porque tener la sociedad creada no significa que puedas facturar. Después hay que iniciar actividades ante el SII, acreditar el giro, definir el régimen tributario y habilitar la facturación electrónica.' },
+      { q: '¿Por qué hay servicios de constitución mucho más baratos?', a: 'Porque muchas veces cubren solo una parte del proceso. Crean la sociedad, pero después tú debes resolver los pasos siguientes por separado. La comparación correcta no es escritura contra escritura, es proceso completo contra trámite parcial.' },
+      { q: '¿Después de constituir puedo facturar de inmediato?', a: 'La empresa debe quedar correctamente iniciada ante el SII y con facturación electrónica habilitada. Nuestro objetivo es justamente dejarla lista para operar. La habilitación de la facturación depende de la autorización del SII.' },
+      { q: '¿Qué pasa después de pagar la constitución?', a: 'Después del pago te contactamos por WhatsApp y recibes un correo con los datos que necesitamos para comenzar el proceso.' },
+      { q: '¿La constitución incluye contabilidad mensual?', a: 'No necesariamente. La constitución es un servicio puntual. Si después quieres contratar contabilidad mensual, te orientamos y cotizamos según tu empresa.' },
+    ],
+  },
+  {
+    titulo: 'Contabilidad mensual',
+    items: [
+      { q: '¿Qué incluye la contabilidad mensual?', a: 'El trabajo contable y tributario mensual para mantener tu empresa al día, según el plan y las características de tu empresa, más acompañamiento y resolución de dudas dentro del alcance del servicio.' },
+      { q: '¿Es solo presentar el F29?', a: 'No. El F29 es una parte. El valor real está en mantener tu empresa ordenada, responder dudas, revisar situaciones y acompañarte cuando lo necesitas.' },
+      { q: '¿Cuánto cuesta?', a: 'Depende de tu empresa, ventas, tipo de actividad, volumen de movimientos y necesidades. Por eso preferimos cotizar por WhatsApp antes de darte un valor cerrado. Parte desde 0,70 UF + IVA al mes.' },
+      { q: '¿Por qué pagar mensual si mi empresa se mueve poco?', a: 'Porque aunque un mes vendas poco, tu empresa sigue teniendo obligaciones y situaciones que pueden aparecer. Lo que muchos valoran no es solo el trámite, sino saber que tienen a quién acudir.' },
+      { q: '¿Puedo contratar si recién estoy empezando?', a: 'Sí. De hecho, partir ordenado desde el inicio suele evitar problemas después.' },
+      { q: '¿Puedo cambiarme desde otro contador?', a: 'Sí. Primero revisamos tu situación actual y vemos qué información necesitamos para hacer el traspaso de forma ordenada.' },
+      { q: '¿Qué pasa si tengo meses atrasados?', a: 'Revisamos el caso y definimos qué hay que regularizar. Los atrasos o correcciones pueden tener un costo adicional según la carga de trabajo.' },
+      { q: '¿Incluye la operación renta?', a: 'Sí. La operación renta de tu empresa es parte del acompañamiento anual del plan. Se cobra una vez al año, pero no es algo que tengas que buscar aparte: nosotros te avisamos y la preparamos a tiempo.' },
+    ],
+  },
+  {
+    titulo: 'Problemas con el SII y revisión de situación tributaria',
+    items: [
+      { q: '¿Me pueden ayudar si tengo una observación del SII?', a: 'Sí. Revisamos observaciones, diferencias, bloqueos, citaciones u otros problemas. Primero analizamos el caso para entender el origen.' },
+      { q: '¿Me aseguran que el problema se va a solucionar?', a: 'No prometemos resultados garantizados cuando dependen del SII o de antecedentes que aún no hemos revisado. Lo que sí hacemos es revisar en serio, explicarte la situación y avanzar con un plan claro.' },
+      { q: '¿Qué es la revisión de situación tributaria?', a: 'Una revisión preventiva de la información visible de tu empresa en el SII y Tesorería de los últimos 3 años, para detectar observaciones, inconsistencias, declaraciones rechazadas, giros, multas, intereses pendientes o saldos a favor.' },
+      { q: '¿La revisión incluye correcciones?', a: 'No. La revisión entrega un informe con lo detectado y recomendaciones. Si hay que corregir, se cotiza aparte.' },
+      { q: '¿Cuánto cuesta la revisión?', a: '3 UF + IVA, para empresas con ventas netas anuales de hasta 200 millones de pesos. Si superas ese monto, lo cotizamos por WhatsApp.' },
+      { q: '¿Qué pasa si no encuentran nada?', a: 'Te quedas con una revisión que confirma que, al menos en la información revisada, no aparecen observaciones relevantes. Eso también da tranquilidad.' },
+      { q: '¿Cuánto demora resolver un problema con el SII?', a: 'Depende del tipo de problema y de los tiempos del SII. Algunas gestiones avanzan rápido, otras pueden tardar semanas o meses si dependen de revisión externa.' },
+    ],
+  },
+  {
+    titulo: 'Proyección tributaria',
+    items: [
+      { q: '¿Qué es una proyección tributaria?', a: 'Una estimación del resultado tributario antes del cierre del año, para saber cuánto podría pagar la empresa y cada socio en la operación renta.' },
+      { q: '¿Para qué sirve?', a: 'Para llegar a abril con más claridad y menos sorpresa. Sabes antes si hay impuestos por pagar y qué decisiones conviene revisar, como ajustar el PPM o sumar gastos.' },
+      { q: '¿Incluye los sueldos?', a: 'Hay una versión con sueldos que los suma al cálculo de la renta personal de cada socio, y otra sin sueldos. Eliges según tu caso.' },
+      { q: '¿Es lo mismo que la declaración de renta?', a: 'No. Es una proyección previa. La declaración de renta es un proceso distinto que se realiza cuando corresponde.' },
+    ],
+  },
+  {
+    titulo: 'Asesorías',
+    items: [
+      { q: '¿Cuándo conviene una asesoría?', a: 'Cuando tienes una duda puntual y necesitas que alguien revise tu caso, te explique opciones y te deje con un plan claro.' },
+      { q: '¿La asesoría incluye hacer trámites?', a: 'No necesariamente. Sirve para revisar, explicar y orientar. Si después hay que ejecutar un trámite, se cotiza aparte cuando corresponda.' },
+      { q: '¿En una sesión alcanza?', a: 'Depende del caso. Para muchas dudas, sí. Si el tema es más complejo, te diremos si conviene tomar más tiempo o cotizar un servicio específico. Hay formatos de 15, 30 y 60 minutos.' },
+      { q: '¿Queda con informe?', a: 'Depende del formato contratado. Si necesitas respaldo por escrito, conviene indicarlo antes de agendar.' },
+    ],
+  },
+  {
+    titulo: 'Remuneraciones',
+    items: [
+      { q: '¿Llevan remuneraciones?', a: 'Sí, como servicio complementario para clientes que lo necesitan. Funciona mejor como complemento de la contabilidad mensual.' },
+      { q: '¿Qué incluye?', a: 'Depende del caso. Puede incluir cálculo de liquidaciones, obligaciones asociadas y apoyo en la información mensual de trabajadores.' },
+      { q: '¿Qué pasa con licencias, vacaciones o finiquitos?', a: 'Son situaciones que requieren revisión específica y pueden tener un costo adicional según el trabajo requerido.' },
+    ],
+  },
+  {
+    titulo: 'Pagos, contratación y atención',
+    items: [
+      { q: '¿Cómo puedo contratar?', a: 'Depende del servicio. Algunos se pagan directamente en línea y otros requieren una conversación previa por WhatsApp.' },
+      { q: '¿Puedo pagar con tarjeta?', a: 'Sí, en los servicios que tienen link de pago habilitado. La constitución, por ejemplo, se paga en cuotas sin interés.' },
+      { q: '¿Emiten factura?', a: 'Sí, cuando corresponde.' },
+      { q: '¿Qué pasa después de pagar?', a: 'Te contactamos por WhatsApp o correo para pedirte la información necesaria y comenzar el proceso.' },
+      { q: '¿Por dónde se comunican?', a: 'Principalmente por WhatsApp y correo, y reuniones online cuando corresponde. Trabajamos en horario hábil y buscamos responder de forma oportuna.' },
+      { q: '¿Atienden presencial?', a: 'Trabajamos principalmente online, lo que nos permite atender clientes de todo Chile de forma rápida y ordenada.' },
+    ],
+  },
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": grupos.flatMap((g) => g.items.map((it) => ({
+    "@type": "Question",
+    "name": it.q,
+    "acceptedAnswer": { "@type": "Answer", "text": it.a }
+  })))
+};
+---
+<Base {...seo} schema={[faqSchema]}>
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Preguntas frecuentes</p>
+      <h1>Resolvemos tus dudas antes de empezar.</h1>
+      <p class="lead">Aquí respondemos lo más común sobre nuestros servicios. Si después de leer sigues con dudas, escríbenos por WhatsApp y revisamos tu caso.</p>
+      <div class="cta-row"><BotonWhatsApp texto="Hablar por WhatsApp" mensaje="Hola vengo desde la web y tengo una consulta" /></div>
+    </div>
+  </section>
+
+  {grupos.map((g) => (
+    <section class="sec">
+      <div class="wrap">
+        <h2 class="grupo">{g.titulo}</h2>
+        <div class="faq">
+          {g.items.map((it) => (
+            <details>
+              <summary>{it.q}<span class="plus">+</span></summary>
+              <div class="ans">{it.a}</div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="cierre">
+    <div class="wrap">
+      <h2>¿No sabes qué servicio necesitas?</h2>
+      <p>No pasa nada. Escríbenos por WhatsApp, cuéntanos qué está pasando y te orientamos.</p>
+      <div class="cta-row center"><BotonWhatsApp texto="Hablar por WhatsApp" mensaje="Hola vengo desde la web y tengo una consulta" /></div>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:60px 0}
+  .hero h1{font-size:38px;font-weight:800;letter-spacing:-.5px}
+  .hero .lead{font-size:17.5px;color:#444a63;margin:16px 0 24px;max-width:58ch}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap}
+  .cta-row.center{justify-content:center}
+  .sec{padding:42px 0}
+  .sec:nth-child(even){background:var(--fondo)}
+  .grupo{font-size:22px;font-weight:800;margin-bottom:16px}
+  .faq{max-width:820px}
+  details{background:#fff;border:1px solid var(--linea);border-radius:14px;margin-bottom:12px;overflow:hidden}
+  summary{list-style:none;cursor:pointer;padding:18px 22px;font-family:'Montserrat';font-weight:600;font-size:16px;color:var(--azul);display:flex;justify-content:space-between;gap:14px}
+  summary::-webkit-details-marker{display:none}
+  .plus{font-size:22px;color:var(--verde);transition:.2s;flex-shrink:0}
+  details[open] .plus{transform:rotate(45deg)}
+  .ans{padding:0 22px 18px;color:#555;font-size:15.5px}
+  .cierre{background:linear-gradient(150deg,var(--azul),var(--azul-prof));color:#fff;text-align:center;padding:66px 24px}
+  .cierre h2{color:#fff;font-size:28px;font-weight:800}
+  .cierre p{color:#cfd6ea;font-size:17px;margin:14px auto 26px;max-width:52ch}
+  @media(max-width:640px){ .hero h1{font-size:30px} }
+</style>

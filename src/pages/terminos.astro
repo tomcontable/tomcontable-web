@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro';
+
+const seo = {
+  title: 'Términos y Condiciones · TomContable',
+  description: 'Condiciones de uso del sitio tomcontable.cl y de los servicios contables de TomContable.',
+};
+const actualizacion = 'junio de 2026';
+---
+<Base {...seo}>
+  <article class="legal">
+    <div class="wrap">
+      <h1>Términos y Condiciones</h1>
+      <p class="upd">Última actualización: {actualizacion}</p>
+
+      <p>Estos términos explican las condiciones de uso del sitio tomcontable.cl y de los servicios que ofrece TomContable. Al usar el sitio o contratar un servicio, aceptas lo que aquí se describe.</p>
+
+      <h2>Quiénes somos</h2>
+      <p>TomContable es una empresa contable chilena especializada en emprendedores y pymes, con sede en Providencia, Santiago, y atención online en todo Chile. Puedes contactarnos en clientes@tomcontable.cl o por WhatsApp al +56 9 6493 3110.</p>
+
+      <h2>Nuestros servicios</h2>
+      <p>Ofrecemos servicios de constitución de empresas, contabilidad mensual, operación renta, asesorías tributarias, proyección tributaria y revisión de situación tributaria, entre otros. La información del sitio es referencial y orientadora. El alcance, las condiciones y el valor definitivo de cada servicio se acuerdan al momento de contratar.</p>
+
+      <h2>Pagos</h2>
+      <p>Los pagos de los servicios que tienen precio publicado se procesan a través de plataformas externas, como Parrotfy y Encuadrado, que cuentan con sus propios términos y medidas de seguridad. TomContable no almacena los datos de tu medio de pago.</p>
+
+      <h2>Sobre los resultados</h2>
+      <p>Ponemos nuestra experiencia y nuestro mejor criterio profesional en cada caso, pero no garantizamos resultados específicos, en especial en materias que dependen del Servicio de Impuestos Internos u otros organismos. En servicios como la revisión de situación tributaria, entregamos un diagnóstico claro y un plan; las correcciones, cuando corresponden, se acuerdan por separado.</p>
+
+      <h2>Uso del sitio</h2>
+      <p>Te pedimos usar el sitio de buena fe y no realizar acciones que afecten su funcionamiento o seguridad. El sitio puede contener enlaces a páginas de terceros, sobre cuyo contenido y políticas no tenemos control.</p>
+
+      <h2>Propiedad intelectual</h2>
+      <p>La marca TomContable, su logo, sus textos y sus contenidos son de su titularidad y no pueden usarse sin autorización.</p>
+
+      <h2>Responsabilidad</h2>
+      <p>Hacemos nuestro mejor esfuerzo por mantener el sitio disponible y con información correcta y actualizada. No respondemos por interrupciones del servicio ajenas a nuestro control ni por decisiones que tomes basándote únicamente en el contenido referencial del sitio sin haber contratado una asesoría.</p>
+
+      <h2>Legislación aplicable</h2>
+      <p>Estos términos se rigen por las leyes de Chile. El tratamiento de tus datos personales se regula además por nuestra Política de Privacidad.</p>
+
+      <h2>Contacto</h2>
+      <p>Para cualquier duda sobre estos términos, escríbenos a clientes@tomcontable.cl.</p>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .legal{padding:64px 0}
+  .legal .wrap{max-width:760px}
+  .legal h1{font-size:38px;font-weight:800}
+  .legal .upd{color:var(--gris);font-size:14px;margin:6px 0 26px}
+  .legal h2{font-size:21px;font-weight:700;margin:30px 0 8px}
+  .legal p{color:#3a3f50;font-size:16px;margin-bottom:14px}
+</style>

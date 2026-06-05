@@ -1,0 +1,52 @@
+---
+const year = new Date().getFullYear();
+---
+<footer class="foot">
+  <div class="wrap foot-grid">
+    <div>
+      <img class="foot-logo" src="/img/logo-tomcontable.png" alt="TomContable" />
+      <p>Contabilidad clara y cercana para emprendedores y pymes en Chile.</p>
+      <p class="foot-tag">Mas que contabilidad, tranquilidad.</p>
+    </div>
+    <div>
+      <h4>Servicios</h4>
+      <a href="/constitucion-de-empresas">Constituir empresa en Chile</a>
+      <a href="/contabilidad-mensual">Contabilidad mensual</a>
+      <a href="/problemas-con-el-sii">Problemas con el SII</a>
+      <a href="/asesorias">Asesorias tributarias</a>
+      <a href="/proyeccion-tributaria">Proyeccion tributaria</a>
+    </div>
+    <div>
+      <h4>TomContable</h4>
+      <a href="/sobre-tomcontable">Sobre TomContable</a>
+      <a href="/preguntas-frecuentes">Preguntas frecuentes</a>
+      <a href="/contacto">Contacto</a>
+      <a href="https://www.instagram.com/tomcontable" target="_blank" rel="noopener">Instagram</a>
+    </div>
+    <div>
+      <h4>Contacto</h4>
+      <a href="https://api.whatsapp.com/send/?phone=56964933110&text=Hola%20vengo%20desde%20la%20web" target="_blank" rel="noopener">WhatsApp +56 9 6493 3110</a>
+      <a href="mailto:clientes@tomcontable.cl">clientes@tomcontable.cl</a>
+      <span class="foot-loc">Providencia, Santiago. Atencion online en todo Chile.</span>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    TomContable, {year}. Todos los derechos reservados.
+    <a href="/terminos">Terminos</a> · <a href="/privacidad">Privacidad</a>
+  </div>
+</footer>
+
+<style>
+  .foot{background:var(--azul-prof);color:#aeb6d2;font-size:14.5px}
+  .foot-grid{padding:54px 24px 34px;display:grid;grid-template-columns:1.5fr 1fr 1fr 1.1fr;gap:34px}
+  .foot-logo{height:40px;margin-bottom:14px;filter:brightness(0) invert(1)}
+  .foot h4{color:#fff;font-size:14px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:14px}
+  .foot a{display:block;margin-bottom:9px;color:#aeb6d2}
+  .foot a:hover{color:#fff}
+  .foot-tag{color:var(--amarillo);font-family:'Montserrat';font-weight:600;margin-top:8px}
+  .foot-loc{display:block;margin-top:6px}
+  .foot-bottom{border-top:1px solid rgba(255,255,255,.12);text-align:center;padding:18px;font-size:12.5px;color:#8b93b3}
+  .foot-bottom a{color:#8b93b3}
+  @media(max-width:760px){ .foot-grid{grid-template-columns:1fr 1fr;gap:26px} }
+  @media(max-width:460px){ .foot-grid{grid-template-columns:1fr} }
+</style>

@@ -1,0 +1,130 @@
+---
+import Base from '../layouts/Base.astro';
+import BotonWhatsApp from '../components/BotonWhatsApp.astro';
+
+const seo = {
+  title: 'Sobre TomContable: contador para pymes y emprendedores en Chile',
+  description: 'Conoce a TomContable, empresa contable chilena liderada por Tomás Gómez, Contador Colegiado. Contabilidad clara, cercana y profesional para emprendedores y pymes.',
+};
+
+const waMsg = 'Hola vengo desde la web y quiero saber mas sobre TomContable';
+
+const aboutPage = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "Sobre TomContable",
+  "url": "https://tomcontable.cl/sobre-tomcontable",
+  "about": { "@type": "Organization", "name": "TomContable" }
+};
+const persona = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Tomás Gómez",
+  "jobTitle": "Fundador, Ingeniero Comercial y Contador Colegiado",
+  "worksFor": { "@type": "Organization", "name": "TomContable" },
+  "sameAs": ["https://www.instagram.com/tomcontable"]
+};
+---
+<Base {...seo} schema={[aboutPage, persona]}>
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Sobre TomContable</p>
+        <h1>Más que contabilidad, tranquilidad.</h1>
+        <p class="lead">TomContable nació para ayudar a emprendedores y pymes chilenas a entender sus impuestos sin perderse en palabras difíciles, trámites confusos ni respuestas que llegan tarde.</p>
+        <p class="lead">No somos una firma contable tradicional. Nuestra forma de trabajar es simple: explicamos claro, respondemos rápido y nos preocupamos de que tu empresa esté ordenada antes de que un problema tributario te quite tiempo, energía o plata.</p>
+        <div class="cta-row">
+          <BotonWhatsApp texto="Hablar por WhatsApp" mensaje={waMsg} />
+          <a class="btn btn-ghost" href="/#servicios">Ver servicios</a>
+        </div>
+      </div>
+      <div class="photo-wrap">
+        <div class="photo-card">
+          <img src="/img/foto-tom.png" alt="Tomás Gómez, fundador de TomContable" width="520" height="420" />
+          <span class="video-tag">Video de presentación, próximamente</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap sec-head">
+      <h2>Quién está detrás</h2>
+      <p>TomContable es liderado por Tomás Gómez, Ingeniero Comercial, Contador y Contador Colegiado. Tom lleva más de 12 años acompañando a emprendedores y pymes chilenas en temas contables, tributarios y de crecimiento. Su foco siempre ha sido el mismo: explicar en simple lo que normalmente se explica difícil.</p>
+      <p>Porque la mayoría de los emprendedores no quiere aprender contabilidad. Quiere vender, crecer y saber que alguien confiable está mirando el tema.</p>
+    </div>
+  </section>
+
+  <section class="sec alt">
+    <div class="wrap sec-head">
+      <h2>Una forma distinta de trabajar</h2>
+      <p>No creemos que el cliente tenga que perseguir al contador para entender qué está pasando. Creemos en una contabilidad cercana, ordenada y práctica, donde puedas preguntar, recibir una respuesta clara y entender qué significa para tu empresa.</p>
+      <p>No se trata solo de presentar impuestos. Se trata de que tengas claridad: saber si estás pagando bien, si puedes facturar, si hay algo observado, cuánto podrías pagar en abril o qué hacer si el SII te envía una notificación. Eso es lo que nuestros clientes valoran.</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><h2>No contratas solo a Tom</h2>
+      <p>Tom es la cara visible de la marca, pero TomContable hoy es un equipo. Detrás hay un equipo contable y tributario con experiencia real en impuestos mensuales, operación renta, declaraciones juradas, fiscalizaciones, remuneraciones, revisión de situación tributaria y problemas con el SII.</p>
+      <p>Eso significa que tu empresa no depende de una sola persona ni de una agenda imposible. Tienes una forma de trabajo liderada por Tom y respaldada por un equipo técnico que sabe lo que hace.</p></div>
+      <div class="creds">
+        <span>Ingeniero Comercial</span>
+        <span>Contador Colegiado</span>
+        <span>+12 años de experiencia</span>
+        <span>+300 empresas constituidas</span>
+        <span>~200 clientes activos</span>
+        <span>4,9 en Encuadrado</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec alt">
+    <div class="wrap sec-head">
+      <h2>A quién ayudamos</h2>
+      <p>Trabajamos principalmente con emprendedores, profesionales independientes y pymes chilenas. Nos especializamos en empresas que necesitan tener sus impuestos al día, entender sus obligaciones y contar con apoyo cuando aparecen dudas o problemas. Si algo se puede explicar simple, se explica simple.</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap sec-head">
+      <h2>Nuestra promesa</h2>
+      <p>No te vamos a llenar de palabras técnicas para parecer más expertos. Te vamos a explicar lo que necesitas saber, te vamos a decir qué conviene hacer y vamos a avanzar con orden.</p>
+      <p>Eso no significa que todo sea instantáneo ni que todo dependa de nosotros. El SII tiene sus tiempos, algunos casos requieren revisión y hay problemas que no se pueden prometer como si fueran magia. Pero sí significa que vas a tener claridad. Y para un emprendedor, muchas veces eso vale más que cualquier trámite.</p>
+    </div>
+  </section>
+
+  <section class="cierre">
+    <div class="wrap">
+      <h2>Conversemos.</h2>
+      <p>Si buscas un contador que solo presente formularios, probablemente no somos lo que necesitas. Si buscas una empresa contable que te explique, te acompañe y te ayude a mantener tu negocio en orden, hablemos.</p>
+      <div class="cta-row center">
+        <BotonWhatsApp texto="Hablar por WhatsApp" mensaje={waMsg} />
+        <a class="btn btn-amber" href="https://www.instagram.com/tomcontable" target="_blank" rel="noopener">Seguir en Instagram</a>
+      </div>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%)}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center;padding:64px 24px 70px}
+  .hero h1{font-size:42px;font-weight:800;letter-spacing:-.5px}
+  .hero .lead{font-size:17.5px;color:#444a63;margin-top:18px;max-width:54ch}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:24px}
+  .cta-row.center{justify-content:center;margin-top:0}
+  .photo-card{position:relative;border-radius:24px;background:linear-gradient(160deg,var(--azul),var(--azul-prof));padding:16px;box-shadow:0 24px 56px -22px rgba(19,35,95,.5)}
+  .photo-card img{width:100%;border-radius:14px;height:auto}
+  .video-tag{position:absolute;top:26px;left:26px;background:rgba(255,255,255,.92);color:var(--azul);font-size:12px;font-family:'Montserrat';font-weight:700;padding:7px 12px;border-radius:30px}
+  .sec-head{max-width:760px}
+  .sec-head h2{font-size:29px;font-weight:800;margin-bottom:10px}
+  .sec-head p{color:#3a3f50;font-size:16.5px;margin-bottom:12px}
+  .creds{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+  .creds span{background:#fff;border:1px solid var(--linea);border-radius:30px;padding:8px 14px;font-size:13.5px;color:var(--azul);font-weight:600}
+  .cierre{background:linear-gradient(150deg,var(--azul),var(--azul-prof));color:#fff;text-align:center;padding:70px 24px}
+  .cierre h2{color:#fff;font-size:30px;font-weight:800}
+  .cierre p{color:#cfd6ea;font-size:17px;margin:14px auto 28px;max-width:60ch}
+  @media(max-width:920px){ .hero-grid{grid-template-columns:1fr;gap:32px;padding:48px 24px 56px} .hero h1{font-size:33px} .photo-card{max-width:420px} }
+</style>

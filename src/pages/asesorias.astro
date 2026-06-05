@@ -1,0 +1,139 @@
+---
+import Base from '../layouts/Base.astro';
+import BotonWhatsApp from '../components/BotonWhatsApp.astro';
+
+const seo = {
+  title: 'Asesoría tributaria y contable online en Chile · TomContable',
+  description: 'Resuelve tu duda tributaria con un contador colegiado. Una sesión clara y al grano que te deja con un plan concreto. Agenda tu asesoría online.',
+};
+
+const encuadrado = 'https://encuadrado.com/p/tomcontable';
+const waMsg = 'Hola vengo desde la web y quiero agendar una asesoria';
+
+const servicio = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Asesoría tributaria y contable",
+  "serviceType": "Asesoría tributaria online",
+  "provider": { "@type": "Organization", "name": "TomContable" },
+  "areaServed": { "@type": "Country", "name": "Chile" },
+  "description": "Sesión de asesoría online con un contador colegiado para resolver una duda tributaria o contable puntual y salir con un plan claro. Disponible en formatos de 15, 30 y 60 minutos."
+};
+---
+<Base {...seo} schema={[servicio]}>
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Asesorías</p>
+      <h1>Una sesión con un experto que te deja con las cosas claras.</h1>
+      <p class="lead">A veces no necesitas contratar un servicio completo, solo una buena respuesta. Agenda una asesoría y conversamos tu caso con calma: qué te conviene, qué riesgos hay y qué pasos seguir. Sales con un plan concreto, no con más dudas.</p>
+      <div class="cta-row">
+        <a class="btn btn-amber" href={encuadrado} target="_blank" rel="noopener">Agendar una asesoría</a>
+        <BotonWhatsApp texto="Prefiero consultar primero" mensaje={waMsg} clase="btn-ghost" />
+      </div>
+      <p class="micro">Contador Colegiado · 4,9 en 152 evaluaciones · Online por videollamada</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><h2>Cuándo conviene una asesoría</h2>
+      <p>La idea es simple: tienes una duda puntual y quieres hablarla con alguien que de verdad sepa. Algunos casos típicos:</p></div>
+      <ul class="lista">
+        <li>Estás por tomar una decisión y quieres saber cómo te afecta en impuestos antes de avanzar.</li>
+        <li>No tienes claro qué régimen tributario te conviene.</li>
+        <li>Quieres entender cuánto vas a pagar y por qué.</li>
+        <li>Tienes una situación específica y necesitas una segunda opinión profesional.</li>
+        <li>Estás evaluando formalizarte y no sabes por dónde empezar.</li>
+      </ul>
+      <p class="nota">Si tu caso es más grande o necesita seguimiento, te lo decimos con honestidad y vemos juntos el siguiente paso.</p>
+    </div>
+  </section>
+
+  <section class="sec alt">
+    <div class="wrap">
+      <div class="sec-head"><h2>Cómo es el proceso</h2></div>
+      <div class="steps">
+        <div class="step"><span class="num">1</span><h3>Eliges tu formato y agendas</h3><p>Hay sesiones de 15, 30 y 60 minutos. Eliges la que necesitas, el horario que te acomode, y pagas en línea.</p></div>
+        <div class="step"><span class="num">2</span><h3>Nos cuentas tu caso</h3><p>Antes de la sesión nos das el contexto, así llegamos preparados y aprovechamos el tiempo.</p></div>
+        <div class="step"><span class="num">3</span><h3>Conversamos</h3><p>Por videollamada, revisamos tu situación con calma y respondemos tus dudas.</p></div>
+        <div class="step"><span class="num">4</span><h3>Sales con un plan</h3><p>Te vas con una recomendación clara y los próximos pasos definidos.</p></div>
+      </div>
+      <p class="nota">Los formatos y sus valores los ves al momento de agendar.</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><h2>Lo que dicen quienes ya consultaron</h2></div>
+      <div class="cards-2">
+        <div class="tst"><span class="stars">★★★★★</span><p>"Muy claro y rápido. Atendió todas las consultas que tenía y de verdad vale la pena. Me fui con claridad sobre lo que tenía que hacer."</p><span class="who">Jorge Antezana</span></div>
+        <div class="tst"><span class="stars">★★★★★</span><p>"Quedé muy conforme con la consulta realizada. Recomiendo esta modalidad ampliamente."</p><span class="who">Richard Salazar</span></div>
+      </div>
+      <p class="tst-foot">4,9 de 5 en 152 evaluaciones en <a href={encuadrado} target="_blank" rel="noopener">Encuadrado</a>.</p>
+    </div>
+  </section>
+
+  <section class="sec alt" id="faq">
+    <div class="wrap">
+      <div class="sec-head center"><h2>Preguntas frecuentes</h2></div>
+      <div class="faq">
+        <details open><summary>¿Para qué tipo de dudas sirve?<span class="plus">+</span></summary><div class="ans">Para temas tributarios y contables concretos: régimen, impuestos, formalización, una decisión puntual o una segunda opinión. Si tu caso necesita un servicio mayor, te lo decimos.</div></details>
+        <details><summary>¿Es online?<span class="plus">+</span></summary><div class="ans">Sí, por videollamada. Agendas el horario que te acomode y te conectas desde donde estés.</div></details>
+        <details><summary>¿Cuánto dura y cuánto cuesta?<span class="plus">+</span></summary><div class="ans">Hay formatos de 15, 30 y 60 minutos. El valor de cada uno lo ves al momento de agendar.</div></details>
+        <details><summary>¿Y si después quiero contratar otro servicio?<span class="plus">+</span></summary><div class="ans">Perfecto. La asesoría es un buen primer paso y desde ahí seguimos con lo que necesites, sea contabilidad mensual, constituir tu empresa u otro.</div></details>
+        <details><summary>¿Puedo pagar en línea?<span class="plus">+</span></summary><div class="ans">Sí, agendas y pagas en el mismo paso, de forma segura.</div></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="cierre">
+    <div class="wrap">
+      <h2>Resuelve tu duda con alguien que sabe.</h2>
+      <p>Agenda tu asesoría y conversemos tu caso. Es la forma más rápida de salir de la duda y avanzar con seguridad.</p>
+      <div class="cta-row center">
+        <a class="btn btn-amber" href={encuadrado} target="_blank" rel="noopener">Agendar una asesoría</a>
+        <BotonWhatsApp texto="Hablar por WhatsApp" mensaje={waMsg} />
+      </div>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:64px 0}
+  .hero h1{font-size:40px;font-weight:800;max-width:20ch;letter-spacing:-.5px}
+  .hero .lead{font-size:18px;color:#444a63;margin:20px 0 26px;max-width:60ch}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap}
+  .cta-row.center{justify-content:center}
+  .micro{margin-top:18px;font-size:13.5px;color:var(--gris)}
+  .lista{margin-top:10px;list-style:none;display:grid;gap:12px;max-width:760px}
+  .lista li{position:relative;padding-left:30px;font-size:16px}
+  .lista li::before{content:"";position:absolute;left:4px;top:7px;width:12px;height:7px;border-left:2px solid var(--verde);border-bottom:2px solid var(--verde);transform:rotate(-45deg)}
+  .nota{margin-top:16px;color:var(--gris);font-size:15px}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:34px}
+  .step{padding:24px;border-radius:16px;background:#fff;border:1px solid var(--linea)}
+  .step .num{font-family:'Montserrat';font-weight:800;color:var(--verde);background:#eaf6ef;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+  .step h3{font-size:16px;margin-bottom:8px}
+  .step p{font-size:14.5px;color:#555}
+  .cards-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:24px}
+  .tst{background:#fff;border:1px solid var(--linea);border-radius:16px;padding:24px}
+  .tst .stars{display:block;margin-bottom:10px}
+  .tst p{font-style:italic;color:#3a3f50;margin-bottom:12px}
+  .tst .who{font-family:'Montserrat';font-weight:700;font-size:13.5px;color:var(--azul)}
+  .tst-foot{text-align:center;margin-top:22px;color:var(--gris)}
+  .tst-foot a{color:var(--azul);font-weight:600}
+  .sec-head.center{margin:0 auto;text-align:center}
+  .faq{max-width:780px;margin:30px auto 0}
+  details{background:#fff;border:1px solid var(--linea);border-radius:14px;margin-bottom:12px;overflow:hidden}
+  summary{list-style:none;cursor:pointer;padding:20px 24px;font-family:'Montserrat';font-weight:600;font-size:16px;color:var(--azul);display:flex;justify-content:space-between;gap:14px}
+  summary::-webkit-details-marker{display:none}
+  .plus{font-size:22px;color:var(--verde);transition:.2s}
+  details[open] .plus{transform:rotate(45deg)}
+  .ans{padding:0 24px 20px;color:#555;font-size:15.5px}
+  .cierre{background:linear-gradient(150deg,var(--azul),var(--azul-prof));color:#fff;text-align:center;padding:70px 24px}
+  .cierre h2{color:#fff;font-size:30px;font-weight:800}
+  .cierre p{color:#cfd6ea;font-size:17px;margin:14px auto 28px;max-width:52ch}
+  @media(max-width:900px){ .steps{grid-template-columns:1fr 1fr} .hero h1{font-size:31px} }
+  @media(max-width:620px){ .steps,.cards-2{grid-template-columns:1fr} }
+</style>

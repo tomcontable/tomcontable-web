@@ -1,0 +1,42 @@
+---
+// Inyecta JSON-LD. Cada pagina puede pasar uno o varios bloques de schema.
+// Por defecto incluye la organizacion en todas las paginas.
+const { blocks = [] } = Astro.props;
+
+const organizacion = {
+  "@context": "https://schema.org",
+  "@type": ["Organization", "ProfessionalService", "AccountingService"],
+  "name": "TomContable",
+  "url": "https://tomcontable.cl",
+  "logo": "https://tomcontable.cl/img/logo-tomcontable.png",
+  "description": "Empresa contable chilena especializada en emprendedores y pymes. Constitucion de empresas, contabilidad mensual, operacion renta, asesorias y ayuda con el SII.",
+  "areaServed": { "@type": "Country", "name": "Chile" },
+  "founder": {
+    "@type": "Person",
+    "name": "Tomas Gomez Fuenzalida",
+    "jobTitle": "Fundador, Contador Colegiado"
+  },
+  "email": "clientes@tomcontable.cl",
+  "telephone": "+56964933110",
+  "sameAs": [
+    "https://www.instagram.com/tomcontable",
+    "https://encuadrado.com/p/tomcontable"
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Servicios de TomContable",
+    "itemListElement": [
+      { "@type": "OfferCatalog", "name": "Constitución de empresas", "url": "https://tomcontable.cl/constitucion-de-empresas" },
+      { "@type": "OfferCatalog", "name": "Contabilidad mensual", "url": "https://tomcontable.cl/contabilidad-mensual" },
+      { "@type": "OfferCatalog", "name": "Problemas con el SII y revisión tributaria", "url": "https://tomcontable.cl/problemas-con-el-sii" },
+      { "@type": "OfferCatalog", "name": "Asesorías tributarias", "url": "https://tomcontable.cl/asesorias" },
+      { "@type": "OfferCatalog", "name": "Proyección tributaria", "url": "https://tomcontable.cl/proyeccion-tributaria" }
+    ]
+  }
+};
+
+const all = [organizacion, ...blocks];
+---
+{all.map((b) => (
+  <script type="application/ld+json" set:html={JSON.stringify(b)} />
+))}

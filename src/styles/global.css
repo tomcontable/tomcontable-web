@@ -1,0 +1,61 @@
+/* ==========================================================================
+   TomContable, estilos globales y tokens de marca
+   Fuente de verdad de colores y tipografia. Cambiar aqui actualiza todo el sitio.
+   Colores oficiales tomados del logo y la hoja de marca.
+   ========================================================================== */
+
+:root{
+  /* Marca */
+  --azul:#1E2F73;
+  --azul-prof:#13235F;
+  --amarillo:#F6B11A;
+  --amarillo-luz:#F4C623;
+  /* Accion (funcional, no identidad) */
+  --verde:#1E9E57;
+  --verde-h:#178A4A;
+  /* Neutros */
+  --texto:#2B2B2B;
+  --gris:#6B7280;
+  --linea:#E8EAF0;
+  --fondo:#F7F8FA;
+  --blanco:#FFFFFF;
+  /* Layout */
+  --ancho:1140px;
+  --radio:14px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  color:var(--texto);background:var(--blanco);line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:'Montserrat',system-ui,sans-serif;color:var(--azul);line-height:1.15}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+
+.wrap{max-width:var(--ancho);margin:0 auto;padding:0 24px}
+.eyebrow{font-family:'Montserrat';font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--verde);margin-bottom:12px}
+.sec{padding:80px 0}
+.sec.alt{background:var(--fondo)}
+.sec-head{max-width:720px;margin-bottom:14px}
+.sec-head h2{font-size:33px;font-weight:800}
+.sec-head p{color:var(--gris);font-size:17px;margin-top:12px}
+
+/* Botones */
+.btn{font-family:'Montserrat';font-weight:700;font-size:15.5px;border:none;border-radius:12px;padding:15px 26px;cursor:pointer;display:inline-flex;gap:10px;align-items:center;justify-content:center;transition:.18s;white-space:nowrap}
+.btn svg{width:19px;height:19px}
+.btn-wa{background:var(--verde);color:#fff}
+.btn-wa:hover{background:var(--verde-h)}
+.btn-ghost{background:transparent;color:var(--azul);border:2px solid #d4d8e6}
+.btn-ghost:hover{border-color:var(--azul)}
+.btn-amber{background:var(--amarillo);color:var(--azul-prof)}
+.btn-amber:hover{filter:brightness(.96)}
+
+.stars{color:var(--amarillo);letter-spacing:1px}
+
+@media(max-width:640px){
+  .sec{padding:56px 0}
+  .sec-head h2{font-size:27px}
+}
