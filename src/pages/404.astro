@@ -1,0 +1,47 @@
+---
+import Base from '../layouts/Base.astro';
+import BotonWhatsApp from '../components/BotonWhatsApp.astro';
+
+const seo = {
+  title: 'Página no encontrada · TomContable',
+  description: 'La página que buscas no existe o cambió de dirección. Vuelve al inicio o escríbenos por WhatsApp.',
+  noindex: true,
+};
+---
+<Base {...seo}>
+  <section class="nf">
+    <div class="wrap">
+      <p class="code">404</p>
+      <h1>Esta página no existe o cambió de dirección.</h1>
+      <p class="lead">Puede que el enlace esté mal escrito o que hayamos movido el contenido. No te preocupes, te dejamos por dónde seguir.</p>
+      <div class="cta-row">
+        <a class="btn btn-amber" href="/">Volver al inicio</a>
+        <BotonWhatsApp texto="Escríbenos por WhatsApp" />
+      </div>
+      <div class="links">
+        <p>O ve directo a lo que buscabas:</p>
+        <div class="chips">
+          <a href="/constitucion-de-empresas">Constituir empresa</a>
+          <a href="/contabilidad-mensual">Contabilidad mensual</a>
+          <a href="/problemas-con-el-sii">Problemas con el SII</a>
+          <a href="/asesorias">Asesorías</a>
+          <a href="/preguntas-frecuentes">Preguntas frecuentes</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:90px 0 100px;text-align:center}
+  .code{font-family:'Montserrat';font-weight:800;font-size:84px;color:var(--amarillo);line-height:1}
+  .nf h1{font-size:34px;font-weight:800;max-width:18ch;margin:6px auto 0}
+  .nf .lead{font-size:18px;color:#444a63;margin:18px auto 28px;max-width:52ch}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+  .links{margin-top:44px}
+  .links p{color:var(--gris);font-size:15px;margin-bottom:14px}
+  .chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+  .chips a{background:#fff;border:1px solid var(--linea);border-radius:30px;padding:9px 16px;font-family:'Montserrat';font-weight:600;font-size:14px;color:var(--azul);transition:.15s}
+  .chips a:hover{border-color:var(--azul)}
+  @media(max-width:640px){ .code{font-size:64px} .nf h1{font-size:27px} }
+</style>
