@@ -1,13 +1,12 @@
 ---
 import BotonWhatsApp from './BotonWhatsApp.astro';
 
-const enlaces = [
-  { href: '/', texto: 'Inicio' },
+const servicios = [
   { href: '/constitucion-de-empresas', texto: 'Constituir empresa' },
   { href: '/contabilidad-mensual', texto: 'Contabilidad mensual' },
   { href: '/problemas-con-el-sii', texto: 'Problemas con el SII' },
   { href: '/asesorias', texto: 'Asesorías' },
-  { href: '/sobre-tomcontable', texto: 'Sobre nosotros' },
+  { href: '/proyeccion-tributaria', texto: 'Proyección tributaria' },
 ];
 ---
 <header class="nav">
@@ -16,7 +15,17 @@ const enlaces = [
       <img src="/img/logo-tomcontable.png" alt="TomContable" />
     </a>
     <nav class="links" aria-label="Principal">
-      {enlaces.map((e) => <a href={e.href}>{e.texto}</a>)}
+      <a href="/">Inicio</a>
+      <div class="dropdown">
+        <button class="drop-toggle" type="button" aria-expanded="false" aria-haspopup="true">
+          Servicios
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="drop-menu">
+          {servicios.map((s) => <a href={s.href}>{s.texto}</a>)}
+        </div>
+      </div>
+      <a href="/sobre-tomcontable">Sobre nosotros</a>
     </nav>
     <div class="nav-acciones">
       <BotonWhatsApp texto="WhatsApp" clase="btn-wa nav-cta" />
@@ -26,11 +35,15 @@ const enlaces = [
     </div>
   </div>
   <nav class="menu-movil" id="menu-movil" aria-label="Menú móvil">
-    {enlaces.map((e) => <a href={e.href}>{e.texto}</a>)}
+    <a href="/">Inicio</a>
+    <span class="mm-label">Servicios</span>
+    {servicios.map((s) => <a class="mm-serv" href={s.href}>{s.texto}</a>)}
+    <a href="/sobre-tomcontable">Sobre nosotros</a>
   </nav>
 </header>
 
 <script>
+  // Menu movil
   const btn = document.querySelector('.menu-btn');
   const panel = document.getElementById('menu-movil');
   if (btn && panel) {
@@ -41,6 +54,20 @@ const enlaces = [
       btn.setAttribute('aria-label', abierto ? 'Cerrar menú' : 'Abrir menú');
     });
   }
+  // Dropdown Servicios (desktop): hover por CSS, click como respaldo
+  const drop = document.querySelector('.dropdown');
+  const dropToggle = document.querySelector('.drop-toggle');
+  if (drop && dropToggle) {
+    dropToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const open = drop.classList.toggle('open');
+      dropToggle.setAttribute('aria-expanded', String(open));
+    });
+    document.addEventListener('click', () => {
+      drop.classList.remove('open');
+      dropToggle.setAttribute('aria-expanded', 'false');
+    });
+  }
 </script>
 
 <style>
@@ -48,23 +75,38 @@ const enlaces = [
   .nav-inner{display:flex;align-items:center;justify-content:space-between;height:78px;gap:20px}
   .logo{background:#fff;border-radius:13px;padding:9px 16px;display:inline-flex;align-items:center;box-shadow:0 6px 16px -8px rgba(0,0,0,.3)}
   .logo img{height:40px}
-  .links{display:flex;gap:24px;font-size:15px;font-weight:500;color:#dfe4f3}
-  .links a:hover{color:var(--amarillo)}
+  .links{display:flex;gap:26px;align-items:center;height:100%;font-size:15px;font-weight:500}
+  .links > a{color:#dfe4f3}
+  .links > a:hover{color:var(--amarillo)}
+
+  /* Dropdown Servicios */
+  .dropdown{position:relative;height:100%;display:flex;align-items:center}
+  .drop-toggle{background:none;border:none;cursor:pointer;color:#dfe4f3;font-family:inherit;font-size:15px;font-weight:500;display:inline-flex;align-items:center;gap:6px;height:100%}
+  .drop-toggle:hover{color:var(--amarillo)}
+  .drop-toggle svg{width:14px;height:14px;transition:.2s}
+  .dropdown:hover .drop-toggle svg,.dropdown.open .drop-toggle svg{transform:rotate(180deg)}
+  .drop-menu{position:absolute;top:100%;left:50%;transform:translateX(-50%) translateY(8px);background:#fff;border-radius:14px;box-shadow:0 18px 44px -14px rgba(19,35,95,.45);padding:8px;min-width:248px;display:flex;flex-direction:column;opacity:0;visibility:hidden;transition:.16s}
+  .dropdown:hover .drop-menu,.dropdown.open .drop-menu{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+  .drop-menu a{color:var(--azul);font-family:'Montserrat';font-weight:600;font-size:14.5px;padding:11px 14px;border-radius:9px;white-space:nowrap}
+  .drop-menu a:hover{background:#eef2fb}
+
   .nav-acciones{display:flex;align-items:center;gap:12px}
   .nav :global(.nav-cta){padding:11px 18px;font-size:14px}
 
-  /* Boton hamburguesa: solo visible en pantallas chicas */
+  /* Boton hamburguesa */
   .menu-btn{display:none;flex-direction:column;justify-content:center;gap:5px;width:44px;height:44px;padding:10px;background:none;border:none;cursor:pointer}
   .menu-btn span{display:block;height:2.5px;width:100%;background:#fff;border-radius:2px;transition:.25s}
   .menu-btn.abierto span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
   .menu-btn.abierto span:nth-child(2){opacity:0}
   .menu-btn.abierto span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
 
-  /* Panel desplegable movil */
+  /* Panel movil */
   .menu-movil{display:none;flex-direction:column;background:#fff;border-top:1px solid var(--linea);box-shadow:0 14px 24px rgba(19,35,95,.10)}
-  .menu-movil a{padding:15px 24px;font-family:'Montserrat';font-weight:600;font-size:15.5px;color:var(--azul);border-bottom:1px solid var(--linea)}
+  .menu-movil a{padding:14px 24px;font-family:'Montserrat';font-weight:600;font-size:15.5px;color:var(--azul);border-bottom:1px solid var(--linea)}
   .menu-movil a:last-child{border-bottom:none}
   .menu-movil a:active{background:#f2f4fa}
+  .menu-movil .mm-label{padding:14px 24px 6px;font-family:'Montserrat';font-weight:700;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gris)}
+  .menu-movil .mm-serv{padding-left:36px}
 
   @media(max-width:960px){
     .links{display:none}
