@@ -17,10 +17,10 @@ const servicios = [
     <nav class="links" aria-label="Principal">
       <a href="/">Inicio</a>
       <div class="dropdown">
-        <button class="drop-toggle" type="button" aria-expanded="false" aria-haspopup="true">
+        <a class="drop-toggle" href="/servicios" aria-haspopup="true">
           Servicios
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
-        </button>
+        </a>
         <div class="drop-menu">
           {servicios.map((s) => <a href={s.href}>{s.texto}</a>)}
         </div>
@@ -36,7 +36,7 @@ const servicios = [
   </div>
   <nav class="menu-movil" id="menu-movil" aria-label="Menú móvil">
     <a href="/">Inicio</a>
-    <span class="mm-label">Servicios</span>
+    <a href="/servicios">Servicios</a>
     {servicios.map((s) => <a class="mm-serv" href={s.href}>{s.texto}</a>)}
     <a href="/sobre-tomcontable">Sobre nosotros</a>
   </nav>
@@ -54,20 +54,7 @@ const servicios = [
       btn.setAttribute('aria-label', abierto ? 'Cerrar menú' : 'Abrir menú');
     });
   }
-  // Dropdown Servicios (desktop): hover por CSS, click como respaldo
-  const drop = document.querySelector('.dropdown');
-  const dropToggle = document.querySelector('.drop-toggle');
-  if (drop && dropToggle) {
-    dropToggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const open = drop.classList.toggle('open');
-      dropToggle.setAttribute('aria-expanded', String(open));
-    });
-    document.addEventListener('click', () => {
-      drop.classList.remove('open');
-      dropToggle.setAttribute('aria-expanded', 'false');
-    });
-  }
+  // El menú "Servicios" es un enlace a /servicios; el desplegable se muestra al pasar el mouse (CSS).
 </script>
 
 <style>
