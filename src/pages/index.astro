@@ -72,16 +72,16 @@ const servicios = [
       </div>
       <div class="cards-3">
         <div class="card">
-          <span class="ico"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></svg></span>
-          <h3>Te explicamos en simple</h3><p>Sin tecnicismos ni respuestas de manual. Vas a entender qué pasa con tu empresa y por qué.</p>
+          <div class="card-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></svg></span><h3>Te explicamos en simple</h3></div>
+          <p>Sin tecnicismos ni respuestas de manual. Vas a entender qué pasa con tu empresa y por qué.</p>
         </div>
         <div class="card">
-          <span class="ico"><svg viewBox="0 0 24 24"><polyline points="13 2 4 14 12 14 11 22 20 10 12 10 13 2"/></svg></span>
-          <h3>Te respondemos cuando lo necesitas</h3><p>Una pregunta puntual no debería esperar una semana. Nuestros clientes mensuales tienen consultas ilimitadas y respondemos rápido por WhatsApp, sin dejarte esperando.</p>
+          <div class="card-head"><span class="ico"><svg viewBox="0 0 24 24"><polyline points="13 2 4 14 12 14 11 22 20 10 12 10 13 2"/></svg></span><h3>Te respondemos cuando lo necesitas</h3></div>
+          <p>Una pregunta puntual no debería esperar una semana. Nuestros clientes mensuales tienen consultas ilimitadas y respondemos rápido por WhatsApp, sin dejarte esperando.</p>
         </div>
         <div class="card">
-          <span class="ico"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></span>
-          <h3>Nos adelantamos</h3><p>Miramos tu situación antes de que un detalle se transforme en una multa o una observación del SII.</p>
+          <div class="card-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></span><h3>Nos adelantamos</h3></div>
+          <p>Miramos tu situación antes de que un detalle se transforme en una multa o una observación del SII.</p>
         </div>
       </div>
     </div>
@@ -227,9 +227,10 @@ const servicios = [
 
   .cards-3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:38px}
   .card{background:#fff;border:1px solid var(--linea);border-radius:16px;padding:26px;border-top:3px solid var(--azul)}
-  .card .ico{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:13px;background:#eef2fb;margin-bottom:14px}
+  .card-head{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+  .card .ico{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:13px;background:#eef2fb}
   .card .ico svg{width:23px;height:23px;fill:none;stroke:var(--azul);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-  .card h3{font-size:18px;margin-bottom:8px}
+  .card-head h3{font-size:18px;margin:0}
   .card p{font-size:15px;color:#555}
   @media(max-width:820px){ .cards-3{grid-template-columns:1fr} }
 
