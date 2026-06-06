@@ -115,9 +115,10 @@ const persona = {
   .hero .lead{font-size:17.5px;color:#444a63;margin-top:18px;max-width:54ch}
   .cta-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:24px}
   .cta-row.center{justify-content:center;margin-top:0}
-  .photo-card{position:relative;border-radius:24px;background:linear-gradient(160deg,var(--azul),var(--azul-prof));padding:16px;box-shadow:0 24px 56px -22px rgba(19,35,95,.5)}
+  .photo-card{border-radius:24px;background:linear-gradient(160deg,var(--azul),var(--azul-prof));padding:16px;box-shadow:0 24px 56px -22px rgba(19,35,95,.5);text-align:center}
   .photo-card img{width:100%;border-radius:14px;height:auto}
-  .video-tag{position:absolute;top:26px;left:26px;background:rgba(255,255,255,.92);color:var(--azul);font-size:12px;font-family:'Montserrat';font-weight:700;padding:7px 12px;border-radius:30px}
+  .video-tag{display:inline-flex;align-items:center;gap:8px;margin-top:14px;background:#fff;color:var(--azul);font-size:12.5px;font-family:'Montserrat';font-weight:700;padding:8px 14px;border-radius:30px}
+  .video-tag::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--amarillo)}
   .sec-head{max-width:760px}
   .sec-head h2{font-size:29px;font-weight:800;margin-bottom:10px}
   .sec-head p{color:#3a3f50;font-size:16.5px;margin-bottom:12px}

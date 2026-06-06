@@ -42,16 +42,21 @@ const incluye = [
 
   <!-- HERO -->
   <section class="hero">
-    <div class="wrap">
-      <p class="eyebrow">Constitución de empresas</p>
-      <h1>Tu empresa constituida, iniciada ante el SII y lista para facturar.</h1>
-      <p class="lead">Crear la sociedad es solo el primer paso. Nos hacemos cargo del proceso completo para que termines con una empresa que de verdad puede operar: con inicio de actividades, giro acreditado, régimen tributario elegido con criterio y facturación electrónica habilitada.</p>
-      <p class="precio">Desde <b>$159.900 + IVA</b> · 3 cuotas sin interés</p>
-      <div class="cta-row">
-        <a class="btn btn-amber" href={parrotfy} target="_blank" rel="noopener">Quiero constituir mi empresa</a>
-        <BotonWhatsApp texto="Tengo dudas antes de empezar" mensaje={waMsg} clase="btn-ghost" />
+    <div class="wrap hero-grid">
+      <div class="hero-text">
+        <p class="eyebrow">Constitución de empresas</p>
+        <h1>Tu empresa constituida, iniciada ante el SII y lista para facturar.</h1>
+        <p class="lead">Crear la sociedad es solo el primer paso. Nos hacemos cargo del proceso completo para que termines con una empresa que de verdad puede operar: con inicio de actividades, giro acreditado, régimen tributario elegido con criterio y facturación electrónica habilitada.</p>
+        <p class="precio">Desde <b>$159.900 + IVA</b> · 3 cuotas sin interés</p>
+        <div class="cta-row">
+          <a class="btn btn-amber" href={parrotfy} target="_blank" rel="noopener">Quiero constituir mi empresa</a>
+          <BotonWhatsApp texto="Tengo dudas antes de empezar" mensaje={waMsg} clase="btn-ghost" />
+        </div>
+        <p class="micro">Precio claro, sin sorpresas · +300 empresas constituidas · Contador Colegiado</p>
       </div>
-      <p class="micro">Precio claro, sin sorpresas · +300 empresas constituidas · Contador Colegiado</p>
+      <div class="hero-media">
+        <img src="/img/constitucion-lista.jpg" alt="Resumen visual de una empresa constituida, iniciada ante el SII y lista para facturar" width="1100" height="825" />
+      </div>
     </div>
   </section>
 
@@ -140,8 +145,11 @@ const incluye = [
 
 <style>
   .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:64px 0}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
   .hero h1{font-size:42px;font-weight:800;max-width:18ch;letter-spacing:-.5px}
   .hero .lead{font-size:18px;color:#444a63;margin:20px 0 18px;max-width:60ch}
+  .hero-media img{width:100%;height:auto;border-radius:18px;box-shadow:0 26px 60px -26px rgba(19,35,95,.45)}
+  @media(max-width:900px){ .hero-grid{grid-template-columns:1fr;gap:30px} .hero-media{max-width:440px;margin:2px auto 0} }
   .precio{font-size:18px;margin-bottom:24px}
   .precio b{color:var(--azul)}
   .cta-row{display:flex;gap:14px;flex-wrap:wrap}
