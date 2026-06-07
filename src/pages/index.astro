@@ -209,7 +209,7 @@ const servicios = [
   .cta-row.center{justify-content:center}
   .micro{list-style:none;margin-top:22px;display:flex;gap:18px;flex-wrap:wrap;font-size:13.5px;color:var(--gris)}
   .micro li{position:relative;padding-left:20px}
-  .micro li::before{content:"";position:absolute;left:0;top:6px;width:11px;height:6px;border-left:2px solid var(--verde);border-bottom:2px solid var(--verde);transform:rotate(-45deg)}
+  .micro li::before{content:"";position:absolute;left:0;top:6px;width:11px;height:6px;border-left:2px solid var(--azul);border-bottom:2px solid var(--azul);transform:rotate(-45deg)}
   .photo-card{position:relative;border-radius:26px;background:linear-gradient(160deg,var(--azul),var(--azul-prof));padding:18px;box-shadow:0 26px 60px -22px rgba(19,35,95,.55)}
   .photo-card img{width:100%;border-radius:16px;height:auto}
   .photo-badge{position:absolute;left:-16px;bottom:24px;background:#fff;border-radius:14px;padding:11px 15px;box-shadow:0 12px 30px -10px rgba(0,0,0,.25);display:flex;gap:10px;align-items:center}
@@ -228,8 +228,8 @@ const servicios = [
   .cards-3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:38px}
   .card{background:#fff;border:1px solid var(--linea);border-radius:16px;padding:26px;border-top:3px solid var(--azul)}
   .card-head{display:flex;align-items:center;gap:14px;margin-bottom:10px}
-  .card .ico{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:13px;background:#eef2fb}
-  .card .ico svg{width:23px;height:23px;fill:none;stroke:var(--azul);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .card .ico{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:13px;background:var(--azul)}
+  .card .ico svg{width:23px;height:23px;fill:none;stroke:var(--amarillo);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
   .card-head h3{font-size:18px;margin:0}
   .card p{font-size:15px;color:#555}
   @media(max-width:820px){ .cards-3{grid-template-columns:1fr} }
@@ -238,8 +238,8 @@ const servicios = [
   .serv{background:#fff;border:1px solid var(--linea);border-radius:18px;padding:28px;display:flex;flex-direction:column;transition:.18s}
   .serv:hover{box-shadow:0 18px 40px -20px rgba(19,35,95,.35);transform:translateY(-3px)}
   .serv-head{display:flex;align-items:center;gap:13px;margin-bottom:10px}
-  .serv .ico{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:#eef2fb}
-  .serv .ico svg{width:22px;height:22px;fill:none;stroke:var(--azul);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .serv .ico{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:var(--azul)}
+  .serv .ico svg{width:22px;height:22px;fill:none;stroke:var(--amarillo);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
   .serv-head h3{font-size:18px;margin:0}
   .serv p{font-size:15px;color:#555;flex:1}
   .serv .more{margin-top:16px;font-family:'Montserrat';font-weight:700;font-size:14.5px;color:var(--azul);display:inline-flex;align-items:center;gap:7px}
@@ -251,7 +251,7 @@ const servicios = [
   .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
   .step{padding:28px;border-radius:16px;background:#fff;border:1px solid var(--linea)}
   .step-head{display:flex;align-items:center;gap:14px;margin-bottom:10px}
-  .step .num{flex-shrink:0;font-family:'Montserrat';font-weight:800;font-size:15px;color:var(--verde);background:#eaf6ef;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+  .step .num{flex-shrink:0;font-family:'Montserrat';font-weight:800;font-size:15px;color:var(--azul-prof);background:var(--amarillo);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center}
   .step-head h3{font-size:18px;margin:0}
   .step p{font-size:15px;color:#555}
   @media(max-width:820px){ .steps{grid-template-columns:1fr} }
@@ -278,7 +278,7 @@ const servicios = [
   details{background:#fff;border:1px solid var(--linea);border-radius:14px;margin-bottom:12px;overflow:hidden}
   summary{list-style:none;cursor:pointer;padding:20px 24px;font-family:'Montserrat';font-weight:600;font-size:16.5px;color:var(--azul);display:flex;justify-content:space-between;align-items:center;gap:14px}
   summary::-webkit-details-marker{display:none}
-  .plus{font-size:22px;color:var(--verde);transition:.2s}
+  .plus{font-size:22px;color:var(--azul);transition:.2s}
   details[open] .plus{transform:rotate(45deg)}
   .ans{padding:0 24px 20px;color:#555;font-size:15.5px}
   .faq-mas{text-align:center;margin-top:18px}
@@ -291,5 +291,4 @@ const servicios = [
   .ig p{color:#cfd6ea;font-size:16px;margin-top:8px}
   .cierre{background:linear-gradient(150deg,var(--azul),var(--azul-prof));color:#fff;text-align:center;padding:74px 24px}
   .cierre h2{color:#fff;font-size:33px;font-weight:800}
-  .cierre p{color:#cfd6ea;font-size:17px;margin:16px auto 30px;max-width:54ch}
-</style>
+  .cierre p{color:#cfd6ea;font-size:17px;margin:16px auto 30px;
