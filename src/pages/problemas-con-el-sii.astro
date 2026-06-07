@@ -49,10 +49,10 @@ const servicio = {
       <div class="sec-head"><h2>Qué revisamos</h2>
       <p>Miramos la información visible de tu empresa en el SII y en Tesorería de los últimos 3 años, y buscamos lo que suele convertirse en un dolor de cabeza si nadie lo está mirando.</p></div>
       <div class="cards-2">
-        <div class="card"><h3>Observaciones e inconsistencias</h3><p>Detectamos observaciones, declaraciones rechazadas e inconsistencias entre lo declarado y lo que ve el SII.</p></div>
-        <div class="card"><h3>Giros, multas e intereses</h3><p>Identificamos giros, multas e intereses pendientes que pueden estar creciendo sin que lo sepas.</p></div>
-        <div class="card"><h3>Saldos a favor</h3><p>A veces la sorpresa es buena: revisamos si hay saldos o devoluciones a tu favor que no estás aprovechando.</p></div>
-        <div class="card"><h3>Un informe claro y qué hacer</h3><p>Si encontramos algo, te entregamos un informe con cada punto y qué conviene hacer. Si hay que corregir, lo cotizamos aparte y avanzamos contigo.</p></div>
+        <div class="card"><div class="card-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9.5 13.5l4 4M13.5 13.5l-4 4"/></svg></span><h3>Observaciones e inconsistencias</h3></div><p>Detectamos observaciones, declaraciones rechazadas e inconsistencias entre lo declarado y lo que ve el SII.</p></div>
+        <div class="card"><div class="card-head"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5h4a1.5 1.5 0 0 1 0 3h-3a1.5 1.5 0 0 0 0 3h4"/></svg></span><h3>Giros, multas e intereses</h3></div><p>Identificamos giros, multas e intereses pendientes que pueden estar creciendo sin que lo sepas.</p></div>
+        <div class="card"><div class="card-head"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg></span><h3>Saldos a favor</h3></div><p>A veces la sorpresa es buena: revisamos si hay saldos o devoluciones a tu favor que no estás aprovechando.</p></div>
+        <div class="card"><div class="card-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></svg></span><h3>Un informe claro y qué hacer</h3></div><p>Si encontramos algo, te entregamos un informe con cada punto y qué conviene hacer. Si hay que corregir, lo cotizamos aparte y avanzamos contigo.</p></div>
       </div>
     </div>
   </section>
@@ -63,10 +63,10 @@ const servicio = {
       <div class="sec-head"><h2>Cómo lo hacemos</h2>
       <p>Con calma y método. No prometemos resultados imposibles ni te asustamos: revisamos, te explicamos y definimos un plan.</p></div>
       <div class="steps">
-        <div class="step"><span class="num">1</span><h3>Revisamos tu caso</h3><p>Analizamos la información de tu empresa en el SII y Tesorería de los últimos 3 años.</p></div>
-        <div class="step"><span class="num">2</span><h3>Identificamos el origen</h3><p>Encontramos qué está observado, rechazado o pendiente, y de dónde viene.</p></div>
-        <div class="step"><span class="num">3</span><h3>Te explicamos las alternativas</h3><p>Recibes un informe claro con cada hallazgo y qué conviene hacer en cada caso.</p></div>
-        <div class="step"><span class="num">4</span><h3>Avanzamos con orden</h3><p>Si hay que corregir, lo cotizamos aparte y lo resolvemos contigo, paso a paso.</p></div>
+        <div class="step"><div class="step-head"><span class="num">1</span><h3>Revisamos tu caso</h3></div><p>Analizamos la información de tu empresa en el SII y Tesorería de los últimos 3 años.</p></div>
+        <div class="step"><div class="step-head"><span class="num">2</span><h3>Identificamos el origen</h3></div><p>Encontramos qué está observado, rechazado o pendiente, y de dónde viene.</p></div>
+        <div class="step"><div class="step-head"><span class="num">3</span><h3>Te explicamos las alternativas</h3></div><p>Recibes un informe claro con cada hallazgo y qué conviene hacer en cada caso.</p></div>
+        <div class="step"><div class="step-head"><span class="num">4</span><h3>Avanzamos con orden</h3></div><p>Si hay que corregir, lo cotizamos aparte y lo resolvemos contigo, paso a paso.</p></div>
       </div>
     </div>
   </section>
@@ -131,12 +131,16 @@ const servicio = {
   .micro{margin-top:18px;font-size:13.5px;color:var(--gris)}
   .cards-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:34px}
   .card{background:#fff;border:1px solid var(--linea);border-radius:16px;padding:24px}
-  .card h3{font-size:18px;margin-bottom:8px}
+  .card-head{display:flex;align-items:center;gap:13px;margin-bottom:10px}
+  .card .ico{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:13px;background:var(--amarillo)}
+  .card .ico svg{width:23px;height:23px;fill:none;stroke:var(--azul-prof);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .card-head h3{font-size:18px;margin:0}
   .card p{font-size:15px;color:#555}
   .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:34px}
   .step{padding:24px;border-radius:16px;background:#fff;border:1px solid var(--linea)}
-  .step .num{font-family:'Montserrat';font-weight:800;color:var(--azul-prof);background:var(--amarillo);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
-  .step h3{font-size:16px;margin-bottom:8px}
+  .step-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:8px}
+  .step .num{flex-shrink:0;font-family:'Montserrat';font-weight:800;color:var(--azul-prof);background:var(--amarillo);width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+  .step-head h3{font-size:16px;margin:0}
   .step p{font-size:14.5px;color:#555}
   .precio-grande{font-size:26px;color:var(--azul);margin:6px 0 8px}
   .sec-head.center{margin:0 auto;text-align:center}
