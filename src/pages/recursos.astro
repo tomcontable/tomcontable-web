@@ -1,0 +1,106 @@
+---
+import Base from '../layouts/Base.astro';
+
+const seo = {
+  title: 'Recursos gratis para emprendedores y pymes · TomContable',
+  description: 'Plantillas, calculadoras y guías tributarias gratis para ordenar las finanzas de tu empresa. Descárgalas dejando tu correo.',
+};
+
+// Para sumar un recurso nuevo, agrega un objeto aquí.
+const recursos = [
+  {
+    t: 'Esquema: IVA en la venta de activos fijos',
+    d: 'Un diagrama simple para saber cuándo corresponde cobrar IVA al vender maquinaria, equipos o vehículos de tu empresa, sin perderte en la norma.',
+    ico: '<path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v9"/>',
+  },
+  {
+    t: 'Los 5 errores al constituir tu empresa',
+    d: 'Los tropiezos más comunes al crear una empresa en Chile y cómo evitarlos para no pagar de más ni quedar a medias ante el SII.',
+    ico: '<path d="M9 11l3 3 8-8"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
+  },
+  {
+    t: 'Cómo elegir tu régimen tributario',
+    d: 'Qué regímenes existen y cómo saber cuál te conviene según tu negocio, explicado en simple y sin tecnicismos.',
+    ico: '<path d="M12 3v18M5 7h14"/><path d="M5 7l-3 6a3 3 0 0 0 6 0z"/><path d="M19 7l-3 6a3 3 0 0 0 6 0z"/><path d="M8 21h8"/>',
+  },
+];
+---
+<Base {...seo}>
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Recursos</p>
+      <h1>Herramientas gratis para ordenar la parte contable de tu negocio.</h1>
+      <p class="lead">Plantillas, calculadoras y guías que usamos con nuestros clientes, para que tú también las tengas. Deja tu correo una vez y desbloqueas el acceso a todas.</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="rec-grid">
+        {recursos.map((r) => (
+          <div class="rec">
+            <div class="rec-head"><span class="ico"><svg viewBox="0 0 24 24" set:html={r.ico} /></span><h2>{r.t}</h2></div>
+            <p>{r.d}</p>
+            <button class="btn btn-amber abrir-modal" type="button">Descargar gratis</button>
+          </div>
+        ))}
+      </div>
+      <p class="rec-nota">Pronto sumaremos más recursos a esta biblioteca.</p>
+    </div>
+  </section>
+
+  <!-- MODAL CAPTURA -->
+  <div class="modal" id="modal-recurso" aria-hidden="true">
+    <div class="modal-overlay" data-cerrar></div>
+    <div class="modal-box" role="dialog" aria-modal="true">
+      <button class="modal-x" type="button" aria-label="Cerrar" data-cerrar>&times;</button>
+      <iframe class="brevo-form" title="Formulario para recibir los recursos" src="https://2d740d63.sibforms.com/v2/serve/MUIFABJslQYR63N_ohkXbTVaOvHCW9iiCWq91erPZtNVXlqxBwPHMOK8i5yVriqE3L8i9VT-BJq4uoTU_tJP6-8vdh1GFGvNKWbmW0eR4tpYBk005q2gjM1Om5gDzJZ8oXCHYGK9QjYqdKV-Q3pLxYgyVbDtg52exnr88SCz0Gp1flM_b1_LSHSA2HyEXbTDMa-WeFQe8Tv-tl0V_A==" frameborder="0" scrolling="auto" allowfullscreen></iframe>
+    </div>
+  </div>
+
+</Base>
+
+<script>
+  const modal = document.getElementById('modal-recurso');
+  const abrir = () => { if (modal) { modal.classList.add('abierto'); modal.setAttribute('aria-hidden', 'false'); } };
+  const cerrar = () => { if (modal) { modal.classList.remove('abierto'); modal.setAttribute('aria-hidden', 'true'); } };
+  document.querySelectorAll('.abrir-modal').forEach((b) => b.addEventListener('click', abrir));
+  document.querySelectorAll('[data-cerrar]').forEach((b) => b.addEventListener('click', cerrar));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') cerrar(); });
+</script>
+
+<style>
+  .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:64px 0}
+  .hero h1{font-size:40px;font-weight:800;max-width:20ch;letter-spacing:-.5px}
+  .hero .lead{font-size:18px;color:#444a63;margin:20px 0 0;max-width:62ch}
+
+  .rec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .rec{background:#fff;border:1px solid var(--linea);border-radius:18px;padding:28px;display:flex;flex-direction:column}
+  .rec-head{display:flex;align-items:center;gap:13px;margin-bottom:10px}
+  .rec .ico{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:13px;background:var(--amarillo)}
+  .rec .ico svg{width:23px;height:23px;fill:none;stroke:var(--azul-prof);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .rec-head h2{font-size:18px;font-weight:700;margin:0}
+  .rec p{font-size:15px;color:#555;flex:1;margin-bottom:18px}
+  .rec .btn{align-self:flex-start}
+  .rec-nota{margin-top:26px;color:var(--gris);font-size:15px}
+  @media(max-width:880px){ .rec-grid{grid-template-columns:1fr} }
+
+  /* Modal */
+  .modal{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;padding:20px}
+  .modal.abierto{display:flex}
+  .modal-overlay{position:absolute;inset:0;background:rgba(19,35,95,.55);backdrop-filter:blur(2px)}
+  .modal-box{position:relative;background:#fff;border-radius:18px;padding:16px;max-width:600px;width:100%;box-shadow:0 30px 70px -20px rgba(19,35,95,.5)}
+  .brevo-form{width:100%;min-height:560px;border:none;display:block;border-radius:10px}
+  .modal-x{position:absolute;top:14px;right:16px;background:none;border:none;font-size:26px;line-height:1;color:var(--gris);cursor:pointer}
+  .modal-box h3{font-size:21px;font-weight:800;margin-bottom:8px}
+  .modal-box > p{font-size:15px;color:#555;margin-bottom:18px}
+  .modal-form{display:flex;flex-direction:column;gap:14px}
+  .modal-form input[type=email]{border:1px solid var(--linea);border-radius:10px;padding:13px 15px;font-size:15px;font-family:inherit}
+  .modal-form input[type=email]:focus{outline:none;border-color:var(--azul)}
+  .check{display:flex;gap:9px;align-items:flex-start;font-size:13px;color:#555;line-height:1.4}
+  .check input{margin-top:3px}
+  .modal-form .btn{width:100%}
+  .modal-priv{margin-top:14px;font-size:12.5px;color:var(--gris);text-align:center}
+  .modal-priv a{color:var(--azul);font-weight:600}
+</style>
