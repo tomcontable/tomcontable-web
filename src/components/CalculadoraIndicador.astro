@@ -261,12 +261,12 @@ const {
     .then((r) => r.json())
     .then((data) => {
       const otros = Object.keys(META).filter((k) => k !== codigo);
-      const html = otros.map((k) => {
+      const cards = otros.map((k) => {
         const v = data[k] && data[k].valor;
-        const txt = v ? fmtCLP2.format(v) : '';
-        return `<a class="otro" href="${META[k].href}"><span class="otro-l">${META[k].nombre} hoy</span><span class="otro-v">${txt}</span><span class="otro-cta">Abrir calculadora →</span></a>`;
+        const txt = v ? fmtCLP0.format(v) : '';
+        return `<a class="otro" href="${META[k].href}"><span class="otro-l">${META[k].nombre} hoy</span><span class="otro-v">${txt}</span><span class="otro-cta">Abrir calculadora <span class="otro-fl">→</span></span></a>`;
       }).join('');
-      $('otros').innerHTML = html;
+      $('otros').innerHTML = `<p class="otros-titulo">¿Necesitas otra? Cambia de calculadora</p><div class="otros-grid">${cards}</div>`;
     })
     .catch(() => {});
 </script>
@@ -300,12 +300,16 @@ const {
   .swap{align-self:center;color:var(--amarillo);font-size:24px;font-weight:800;padding-bottom:10px}
   .calc-nota{margin-top:16px;color:var(--gris);font-size:14.5px;text-align:center}
 
-  .otros{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:26px}
-  .otro{display:flex;flex-direction:column;gap:2px;background:#fff;border:1px solid var(--linea);border-radius:12px;padding:14px 22px;text-align:center;min-width:170px;transition:.15s}
-  .otro:hover{border-color:#c9cfe2;transform:translateY(-2px);box-shadow:0 14px 26px -18px rgba(19,35,95,.5)}
-  .otro-l{font-family:'Montserrat';font-weight:600;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
-  .otro-v{font-family:'Montserrat';font-weight:800;font-size:18px;color:var(--azul)}
-  .otro-cta{font-family:'Montserrat';font-weight:700;font-size:12.5px;color:var(--azul);margin-top:4px}
+  .otros{margin-top:34px}
+  :global(.otros-titulo){text-align:center;font-family:'Montserrat';font-weight:700;font-size:12.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--gris);margin-bottom:16px}
+  :global(.otros-grid){display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+  :global(.otro){display:flex;flex-direction:column;align-items:center;gap:3px;background:#fff;border:1px solid var(--linea);border-radius:15px;padding:20px 30px;text-align:center;min-width:200px;text-decoration:none;box-shadow:0 6px 18px -14px rgba(19,35,95,.45);transition:.16s}
+  :global(.otro:hover){border-color:var(--azul);transform:translateY(-3px);box-shadow:0 18px 32px -18px rgba(19,35,95,.55)}
+  :global(.otro-l){font-family:'Montserrat';font-weight:600;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
+  :global(.otro-v){font-family:'Montserrat';font-weight:800;font-size:23px;color:var(--azul-prof);line-height:1.1;margin:2px 0 6px}
+  :global(.otro-cta){display:inline-flex;align-items:center;gap:6px;font-family:'Montserrat';font-weight:700;font-size:13px;color:var(--azul)}
+  :global(.otro-fl){transition:transform .16s}
+  :global(.otro:hover .otro-fl){transform:translateX(4px)}
 
   .sec-texto{padding-top:8px}
   .angosto{max-width:760px}
