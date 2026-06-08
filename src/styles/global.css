@@ -48,6 +48,8 @@ img{max-width:100%;display:block}
 .btn svg{width:19px;height:19px}
 .btn-wa{background:var(--verde);color:#fff}
 .btn-wa:hover{background:var(--verde-h)}
+.btn-ig{background:radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);color:#fff}
+.btn-ig:hover{filter:brightness(1.07)}
 .btn-ghost{background:transparent;color:var(--azul);border:2px solid #d4d8e6}
 .btn-ghost:hover{border-color:var(--azul)}
 .btn-amber{background:var(--amarillo);color:var(--azul-prof)}
