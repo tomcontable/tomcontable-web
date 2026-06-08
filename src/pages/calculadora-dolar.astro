@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro';
+import CalculadoraIndicador from '../components/CalculadoraIndicador.astro';
+
+const seo = {
+  title: 'Calculadora Dólar a Pesos | Valor del dólar hoy y por fecha · TomContable',
+  description: 'Convierte dólares a pesos y pesos a dólares con el dólar observado de hoy o de la fecha que elijas, según el Banco Central. Calculadora gratis de TomContable.',
+  canonical: '/calculadora-dolar',
+};
+
+const faqs = [
+  { q: '¿Qué dólar usa esta calculadora?', a: 'El dólar observado, que es el valor oficial que publica el Banco Central de Chile cada día hábil. Es el que se usa como referencia en contabilidad, contratos y trámites.' },
+  { q: '¿Puedo ver el valor del dólar de una fecha pasada?', a: 'Sí. Con las flechas o el calendario eliges la fecha y tomamos el dólar observado de ese día. Si la fecha cae en fin de semana o feriado (sin valor publicado), te mostramos el del último día hábil.' },
+  { q: '¿Cada cuánto cambia el dólar observado?', a: 'Cada día hábil. El Banco Central publica el valor del día siguiente, así que el valor más reciente suele ser el del último día hábil.' },
+  { q: '¿Sirve para mi contabilidad o mis facturas en dólares?', a: 'Te da una referencia rápida con el valor oficial. Para registrar operaciones en moneda extranjera conviene revisar el tipo de cambio correcto según la fecha de cada operación; si tienes dudas, podemos ayudarte.' },
+];
+
+const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
+const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication', name: 'Calculadora Dólar a Pesos', applicationCategory: 'FinanceApplication', operatingSystem: 'Web', inLanguage: 'es-CL', url: 'https://tomcontable.cl/calculadora-dolar', offers: { '@type': 'Offer', price: '0', priceCurrency: 'CLP' }, publisher: { '@type': 'Organization', name: 'TomContable' } };
+---
+<Base {...seo} schema={[appSchema, faqSchema]}>
+  <CalculadoraIndicador
+    codigo="dolar"
+    unidadLabel="Dólares (USD)"
+    eyebrow="Herramienta gratis"
+    h1="Calculadora dólar a pesos"
+    lead="Convierte de dólares a pesos y de pesos a dólares con el dólar observado de hoy o de la fecha que elijas, según el Banco Central."
+    intro={[
+      'Escribe un monto en dólares y verás cuántos pesos son, o al revés. Usamos el dólar observado oficial. Puedes moverte día a día con las flechas o abrir el calendario para cualquier fecha.',
+      'Si eliges un fin de semana o feriado, que no tienen valor publicado, te mostramos automáticamente el del último día hábil, que es el valor vigente.',
+    ]}
+    faqs={faqs}
+    ctaTitulo="¿Tienes operaciones o facturas en dólares y no sabes cómo registrarlas?"
+    ctaTexto="Te ayudamos a llevar tu contabilidad clara, también cuando hay moneda extranjera. Conversemos por WhatsApp."
+    ctaMensaje="Hola vengo desde la calculadora dólar"
+  />
+</Base>

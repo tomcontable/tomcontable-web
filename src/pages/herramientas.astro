@@ -1,0 +1,82 @@
+---
+import Base from '../layouts/Base.astro';
+
+const seo = {
+  title: 'Herramientas y calculadoras gratis | UF, UTM y dólar · TomContable',
+  description: 'Calculadoras gratis para emprendedores y pymes en Chile: convierte UF, UTM y dólar a pesos con el valor oficial del día o de cualquier fecha. Por TomContable.',
+};
+
+const tools = [
+  {
+    t: 'Calculadora UF a pesos',
+    d: 'Convierte UF a pesos y pesos a UF con el valor de hoy o de cualquier fecha. Ideal para arriendos, créditos y montos tributarios.',
+    href: '/calculadora-uf',
+    ico: '<path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/>',
+  },
+  {
+    t: 'Calculadora UTM a pesos',
+    d: 'Convierte UTM a pesos con el valor del mes. Útil para entender multas, intereses y cobros del SII expresados en UTM.',
+    href: '/calculadora-utm',
+    ico: '<path d="M4 7V4h16v3"/><path d="M9 20h6M12 4v16"/>',
+  },
+  {
+    t: 'Calculadora dólar a pesos',
+    d: 'Convierte dólares a pesos con el dólar observado oficial, de hoy o de la fecha que elijas, según el Banco Central.',
+    href: '/calculadora-dolar',
+    ico: '<path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
+  },
+];
+
+const listSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  itemListElement: tools.map((t, i) => ({
+    '@type': 'ListItem', position: i + 1, name: t.t, url: 'https://tomcontable.cl' + t.href,
+  })),
+};
+---
+<Base {...seo} schema={[listSchema]}>
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Herramientas</p>
+      <h1>Calculadoras gratis para tu día a día</h1>
+      <p class="lead">Convierte UF, UTM y dólar a pesos con el valor oficial, de hoy o de la fecha que necesites. Simples, rápidas y sin vueltas.</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="grid">
+        {tools.map((t) => (
+          <a class="card" href={t.href}>
+            <span class="ico"><svg viewBox="0 0 24 24" set:html={t.ico} /></span>
+            <h2>{t.t}</h2>
+            <p>{t.d}</p>
+            <span class="card-cta">Abrir calculadora →</span>
+          </a>
+        ))}
+      </div>
+      <p class="nota">Pronto sumaremos más herramientas para emprendedores y pymes.</p>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:62px 0}
+  .hero h1{font-size:40px;font-weight:800;letter-spacing:-.5px;max-width:18ch}
+  .hero .lead{font-size:18px;color:#444a63;margin:18px 0 0;max-width:60ch}
+
+  .sec{padding:54px 0}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .card{background:#fff;border:1px solid var(--linea);border-radius:18px;padding:28px;display:flex;flex-direction:column;transition:.18s;box-shadow:0 6px 18px -14px rgba(19,35,95,.4)}
+  .card:hover{transform:translateY(-3px);border-color:#c9cfe2;box-shadow:0 16px 30px -18px rgba(19,35,95,.5)}
+  .ico{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:13px;background:var(--amarillo);margin-bottom:14px}
+  .ico svg{width:23px;height:23px;fill:none;stroke:var(--azul-prof);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .card h2{font-size:19px;font-weight:800;margin-bottom:8px}
+  .card p{font-size:15px;color:#555;flex:1;margin-bottom:16px;line-height:1.6}
+  .card-cta{font-family:'Montserrat';font-weight:700;font-size:14px;color:var(--azul)}
+  .nota{margin-top:26px;color:var(--gris);font-size:15px}
+  @media(max-width:880px){ .grid{grid-template-columns:1fr} }
+</style>

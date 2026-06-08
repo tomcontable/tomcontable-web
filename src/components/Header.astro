@@ -8,6 +8,13 @@ const servicios = [
   { href: '/asesorias', texto: 'Asesorías' },
   { href: '/proyeccion-tributaria', texto: 'Proyección tributaria' },
 ];
+
+// Calculadoras y herramientas gratis. Para sumar otra agrega un objeto aquí.
+const herramientas = [
+  { href: '/calculadora-uf', texto: 'Calculadora UF a pesos' },
+  { href: '/calculadora-utm', texto: 'Calculadora UTM a pesos' },
+  { href: '/calculadora-dolar', texto: 'Calculadora dólar a pesos' },
+];
 ---
 <header class="nav">
   <div class="wrap nav-inner">
@@ -27,6 +34,15 @@ const servicios = [
       </div>
       <a href="/blog">Blog</a>
       <a href="/recursos">Recursos</a>
+      <div class="dropdown">
+        <a class="drop-toggle" href="/herramientas" aria-haspopup="true">
+          Herramientas
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="drop-menu">
+          {herramientas.map((h) => <a href={h.href}>{h.texto}</a>)}
+        </div>
+      </div>
       <a href="/sobre-tomcontable">Sobre nosotros</a>
     </nav>
     <div class="nav-acciones">
@@ -42,6 +58,8 @@ const servicios = [
     {servicios.map((s) => <a class="mm-serv" href={s.href}>{s.texto}</a>)}
     <a href="/blog">Blog</a>
     <a href="/recursos">Recursos</a>
+    <a href="/herramientas">Herramientas</a>
+    {herramientas.map((h) => <a class="mm-serv" href={h.href}>{h.texto}</a>)}
     <a href="/sobre-tomcontable">Sobre nosotros</a>
   </nav>
 </header>

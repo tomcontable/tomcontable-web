@@ -1,0 +1,336 @@
+---
+// Widget de calculadora para un indicador (UF, UTM o dólar).
+// Toda la lógica (valor en vivo, selector de fecha, conversión) la maneja el script
+// según el "codigo". Para sumar otra calculadora basta crear una página que use este componente.
+import BotonWhatsApp from './BotonWhatsApp.astro';
+
+const {
+  codigo,            // 'uf' | 'utm' | 'dolar'
+  unidadLabel,       // texto del campo de la unidad, ej: 'UF', 'UTM', 'Dólares (USD)'
+  eyebrow,
+  h1,
+  lead,
+  intro = [],        // párrafos de "cómo usar / qué es"
+  faqs = [],
+  ctaTitulo,
+  ctaTexto,
+  ctaMensaje,
+} = Astro.props;
+---
+<section class="hero">
+  <div class="wrap">
+    <p class="eyebrow">{eyebrow}</p>
+    <h1>{h1}</h1>
+    <p class="lead">{lead}</p>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap calc-wrap" data-codigo={codigo}>
+
+    <div class="valor-card">
+      <span class="vc-label" id="vc-label">Valor de la {codigo.toUpperCase()}</span>
+      <span class="vc-monto" id="vc-monto">Cargando…</span>
+
+      <div class="fecha-ctrl">
+        <button class="fc-nav" id="fc-prev" type="button" aria-label="Día anterior">&#8249;</button>
+        <input type="date" id="fc-input" min="2013-01-02" aria-label="Elegir fecha" />
+        <button class="fc-nav" id="fc-next" type="button" aria-label="Día siguiente">&#8250;</button>
+        <button class="fc-hoy" id="fc-hoy" type="button">Hoy</button>
+      </div>
+      <span class="vc-aviso" id="vc-aviso"></span>
+    </div>
+
+    <div class="calc">
+      <div class="campo">
+        <label for="in-unidad">{unidadLabel}</label>
+        <div class="input-wrap">
+          <span class="prefijo" id="pref-unidad">·</span>
+          <input id="in-unidad" inputmode="decimal" autocomplete="off" placeholder="0" />
+        </div>
+      </div>
+
+      <div class="swap" aria-hidden="true">⇅</div>
+
+      <div class="campo">
+        <label for="in-pesos">Pesos (CLP)</label>
+        <div class="input-wrap">
+          <span class="prefijo">$</span>
+          <input id="in-pesos" inputmode="numeric" autocomplete="off" placeholder="0" />
+        </div>
+      </div>
+    </div>
+
+    <p class="calc-nota">Escribe un monto en cualquiera de los dos campos y se convierte solo, con el valor de la fecha elegida.</p>
+
+    <div class="otros" id="otros"></div>
+  </div>
+</section>
+
+<section class="sec sec-texto">
+  <div class="wrap angosto">
+    {intro.length > 0 && <h2>Cómo usar la calculadora</h2>}
+    {intro.map((p) => <p>{p}</p>)}
+
+    {faqs.length > 0 && <h2 id="faq">Preguntas frecuentes</h2>}
+    <div class="faq">
+      {faqs.map((it) => (
+        <details>
+          <summary>{it.q}<span class="plus">+</span></summary>
+          <div class="ans">{it.a}</div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="cierre">
+  <div class="wrap">
+    <h2>{ctaTitulo}</h2>
+    <p>{ctaTexto}</p>
+    <div class="cta-row center"><BotonWhatsApp texto="Hablar por WhatsApp" mensaje={ctaMensaje} /></div>
+  </div>
+</section>
+
+<script>
+  const META = {
+    uf:    { prefijo: 'UF',  dec: 4, fallback: 40746.28, nombre: 'UF',     href: '/calculadora-uf' },
+    utm:   { prefijo: 'UTM', dec: 2, fallback: 71506,    nombre: 'UTM',    href: '/calculadora-utm', mensual: true },
+    dolar: { prefijo: 'US$', dec: 2, fallback: 894.99,   nombre: 'Dólar',  href: '/calculadora-dolar' },
+  };
+
+  const root = document.querySelector('.calc-wrap');
+  const codigo = root.dataset.codigo;
+  const meta = META[codigo];
+
+  const fmtCLP0 = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
+  const fmtCLP2 = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const fmtMiles2 = new Intl.NumberFormat('es-CL', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const fmtUnidad = new Intl.NumberFormat('es-CL', { minimumFractionDigits: 2, maximumFractionDigits: meta.dec });
+
+  const $ = (id) => document.getElementById(id);
+  const inUnidad = $('in-unidad');
+  const inPesos = $('in-pesos');
+  const inFecha = $('fc-input');
+
+  let valor = meta.fallback;
+  let latestStr = '';                 // fecha del valor más reciente (YYYY-MM-DD)
+  const cacheAnio = {};               // { '2025': { map:{fecha:valor}, arr:[{fecha,valor}] desc } }
+
+  $('pref-unidad').textContent = meta.prefijo;
+
+  const parseCL = (txt) => {
+    if (!txt) return NaN;
+    return parseFloat(String(txt).replace(/\./g, '').replace(/,/g, '.').replace(/[^\d.]/g, ''));
+  };
+  const pad = (n) => String(n).padStart(2, '0');
+  const ymd = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  const hoyLocal = ymd(new Date());
+
+  const fmtLarga = (iso) => {
+    const [y, m, d] = iso.split('-').map(Number);
+    return new Date(y, m - 1, d).toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' });
+  };
+  const fmtMesAnio = (iso) => {
+    const [y, m, d] = iso.split('-').map(Number);
+    return new Date(y, m - 1, d).toLocaleDateString('es-CL', { month: 'long', year: 'numeric' });
+  };
+
+  const pintar = (fechaSel, fechaReal) => {
+    $('vc-monto').textContent = fmtCLP2.format(valor);
+    if (meta.mensual) {
+      $('vc-label').textContent = 'Valor de la UTM · ' + fmtMesAnio(fechaSel);
+      $('vc-aviso').textContent = '';
+      return;
+    }
+    const esHoy = fechaSel === hoyLocal;
+    $('vc-label').textContent = (esHoy ? 'Valor de hoy · ' : 'Valor al ') + fmtLarga(fechaSel);
+    $('vc-aviso').textContent = (fechaReal && fechaReal !== fechaSel)
+      ? `Ese día no tiene valor publicado. Te mostramos el vigente, del ${fmtLarga(fechaReal)}.`
+      : '';
+  };
+
+  let bloqueo = false;
+  inUnidad.addEventListener('input', () => {
+    if (bloqueo) return; bloqueo = true;
+    const u = parseCL(inUnidad.value);
+    inPesos.value = isFinite(u) && u > 0 ? fmtMiles2.format(u * valor) : '';
+    bloqueo = false;
+  });
+  inPesos.addEventListener('input', () => {
+    if (bloqueo) return; bloqueo = true;
+    const p = parseCL(inPesos.value);
+    inUnidad.value = isFinite(p) && p > 0 ? fmtUnidad.format(p / valor) : '';
+    bloqueo = false;
+  });
+  const recalcular = () => {
+    if (inUnidad.value) inUnidad.dispatchEvent(new Event('input'));
+    else if (inPesos.value) inPesos.dispatchEvent(new Event('input'));
+  };
+
+  const cargarAnio = async (anio) => {
+    if (cacheAnio[anio]) return cacheAnio[anio];
+    const r = await fetch(`https://mindicador.cl/api/${codigo}/${anio}`);
+    const data = await r.json();
+    const map = {}; const arr = [];
+    (data.serie || []).forEach((it) => {
+      const f = it.fecha.slice(0, 10);
+      map[f] = it.valor; arr.push({ fecha: f, valor: it.valor });
+    });
+    arr.sort((a, b) => (a.fecha < b.fecha ? 1 : -1)); // descendente
+    cacheAnio[anio] = { map, arr };
+    return cacheAnio[anio];
+  };
+
+  // Busca el valor de una fecha; si no existe, usa el vigente (día hábil anterior más cercano)
+  const valorParaFecha = async (fechaStr) => {
+    let anio = parseInt(fechaStr.slice(0, 4), 10);
+    for (let intento = 0; intento < 2; intento++) {
+      const { map, arr } = await cargarAnio(String(anio));
+      if (map[fechaStr]) return { valor: map[fechaStr], fecha: fechaStr };
+      const prev = arr.find((it) => it.fecha <= fechaStr);
+      if (prev) return { valor: prev.valor, fecha: prev.fecha };
+      anio -= 1; // la fecha es anterior al primer dato del año: probar año anterior
+      fechaStr = `${anio}-12-31`;
+    }
+    return null;
+  };
+
+  const aplicarFecha = async (fechaSel) => {
+    $('vc-aviso').textContent = '';
+    try {
+      const res = await valorParaFecha(fechaSel);
+      if (res) {
+        valor = res.valor;
+        pintar(fechaSel, res.fecha);
+        recalcular();
+      } else {
+        $('vc-aviso').textContent = 'No tenemos el valor para esa fecha. Prueba con otra.';
+      }
+    } catch (e) {
+      $('vc-aviso').textContent = 'No pudimos cargar esa fecha. Revisa tu conexión.';
+    }
+  };
+
+  const stepDia = (n) => {
+    const [y, m, d] = inFecha.value.split('-').map(Number);
+    const nd = new Date(y, m - 1, d);
+    if (meta.mensual) nd.setMonth(nd.getMonth() + n); else nd.setDate(nd.getDate() + n);
+    const s = ymd(nd);
+    if (inFecha.min && s < inFecha.min) return;
+    if (inFecha.max && s > inFecha.max) return;
+    inFecha.value = s;
+    aplicarFecha(s);
+  };
+
+  $('fc-prev').addEventListener('click', () => stepDia(-1));
+  $('fc-next').addEventListener('click', () => stepDia(1));
+  $('fc-hoy').addEventListener('click', () => { if (latestStr) { inFecha.value = latestStr; aplicarFecha(latestStr); } });
+  inFecha.addEventListener('change', () => { if (inFecha.value) aplicarFecha(inFecha.value); });
+
+  // Carga inicial: último valor del indicador + indicadores cruzados
+  fetch(`https://mindicador.cl/api/${codigo}`)
+    .then((r) => r.json())
+    .then((data) => {
+      const s = (data.serie || [])[0];
+      if (s) {
+        valor = s.valor;
+        const realLatest = s.fecha.slice(0, 10);
+        latestStr = meta.mensual ? hoyLocal : realLatest;
+        inFecha.value = latestStr;
+        inFecha.max = latestStr;
+        const anio = realLatest.slice(0, 4);
+        const map = {}; const arr = [];
+        data.serie.forEach((it) => { const f = it.fecha.slice(0, 10); map[f] = it.valor; arr.push({ fecha: f, valor: it.valor }); });
+        cacheAnio[anio] = { map, arr };
+      }
+      inUnidad.value = '1';
+      pintar(inFecha.value, null);
+      recalcular();
+    })
+    .catch(() => {
+      inFecha.value = hoyLocal; latestStr = hoyLocal;
+      inUnidad.value = '1';
+      pintar(hoyLocal, null);
+      $('vc-aviso').textContent = 'Mostrando un valor de referencia (no pudimos conectar con el Banco Central).';
+      recalcular();
+    });
+
+  // Otros indicadores (enlaces a las otras calculadoras) con su valor de hoy
+  fetch('https://mindicador.cl/api')
+    .then((r) => r.json())
+    .then((data) => {
+      const otros = Object.keys(META).filter((k) => k !== codigo);
+      const html = otros.map((k) => {
+        const v = data[k] && data[k].valor;
+        const txt = v ? fmtCLP2.format(v) : '';
+        return `<a class="otro" href="${META[k].href}"><span class="otro-l">${META[k].nombre} hoy</span><span class="otro-v">${txt}</span><span class="otro-cta">Abrir calculadora →</span></a>`;
+      }).join('');
+      $('otros').innerHTML = html;
+    })
+    .catch(() => {});
+</script>
+
+<style>
+  .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:60px 0 50px}
+  .hero h1{font-size:38px;font-weight:800;letter-spacing:-.5px}
+  .hero .lead{font-size:18px;color:#444a63;margin:16px 0 0;max-width:62ch}
+
+  .sec{padding:46px 0}
+  .calc-wrap{max-width:760px}
+
+  .valor-card{background:linear-gradient(150deg,var(--azul),var(--azul-prof));color:#fff;border-radius:18px;padding:26px 26px 24px;text-align:center;margin-bottom:24px}
+  .vc-label{display:block;font-family:'Montserrat';font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#cfd6ea}
+  .vc-monto{display:block;font-family:'Montserrat';font-weight:800;font-size:40px;line-height:1.1;margin:6px 0 16px;color:var(--amarillo)}
+
+  .fecha-ctrl{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:7px 9px}
+  .fc-nav{width:34px;height:34px;border:none;border-radius:8px;background:rgba(255,255,255,.16);color:#fff;font-size:20px;font-weight:800;line-height:1;cursor:pointer;transition:.15s}
+  .fc-nav:hover{background:rgba(255,255,255,.30)}
+  .fecha-ctrl input[type=date]{border:none;border-radius:8px;padding:8px 10px;font-family:inherit;font-size:14.5px;font-weight:600;color:var(--azul-prof);background:#fff}
+  .fc-hoy{border:none;border-radius:8px;background:var(--amarillo);color:var(--azul-prof);font-family:'Montserrat';font-weight:700;font-size:13.5px;padding:8px 14px;cursor:pointer;transition:.15s}
+  .fc-hoy:hover{filter:brightness(1.05)}
+  .vc-aviso{display:block;margin-top:12px;font-size:13.5px;color:#ffd9a0;max-width:46ch;margin-left:auto;margin-right:auto}
+
+  .calc{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:18px;background:#fff;border:1px solid var(--linea);border-radius:18px;padding:28px}
+  .campo label{display:block;font-family:'Montserrat';font-weight:600;font-size:14px;color:var(--azul);margin-bottom:8px}
+  .input-wrap{display:flex;align-items:center;border:1px solid var(--linea);border-radius:11px;padding:0 14px;transition:.15s}
+  .input-wrap:focus-within{border-color:var(--azul)}
+  .prefijo{font-family:'Montserrat';font-weight:700;color:var(--gris);font-size:15px;margin-right:8px;white-space:nowrap}
+  .input-wrap input{border:none;outline:none;font-family:'Montserrat';font-weight:700;font-size:22px;color:var(--azul-prof);padding:13px 0;width:100%;background:transparent}
+  .swap{align-self:center;color:var(--amarillo);font-size:24px;font-weight:800;padding-bottom:10px}
+  .calc-nota{margin-top:16px;color:var(--gris);font-size:14.5px;text-align:center}
+
+  .otros{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+  .otro{display:flex;flex-direction:column;gap:2px;background:#fff;border:1px solid var(--linea);border-radius:12px;padding:14px 22px;text-align:center;min-width:170px;transition:.15s}
+  .otro:hover{border-color:#c9cfe2;transform:translateY(-2px);box-shadow:0 14px 26px -18px rgba(19,35,95,.5)}
+  .otro-l{font-family:'Montserrat';font-weight:600;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
+  .otro-v{font-family:'Montserrat';font-weight:800;font-size:18px;color:var(--azul)}
+  .otro-cta{font-family:'Montserrat';font-weight:700;font-size:12.5px;color:var(--azul);margin-top:4px}
+
+  .sec-texto{padding-top:8px}
+  .angosto{max-width:760px}
+  .sec-texto h2{font-size:24px;font-weight:800;margin:30px 0 12px;letter-spacing:-.3px}
+  .sec-texto p{font-size:16px;color:#444a63;line-height:1.7;margin-bottom:14px}
+
+  .faq{margin-top:6px}
+  details{background:#fff;border:1px solid var(--linea);border-radius:14px;margin-bottom:12px;overflow:hidden}
+  summary{list-style:none;cursor:pointer;padding:18px 22px;font-family:'Montserrat';font-weight:600;font-size:16px;color:var(--azul);display:flex;justify-content:space-between;gap:14px}
+  summary::-webkit-details-marker{display:none}
+  .plus{font-size:22px;color:var(--azul);transition:.2s;flex-shrink:0}
+  details[open] .plus{transform:rotate(45deg)}
+  .ans{padding:0 22px 18px;color:#555;font-size:15.5px;line-height:1.6}
+
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap}
+  .cta-row.center{justify-content:center}
+  .cierre{background:linear-gradient(150deg,var(--azul),var(--azul-prof));color:#fff;text-align:center;padding:64px 24px}
+  .cierre h2{color:#fff;font-size:26px;font-weight:800;max-width:26ch;margin:0 auto}
+  .cierre p{color:#cfd6ea;font-size:17px;margin:14px auto 26px;max-width:54ch}
+
+  @media(max-width:640px){
+    .hero h1{font-size:30px}
+    .vc-monto{font-size:32px}
+    .fecha-ctrl{flex-wrap:wrap;justify-content:center}
+    .calc{grid-template-columns:1fr;gap:10px}
+    .swap{transform:rotate(90deg);padding:4px 0}
+  }
+</style>

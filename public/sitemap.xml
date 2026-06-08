@@ -41,7 +41,22 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://tomcontable.cl/herramientas</loc>
+    <lastmod>2026-06-08</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://tomcontable.cl/calculadora-uf</loc>
+    <lastmod>2026-06-08</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tomcontable.cl/calculadora-utm</loc>
+    <lastmod>2026-06-08</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tomcontable.cl/calculadora-dolar</loc>
     <lastmod>2026-06-08</lastmod>
     <priority>0.8</priority>
   </url>

@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro';
+import CalculadoraIndicador from '../components/CalculadoraIndicador.astro';
+
+const seo = {
+  title: 'Calculadora UTM a Pesos | Valor UTM hoy y por mes · TomContable',
+  description: 'Convierte UTM a pesos y pesos a UTM con el valor de la UTM de este mes o del mes que elijas, según el SII y el Banco Central. Calculadora gratis de TomContable.',
+  canonical: '/calculadora-utm',
+};
+
+const faqs = [
+  { q: '¿Qué es la UTM?', a: 'La Unidad Tributaria Mensual (UTM) es una unidad usada para fines tributarios en Chile: multas, intereses, tramos de impuestos y varios trámites del SII. Su valor en pesos se reajusta cada mes según la inflación.' },
+  { q: '¿Cada cuánto cambia la UTM?', a: 'Una vez al mes. A diferencia de la UF, el valor de la UTM es el mismo durante todo el mes y cambia al mes siguiente. Por eso al elegir una fecha verás el valor vigente de ese mes.' },
+  { q: '¿Para qué se usa la UTM?', a: 'Sobre todo para temas tributarios: el monto de las multas del SII, los tramos del impuesto, ciertos topes y sanciones. Si te llegó una multa o un cobro expresado en UTM, aquí ves cuánto es en pesos.' },
+  { q: '¿De dónde sale el valor?', a: 'Del valor oficial publicado por el Banco Central de Chile, en línea, así que el resultado siempre usa la UTM vigente para la fecha seleccionada.' },
+];
+
+const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
+const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication', name: 'Calculadora UTM a Pesos', applicationCategory: 'FinanceApplication', operatingSystem: 'Web', inLanguage: 'es-CL', url: 'https://tomcontable.cl/calculadora-utm', offers: { '@type': 'Offer', price: '0', priceCurrency: 'CLP' }, publisher: { '@type': 'Organization', name: 'TomContable' } };
+---
+<Base {...seo} schema={[appSchema, faqSchema]}>
+  <CalculadoraIndicador
+    codigo="utm"
+    unidadLabel="UTM"
+    eyebrow="Herramienta gratis"
+    h1="Calculadora UTM a pesos"
+    lead="Convierte de UTM a pesos y de pesos a UTM con el valor de este mes o del mes que elijas, según el valor oficial."
+    intro={[
+      'Escribe un monto en UTM y verás cuántos pesos son, o al revés. La UTM cambia una vez al mes, así que al elegir una fecha tomamos el valor vigente de ese mes. Puedes moverte con las flechas o abrir el calendario.',
+      'La UTM se usa sobre todo en lo tributario: multas del SII, intereses, tramos de impuesto y varios topes. Si te llegó un cobro en UTM, aquí ves de inmediato cuánto significa en pesos.',
+    ]}
+    faqs={faqs}
+    ctaTitulo="¿Te llegó una multa o un cobro del SII en UTM y no sabes qué hacer?"
+    ctaTexto="Revisamos tu caso y te explicamos las opciones en simple. Cuéntanos por WhatsApp, sin compromiso."
+    ctaMensaje="Hola vengo desde la calculadora UTM"
+  />
+</Base>
