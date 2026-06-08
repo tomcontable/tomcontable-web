@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+
+const seo = {
+  title: 'Suscripción confirmada · TomContable',
+  description: 'Tu correo quedó confirmado. En un momento te llega el acceso a los recursos.',
+  noindex: true,
+};
+---
+<Base {...seo}>
+
+  <section class="ok">
+    <div class="wrap">
+      <span class="ico" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+      </span>
+      <h1>¡Listo! Confirmaste tu correo.</h1>
+      <p class="lead">En un momento te llega un email con el acceso a los recursos. Si no lo ves en unos minutos, revisa la carpeta de spam o promociones y márcalo como correo deseado para no perderte los próximos.</p>
+
+      <div class="acciones">
+        <a class="btn btn-amber" href="/recursos">Ver todos los recursos</a>
+        <a class="btn btn-ghost" href="/">Ir al inicio</a>
+      </div>
+
+      <p class="extra">¿Tienes una duda con tu empresa? <a href="https://api.whatsapp.com/send/?phone=56964933110&text=Hola%20vengo%20desde%20la%20web" target="_blank" rel="noopener">Escríbenos por WhatsApp</a> o sígueme en <a href="https://www.instagram.com/tomcontable" target="_blank" rel="noopener">Instagram</a>.</p>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  .ok{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:90px 0 96px;text-align:center}
+  .ok .wrap{max-width:620px}
+  .ico{display:inline-flex;align-items:center;justify-content:center;width:74px;height:74px;border-radius:50%;background:var(--amarillo);margin-bottom:26px}
+  .ico svg{width:38px;height:38px;fill:none;stroke:var(--azul-prof);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+  .ok h1{font-size:34px;font-weight:800;letter-spacing:-.5px}
+  .ok .lead{font-size:18px;color:#444a63;margin:18px auto 0;max-width:52ch;line-height:1.6}
+  .acciones{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:34px 0 0}
+  .btn-ghost{background:#fff;border:1px solid var(--linea);color:var(--azul)}
+  .btn-ghost:hover{border-color:#c9cfe2}
+  .extra{margin-top:34px;font-size:15px;color:var(--gris)}
+  .extra a{color:var(--azul);font-weight:600}
+  @media(max-width:640px){ .ok{padding:64px 0 70px} .ok h1{font-size:27px} }
+</style>
