@@ -163,11 +163,11 @@ const servicios = [
   <section class="ig">
     <div class="wrap ig-inner">
       <div>
-        <p class="ig-eyebrow">Instagram</p>
+        <p class="ig-eyebrow"><svg class="ig-glifo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.25" fill="currentColor" stroke="none"/></svg>Instagram</p>
         <h2>Explico impuestos en simple a más de 96 mil personas.</h2>
         <p>Si quieres entender de tributación sin tecnicismos, ahí publico seguido.</p>
       </div>
-      <a class="btn btn-amber" href="https://www.instagram.com/tomcontable" target="_blank" rel="noopener">Seguir en Instagram</a>
+      <a class="btn btn-amber ig-btn" href="https://www.instagram.com/tomcontable" target="_blank" rel="noopener"><svg class="ig-glifo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.25" fill="currentColor" stroke="none"/></svg>Seguir en Instagram</a>
     </div>
   </section>
 
@@ -286,7 +286,9 @@ const servicios = [
 
   .ig{background:var(--azul);color:#fff;padding:46px 0}
   .ig-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
-  .ig-eyebrow{font-family:'Montserrat';font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--amarillo);margin-bottom:8px}
+  .ig-eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:'Montserrat';font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--amarillo);margin-bottom:8px}
+  .ig-glifo{width:18px;height:18px;flex-shrink:0}
+  .ig-btn{display:inline-flex;align-items:center;gap:9px}
   .ig h2{color:#fff;font-size:26px;font-weight:800;max-width:22ch}
   .ig p{color:#cfd6ea;font-size:16px;margin-top:8px}
   .cierre{background:linear-gradient(150deg,var(--azul),var(--azul-prof));color:#fff;text-align:center;padding:74px 24px}
