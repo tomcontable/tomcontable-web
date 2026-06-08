@@ -1,0 +1,256 @@
+---
+import Base from '../layouts/Base.astro';
+import BotonWhatsApp from '../components/BotonWhatsApp.astro';
+
+const seo = {
+  title: 'Calculadora UF a Pesos hoy | Valor UF actualizado · TomContable',
+  description: 'Convierte UF a pesos y pesos a UF con el valor de la UF de hoy, actualizado desde el Banco Central. Calculadora gratis y simple, hecha por TomContable.',
+  canonical: '/calculadora-uf',
+};
+
+const faqs = [
+  {
+    q: '¿Qué es la UF?',
+    a: 'La Unidad de Fomento (UF) es una unidad de cuenta reajustable según la inflación. Su valor en pesos cambia todos los días. Se usa en Chile para créditos, arriendos, contratos y muchos montos tributarios y previsionales.',
+  },
+  {
+    q: '¿Cada cuánto cambia el valor de la UF?',
+    a: 'Todos los días. El Banco Central de Chile publica el valor diario, que se reajusta a partir de la variación del IPC del mes anterior. Esta calculadora toma siempre el valor del día.',
+  },
+  {
+    q: '¿De dónde sale el valor que usa esta calculadora?',
+    a: 'Del valor oficial publicado por el Banco Central de Chile. Se actualiza automáticamente cada día, así que el resultado siempre usa la UF vigente.',
+  },
+  {
+    q: '¿Para qué sirve convertir UF a pesos?',
+    a: 'Para saber cuánto pagas o cobras de verdad cuando un monto está expresado en UF: un arriendo, un crédito, un plan de salud, un tope tributario o el precio de un servicio. Te permite tomar decisiones con el número real en pesos.',
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((it) => ({
+    '@type': 'Question',
+    name: it.q,
+    acceptedAnswer: { '@type': 'Answer', text: it.a },
+  })),
+};
+
+const appSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Calculadora UF a Pesos',
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: 'Web',
+  inLanguage: 'es-CL',
+  url: 'https://tomcontable.cl/calculadora-uf',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'CLP' },
+  publisher: { '@type': 'Organization', name: 'TomContable' },
+};
+---
+<Base {...seo} schema={[appSchema, faqSchema]}>
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Herramienta gratis</p>
+      <h1>Calculadora UF a pesos</h1>
+      <p class="lead">Convierte de UF a pesos y de pesos a UF al instante, con el valor de la UF de hoy actualizado desde el Banco Central.</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap calc-wrap">
+
+      <div class="valor-hoy" id="valor-hoy">
+        <span class="vh-label">Valor de la UF hoy</span>
+        <span class="vh-monto" id="uf-hoy">Cargando…</span>
+        <span class="vh-fecha" id="uf-fecha"></span>
+      </div>
+
+      <div class="calc">
+        <div class="campo">
+          <label for="in-pesos">Pesos (CLP)</label>
+          <div class="input-wrap">
+            <span class="prefijo">$</span>
+            <input id="in-pesos" inputmode="numeric" autocomplete="off" placeholder="0" />
+          </div>
+        </div>
+
+        <div class="swap" aria-hidden="true">⇅</div>
+
+        <div class="campo">
+          <label for="in-uf">UF</label>
+          <div class="input-wrap">
+            <span class="prefijo">UF</span>
+            <input id="in-uf" inputmode="decimal" autocomplete="off" placeholder="0,00" />
+          </div>
+        </div>
+      </div>
+
+      <p class="calc-nota" id="calc-nota">Escribe un monto en cualquiera de los dos campos y se convierte solo.</p>
+
+      <div class="indicadores" id="indicadores"></div>
+    </div>
+  </section>
+
+  <section class="sec sec-texto">
+    <div class="wrap angosto">
+      <h2>Cómo usar la calculadora</h2>
+      <p>Escribe un monto en pesos y verás cuántas UF son. O escribe un valor en UF y verás a cuántos pesos equivale hoy. El cálculo usa el valor oficial de la UF del día, que cambia a diario según la inflación, así que el resultado siempre está al día.</p>
+      <p>La UF aparece en muchas partes de tu vida y de tu empresa: arriendos, créditos, planes de salud, multas, topes imponibles y varios montos tributarios. Tener claro el equivalente en pesos te ayuda a decidir con el número real sobre la mesa.</p>
+
+      <h2 id="faq">Preguntas frecuentes</h2>
+      <div class="faq">
+        {faqs.map((it) => (
+          <details>
+            <summary>{it.q}<span class="plus">+</span></summary>
+            <div class="ans">{it.a}</div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="cierre">
+    <div class="wrap">
+      <h2>¿Tus impuestos o tu contabilidad te tienen en UF y no sabes por dónde partir?</h2>
+      <p>Eso es lo nuestro. Cuéntanos de tu empresa por WhatsApp y te orientamos en simple, sin compromiso.</p>
+      <div class="cta-row center"><BotonWhatsApp texto="Hablar por WhatsApp" mensaje="Hola vengo desde la calculadora UF" /></div>
+    </div>
+  </section>
+
+</Base>
+
+<script>
+  const FALLBACK_UF = 40746.28; // respaldo si la API no responde (se reemplaza por el valor en vivo)
+  const fmtCLP0 = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
+  const fmtNum = (d) => new Intl.NumberFormat('es-CL', { minimumFractionDigits: 2, maximumFractionDigits: d });
+  const fmtUF = fmtNum(4);
+
+  let ufValor = FALLBACK_UF;
+
+  const $ = (id) => document.getElementById(id);
+  const inPesos = $('in-pesos');
+  const inUF = $('in-uf');
+
+  // Convierte texto chileno ("1.234,56") a número
+  const parseCL = (txt) => {
+    if (!txt) return NaN;
+    const limpio = String(txt).replace(/\./g, '').replace(/,/g, '.').replace(/[^\d.]/g, '');
+    return parseFloat(limpio);
+  };
+
+  const setFecha = (iso) => {
+    try {
+      const d = new Date(iso);
+      const f = d.toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' });
+      $('uf-fecha').textContent = 'Actualizado al ' + f;
+    } catch (e) { /* noop */ }
+  };
+
+  const pintarValorHoy = () => {
+    $('uf-hoy').textContent = fmtCLP0.format(ufValor);
+  };
+
+  let bloqueo = false;
+  inPesos.addEventListener('input', () => {
+    if (bloqueo) return;
+    bloqueo = true;
+    const pesos = parseCL(inPesos.value);
+    inUF.value = isFinite(pesos) && pesos > 0 ? fmtUF.format(pesos / ufValor) : '';
+    bloqueo = false;
+  });
+  inUF.addEventListener('input', () => {
+    if (bloqueo) return;
+    bloqueo = true;
+    const uf = parseCL(inUF.value);
+    inPesos.value = isFinite(uf) && uf > 0 ? fmtCLP0.format(uf * ufValor).replace('$', '').trim() : '';
+    bloqueo = false;
+  });
+
+  const recalcular = () => {
+    // Si ya hay un monto escrito, recalcula con el valor en vivo
+    if (inPesos.value) inPesos.dispatchEvent(new Event('input'));
+    else if (inUF.value) inUF.dispatchEvent(new Event('input'));
+  };
+
+  // Trae UF, UTM y dólar del día desde el Banco Central (vía mindicador.cl)
+  fetch('https://mindicador.cl/api')
+    .then((r) => r.json())
+    .then((data) => {
+      if (data && data.uf && data.uf.valor) {
+        ufValor = data.uf.valor;
+        setFecha(data.uf.fecha);
+      }
+      pintarValorHoy();
+      recalcular();
+
+      const ind = $('indicadores');
+      const items = [
+        data.uf && ['UF', fmtCLP0.format(data.uf.valor)],
+        data.utm && ['UTM', fmtCLP0.format(data.utm.valor)],
+        data.dolar && ['Dólar', fmtCLP0.format(data.dolar.valor)],
+      ].filter(Boolean);
+      ind.innerHTML = items.map((i) => `<div class="ind"><span class="ind-l">${i[0]} hoy</span><span class="ind-v">${i[1]}</span></div>`).join('');
+    })
+    .catch(() => {
+      pintarValorHoy();
+      $('uf-fecha').textContent = 'Valor de referencia';
+      recalcular();
+    });
+</script>
+
+<style>
+  .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:60px 0 50px}
+  .hero h1{font-size:38px;font-weight:800;letter-spacing:-.5px}
+  .hero .lead{font-size:18px;color:#444a63;margin:16px 0 0;max-width:60ch}
+
+  .sec{padding:46px 0}
+  .calc-wrap{max-width:760px}
+
+  .valor-hoy{background:linear-gradient(150deg,var(--azul),var(--azul-prof));color:#fff;border-radius:18px;padding:26px 30px;text-align:center;margin-bottom:26px}
+  .vh-label{display:block;font-family:'Montserrat';font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#cfd6ea}
+  .vh-monto{display:block;font-family:'Montserrat';font-weight:800;font-size:40px;line-height:1.1;margin:6px 0 4px;color:var(--amarillo)}
+  .vh-fecha{display:block;font-size:13.5px;color:#cfd6ea}
+
+  .calc{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:18px;background:#fff;border:1px solid var(--linea);border-radius:18px;padding:28px}
+  .campo label{display:block;font-family:'Montserrat';font-weight:600;font-size:14px;color:var(--azul);margin-bottom:8px}
+  .input-wrap{display:flex;align-items:center;border:1px solid var(--linea);border-radius:11px;padding:0 14px;transition:.15s}
+  .input-wrap:focus-within{border-color:var(--azul)}
+  .prefijo{font-family:'Montserrat';font-weight:700;color:var(--gris);font-size:15px;margin-right:8px}
+  .input-wrap input{border:none;outline:none;font-family:'Montserrat';font-weight:700;font-size:22px;color:var(--azul-prof);padding:13px 0;width:100%;background:transparent}
+  .swap{align-self:center;color:var(--amarillo);font-size:24px;font-weight:800;padding-bottom:10px}
+  .calc-nota{margin-top:16px;color:var(--gris);font-size:14.5px;text-align:center}
+
+  .indicadores{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+  .ind{background:#fff;border:1px solid var(--linea);border-radius:12px;padding:12px 20px;text-align:center;min-width:130px}
+  .ind-l{display:block;font-family:'Montserrat';font-weight:600;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
+  .ind-v{display:block;font-family:'Montserrat';font-weight:800;font-size:18px;color:var(--azul);margin-top:3px}
+
+  .sec-texto{padding-top:8px}
+  .angosto{max-width:760px}
+  .sec-texto h2{font-size:24px;font-weight:800;margin:30px 0 12px;letter-spacing:-.3px}
+  .sec-texto p{font-size:16px;color:#444a63;line-height:1.7;margin-bottom:14px}
+
+  .faq{margin-top:6px}
+  details{background:#fff;border:1px solid var(--linea);border-radius:14px;margin-bottom:12px;overflow:hidden}
+  summary{list-style:none;cursor:pointer;padding:18px 22px;font-family:'Montserrat';font-weight:600;font-size:16px;color:var(--azul);display:flex;justify-content:space-between;gap:14px}
+  summary::-webkit-details-marker{display:none}
+  .plus{font-size:22px;color:var(--azul);transition:.2s;flex-shrink:0}
+  details[open] .plus{transform:rotate(45deg)}
+  .ans{padding:0 22px 18px;color:#555;font-size:15.5px;line-height:1.6}
+
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap}
+  .cta-row.center{justify-content:center}
+  .cierre{background:linear-gradient(150deg,var(--azul),var(--azul-prof));color:#fff;text-align:center;padding:64px 24px}
+  .cierre h2{color:#fff;font-size:26px;font-weight:800;max-width:24ch;margin:0 auto}
+  .cierre p{color:#cfd6ea;font-size:17px;margin:14px auto 26px;max-width:54ch}
+
+  @media(max-width:640px){
+    .hero h1{font-size:30px}
+    .vh-monto{font-size:32px}
+    .calc{grid-template-columns:1fr;gap:10px}
+    .swap{transform:rotate(90deg);padding:4px 0}
+  }
+</style>
