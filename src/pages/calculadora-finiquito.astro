@@ -403,12 +403,38 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
     btn.textContent = btnTxt;
   });
 
-  // Tooltips de ayuda (?) : clic para fijar, hover para mostrar, se cierran al salir
+  // Tooltips de ayuda (?) : clic para fijar, hover para mostrar. Se posicionan con JS
+  // para que nunca se salgan de la pantalla (se ajustan a los bordes del viewport).
+  const hintPop = document.createElement('div');
+  hintPop.className = 'hint-pop';
+  document.body.appendChild(hintPop);
+  let hintPinned = null;
+  const showPop = (h) => {
+    hintPop.textContent = h.getAttribute('data-tip') || '';
+    hintPop.style.display = 'block';
+    const r = h.getBoundingClientRect();
+    const pw = hintPop.offsetWidth, ph = hintPop.offsetHeight;
+    let left = r.left + r.width / 2 - pw / 2;
+    left = Math.max(8, Math.min(left, window.innerWidth - pw - 8));
+    let top = r.top - ph - 9;
+    if (top < 8) top = r.bottom + 9; // si no hay espacio arriba, lo muestra abajo
+    hintPop.style.left = left + 'px';
+    hintPop.style.top = top + 'px';
+  };
+  const hidePop = () => { hintPop.style.display = 'none'; hintPinned = null; };
   document.querySelectorAll('.hint').forEach((h) => {
-    h.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); document.querySelectorAll('.hint.show').forEach((o) => { if (o !== h) o.classList.remove('show'); }); h.classList.toggle('show'); });
-    h.addEventListener('mouseleave', () => h.classList.remove('show'));
+    h.addEventListener('mouseenter', () => { if (!hintPinned) showPop(h); });
+    h.addEventListener('mouseleave', () => { if (!hintPinned) hidePop(); });
+    h.addEventListener('focus', () => showPop(h));
+    h.addEventListener('blur', () => { if (!hintPinned) hidePop(); });
+    h.addEventListener('click', (e) => {
+      e.preventDefault(); e.stopPropagation();
+      if (hintPinned === h) { hidePop(); } else { hintPinned = h; showPop(h); }
+    });
   });
-  document.addEventListener('click', (e) => { if (!e.target.closest('.hint')) document.querySelectorAll('.hint.show').forEach((o) => o.classList.remove('show')); });
+  document.addEventListener('click', (e) => { if (!e.target.closest('.hint')) hidePop(); });
+  window.addEventListener('scroll', () => { if (hintPinned) showPop(hintPinned); }, true);
+  window.addEventListener('resize', hidePop);
 
   calcular();
 </script>
@@ -441,9 +467,7 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
   .inp.ro{background:#f6f8fc}
   .inp.ro input{background:transparent;color:var(--gris)}
   .hint{position:relative;display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;background:var(--amarillo);color:var(--azul-prof);font-size:11px;font-weight:800;cursor:pointer;font-family:'Montserrat';vertical-align:middle;outline:none}
-  .hint::after{content:attr(data-tip);position:absolute;left:50%;bottom:155%;transform:translateX(-50%);width:230px;max-width:62vw;background:var(--azul-prof);color:#fff;font-family:'Inter',Arial,sans-serif;font-weight:500;font-size:12px;line-height:1.45;text-align:left;padding:9px 12px;border-radius:9px;box-shadow:0 12px 28px -8px rgba(0,0,0,.45);opacity:0;visibility:hidden;transition:opacity .15s, visibility .15s;z-index:20;pointer-events:none}
-  .hint:hover::after,.hint:focus::after{opacity:1;visibility:visible;transition-delay:.5s}
-  .hint.show::after{opacity:1;visibility:visible;transition-delay:0s}
+  .hint-pop{position:fixed;display:none;z-index:60;width:max-content;max-width:min(290px, calc(100vw - 16px));background:var(--azul-prof);color:#fff;font-family:'Inter',Arial,sans-serif;font-weight:500;font-size:12px;line-height:1.45;text-align:left;padding:9px 12px;border-radius:9px;box-shadow:0 12px 28px -8px rgba(0,0,0,.45);pointer-events:none}
 
   .result{position:sticky;top:92px;overflow:hidden;background:linear-gradient(160deg,#fff,#f7f9fe)}
   .wm{position:absolute;inset:0;pointer-events:none;z-index:2;opacity:.16;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='160'%3E%3Ctext x='6' y='92' transform='rotate(-22 150 88)' font-family='Arial, sans-serif' font-size='20' font-weight='700' fill='%2313235F'%3EEstimación no certificada%3C/text%3E%3C/svg%3E");background-repeat:repeat;background-size:280px 150px}
