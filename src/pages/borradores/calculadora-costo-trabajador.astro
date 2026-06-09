@@ -21,7 +21,7 @@ const seo = {
 
   <section class="sec">
     <div class="wrap calc-wrap">
-      <p class="aviso-top"><strong>BORRADOR: pendiente de validación.</strong> Los parámetros (topes, tasas y el aporte del empleador de la reforma previsional) deben confirmarse para 2026 antes de publicar. Ver "Parámetros usados" abajo.</p>
+      <p class="aviso-top"><strong>BORRADOR: pendiente de validación.</strong> Los indicadores (sueldo mínimo, topes, tasas AFP, AFC, SIS) se cargan automáticamente desde Previred. Falta validar la lógica completa y el aporte del empleador antes de dar de alta. Ver "Parámetros usados" abajo.</p>
 
       <div class="grid">
         <form class="panel form" id="cw-form" autocomplete="off">
@@ -32,8 +32,8 @@ const seo = {
             <label class="f"><span>Tipo de contrato</span><select id="tipo"><option value="indef">Indefinido</option><option value="plazo">Plazo fijo / por obra</option></select></label>
           </div>
           <div class="f2">
-            <label class="f"><span>Comisión AFP (%)</span><div class="inp"><input type="text" inputmode="decimal" id="comafp" placeholder="1,44" /><i>%</i></div></label>
-            <label class="f"><span>Salud (%)</span><div class="inp"><input type="text" inputmode="decimal" id="salud" placeholder="7" /><i>%</i></div></label>
+            <label class="f"><span>AFP</span><select id="afp"></select></label>
+            <label class="f"><span>Salud <em>(7% mínimo)</em></span><div class="inp"><input type="text" inputmode="decimal" id="salud" placeholder="7" /><i>%</i></div></label>
           </div>
           <div class="f2">
             <label class="f"><span>Colación <em>(no imponible)</em></span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="colacion" placeholder="0" /></div></label>
@@ -73,67 +73,72 @@ const seo = {
 </Base>
 
 <script>
-  // *** PARÁMETROS A VALIDAR POR TOM (vigentes 2026) ***
-  const P = {
-    topeImponibleUF: 87.8,    // tope AFP / salud (VALIDAR)
-    topeAFC_UF: 131.9,        // tope seguro de cesantía (VALIDAR)
-    afpTasa: 0.10,            // 10% obligatorio
-    afcTrabajador: 0.006,     // 0,6% (solo indefinido)
-    afcEmpleadorIndef: 0.024, // 2,4%
-    afcEmpleadorPlazo: 0.03,  // 3,0% plazo fijo/obra
-    sisEmpleador: 0.0188,     // SIS ~1,88% (VALIDAR)
-    mutual: 0.0090,           // mutual base 0,90% (VALIDAR; variable por empresa)
-    reformaEmpleador: 0.01,   // aporte empleador reforma previsional 2026 (VALIDAR: % real)
-    sueldoMinimo: 539000,     // (VALIDAR)
-    // impuesto único 2ª categoría mensual, tramos en UTM: [hasta, factor, rebaja UTM]
-    tramos: [[13.5,0,0],[30,0.04,0.54],[50,0.08,1.74],[70,0.135,4.49],[90,0.23,11.14],[120,0.304,17.8],[310,0.35,23.32],[Infinity,0.40,38.82]],
+  // Indicadores de respaldo (Previred mayo 2026). Si la función /api/indicadores-previred
+  // responde, se reemplazan por los del mes en curso. Mutual y el impuesto único no vienen
+  // de Previred: el primero es referencial (varía por empresa) y el segundo es estructura legal.
+  const FALLBACK = {
+    fuente: 'respaldo', periodo: 'mayo 2026', sueldoMinimo: 539000,
+    topeAFP_UF: 90, topeAFC_UF: 135.2, sis: 0.0162,
+    afcEmpleadorIndef: 0.024, afcTrabajadorIndef: 0.006, afcEmpleadorPlazo: 0.030, cargoEmpleadorAFP: 0.001,
+    afps: { Capital: 0.1144, Cuprum: 0.1144, Habitat: 0.1127, PlanVital: 0.1116, ProVida: 0.1145, Modelo: 0.1058, Uno: 0.1046 },
   };
-  let UF = 40746.28, UTM = 71506;
+  const MUTUAL = 0.0090; // cotización mutual básica general (referencial, varía por empresa)
+  // Impuesto único 2ª categoría mensual, tramos en UTM: [hasta, factor, rebaja UTM]
+  const TRAMOS = [[13.5,0,0],[30,0.04,0.54],[50,0.08,1.74],[70,0.135,4.49],[90,0.23,11.14],[120,0.304,17.8],[310,0.35,23.32],[Infinity,0.40,38.82]];
+  let D = FALLBACK;
+  let UF = 40763, UTM = 71506;
 
   const fmt0 = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
   const $ = (id) => document.getElementById(id);
   const num = (id) => { const v = $(id).value; if (!v) return 0; const n = parseFloat(String(v).replace(/\./g,'').replace(/,/g,'.').replace(/[^\d.]/g,'')); return isFinite(n) ? n : 0; };
 
-  const rowsHtml = (arr) => arr.map((f) => `<div class="rr"><span class="rr-c">${f[0]}</span><span class="rr-v${f[2] ? ' neg' : ''}">${(f[2] ? '−' : '') + fmt0.format(Math.round(f[1]))}</span></div>`).join('');
+  const rowsHtml = (arr) => arr.map((f) => `<div class="rr"><span class="rr-c">${f[0]}</span><span class="rr-v${f[2] ? ' neg' : ''}">${(f[2] ? '-' : '') + fmt0.format(Math.round(f[1]))}</span></div>`).join('');
+
+  const llenarAFPs = () => {
+    const sel = $('afp'); const prev = sel.value;
+    sel.innerHTML = Object.keys(D.afps).map((k) => `<option value="${k}">${k} (${(D.afps[k]*100).toFixed(2).replace('.', ',')}%)</option>`).join('');
+    if (prev && D.afps[prev]) sel.value = prev; else if (D.afps.Modelo) sel.value = 'Modelo';
+  };
 
   const calcular = () => {
     const base = num('base');
     if (base <= 0) { $('r-liquido').textContent = '$0'; $('r-costo').textContent = '$0'; $('r-trab').innerHTML = '<p class="rr-empty">Ingresa el sueldo base.</p>'; $('r-emp').innerHTML = ''; $('r-meta').textContent = ''; return; }
     const indef = $('tipo').value === 'indef';
-    const comAFP = (num('comafp') || 1.44) / 100;
+    const afpKey = $('afp').value;
+    const afpTasa = D.afps[afpKey] || 0.1144; // cargo del trabajador (10% + comisión)
     const saludPct = Math.max(num('salud') || 7, 7) / 100;
     const colacion = num('colacion'), moviliz = num('moviliz');
 
-    const topeGrat = (4.75 * P.sueldoMinimo) / 12;
+    const topeGrat = (4.75 * D.sueldoMinimo) / 12;
     const grat = $('grat').value === 'si' ? Math.min(base * 0.25, topeGrat) : 0;
     const bruto = base + grat;
 
-    const imp = Math.min(bruto, P.topeImponibleUF * UF);
-    const impAFC = Math.min(bruto, P.topeAFC_UF * UF);
+    const imp = Math.min(bruto, D.topeAFP_UF * UF);
+    const impAFC = Math.min(bruto, D.topeAFC_UF * UF);
 
-    const afp = imp * (P.afpTasa + comAFP);
+    const afp = imp * afpTasa;
     const salud = imp * saludPct;
-    const afcTrab = indef ? impAFC * P.afcTrabajador : 0;
+    const afcTrab = indef ? impAFC * D.afcTrabajadorIndef : 0;
     const baseTrib = bruto - (afp + salud + afcTrab);
 
     const tUTM = baseTrib / UTM;
     let factor = 0, rebaja = 0;
-    for (const [hasta, f, r] of P.tramos) { if (tUTM <= hasta) { factor = f; rebaja = r; break; } }
+    for (const [hasta, f, r] of TRAMOS) { if (tUTM <= hasta) { factor = f; rebaja = r; break; } }
     const impuesto = Math.max(0, tUTM * factor - rebaja) * UTM;
 
     const liquido = base + grat + colacion + moviliz - afp - salud - afcTrab - impuesto;
 
-    const afcEmp = indef ? impAFC * P.afcEmpleadorIndef : impAFC * P.afcEmpleadorPlazo;
-    const sis = imp * P.sisEmpleador;
-    const mut = imp * P.mutual;
-    const reforma = imp * P.reformaEmpleador;
+    const afcEmp = indef ? impAFC * D.afcEmpleadorIndef : impAFC * D.afcEmpleadorPlazo;
+    const sis = imp * D.sis;
+    const mut = imp * MUTUAL;
+    const reforma = imp * D.cargoEmpleadorAFP;
     const costo = base + grat + colacion + moviliz + afcEmp + sis + mut + reforma;
 
     $('r-liquido').textContent = fmt0.format(Math.round(liquido));
     $('r-costo').textContent = fmt0.format(Math.round(costo));
     $('r-trab').innerHTML = rowsHtml([
       ['Sueldo bruto imponible', bruto, false],
-      ['AFP (10% + comisión)', afp, true],
+      ['AFP (' + afpKey + ')', afp, true],
       ['Salud', salud, true],
       ['Seguro de cesantía', afcTrab, true],
       ['Impuesto único', impuesto, true],
@@ -141,29 +146,34 @@ const seo = {
     $('r-emp').innerHTML = rowsHtml([
       ['Seguro de cesantía (empleador)', afcEmp, false],
       ['SIS', sis, false],
-      ['Mutual', mut, false],
-      ['Aporte reforma previsional', reforma, false],
+      ['Mutual (referencial)', mut, false],
+      ['Aporte empleador (cargo AFP)', reforma, false],
     ]);
-    $('r-meta').textContent = `UF: ${fmt0.format(UF)} · UTM: ${fmt0.format(UTM)}. Gratificación: ${$('grat').value === 'si' ? fmt0.format(Math.round(grat)) : 'no'}.`;
+    const fuenteTxt = D.fuente === 'previred' ? 'Indicadores Previred (' + D.periodo + ')' : 'Valores de respaldo, verificar';
+    $('r-meta').textContent = `${fuenteTxt} · UF ${fmt0.format(Math.round(UF))} · UTM ${fmt0.format(Math.round(UTM))}. Gratificación: ${$('grat').value === 'si' ? fmt0.format(Math.round(grat)) : 'no'}.`;
   };
 
+  const pct = (x) => (x * 100).toFixed(2).replace('.', ',');
   const pintarParams = () => {
+    const origen = D.fuente === 'previred' ? `cargados automáticamente desde <strong>Previred (${D.periodo})</strong>` : `<strong>valores de respaldo</strong> (Previred no respondió)`;
     $('params-body').innerHTML = `<ul>
-      <li>Tope imponible AFP/salud: <strong>${P.topeImponibleUF} UF</strong> · Tope cesantía: <strong>${P.topeAFC_UF} UF</strong></li>
-      <li>AFP: 10% + comisión (editable) · Salud: 7% mínimo (editable)</li>
-      <li>Cesantía trabajador (indefinido): 0,6% · Cesantía empleador: 2,4% indefinido / 3% plazo fijo</li>
-      <li>SIS empleador: 1,88% · Mutual: 0,90% (variable) · Reforma previsional empleador: ${(P.reformaEmpleador*100).toFixed(2)}% <strong>(confirmar % 2026)</strong></li>
-      <li>Sueldo mínimo (tope gratificación): ${fmt0.format(P.sueldoMinimo)}</li>
-      <li>Impuesto único: tramos en UTM con rebaja (estructura estándar)</li>
-    </ul><p class="params-nota">Cambia estos valores en el bloque <code>P</code> del código una vez confirmados. No publicar (quitar noindex y enlazar al menú) hasta validar.</p>`;
+      <li>Origen de los datos: ${origen}.</li>
+      <li>Sueldo mínimo: <strong>${fmt0.format(D.sueldoMinimo)}</strong> · Tope imponible AFP/salud: <strong>${D.topeAFP_UF} UF</strong> · Tope cesantía: <strong>${D.topeAFC_UF} UF</strong></li>
+      <li>AFP (cargo trabajador, incluye 10% + comisión): ${Object.keys(D.afps).map((k) => `${k} ${pct(D.afps[k])}%`).join(' · ')}</li>
+      <li>Salud: 7% mínimo (editable) · Cesantía trabajador indefinido: ${pct(D.afcTrabajadorIndef)}% · Cesantía empleador: ${pct(D.afcEmpleadorIndef)}% indefinido / ${pct(D.afcEmpleadorPlazo)}% plazo fijo</li>
+      <li>SIS empleador: ${pct(D.sis)}% · Cargo empleador AFP: ${pct(D.cargoEmpleadorAFP)}% · Mutual: ${pct(MUTUAL)}% (referencial, varía por empresa)</li>
+      <li>Impuesto único: tramos en UTM con rebaja (estructura legal estándar)</li>
+    </ul><p class="params-nota">Los indicadores se actualizan solos desde Previred cada mes. Falta validar la lógica completa y el aporte del empleador antes de dar de alta (quitar noindex y enlazar al menú).</p>`;
   };
 
   $('cw-form').addEventListener('input', calcular);
   $('cw-form').addEventListener('change', calcular);
+  llenarAFPs();
   Promise.all([
     fetch('https://mindicador.cl/api/uf').then((r) => r.json()).then((d) => { if (d.serie && d.serie[0]) UF = d.serie[0].valor; }).catch(() => {}),
     fetch('https://mindicador.cl/api/utm').then((r) => r.json()).then((d) => { if (d.serie && d.serie[0]) UTM = d.serie[0].valor; }).catch(() => {}),
-  ]).then(() => { calcular(); pintarParams(); });
+    fetch('/api/indicadores-previred').then((r) => r.json()).then((d) => { if (d && d.afps && Object.keys(d.afps).length) D = d; }).catch(() => {}),
+  ]).then(() => { llenarAFPs(); calcular(); pintarParams(); });
   calcular(); pintarParams();
 </script>
 
