@@ -20,7 +20,8 @@ const RESPALDO = {
   afcEmpleadorIndef: 0.024,
   afcTrabajadorIndef: 0.006,
   afcEmpleadorPlazo: 0.030,
-  cargoEmpleadorAFP: 0.001, // "Cargo del Empleador" en la tabla AFP (0,1%)
+  cargoEmpleadorAFP: 0.001, // "Cargo del Empleador" en la tabla AFP / Capitalización individual (0,1%)
+  expectativaVida: 0.009,   // Seguro Social · Expectativa de Vida (0,9%), cargo empleador
   // Cargo del trabajador por AFP (incluye 10% obligatorio + comisión)
   afps: { Capital: 0.1144, Cuprum: 0.1144, Habitat: 0.1127, PlanVital: 0.1116, ProVida: 0.1145, Modelo: 0.1058, Uno: 0.1046 },
 };
@@ -63,6 +64,9 @@ export async function onRequestGet() {
 
     const mSis = t.match(/Tasa SIS\s*([\d.,]+)\s*%/i);
     out.sis = (mSis && pct(mSis[1])) || RESPALDO.sis;
+
+    const mEV = t.match(/Expectativa de Vida\s*([\d.,]+)\s*%/i);
+    out.expectativaVida = (mEV && pct(mEV[1])) || RESPALDO.expectativaVida;
 
     const mIndef = t.match(/Plazo Indefinido\s*([\d.,]+)\s*%\s*R\.?\s*I\.?\s*([\d.,]+)\s*%/i);
     out.afcEmpleadorIndef = (mIndef && pct(mIndef[1])) || RESPALDO.afcEmpleadorIndef;

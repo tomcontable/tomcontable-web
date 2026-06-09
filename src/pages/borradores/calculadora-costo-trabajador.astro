@@ -8,6 +8,9 @@ const seo = {
   canonical: '/borradores/calculadora-costo-trabajador',
   noindex: true,
 };
+
+const jornadas = Array.from({ length: 41 }, (_, i) => 42 - i); // 42 .. 2
+const diasMes = Array.from({ length: 30 }, (_, i) => 30 - i);  // 30 .. 1 (tope legal 30)
 ---
 <Base {...seo}>
 
@@ -21,7 +24,7 @@ const seo = {
 
   <section class="sec">
     <div class="wrap calc-wrap">
-      <p class="aviso-top"><strong>BORRADOR: pendiente de validación.</strong> Los indicadores (sueldo mínimo, topes, tasas AFP, AFC, SIS) se cargan automáticamente desde Previred. Falta validar la lógica completa (horas extra, Isapre, impuesto) antes de dar de alta. Ver "Parámetros usados" abajo.</p>
+      <p class="aviso-top"><strong>BORRADOR: pendiente de validación.</strong> Los indicadores (sueldo mínimo, topes, tasas AFP, AFC, SIS, expectativa de vida) se cargan automáticamente desde Previred. Falta validar la lógica completa antes de dar de alta. Ver "Parámetros usados" abajo.</p>
 
       <div class="grid">
         <form class="panel form" id="cw-form" autocomplete="off">
@@ -47,20 +50,24 @@ const seo = {
           <label class="f" id="isapre-wrap" hidden><span>Valor del plan de Isapre <em>(en UF, mensual)</em></span><div class="inp"><input type="text" inputmode="decimal" id="isapre-uf" placeholder="0" /><i>UF</i></div></label>
 
           <div class="f2">
-            <label class="f"><span>Jornada</span><select id="jornada-tipo"><option value="completa">Completa (42 hrs)</option><option value="parcial">Parcial</option></select></label>
-            <label class="f" id="jornada-horas-wrap" hidden><span>Horas semanales <em>(jornada parcial)</em></span><input type="text" inputmode="decimal" id="jornada-horas" placeholder="30" /></label>
+            <label class="f"><span>Jornada semanal</span><select id="jornada">{jornadas.map((h) => (<option value={h} selected={h === 42}>{h} hrs</option>))}</select></label>
+            <label class="f"><span>Días trabajados <em>(en el mes)</em></span><select id="dias">{diasMes.map((d) => (<option value={d} selected={d === 30}>{d}</option>))}</select></label>
           </div>
 
           <details class="more" id="more">
             <summary>Agregar más detalle <span class="plus">+</span></summary>
             <div class="more-body">
               <div class="f2">
-                <label class="f"><span>Bonos <em>(imponible)</em></span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="bonos" placeholder="0" /></div></label>
-                <label class="f"><span>Otras asignaciones <em>(no imponible)</em></span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="asig" placeholder="0" /></div></label>
+                <label class="f"><span>Bonos</span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="bonos" placeholder="0" /></div></label>
+                <label class="f"><span>El bono es</span><select id="bono-tipo"><option value="bruto">Bruto (imponible)</option><option value="liquido">Líquido</option></select></label>
               </div>
               <div class="f2">
+                <label class="f"><span>Otras asignaciones <em>(no imponible)</em></span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="asig" placeholder="0" /></div></label>
                 <label class="f"><span>Colación <em>(no imponible)</em></span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="colacion" placeholder="0" /></div></label>
+              </div>
+              <div class="f2">
                 <label class="f"><span>Movilización <em>(no imponible)</em></span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="moviliz" placeholder="0" /></div></label>
+                <label class="f"><span>Tasa de mutual <em>(%)</em></span><div class="inp"><input type="text" inputmode="decimal" id="mutual" placeholder="0,93" /><i>%</i></div></label>
               </div>
               <div class="f2">
                 <label class="f"><span>Horas extra <em>(N°)</em></span><input type="text" inputmode="decimal" id="hextra" placeholder="0" /></label>
@@ -107,14 +114,15 @@ const seo = {
 
 <script>
   // Indicadores de respaldo (Previred mayo 2026). Si /api/indicadores-previred responde,
-  // se reemplazan por los del mes. Mutual y el impuesto único no vienen de Previred.
+  // se reemplazan por los del mes. La mutual y el impuesto único no vienen de Previred.
   const FALLBACK = {
     fuente: 'respaldo', periodo: 'mayo 2026', sueldoMinimo: 539000,
     topeAFP_UF: 90, topeAFC_UF: 135.2, sis: 0.0162,
-    afcEmpleadorIndef: 0.024, afcTrabajadorIndef: 0.006, afcEmpleadorPlazo: 0.030, cargoEmpleadorAFP: 0.001,
+    afcEmpleadorIndef: 0.024, afcTrabajadorIndef: 0.006, afcEmpleadorPlazo: 0.030,
+    cargoEmpleadorAFP: 0.001, expectativaVida: 0.009,
     afps: { Capital: 0.1144, Cuprum: 0.1144, Habitat: 0.1127, PlanVital: 0.1116, ProVida: 0.1145, Modelo: 0.1058, Uno: 0.1046 },
   };
-  const MUTUAL = 0.0090; // cotización mutual básica general (referencial, varía por empresa)
+  const JORNADA_COMPLETA = 42; // jornada ordinaria legal vigente (Ley 40 horas, 42 hrs desde 2026)
   // Impuesto único 2ª categoría mensual, tramos en UTM: [hasta, factor, rebaja UTM]
   const TRAMOS = [[13.5,0,0],[30,0.04,0.54],[50,0.08,1.74],[70,0.135,4.49],[90,0.23,11.14],[120,0.304,17.8],[310,0.35,23.32],[Infinity,0.40,38.82]];
   let D = FALLBACK;
@@ -124,6 +132,7 @@ const seo = {
   const $ = (id) => document.getElementById(id);
   const num = (id) => { const v = $(id).value; if (!v) return 0; const n = parseFloat(String(v).replace(/\./g,'').replace(/,/g,'.').replace(/[^\d.]/g,'')); return isFinite(n) ? n : 0; };
   const dec = (id) => { const v = $(id).value; if (!v) return 0; const n = parseFloat(String(v).replace(/[^\d.,]/g,'').replace(',','.')); return isFinite(n) ? n : 0; };
+  const pct = (x) => (x * 100).toFixed(2).replace('.', ',');
 
   const rowsHtml = (arr) => arr.filter((f) => f).map((f) => `<div class="rr"><span class="rr-c">${f[0]}</span><span class="rr-v${f[2] ? ' neg' : ''}">${(f[2] ? '-' : '') + fmt0.format(Math.round(f[1]))}</span></div>`).join('');
 
@@ -133,20 +142,21 @@ const seo = {
     if (prev && D.afps[prev]) sel.value = prev; else if (D.afps.Modelo) sel.value = 'Modelo';
   };
 
-  // Calcula una liquidación completa a partir del sueldo base.
+  // Liquidación completa a partir del sueldo base mensual contractual.
   const liquidar = (base, P) => {
-    const grat = P.gratOn ? Math.min(base * 0.25, P.topeGrat) : 0;
-    const valHoraExtra = base * 0.35 / P.jornada;      // hora con recargo 50%
-    const valHoraOrd = base * 7 / (30 * P.jornada);    // hora ordinaria (para atrasos)
-    const hExtra = P.hExtraN * valHoraExtra;           // imponible
-    const atraso = P.hAtrasoN * valHoraOrd;            // descuento
+    const baseEarned = base * (P.dias / 30);                 // proporcional a los días trabajados
+    const grat = P.gratOn ? Math.min(baseEarned * 0.25, P.topeGrat) : 0;
+    const valHoraExtra = base * 0.35 / P.jornada;            // hora con recargo 50% (sobre sueldo mensual)
+    const valHoraOrd = base * 7 / (30 * P.jornada);          // hora ordinaria (para atrasos)
+    const hExtra = P.hExtraN * valHoraExtra;                 // imponible
+    const atraso = P.hAtrasoN * valHoraOrd;                  // rebaja la base imponible
 
-    const imponible = base + grat + P.bonos + hExtra;
+    const imponible = Math.max(0, baseEarned + grat + P.bonos + hExtra - atraso);
     const impCap = Math.min(imponible, D.topeAFP_UF * UF);
     const impAFC = Math.min(imponible, D.topeAFC_UF * UF);
 
     const afp = impCap * P.afpTasa;
-    const saludLegal = impCap * 0.07;                                   // 7% obligatorio
+    const saludLegal = impCap * 0.07;                                            // 7% obligatorio
     const adicIsapre = P.isapre ? Math.max(0, P.isapreUF * UF - saludLegal) : 0; // diferencia sobre el 7%
     const afcTrab = P.indef ? impAFC * D.afcTrabajadorIndef : 0;
 
@@ -158,17 +168,18 @@ const seo = {
     const impuesto = Math.max(0, tUTM * factor - rebaja) * UTM;
 
     const noImp = P.colacion + P.moviliz + P.asig;
-    const liquido = imponible + noImp - afp - saludLegal - adicIsapre - afcTrab - impuesto - atraso - P.anticipos;
+    const liquido = imponible + noImp - afp - saludLegal - adicIsapre - afcTrab - impuesto - P.anticipos;
 
     const afcEmp = P.indef ? impAFC * D.afcEmpleadorIndef : impAFC * D.afcEmpleadorPlazo;
     const sis = impCap * D.sis;
-    const mut = impCap * MUTUAL;
-    const reforma = impCap * D.cargoEmpleadorAFP;
-    const costo = imponible + noImp + afcEmp + sis + mut + reforma;
+    const mut = impCap * P.mutualTasa;
+    const capInd = impCap * D.cargoEmpleadorAFP;   // capitalización individual (0,1%)
+    const expVida = impCap * D.expectativaVida;    // expectativa de vida (0,9%)
+    const costo = imponible + noImp + afcEmp + sis + mut + capInd + expVida;
 
-    return { base, grat, bonos: P.bonos, hExtra, colacion: P.colacion, moviliz: P.moviliz, asig: P.asig,
-      afp, saludLegal, adicIsapre, afcTrab, impuesto, atraso, anticipos: P.anticipos,
-      afcEmp, sis, mut, reforma, liquido, costo };
+    return { baseEarned, grat, bonos: P.bonos, hExtra, atraso, colacion: P.colacion, moviliz: P.moviliz, asig: P.asig,
+      afp, saludLegal, adicIsapre, afcTrab, impuesto, factor, anticipos: P.anticipos,
+      afcEmp, sis, mut, capInd, expVida, liquido, costo };
   };
 
   const vaciar = () => { $('r-liquido').textContent = '$0'; $('r-costo').textContent = '$0'; $('aviso-min').hidden = true; $('r-haberes').innerHTML = '<p class="rr-empty">Ingresa el monto.</p>'; $('r-desc').innerHTML = ''; $('r-emp').innerHTML = ''; $('r-meta').textContent = ''; };
@@ -177,9 +188,12 @@ const seo = {
     const modo = $('modo').value;
     const afpKey = $('afp').value;
     const saludTipo = $('salud-tipo').value;
-    const JORNADA_COMPLETA = 42; // jornada ordinaria legal vigente (Ley 40 horas, 42 hrs desde 2026)
-    const jornadaParcial = $('jornada-tipo').value === 'parcial';
-    const jornada = jornadaParcial ? (dec('jornada-horas') || 30) : JORNADA_COMPLETA;
+    const jornada = parseInt($('jornada').value, 10) || JORNADA_COMPLETA;
+    const jornadaParcial = jornada < JORNADA_COMPLETA;
+    const dias = Math.min(30, parseInt($('dias').value, 10) || 30);
+    const bonoTipo = $('bono-tipo').value;
+    const rawBono = num('bonos');
+
     const P = {
       gratOn: $('grat').value === 'si',
       topeGrat: (4.75 * D.sueldoMinimo) / 12,
@@ -187,10 +201,11 @@ const seo = {
       afpTasa: D.afps[afpKey] || 0.1144,
       isapre: saludTipo === 'isapre',
       isapreUF: dec('isapre-uf'),
-      jornada,
+      jornada, dias,
       hExtraN: dec('hextra'),
       hAtrasoN: dec('hatraso'),
-      bonos: num('bonos'),
+      bonos: rawBono,
+      mutualTasa: (dec('mutual') || 0.93) / 100,
       asig: num('asig'),
       colacion: num('colacion'),
       moviliz: num('moviliz'),
@@ -200,14 +215,16 @@ const seo = {
     const monto = num('monto');
     if (monto <= 0) { vaciar(); return; }
 
-    let base;
-    if (modo === 'liquido') {
-      // gross-up: busca el base cuyo líquido sea el objetivo (líquido crece con el base)
-      let lo = 0, hi = Math.max(monto * 3, 1000000);
-      for (let i = 0; i < 60; i++) { const mid = (lo + hi) / 2; if (liquidar(mid, P).liquido < monto) lo = mid; else hi = mid; }
-      base = (lo + hi) / 2;
-    } else {
-      base = monto;
+    const solveBase = (Pp) => { let lo = 0, hi = Math.max(monto * 3, 1000000); for (let i = 0; i < 60; i++) { const mid = (lo + hi) / 2; if (liquidar(mid, Pp).liquido < monto) lo = mid; else hi = mid; } return (lo + hi) / 2; };
+
+    let base = (modo === 'liquido') ? solveBase(P) : monto;
+
+    // Embrutecer el bono si se ingresó como líquido (lo que el trabajador recibe en mano por ese bono)
+    if (bonoTipo === 'liquido' && rawBono > 0) {
+      const prelim = liquidar(base, { ...P, bonos: 0 });
+      const keep = 1 - P.afpTasa - 0.07 - (P.indef ? D.afcTrabajadorIndef : 0) - prelim.factor;
+      P.bonos = keep > 0.05 ? rawBono / keep : rawBono;
+      if (modo === 'liquido') base = solveBase(P);
     }
 
     const r = liquidar(base, P);
@@ -227,10 +244,11 @@ const seo = {
     }
 
     $('r-haberes').innerHTML = rowsHtml([
-      ['Sueldo base', r.base, false],
+      ['Sueldo base' + (dias < 30 ? ` (${dias} días)` : ''), r.baseEarned, false],
       P.gratOn && ['Gratificación legal', r.grat, false],
-      r.bonos > 0 && ['Bonos (imponible)', r.bonos, false],
+      P.bonos > 0 && [bonoTipo === 'liquido' ? 'Bonos (imponible, embrutecido)' : 'Bonos (imponible)', P.bonos, false],
       r.hExtra > 0 && ['Horas extra', r.hExtra, false],
+      r.atraso > 0 && ['Descuento por atrasos', r.atraso, true],
       r.colacion > 0 && ['Colación', r.colacion, false],
       r.moviliz > 0 && ['Movilización', r.moviliz, false],
       r.asig > 0 && ['Otras asignaciones', r.asig, false],
@@ -241,14 +259,14 @@ const seo = {
       r.adicIsapre > 0 && ['Adicional Isapre', r.adicIsapre, true],
       P.indef && ['Seguro de cesantía', r.afcTrab, true],
       r.impuesto > 0 && ['Impuesto único', r.impuesto, true],
-      r.atraso > 0 && ['Atrasos', r.atraso, true],
       r.anticipos > 0 && ['Anticipos y otros descuentos', r.anticipos, true],
     ]);
     $('r-emp').innerHTML = rowsHtml([
       ['Seguro de cesantía (empleador)', r.afcEmp, false],
       ['SIS', r.sis, false],
-      ['Mutual (referencial)', r.mut, false],
-      ['Aporte empleador (cargo AFP)', r.reforma, false],
+      ['Mutual (' + pct(P.mutualTasa) + '%)', r.mut, false],
+      ['Capitalización individual (' + pct(D.cargoEmpleadorAFP) + '%)', r.capInd, false],
+      ['Expectativa de vida (' + pct(D.expectativaVida) + '%)', r.expVida, false],
     ]);
 
     const fuenteTxt = D.fuente === 'previred' ? 'Indicadores Previred (' + D.periodo + ')' : 'Valores de respaldo, verificar';
@@ -256,18 +274,18 @@ const seo = {
     $('r-meta').textContent = `${fuenteTxt} · UF ${fmt0.format(Math.round(UF))} · UTM ${fmt0.format(Math.round(UTM))}${sueldoBaseTxt}.`;
   };
 
-  const pct = (x) => (x * 100).toFixed(2).replace('.', ',');
   const pintarParams = () => {
     const origen = D.fuente === 'previred' ? `cargados automáticamente desde <strong>Previred (${D.periodo})</strong>` : `<strong>valores de respaldo</strong> (Previred no respondió)`;
     $('params-body').innerHTML = `<ul>
       <li>Origen de los datos: ${origen}.</li>
       <li>Sueldo mínimo: <strong>${fmt0.format(D.sueldoMinimo)}</strong> · Tope imponible AFP/salud: <strong>${D.topeAFP_UF} UF</strong> · Tope cesantía: <strong>${D.topeAFC_UF} UF</strong></li>
       <li>AFP (cargo trabajador, incluye 10% + comisión): ${Object.keys(D.afps).map((k) => `${k} ${pct(D.afps[k])}%`).join(' · ')}</li>
-      <li>Salud: Fonasa 7% o Isapre (si el plan en UF supera el 7% legal, el trabajador paga la diferencia)</li>
-      <li>Jornada completa legal: 42 hrs (Ley 40 horas, vigente desde 2026). En jornada parcial, el ingreso mínimo se calcula proporcional a las horas</li>
-      <li>Horas extra: recargo 50% sobre la hora ordinaria · Atrasos: hora ordinaria sin recargo</li>
+      <li>Salud: Fonasa 7% o Isapre (si el plan en UF supera el 7%, el trabajador paga la diferencia, que no es deducible de impuesto)</li>
+      <li>Jornada completa legal: 42 hrs (Ley 40 horas, 2026). Jornada parcial = el ingreso mínimo y la hora se calculan proporcionales. Días del mes: tope legal 30</li>
+      <li>Horas extra: recargo 50% sobre la hora ordinaria · Atrasos: hora ordinaria, rebajan la base imponible</li>
+      <li>Bono líquido: se "embrutece" según las cotizaciones del trabajador y el impuesto marginal (aproximación, validar en bordes de tramo)</li>
       <li>Cesantía trabajador indefinido: ${pct(D.afcTrabajadorIndef)}% · Cesantía empleador: ${pct(D.afcEmpleadorIndef)}% indefinido / ${pct(D.afcEmpleadorPlazo)}% plazo fijo</li>
-      <li>SIS empleador: ${pct(D.sis)}% · Cargo empleador AFP: ${pct(D.cargoEmpleadorAFP)}% · Mutual: ${pct(MUTUAL)}% (referencial, varía por empresa)</li>
+      <li>Costos empleador: SIS ${pct(D.sis)}% · Capitalización individual ${pct(D.cargoEmpleadorAFP)}% · Expectativa de vida ${pct(D.expectativaVida)}% · Mutual editable (def. 0,93%)</li>
       <li>Impuesto único: tramos en UTM con rebaja (estructura legal estándar)</li>
     </ul><p class="params-nota">Los indicadores se actualizan solos desde Previred cada mes. Falta validar la lógica completa antes de dar de alta (quitar noindex y enlazar al menú).</p>`;
   };
@@ -275,7 +293,6 @@ const seo = {
   // Cambios de interfaz
   $('modo').addEventListener('change', () => { $('monto-label').textContent = $('modo').value === 'liquido' ? 'Sueldo líquido deseado' : 'Sueldo base mensual'; calcular(); });
   $('salud-tipo').addEventListener('change', () => { $('isapre-wrap').hidden = $('salud-tipo').value !== 'isapre'; calcular(); });
-  $('jornada-tipo').addEventListener('change', () => { $('jornada-horas-wrap').hidden = $('jornada-tipo').value !== 'parcial'; calcular(); });
   $('cw-form').addEventListener('input', calcular);
   $('cw-form').addEventListener('change', calcular);
 
@@ -303,7 +320,6 @@ const seo = {
   .f input,.f select{width:100%;border:1px solid var(--linea);border-radius:10px;padding:11px 13px;font-family:inherit;font-size:15px;color:var(--azul-prof);background:#fff}
   .f input:focus,.f select:focus{outline:none;border-color:var(--azul)}
   .f2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  .f3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
   .inp{display:flex;align-items:center;border:1px solid var(--linea);border-radius:10px;padding:0 12px}
   .inp:focus-within{border-color:var(--azul)}
   .inp i{font-family:'Montserrat';font-weight:700;color:var(--gris);font-size:14px;font-style:normal}
@@ -346,5 +362,5 @@ const seo = {
   .cierre h2{color:#fff;font-size:24px;font-weight:800;max-width:28ch;margin:0 auto}
   .cierre p{color:#cfd6ea;font-size:17px;margin:14px auto 26px;max-width:54ch}
   @media(max-width:860px){ .hero h1{font-size:27px} .grid{grid-template-columns:1fr} .result{position:relative;top:auto} }
-  @media(max-width:480px){ .f2,.f3,.dual{grid-template-columns:1fr} }
+  @media(max-width:480px){ .f2,.dual{grid-template-columns:1fr} }
 </style>
