@@ -111,7 +111,7 @@ const herramientas = [
   .menu-btn.abierto span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
 
   /* Panel movil */
-  .menu-movil{display:none;flex-direction:column;background:#fff;border-top:1px solid var(--linea);box-shadow:0 14px 24px rgba(19,35,95,.10)}
+  .menu-movil{display:none;flex-direction:column;background:#fff;border-top:1px solid var(--linea);box-shadow:0 14px 24px rgba(19,35,95,.10);max-height:calc(100vh - 78px);overflow-y:auto;-webkit-overflow-scrolling:touch}
   .menu-movil a{padding:14px 24px;font-family:'Montserrat';font-weight:600;font-size:15.5px;color:var(--azul);border-bottom:1px solid var(--linea)}
   .menu-movil a:last-child{border-bottom:none}
   .menu-movil a:active{background:#f2f4fa}

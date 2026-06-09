@@ -56,11 +56,11 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
 
           <label class="f"><span>Sueldo base mensual</span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="sueldo" placeholder="0" /></div></label>
 
-          <label class="f"><span>Bono imponible <em>(promedio últimos 3 meses)</em> <span class="hint" title="Promedio mensual de los bonos imponibles de los últimos 3 meses. Si no tienes bonos, déjalo en 0.">?</span></span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="bonos" placeholder="0" /></div></label>
+          <label class="f"><span>Bono imponible <em>(promedio últimos 3 meses)</em> <span class="hint" tabindex="0" data-tip="Promedio mensual de los bonos imponibles de los últimos 3 meses. Si no tienes bonos, déjalo en 0.">?</span></span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="bonos" placeholder="0" /></div></label>
 
           <div class="f2">
             <label class="f">
-              <span>Gratificación <span class="hint" title="Si el trabajador recibe gratificación, se calcula como el 25% del sueldo con tope mensual legal. Solo afecta la base de la indemnización.">?</span></span>
+              <span>Gratificación <span class="hint" tabindex="0" data-tip="Si el trabajador recibe gratificación, se calcula como el 25% del sueldo con tope mensual legal. Solo afecta la base de la indemnización.">?</span></span>
               <select id="grat-on"><option value="si">Sí, incluir</option><option value="no">No incluir</option></select>
             </label>
             <label class="f"><span>Gratificación calculada</span><div class="inp ro"><i></i><input type="text" id="grat-view" disabled placeholder="automático" /></div></label>
@@ -73,8 +73,8 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
 
           <h2>Vacaciones</h2>
           <div class="f2">
-            <label class="f"><span>N° de días de vacaciones tomados <em>(durante toda la vigencia del contrato)</em> <span class="hint" title="Total de días hábiles de vacaciones que el trabajador ya usó durante todo el contrato. Se descuentan de las vacaciones acumuladas.">?</span></span><input type="text" inputmode="decimal" id="vac-tomadas" placeholder="0" /></label>
-            <label class="f"><span>Días inhábiles en las vacaciones pendientes <em>(sáb, dom y festivos)</em> <span class="hint" title="Con calendario en mano, desde el día del finiquito hacia adelante: cuenta los días hábiles pendientes y suma los sábados, domingos y festivos que caen dentro de ese período.">?</span></span><input type="text" inputmode="decimal" id="vac-inhabiles" placeholder="0" /></label>
+            <label class="f"><span>N° de días de vacaciones tomados <em>(durante toda la vigencia del contrato)</em> <span class="hint" tabindex="0" data-tip="Total de días hábiles de vacaciones que el trabajador ya usó durante todo el contrato. Se descuentan de las vacaciones acumuladas.">?</span></span><input type="text" inputmode="decimal" id="vac-tomadas" placeholder="0" /></label>
+            <label class="f"><span>Días inhábiles en las vacaciones pendientes <em>(sáb, dom y festivos)</em> <span class="hint" tabindex="0" data-tip="Con calendario en mano, desde el día del finiquito hacia adelante: cuenta los días hábiles pendientes y suma los sábados, domingos y festivos que caen dentro de ese período.">?</span></span><input type="text" inputmode="decimal" id="vac-inhabiles" placeholder="0" /></label>
           </div>
 
           <h2>Otros y ajustes</h2>
@@ -86,11 +86,11 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
             </select>
           </label>
           <label class="f" id="pactada-wrap">
-            <span>Indemnización pactada <em>(acuerdo entre las partes)</em> <span class="hint" title="En un finiquito por mutuo acuerdo, las partes pueden pactar libremente una indemnización. Ingresa el monto acordado.">?</span></span>
+            <span>Indemnización pactada <em>(acuerdo entre las partes)</em> <span class="hint" tabindex="0" data-tip="En un finiquito por mutuo acuerdo, las partes pueden pactar libremente una indemnización. Ingresa el monto acordado.">?</span></span>
             <div class="inp"><i>$</i><input type="text" inputmode="numeric" id="pactada" placeholder="0" /></div>
           </label>
           <label class="f" id="afc-wrap">
-            <span>Descuento AFC <em>(aporte del empleador)</em> <span class="hint" title="En necesidades de la empresa con más de un año, el empleador puede descontar de la indemnización por años de servicio la parte financiada por su aporte al seguro de cesantía (AFC). Ingresa ese monto para restarlo.">?</span></span>
+            <span>Descuento AFC <em>(aporte del empleador)</em> <span class="hint" tabindex="0" data-tip="En necesidades de la empresa con más de un año, el empleador puede descontar de la indemnización por años de servicio la parte financiada por su aporte al seguro de cesantía (AFC). Ingresa ese monto para restarlo.">?</span></span>
             <div class="inp"><i>$</i><input type="text" inputmode="numeric" id="afc" placeholder="0" /></div>
           </label>
           <label class="f"><span>Remuneración pendiente del último período</span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="rem-pendiente" placeholder="0" /></div></label>
@@ -111,17 +111,37 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
             <BotonWhatsApp texto="Quiero que revisen mi finiquito" mensaje="Hola vengo desde la calculadora de finiquito y quiero que revisen mi caso" />
           </div>
           <div class="r-mail">
-            <button type="button" class="mail-toggle" id="mail-toggle">Enviar esta estimación a mi correo</button>
+            <button type="button" class="mail-toggle" id="mail-toggle">Recibir esta estimación en PDF a mi correo</button>
             <div class="mail-box" id="mail-box" hidden>
+              <input class="inp-solo" id="mail-nombre" type="text" placeholder="Tu nombre" autocomplete="given-name" />
               <div class="inp"><i>@</i><input type="email" id="mail-input" placeholder="tucorreo@ejemplo.cl" /></div>
-              <button type="button" class="btn btn-amber" id="mail-send">Enviármelo</button>
-              <p class="mail-consent">Te enviamos la estimación y, cada cierto tiempo, contenido útil para tu empresa. Puedes darte de baja cuando quieras.</p>
+              <input class="hp" id="mail-website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
+              <label class="mail-check"><input type="checkbox" id="mail-consent" /><span>Acepto recibir mi estimación en PDF y, cada cierto tiempo, contenido útil de TomContable. Puedo darme de baja cuando quiera. <a href="/privacidad" target="_blank" rel="noopener">Política de privacidad</a>.</span></label>
+              <button type="button" class="btn btn-amber" id="mail-send">Enviarme el PDF</button>
               <p class="mail-msg" id="mail-msg" role="status"></p>
             </div>
           </div>
         </div>
 
       </div>
+    </div>
+  </section>
+
+  <section class="sec-cert">
+    <div class="wrap angosto">
+      <div class="cert">
+        <div class="cert-txt">
+          <h2>¿Lo quieres como documento formal y certificado?</h2>
+          <p>Con los datos que nos entregues, te emitimos el cálculo de tu finiquito en un <strong>documento formal, certificado por TomContable</strong>, listo para presentar o respaldar. No es una reunión ni una asesoría: es tu cálculo, hecho y certificado por contadores, al toque. <strong>Solo 1 UF + IVA.</strong></p>
+        </div>
+        <BotonWhatsApp texto="Quiero mi finiquito certificado · 1 UF + IVA" mensaje="Hola, quiero el cálculo de mi finiquito certificado por TomContable (1 UF + IVA), vengo desde la calculadora" />
+      </div>
+    </div>
+  </section>
+
+  <section class="sec-legal">
+    <div class="wrap angosto">
+      <p class="legal-fin">Este cálculo es solo una estimación referencial generada con los datos ingresados por el usuario. No constituye finiquito oficial, asesoría laboral ni validación de TomContable. El monto final debe ser revisado según contrato, antecedentes laborales, remuneraciones, vacaciones, causales aplicables y normativa vigente.</p>
     </div>
   </section>
 
@@ -152,6 +172,8 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
   </section>
 
 </Base>
+
+<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
   const SUELDO_MINIMO = 539000; // parámetro: actualizar cuando cambie el sueldo mínimo
@@ -264,7 +286,7 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
     rows.innerHTML = filas.map((f) => {
       const monto = (f[3] ? '−' : '') + fmt0.format(Math.round(f[2]));
       const det = f[1] ? `<span class="r-d">${f[1]}</span>` : '';
-      return `<div class="r-row"><span class="r-c">${f[0]}</span><div class="r-bottom">${det}<span class="r-v${f[3] ? ' neg' : ''}">${monto}</span></div></div>`;
+      return `<div class="r-row"><div class="r-info"><span class="r-c">${f[0]}</span>${det}</div><span class="r-v${f[3] ? ' neg' : ''}">${monto}</span></div>`;
     }).join('');
 
     $('r-total').textContent = fmt0.format(Math.round(total));
@@ -279,34 +301,105 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
     .then((data) => { if (data && data.serie && data.serie[0]) UF = data.serie[0].valor; calcular(); })
     .catch(() => calcular());
 
-  // Enviar estimación al correo (captura lead + email vía función serverless)
+  // Precarga del logo para el PDF
+  let logoImg = null;
+  (() => { const im = new Image(); im.crossOrigin = 'anonymous'; im.onload = () => { logoImg = im; }; im.src = '/img/logo-tomcontable.png'; })();
+
+  // Genera el PDF imprimible y devuelve el base64 (sin prefijo data:)
+  const buildPDFBase64 = (filas, total, meta) => {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+    const W = 210, M = 18;
+    // Marca de agua diagonal
+    if (doc.setGState) doc.setGState(new doc.GState({ opacity: 0.10 }));
+    doc.setTextColor(19, 35, 95); doc.setFont('helvetica', 'bold'); doc.setFontSize(16);
+    for (let yy = 45; yy < 290; yy += 52) for (let xx = -5; xx < 215; xx += 92) doc.text('Estimación no certificada', xx, yy, { angle: 30 });
+    if (doc.setGState) doc.setGState(new doc.GState({ opacity: 1 }));
+    // Encabezado
+    if (logoImg) { try { doc.addImage(logoImg, 'PNG', M, 13, 45, 11); } catch (e) {} }
+    doc.setTextColor(30, 47, 115); doc.setFont('helvetica', 'bold'); doc.setFontSize(18);
+    doc.text('Estimación de finiquito', M, 38);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(139, 147, 179);
+    doc.text('Generada el ' + new Date().toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' }), M, 44);
+    // Filas
+    let y = 56;
+    doc.setDrawColor(230, 232, 240);
+    filas.forEach((f) => {
+      doc.setTextColor(51, 56, 74); doc.setFont('helvetica', 'normal'); doc.setFontSize(11);
+      doc.text(f.c, M, y);
+      if (f.d) { doc.setFontSize(8.5); doc.setTextColor(139, 147, 179); doc.text(f.d, M, y + 4.5); }
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(11);
+      doc.setTextColor(f.neg ? 176 : 19, f.neg ? 54 : 35, f.neg ? 54 : 95);
+      doc.text(f.v, W - M, y, { align: 'right' });
+      y += f.d ? 12 : 9;
+      doc.line(M, y - 3, W - M, y - 3);
+    });
+    // Total
+    y += 2;
+    doc.setFillColor(30, 47, 115); doc.roundedRect(M, y, W - 2 * M, 14, 2, 2, 'F');
+    doc.setTextColor(207, 214, 234); doc.setFont('helvetica', 'normal'); doc.setFontSize(10);
+    doc.text('Total estimado a pagar', M + 5, y + 9);
+    doc.setTextColor(246, 177, 26); doc.setFont('helvetica', 'bold'); doc.setFontSize(15);
+    doc.text(total, W - M - 5, y + 9.5, { align: 'right' });
+    y += 20;
+    if (meta) { doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(139, 147, 179); doc.text(meta, M, y); y += 8; }
+    // Descargo
+    const disc = 'Este cálculo es solo una estimación referencial generada con los datos ingresados por el usuario. No constituye finiquito oficial, asesoría laboral ni validación de TomContable. El monto final debe ser revisado según contrato, antecedentes laborales, remuneraciones, vacaciones, causales aplicables y normativa vigente.';
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(120, 120, 130);
+    const lines = doc.splitTextToSize(disc, W - 2 * M);
+    doc.text(lines, M, y);
+    // Pie
+    doc.setTextColor(139, 147, 179); doc.setFontSize(8.5);
+    doc.text('TomContable · Más que contabilidad, tranquilidad · tomcontable.cl · WhatsApp +56 9 6493 3110', M, 287);
+    return doc.output('datauristring').split(',')[1];
+  };
+
+  // Enviar estimación en PDF + capturar lead
   $('mail-toggle').addEventListener('click', () => {
     const box = $('mail-box'); box.hidden = !box.hidden;
-    if (!box.hidden) $('mail-input').focus();
+    if (!box.hidden) $('mail-nombre').focus();
   });
   $('mail-send').addEventListener('click', async () => {
-    const email = $('mail-input').value.trim();
     const msg = $('mail-msg');
+    const email = $('mail-input').value.trim();
+    const nombre = $('mail-nombre').value.trim();
+    const consent = $('mail-consent').checked;
+    const website = $('mail-website').value; // honeypot
     const filasEls = [...document.querySelectorAll('#r-rows .r-row')];
     if (!filasEls.length || $('r-total').textContent === '$0') { msg.textContent = 'Primero completa el cálculo arriba.'; return; }
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { msg.textContent = 'Revisa tu correo, no parece válido.'; return; }
+    if (!consent) { msg.textContent = 'Marca la casilla para poder enviarte el PDF.'; return; }
     const filas = filasEls.map((r) => ({
       c: r.querySelector('.r-c')?.textContent || '',
       d: r.querySelector('.r-d')?.textContent || '',
       v: r.querySelector('.r-v')?.textContent || '',
+      neg: r.querySelector('.r-v')?.classList.contains('neg') || false,
     }));
-    const payload = { email, total: $('r-total').textContent, meta: $('r-meta').textContent, filas };
+    const total = $('r-total').textContent;
+    const meta = $('r-meta').textContent;
+    let pdf = '';
+    try { if (window.jspdf) pdf = buildPDFBase64(filas, total, meta); } catch (e) { pdf = ''; }
     msg.textContent = 'Enviando…';
     $('mail-send').disabled = true;
     try {
-      const resp = await fetch('/api/enviar-finiquito', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) });
+      const resp = await fetch('/api/enviar-finiquito', {
+        method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ email, nombre, consent, website, total, meta, filas, pdf }),
+      });
       const j = await resp.json();
-      msg.textContent = j && j.ok ? '¡Listo! Te lo enviamos a tu correo (revisa también spam).' : 'No pudimos enviarlo ahora. Inténtalo en un rato.';
+      msg.textContent = j && j.ok ? '¡Listo! Te enviamos el PDF a tu correo (revisa también spam).' : 'No pudimos enviarlo ahora. Inténtalo en un rato.';
     } catch (e) {
       msg.textContent = 'No pudimos enviarlo ahora. Inténtalo en un rato.';
     }
     $('mail-send').disabled = false;
   });
+
+  // Tooltips de ayuda (?) : clic para fijar, hover para mostrar, se cierran al salir
+  document.querySelectorAll('.hint').forEach((h) => {
+    h.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); document.querySelectorAll('.hint.show').forEach((o) => { if (o !== h) o.classList.remove('show'); }); h.classList.toggle('show'); });
+    h.addEventListener('mouseleave', () => h.classList.remove('show'));
+  });
+  document.addEventListener('click', (e) => { if (!e.target.closest('.hint')) document.querySelectorAll('.hint.show').forEach((o) => o.classList.remove('show')); });
 
   calcular();
 </script>
@@ -338,18 +431,21 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
   .inp input{border:none;padding:11px 0}
   .inp.ro{background:#f6f8fc}
   .inp.ro input{background:transparent;color:var(--gris)}
-  .hint{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--amarillo);color:var(--azul-prof);font-size:11px;font-weight:800;cursor:help;font-family:'Montserrat';vertical-align:middle}
+  .hint{position:relative;display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;background:var(--amarillo);color:var(--azul-prof);font-size:11px;font-weight:800;cursor:pointer;font-family:'Montserrat';vertical-align:middle;outline:none}
+  .hint::after{content:attr(data-tip);position:absolute;left:50%;bottom:155%;transform:translateX(-50%);width:230px;max-width:62vw;background:var(--azul-prof);color:#fff;font-family:'Inter',Arial,sans-serif;font-weight:500;font-size:12px;line-height:1.45;text-align:left;padding:9px 12px;border-radius:9px;box-shadow:0 12px 28px -8px rgba(0,0,0,.45);opacity:0;visibility:hidden;transition:opacity .15s, visibility .15s;z-index:20;pointer-events:none}
+  .hint:hover::after,.hint:focus::after{opacity:1;visibility:visible;transition-delay:.5s}
+  .hint.show::after{opacity:1;visibility:visible;transition-delay:0s}
 
   .result{position:sticky;top:92px;overflow:hidden;background:linear-gradient(160deg,#fff,#f7f9fe)}
-  .wm{position:absolute;inset:0;pointer-events:none;z-index:2;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='170'%3E%3Ctext x='8' y='95' transform='rotate(-22 150 90)' font-family='Arial, sans-serif' font-size='18' font-weight='700' fill='%2313235F'%3EEstimación no certificada%3C/text%3E%3C/svg%3E");background-repeat:repeat;background-size:300px 170px}
+  .wm{position:absolute;inset:0;pointer-events:none;z-index:2;opacity:.16;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='160'%3E%3Ctext x='6' y='92' transform='rotate(-22 150 88)' font-family='Arial, sans-serif' font-size='20' font-weight='700' fill='%2313235F'%3EEstimación no certificada%3C/text%3E%3C/svg%3E");background-repeat:repeat;background-size:280px 150px}
   .result > :not(.wm){position:relative;z-index:1}
   .r-rows{margin-bottom:6px}
   .r-empty{color:var(--gris);font-size:14.5px;line-height:1.6}
-  .r-row{padding:12px 0;border-bottom:1px solid var(--linea)}
-  .r-c{display:block;font-size:14px;color:#33384a;line-height:1.35}
-  .r-bottom{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-top:4px}
+  .r-row{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:12px 0;border-bottom:1px solid var(--linea)}
+  .r-info{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .r-c{font-size:14px;color:#33384a;line-height:1.35}
   .r-d{font-size:12.5px;color:var(--gris)}
-  .r-v{font-family:'Montserrat';font-weight:700;font-size:15.5px;color:var(--azul-prof);white-space:nowrap;margin-left:auto}
+  .r-v{font-family:'Montserrat';font-weight:700;font-size:15.5px;color:var(--azul-prof);white-space:nowrap;flex-shrink:0}
   .r-v.neg{color:#b03636}
   .r-total{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:16px;background:var(--azul);color:#fff;border-radius:13px;padding:16px 18px}
   .r-total span{font-family:'Montserrat';font-weight:600;font-size:14px;color:#cfd6ea}
@@ -361,11 +457,24 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
   .mail-toggle{background:none;border:none;color:var(--azul);font-family:'Montserrat';font-weight:700;font-size:13.5px;cursor:pointer;padding:2px 0;text-decoration:underline;text-underline-offset:3px}
   .mail-box{margin-top:10px;display:flex;flex-direction:column;gap:10px}
   .mail-box .inp{margin:0}
+  .mail-box .inp-solo{border:1px solid var(--linea);border-radius:10px;padding:11px 13px;font-family:inherit;font-size:15px;color:var(--azul-prof);width:100%}
+  .mail-box .inp-solo:focus{outline:none;border-color:var(--azul)}
   .mail-box .btn{width:100%}
-  .mail-consent{font-size:12px;color:var(--gris);line-height:1.45;margin:0}
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
+  .mail-check{display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--gris);line-height:1.45;cursor:pointer}
+  .mail-check input{margin-top:2px;flex-shrink:0}
+  .mail-check a{color:var(--azul);font-weight:600}
   .mail-msg{font-size:13px;color:var(--azul);font-weight:600;margin:0;min-height:1em}
 
-  .sec-texto{padding-top:8px}
+  .sec-cert{padding:30px 0 6px}
+  .cert{display:flex;align-items:center;justify-content:space-between;gap:22px;flex-wrap:wrap;background:#fdf4dd;border:1px solid #f1d98a;border-radius:18px;padding:24px 28px}
+  .cert-txt{flex:1;min-width:240px}
+  .cert-txt h2{font-size:20px;font-weight:800;color:var(--azul);margin:0 0 6px}
+  .cert-txt p{font-size:15px;color:#6b5b1f;line-height:1.55;margin:0}
+  .cert :global(.btn){flex-shrink:0}
+  .sec-legal{padding:18px 0 0}
+  .legal-fin{max-width:760px;margin:0 auto;font-size:12.5px;line-height:1.6;color:var(--gris);border:1px solid var(--linea);background:#fafbfe;border-radius:12px;padding:14px 18px}
+  .sec-texto{padding-top:24px}
   .angosto{max-width:760px}
   .sec-texto h2{font-size:24px;font-weight:800;margin:30px 0 12px;letter-spacing:-.3px}
   .sec-texto p{font-size:16px;color:#444a63;line-height:1.7;margin-bottom:14px}
@@ -387,7 +496,7 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
   @media(max-width:860px){
     .hero h1{font-size:30px}
     .grid{grid-template-columns:1fr}
-    .result{position:static}
+    .result{position:relative;top:auto}
   }
   @media(max-width:480px){ .f2{grid-template-columns:1fr} }
 </style>
