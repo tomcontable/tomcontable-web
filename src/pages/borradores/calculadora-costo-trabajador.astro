@@ -1,0 +1,220 @@
+---
+import Base from '../../layouts/Base.astro';
+import BotonWhatsApp from '../../components/BotonWhatsApp.astro';
+
+const seo = {
+  title: 'Calculadora Costo de Contratar un Trabajador | Sueldo líquido y costo empresa · TomContable',
+  description: 'Simula el sueldo líquido y el costo total para la empresa de contratar a un trabajador en Chile. Calculadora gratis de TomContable.',
+  canonical: '/borradores/calculadora-costo-trabajador',
+  noindex: true,
+};
+---
+<Base {...seo}>
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Herramienta gratis</p>
+      <h1>¿Cuánto cuesta contratar a un trabajador?</h1>
+      <p class="lead">Ingresa el sueldo y verás el líquido que recibe el trabajador y el costo total para tu empresa.</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap calc-wrap">
+      <p class="aviso-top"><strong>BORRADOR — pendiente de validación.</strong> Los parámetros (topes, tasas y el aporte del empleador de la reforma previsional) deben confirmarse para 2026 antes de publicar. Ver "Parámetros usados" abajo.</p>
+
+      <div class="grid">
+        <form class="panel form" id="cw-form" autocomplete="off">
+          <h2>Datos</h2>
+          <label class="f"><span>Sueldo base mensual</span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="base" placeholder="0" /></div></label>
+          <div class="f2">
+            <label class="f"><span>Gratificación legal</span><select id="grat"><option value="si">Sí (25% con tope)</option><option value="no">No</option></select></label>
+            <label class="f"><span>Tipo de contrato</span><select id="tipo"><option value="indef">Indefinido</option><option value="plazo">Plazo fijo / por obra</option></select></label>
+          </div>
+          <div class="f2">
+            <label class="f"><span>Comisión AFP (%)</span><div class="inp"><input type="text" inputmode="decimal" id="comafp" placeholder="1,44" /><i>%</i></div></label>
+            <label class="f"><span>Salud (%)</span><div class="inp"><input type="text" inputmode="decimal" id="salud" placeholder="7" /><i>%</i></div></label>
+          </div>
+          <div class="f2">
+            <label class="f"><span>Colación <em>(no imponible)</em></span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="colacion" placeholder="0" /></div></label>
+            <label class="f"><span>Movilización <em>(no imponible)</em></span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="moviliz" placeholder="0" /></div></label>
+          </div>
+        </form>
+
+        <div class="panel result" id="result">
+          <div class="dual">
+            <div class="dual-box"><span>Líquido del trabajador</span><strong id="r-liquido">$0</strong></div>
+            <div class="dual-box alt"><span>Costo total para la empresa</span><strong id="r-costo">$0</strong></div>
+          </div>
+          <p class="r-sub">Descuentos del trabajador</p>
+          <div class="r-rows" id="r-trab"></div>
+          <p class="r-sub">Costos del empleador (sobre el sueldo bruto)</p>
+          <div class="r-rows" id="r-emp"></div>
+          <p class="r-meta" id="r-meta"></p>
+          <div class="r-cta"><BotonWhatsApp texto="Quiero ayuda con mis remuneraciones" mensaje="Hola vengo desde la calculadora de costo de contratar y quiero ayuda con remuneraciones" /></div>
+        </div>
+      </div>
+
+      <details class="params">
+        <summary>Parámetros usados (verifícalos antes de publicar)<span class="plus">+</span></summary>
+        <div id="params-body" class="params-body"></div>
+      </details>
+    </div>
+  </section>
+
+  <section class="cierre">
+    <div class="wrap">
+      <h2>¿Necesitas llevar las remuneraciones de tu pyme bien hechas?</h2>
+      <p>Calculamos liquidaciones, cotizaciones y todo lo laboral por ti. Conversemos por WhatsApp.</p>
+      <div class="cta-row center"><BotonWhatsApp texto="Hablar por WhatsApp" mensaje="Hola vengo desde la calculadora de costo de contratar" /></div>
+    </div>
+  </section>
+
+</Base>
+
+<script>
+  // *** PARÁMETROS A VALIDAR POR TOM (vigentes 2026) ***
+  const P = {
+    topeImponibleUF: 87.8,    // tope AFP / salud (VALIDAR)
+    topeAFC_UF: 131.9,        // tope seguro de cesantía (VALIDAR)
+    afpTasa: 0.10,            // 10% obligatorio
+    afcTrabajador: 0.006,     // 0,6% (solo indefinido)
+    afcEmpleadorIndef: 0.024, // 2,4%
+    afcEmpleadorPlazo: 0.03,  // 3,0% plazo fijo/obra
+    sisEmpleador: 0.0188,     // SIS ~1,88% (VALIDAR)
+    mutual: 0.0090,           // mutual base 0,90% (VALIDAR; variable por empresa)
+    reformaEmpleador: 0.01,   // aporte empleador reforma previsional 2026 (VALIDAR: % real)
+    sueldoMinimo: 539000,     // (VALIDAR)
+    // impuesto único 2ª categoría mensual, tramos en UTM: [hasta, factor, rebaja UTM]
+    tramos: [[13.5,0,0],[30,0.04,0.54],[50,0.08,1.74],[70,0.135,4.49],[90,0.23,11.14],[120,0.304,17.8],[310,0.35,23.32],[Infinity,0.40,38.82]],
+  };
+  let UF = 40746.28, UTM = 71506;
+
+  const fmt0 = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
+  const $ = (id) => document.getElementById(id);
+  const num = (id) => { const v = $(id).value; if (!v) return 0; const n = parseFloat(String(v).replace(/\./g,'').replace(/,/g,'.').replace(/[^\d.]/g,'')); return isFinite(n) ? n : 0; };
+
+  const rowsHtml = (arr) => arr.map((f) => `<div class="rr"><span class="rr-c">${f[0]}</span><span class="rr-v${f[2] ? ' neg' : ''}">${(f[2] ? '−' : '') + fmt0.format(Math.round(f[1]))}</span></div>`).join('');
+
+  const calcular = () => {
+    const base = num('base');
+    if (base <= 0) { $('r-liquido').textContent = '$0'; $('r-costo').textContent = '$0'; $('r-trab').innerHTML = '<p class="rr-empty">Ingresa el sueldo base.</p>'; $('r-emp').innerHTML = ''; $('r-meta').textContent = ''; return; }
+    const indef = $('tipo').value === 'indef';
+    const comAFP = (num('comafp') || 1.44) / 100;
+    const saludPct = Math.max(num('salud') || 7, 7) / 100;
+    const colacion = num('colacion'), moviliz = num('moviliz');
+
+    const topeGrat = (4.75 * P.sueldoMinimo) / 12;
+    const grat = $('grat').value === 'si' ? Math.min(base * 0.25, topeGrat) : 0;
+    const bruto = base + grat;
+
+    const imp = Math.min(bruto, P.topeImponibleUF * UF);
+    const impAFC = Math.min(bruto, P.topeAFC_UF * UF);
+
+    const afp = imp * (P.afpTasa + comAFP);
+    const salud = imp * saludPct;
+    const afcTrab = indef ? impAFC * P.afcTrabajador : 0;
+    const baseTrib = bruto - (afp + salud + afcTrab);
+
+    const tUTM = baseTrib / UTM;
+    let factor = 0, rebaja = 0;
+    for (const [hasta, f, r] of P.tramos) { if (tUTM <= hasta) { factor = f; rebaja = r; break; } }
+    const impuesto = Math.max(0, tUTM * factor - rebaja) * UTM;
+
+    const liquido = base + grat + colacion + moviliz - afp - salud - afcTrab - impuesto;
+
+    const afcEmp = indef ? impAFC * P.afcEmpleadorIndef : impAFC * P.afcEmpleadorPlazo;
+    const sis = imp * P.sisEmpleador;
+    const mut = imp * P.mutual;
+    const reforma = imp * P.reformaEmpleador;
+    const costo = base + grat + colacion + moviliz + afcEmp + sis + mut + reforma;
+
+    $('r-liquido').textContent = fmt0.format(Math.round(liquido));
+    $('r-costo').textContent = fmt0.format(Math.round(costo));
+    $('r-trab').innerHTML = rowsHtml([
+      ['Sueldo bruto imponible', bruto, false],
+      ['AFP (10% + comisión)', afp, true],
+      ['Salud', salud, true],
+      ['Seguro de cesantía', afcTrab, true],
+      ['Impuesto único', impuesto, true],
+    ]);
+    $('r-emp').innerHTML = rowsHtml([
+      ['Seguro de cesantía (empleador)', afcEmp, false],
+      ['SIS', sis, false],
+      ['Mutual', mut, false],
+      ['Aporte reforma previsional', reforma, false],
+    ]);
+    $('r-meta').textContent = `UF: ${fmt0.format(UF)} · UTM: ${fmt0.format(UTM)}. Gratificación: ${$('grat').value === 'si' ? fmt0.format(Math.round(grat)) : 'no'}.`;
+  };
+
+  const pintarParams = () => {
+    $('params-body').innerHTML = `<ul>
+      <li>Tope imponible AFP/salud: <strong>${P.topeImponibleUF} UF</strong> · Tope cesantía: <strong>${P.topeAFC_UF} UF</strong></li>
+      <li>AFP: 10% + comisión (editable) · Salud: 7% mínimo (editable)</li>
+      <li>Cesantía trabajador (indefinido): 0,6% · Cesantía empleador: 2,4% indefinido / 3% plazo fijo</li>
+      <li>SIS empleador: 1,88% · Mutual: 0,90% (variable) · Reforma previsional empleador: ${(P.reformaEmpleador*100).toFixed(2)}% <strong>(confirmar % 2026)</strong></li>
+      <li>Sueldo mínimo (tope gratificación): ${fmt0.format(P.sueldoMinimo)}</li>
+      <li>Impuesto único: tramos en UTM con rebaja (estructura estándar)</li>
+    </ul><p class="params-nota">Cambia estos valores en el bloque <code>P</code> del código una vez confirmados. No publicar (quitar noindex y enlazar al menú) hasta validar.</p>`;
+  };
+
+  $('cw-form').addEventListener('input', calcular);
+  $('cw-form').addEventListener('change', calcular);
+  Promise.all([
+    fetch('https://mindicador.cl/api/uf').then((r) => r.json()).then((d) => { if (d.serie && d.serie[0]) UF = d.serie[0].valor; }).catch(() => {}),
+    fetch('https://mindicador.cl/api/utm').then((r) => r.json()).then((d) => { if (d.serie && d.serie[0]) UTM = d.serie[0].valor; }).catch(() => {}),
+  ]).then(() => { calcular(); pintarParams(); });
+  calcular(); pintarParams();
+</script>
+
+<style>
+  .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:56px 0 44px}
+  .hero h1{font-size:36px;font-weight:800;letter-spacing:-.5px;max-width:20ch}
+  .hero .lead{font-size:18px;color:#444a63;margin:16px 0 0;max-width:58ch}
+  .sec{padding:40px 0}
+  .calc-wrap{max-width:980px}
+  .aviso-top{background:#fdf4dd;border:1px solid #f1d98a;border-radius:12px;padding:13px 18px;font-size:14px;color:#6b5b1f;margin-bottom:22px}
+  .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:24px;align-items:start}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:18px;padding:26px}
+  .panel h2{font-size:16px;font-weight:800;color:var(--azul);margin:4px 0 14px}
+  .f{display:block;margin-bottom:14px}.f>span{display:block;font-family:'Montserrat';font-weight:600;font-size:13.5px;color:var(--azul-prof);margin-bottom:6px}
+  .f>span em{color:var(--gris);font-weight:500;font-style:normal}
+  .f input,.f select{width:100%;border:1px solid var(--linea);border-radius:10px;padding:11px 13px;font-family:inherit;font-size:15px;color:var(--azul-prof);background:#fff}
+  .f input:focus,.f select:focus{outline:none;border-color:var(--azul)}
+  .f2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .inp{display:flex;align-items:center;border:1px solid var(--linea);border-radius:10px;padding:0 12px}
+  .inp:focus-within{border-color:var(--azul)}
+  .inp i{font-family:'Montserrat';font-weight:700;color:var(--gris);font-size:14px;font-style:normal}
+  .inp i:first-child{margin-right:6px}.inp i:last-child{margin-left:6px}
+  .inp input{border:none;padding:11px 0;width:100%}
+
+  .result{position:sticky;top:92px;background:linear-gradient(160deg,#fff,#f7f9fe)}
+  .dual{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+  .dual-box{border-radius:13px;padding:14px 16px;background:var(--azul);color:#fff}
+  .dual-box.alt{background:var(--azul-prof)}
+  .dual-box span{display:block;font-family:'Montserrat';font-weight:600;font-size:12.5px;color:#cfd6ea}
+  .dual-box strong{display:block;font-family:'Montserrat';font-weight:800;font-size:21px;color:var(--amarillo);margin-top:4px;line-height:1.1}
+  .r-sub{font-family:'Montserrat';font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--gris);margin:14px 0 6px}
+  .rr{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid var(--linea);font-size:14px;color:#33384a}
+  .rr-v{font-family:'Montserrat';font-weight:700;color:var(--azul-prof);white-space:nowrap}
+  .rr-v.neg{color:#b03636}
+  .rr-empty{color:var(--gris);font-size:14px}
+  .r-meta{font-size:12px;color:var(--gris);margin-top:12px;line-height:1.5}
+  .r-cta{margin-top:14px}.r-cta :global(.btn){width:100%}
+
+  .params{margin-top:24px;background:#fff;border:1px solid var(--linea);border-radius:14px;overflow:hidden}
+  .params summary{list-style:none;cursor:pointer;padding:16px 20px;font-family:'Montserrat';font-weight:700;font-size:14.5px;color:var(--azul);display:flex;justify-content:space-between;gap:12px}
+  .params summary::-webkit-details-marker{display:none}
+  .params .plus{font-size:20px;transition:.2s}.params[open] .plus{transform:rotate(45deg)}
+  .params-body{padding:0 20px 18px}
+  .params-body ul{margin:0 0 10px 18px;font-size:13.5px;color:#444a63;line-height:1.7}
+  .params-nota{font-size:12.5px;color:var(--gris)}
+  .params-nota code{background:#eef1f8;padding:1px 5px;border-radius:4px}
+
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap}.cta-row.center{justify-content:center}
+  .cierre{background:linear-gradient(150deg,var(--azul),var(--azul-prof));color:#fff;text-align:center;padding:62px 24px}
+  .cierre h2{color:#fff;font-size:24px;font-weight:800;max-width:28ch;margin:0 auto}
+  .cierre p{color:#cfd6ea;font-size:17px;margin:14px auto 26px;max-width:54ch}
+  @media(max-width:860px){ .hero h1{font-size:29px} .grid{grid-template-columns:1fr} .result{position:relative;top:auto} }
+  @media(max-width:480px){ .f2,.dual{grid-template-columns:1fr} }
+</style>

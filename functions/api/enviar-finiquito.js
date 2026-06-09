@@ -32,17 +32,21 @@ export async function onRequestPost({ request, env }) {
   if (!apiKey) return json({ ok: false, error: 'config' }, 500);
 
   const nombre = String(data.nombre || '').trim().slice(0, 60);
-  const total = esc(data.total || '');
-  const meta = esc(data.meta || '');
-  const filas = Array.isArray(data.filas) ? data.filas.slice(0, 12) : [];
   const pdf = typeof data.pdf === 'string' && data.pdf.length > 100 ? data.pdf : null;
 
-  const rowsHtml = filas.map((f) => {
-    const c = esc(f.c); const d = f.d ? ` <span style="color:#8b93b3;font-size:12px">(${esc(f.d)})</span>` : '';
-    return `<tr><td style="padding:9px 0;border-bottom:1px solid #eef0f6;font-size:14px;color:#33384a">${c}${d}</td><td style="padding:9px 0;border-bottom:1px solid #eef0f6;text-align:right;font-family:Arial,sans-serif;font-weight:700;color:#13235F;white-space:nowrap">${esc(f.v)}</td></tr>`;
-  }).join('');
-
   const saludo = nombre ? `Hola ${esc(nombre)},` : 'Hola,';
+
+  // El detalle y el total van SOLO en el PDF adjunto (con marca de agua), nunca en el
+  // cuerpo del correo, para que nadie pueda tomarle un pantallazo y presentarlo como oficial.
+  const cuerpo = pdf
+    ? `<tr><td style="padding:0 36px;font-size:14.5px;line-height:22px;color:#444a63;">${saludo} tu estimación de finiquito quedó lista. La encuentras en el <strong>archivo PDF adjunto a este correo</strong>, para abrir, imprimir o guardar.</td></tr>
+      <tr><td height="20" style="font-size:0;line-height:0;">&nbsp;</td></tr>
+      <tr><td style="padding:0 34px;">
+        <table width="100%" cellspacing="0" cellpadding="0" bgcolor="#f4f6fb" style="background:#f4f6fb;border:1px solid #e3e7f2;border-radius:11px;"><tr>
+          <td style="padding:16px 18px;font-size:13.5px;line-height:20px;color:#33384a;"><strong style="color:#1E2F73;">Documento adjunto:</strong> estimacion-finiquito-tomcontable.pdf<br/><span style="color:#8b93b3;">Ábrelo para ver el detalle de tu estimación. El monto no se incluye en este correo a propósito: el cálculo vive en el PDF, que lleva la marca de agua y el descargo correspondiente.</span></td>
+        </tr></table>
+      </td></tr>`
+    : `<tr><td style="padding:0 36px;font-size:14.5px;line-height:22px;color:#444a63;">${saludo} preparamos tu estimación de finiquito, pero no pudimos adjuntar el PDF en este envío. Escríbenos por WhatsApp al <strong>+56 9 6493 3110</strong> y te la hacemos llegar al instante.</td></tr>`;
 
   const html = `<!DOCTYPE html><html><body style="margin:0;padding:0;background:#f4f6fb;font-family:Helvetica,Arial,sans-serif;">
   <table width="100%" cellspacing="0" cellpadding="0" bgcolor="#f4f6fb"><tr><td align="center" style="padding:30px 10px;">
@@ -52,16 +56,7 @@ export async function onRequestPost({ request, env }) {
       <tr><td height="24" style="font-size:0;line-height:0;">&nbsp;</td></tr>
       <tr><td align="center" style="padding:0 30px;font-size:21px;line-height:28px;color:#1E2F73;font-weight:700;">Tu estimación de finiquito</td></tr>
       <tr><td height="12" style="font-size:0;line-height:0;">&nbsp;</td></tr>
-      <tr><td style="padding:0 36px;font-size:14.5px;line-height:22px;color:#444a63;">${saludo} aquí tienes tu estimación de finiquito. Te la adjuntamos también en <strong>PDF, lista para imprimir o guardar</strong>. Recuerda que es una estimación de apoyo.</td></tr>
-      <tr><td height="18" style="font-size:0;line-height:0;">&nbsp;</td></tr>
-      <tr><td style="padding:0 34px;"><table width="100%" cellspacing="0" cellpadding="0">${rowsHtml}</table></td></tr>
-      <tr><td style="padding:16px 34px 0;">
-        <table width="100%" cellspacing="0" cellpadding="0" bgcolor="#1E2F73" style="background:#1E2F73;border-radius:11px;"><tr>
-          <td style="padding:14px 18px;font-size:14px;color:#cfd6ea;font-family:Arial,sans-serif;">Total estimado a pagar</td>
-          <td style="padding:14px 18px;text-align:right;font-size:22px;font-weight:800;color:#F6B11A;font-family:Arial,sans-serif;white-space:nowrap;">${total}</td>
-        </tr></table>
-      </td></tr>
-      ${meta ? `<tr><td style="padding:10px 34px 0;font-size:12px;color:#8b93b3;">${meta}</td></tr>` : ''}
+      ${cuerpo}
       <tr><td style="padding:18px 34px 0;">
         <table width="100%" cellspacing="0" cellpadding="0" bgcolor="#fdf4dd" style="background:#fdf4dd;border:1px solid #f1d98a;border-radius:10px;"><tr>
           <td style="padding:12px 16px;font-size:12.5px;line-height:18px;color:#6b5b1f;"><strong>Estimación no certificada.</strong> Es una herramienta de apoyo referencial; no constituye finiquito oficial ni asesoría laboral. El monto final debe revisarse según contrato, antecedentes laborales, remuneraciones, vacaciones, causales y normativa vigente. ¿Quieres tu finiquito bien hecho? Escríbenos al WhatsApp +56 9 6493 3110.</td>

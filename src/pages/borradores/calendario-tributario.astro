@@ -1,0 +1,123 @@
+---
+import Base from '../../layouts/Base.astro';
+import BotonWhatsApp from '../../components/BotonWhatsApp.astro';
+
+const seo = {
+  title: 'Calendario Tributario del Emprendedor 2026 | Fechas SII · TomContable',
+  description: 'Las fechas que no puedes olvidar: IVA (F29), cotizaciones, Declaraciones Juradas y Operación Renta. Calendario tributario simple para emprendedores y pymes en Chile.',
+  canonical: '/borradores/calendario-tributario',
+  noindex: true,
+};
+
+const mensuales = [
+  { t: 'IVA — Formulario 29 (F29)', cuando: 'Hasta el 20 del mes siguiente', det: 'Si emites documentos electrónicos (la mayoría de las pymes), tienes hasta el 20. Si no, hasta el 12. Aquí va también tu PPM (pago provisional mensual).' },
+  { t: 'Cotizaciones de tus trabajadores', cuando: 'Hasta el 13 del mes siguiente', det: 'AFP, salud y seguro de cesantía, declaradas y pagadas en Previred. Hasta el 13 si pagas en línea; hasta el 10 si es de forma manual.' },
+];
+
+const anuales = [
+  { t: 'Declaraciones Juradas (DJ)', cuando: 'Febrero y marzo', det: 'Informas al SII sueldos, honorarios, retenciones, dividendos, etc. (DJ 1887, 1879, y otras según tu caso). Son la base para que la Operación Renta salga bien.' },
+  { t: 'Operación Renta — Formulario 22 (F22)', cuando: 'Abril', det: 'La declaración anual de impuesto a la renta, de tu empresa y de cada socio. Conviene proyectarla antes, en julio, para no llevarte sorpresas.' },
+  { t: 'Contribuciones (bienes raíces)', cuando: 'Abril, junio, septiembre y noviembre', det: 'Si tienes propiedades afectas, las contribuciones se pagan en cuatro cuotas durante el año.' },
+  { t: 'Patente comercial municipal', cuando: 'Enero y julio', det: 'La patente de tu municipalidad suele pagarse en dos cuotas al año. Las fechas y el monto dependen de cada comuna.' },
+];
+---
+<Base {...seo}>
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Herramienta gratis</p>
+      <h1>Calendario tributario del emprendedor</h1>
+      <p class="lead">Las fechas que no te pueden pillar: IVA, cotizaciones, Declaraciones Juradas y renta. En simple, para que nunca pagues una multa por olvido.</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap angosto">
+
+      <div class="prox" id="prox">
+        <span class="prox-label">Este mes te toca</span>
+        <div class="prox-rows" id="prox-rows"></div>
+        <span class="prox-nota">Si una fecha cae sábado, domingo o festivo, se traslada al día hábil siguiente.</span>
+      </div>
+
+      <h2>Cada mes</h2>
+      <div class="cal-list">
+        {mensuales.map((o) => (
+          <div class="cal">
+            <div class="cal-head"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></span><h3>{o.t}</h3></div>
+            <p class="cal-cuando">{o.cuando}</p>
+            <p class="cal-det">{o.det}</p>
+          </div>
+        ))}
+      </div>
+
+      <h2>Una vez al año</h2>
+      <div class="cal-list">
+        {anuales.map((o) => (
+          <div class="cal">
+            <div class="cal-head"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4M16 2v4M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="2"/></svg></span><h3>{o.t}</h3></div>
+            <p class="cal-cuando">{o.cuando}</p>
+            <p class="cal-det">{o.det}</p>
+          </div>
+        ))}
+      </div>
+
+      <p class="cal-aviso">Las fechas son de referencia y pueden variar según el calendario oficial del SII de cada año, tu tipo de empresa y tu comuna. Si quieres estar 100% al día sin tener que acordarte de nada, nosotros lo vemos por ti.</p>
+    </div>
+  </section>
+
+  <section class="cierre">
+    <div class="wrap">
+      <h2>¿Y si alguien se preocupa de estas fechas por ti?</h2>
+      <p>Con nuestra contabilidad mensual, te avisamos antes de cada vencimiento y presentamos todo a tiempo. Tú te enfocas en vender.</p>
+      <div class="cta-row center"><BotonWhatsApp texto="Quiero que se encarguen de mis impuestos" mensaje="Hola vengo desde el calendario tributario y quiero contabilidad mensual" /></div>
+    </div>
+  </section>
+
+</Base>
+
+<script>
+  const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const hoy = new Date();
+  const mAnt = (hoy.getMonth() + 11) % 12; // mes del período que se declara este mes
+  const filas = [
+    `<div class="prox-row"><span class="prox-c">IVA (F29) del período de <strong>${meses[mAnt]}</strong></span><span class="prox-v">hasta el 20 de ${meses[hoy.getMonth()]}</span></div>`,
+    `<div class="prox-row"><span class="prox-c">Cotizaciones de tus trabajadores de <strong>${meses[mAnt]}</strong></span><span class="prox-v">hasta el 13 de ${meses[hoy.getMonth()]}</span></div>`,
+  ];
+  const el = document.getElementById('prox-rows');
+  if (el) el.innerHTML = filas.join('');
+</script>
+
+<style>
+  .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:58px 0 46px}
+  .hero h1{font-size:38px;font-weight:800;letter-spacing:-.5px}
+  .hero .lead{font-size:18px;color:#444a63;margin:16px 0 0;max-width:60ch}
+  .sec{padding:44px 0}
+  .angosto{max-width:760px}
+
+  .prox{background:linear-gradient(150deg,var(--azul),var(--azul-prof));color:#fff;border-radius:18px;padding:24px 26px;margin-bottom:34px}
+  .prox-label{font-family:'Montserrat';font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--amarillo)}
+  .prox-rows{margin:12px 0 6px}
+  .prox-row{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.14)}
+  .prox-row:last-child{border-bottom:none}
+  .prox-c{font-size:14.5px;color:#eaeefb}
+  .prox-v{font-family:'Montserrat';font-weight:700;font-size:14px;color:#fff;white-space:nowrap}
+  .prox-nota{font-size:12.5px;color:#cfd6ea}
+
+  .sec h2{font-size:23px;font-weight:800;margin:28px 0 14px;letter-spacing:-.3px}
+  .cal-list{display:grid;gap:14px}
+  .cal{background:#fff;border:1px solid var(--linea);border-radius:15px;padding:20px 22px}
+  .cal-head{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+  .cal .ico{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;background:var(--amarillo)}
+  .cal .ico svg{width:21px;height:21px;color:var(--azul-prof)}
+  .cal-head h3{font-size:17px;font-weight:800;margin:0;color:var(--azul-prof)}
+  .cal-cuando{font-family:'Montserrat';font-weight:700;font-size:14.5px;color:var(--azul);margin:0 0 4px}
+  .cal-det{font-size:14.5px;color:#555;line-height:1.6;margin:0}
+  .cal-aviso{margin-top:26px;font-size:13px;color:var(--gris);line-height:1.6;background:#fafbfe;border:1px solid var(--linea);border-radius:12px;padding:14px 18px}
+
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap}.cta-row.center{justify-content:center}
+  .cierre{background:linear-gradient(150deg,var(--azul),var(--azul-prof));color:#fff;text-align:center;padding:64px 24px}
+  .cierre h2{color:#fff;font-size:25px;font-weight:800;max-width:26ch;margin:0 auto}
+  .cierre p{color:#cfd6ea;font-size:17px;margin:14px auto 26px;max-width:54ch}
+  @media(max-width:640px){ .hero h1{font-size:29px} }
+</style>

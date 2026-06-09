@@ -114,7 +114,7 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
             <button type="button" class="mail-toggle" id="mail-toggle">Recibir esta estimación en PDF a mi correo</button>
             <div class="mail-box" id="mail-box" hidden>
               <input class="inp-solo" id="mail-nombre" type="text" placeholder="Tu nombre" autocomplete="given-name" />
-              <div class="inp"><i>@</i><input type="email" id="mail-input" placeholder="tucorreo@ejemplo.cl" /></div>
+              <input class="inp-solo" type="email" id="mail-input" placeholder="tucorreo@ejemplo.cl" autocomplete="email" />
               <input class="hp" id="mail-website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
               <label class="mail-check"><input type="checkbox" id="mail-consent" /><span>Acepto recibir mi estimación en PDF y, cada cierto tiempo, contenido útil de TomContable. Puedo darme de baja cuando quiera. <a href="/privacidad" target="_blank" rel="noopener">Política de privacidad</a>.</span></label>
               <button type="button" class="btn btn-amber" id="mail-send">Enviarme el PDF</button>
@@ -132,7 +132,7 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
       <div class="cert">
         <div class="cert-txt">
           <h2>¿Lo quieres como documento formal y certificado?</h2>
-          <p>Con los datos que nos entregues, te emitimos el cálculo de tu finiquito en un <strong>documento formal, certificado por TomContable</strong>, listo para presentar o respaldar. No es una reunión ni una asesoría: es tu cálculo, hecho y certificado por contadores, al toque. <strong>Solo 1 UF + IVA.</strong></p>
+          <p>Con los datos que nos entregues, te emitimos el cálculo de tu finiquito en un <strong>documento formal, certificado por TomContable</strong>, listo para presentar o respaldar. No es una reunión ni una asesoría: es tu cálculo, hecho y certificado por nuestros contadores, de forma rápida. <strong>Solo 1 UF + IVA.</strong></p>
         </div>
         <BotonWhatsApp texto="Quiero mi finiquito certificado · 1 UF + IVA" mensaje="Hola, quiero el cálculo de mi finiquito certificado por TomContable (1 UF + IVA), vengo desde la calculadora" />
       </div>
@@ -285,8 +285,8 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
 
     rows.innerHTML = filas.map((f) => {
       const monto = (f[3] ? '−' : '') + fmt0.format(Math.round(f[2]));
-      const det = f[1] ? `<span class="r-d">${f[1]}</span>` : '';
-      return `<div class="r-row"><div class="r-info"><span class="r-c">${f[0]}</span>${det}</div><span class="r-v${f[3] ? ' neg' : ''}">${monto}</span></div>`;
+      const det = f[1] ? `<span class="r-d"> (${f[1]})</span>` : '';
+      return `<div class="r-row"><span class="r-txt"><span class="r-c">${f[0]}</span>${det}</span><span class="r-v${f[3] ? ' neg' : ''}">${monto}</span></div>`;
     }).join('');
 
     $('r-total').textContent = fmt0.format(Math.round(total));
@@ -316,7 +316,7 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
     for (let yy = 45; yy < 290; yy += 52) for (let xx = -5; xx < 215; xx += 92) doc.text('Estimación no certificada', xx, yy, { angle: 30 });
     if (doc.setGState) doc.setGState(new doc.GState({ opacity: 1 }));
     // Encabezado
-    if (logoImg) { try { doc.addImage(logoImg, 'PNG', M, 13, 45, 11); } catch (e) {} }
+    if (logoImg) { try { const lw = 42; const ratio = (logoImg.naturalHeight && logoImg.naturalWidth) ? (logoImg.naturalHeight / logoImg.naturalWidth) : 0.26; doc.addImage(logoImg, 'PNG', M, 13, lw, lw * ratio); } catch (e) {} }
     doc.setTextColor(30, 47, 115); doc.setFont('helvetica', 'bold'); doc.setFontSize(18);
     doc.text('Estimación de finiquito', M, 38);
     doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(139, 147, 179);
@@ -361,37 +361,46 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
   });
   $('mail-send').addEventListener('click', async () => {
     const msg = $('mail-msg');
+    const btn = $('mail-send');
+    if (btn.disabled) return; // evita doble envío
     const email = $('mail-input').value.trim();
     const nombre = $('mail-nombre').value.trim();
     const consent = $('mail-consent').checked;
     const website = $('mail-website').value; // honeypot
     const filasEls = [...document.querySelectorAll('#r-rows .r-row')];
+    msg.className = 'mail-msg';
     if (!filasEls.length || $('r-total').textContent === '$0') { msg.textContent = 'Primero completa el cálculo arriba.'; return; }
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { msg.textContent = 'Revisa tu correo, no parece válido.'; return; }
     if (!consent) { msg.textContent = 'Marca la casilla para poder enviarte el PDF.'; return; }
+    // Feedback inmediato y bloqueo del botón ANTES de generar el PDF
+    btn.disabled = true;
+    const btnTxt = btn.textContent;
+    btn.textContent = 'Enviando…';
+    msg.textContent = 'Generando tu PDF y enviándolo…';
+    await new Promise((r) => setTimeout(r, 40)); // deja pintar el aviso antes del PDF (que es lento)
     const filas = filasEls.map((r) => ({
       c: r.querySelector('.r-c')?.textContent || '',
-      d: r.querySelector('.r-d')?.textContent || '',
-      v: r.querySelector('.r-v')?.textContent || '',
+      d: (r.querySelector('.r-d')?.textContent || '').replace(/[()]/g, '').trim(),
+      v: (r.querySelector('.r-v')?.textContent || '').replace(/−/g, '-'),
       neg: r.querySelector('.r-v')?.classList.contains('neg') || false,
     }));
-    const total = $('r-total').textContent;
+    const total = $('r-total').textContent.replace(/−/g, '-');
     const meta = $('r-meta').textContent;
     let pdf = '';
     try { if (window.jspdf) pdf = buildPDFBase64(filas, total, meta); } catch (e) { pdf = ''; }
-    msg.textContent = 'Enviando…';
-    $('mail-send').disabled = true;
     try {
       const resp = await fetch('/api/enviar-finiquito', {
         method: 'POST', headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ email, nombre, consent, website, total, meta, filas, pdf }),
       });
       const j = await resp.json();
-      msg.textContent = j && j.ok ? '¡Listo! Te enviamos el PDF a tu correo (revisa también spam).' : 'No pudimos enviarlo ahora. Inténtalo en un rato.';
+      if (j && j.ok) { msg.className = 'mail-msg ok'; msg.textContent = '¡Listo! Te enviamos el PDF a ' + email + '. Revisa tu bandeja de entrada (y la carpeta de spam).'; }
+      else { msg.textContent = 'No pudimos enviarlo ahora. Inténtalo en un rato.'; }
     } catch (e) {
       msg.textContent = 'No pudimos enviarlo ahora. Inténtalo en un rato.';
     }
-    $('mail-send').disabled = false;
+    btn.disabled = false;
+    btn.textContent = btnTxt;
   });
 
   // Tooltips de ayuda (?) : clic para fijar, hover para mostrar, se cierran al salir
@@ -441,9 +450,9 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
   .result > :not(.wm){position:relative;z-index:1}
   .r-rows{margin-bottom:6px}
   .r-empty{color:var(--gris);font-size:14.5px;line-height:1.6}
-  .r-row{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:12px 0;border-bottom:1px solid var(--linea)}
-  .r-info{display:flex;flex-direction:column;gap:2px;min-width:0}
-  .r-c{font-size:14px;color:#33384a;line-height:1.35}
+  .r-row{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:12px 0;border-bottom:1px solid var(--linea)}
+  .r-txt{min-width:0}
+  .r-c{font-size:14px;color:#33384a;line-height:1.4}
   .r-d{font-size:12.5px;color:var(--gris)}
   .r-v{font-family:'Montserrat';font-weight:700;font-size:15.5px;color:var(--azul-prof);white-space:nowrap;flex-shrink:0}
   .r-v.neg{color:#b03636}
@@ -465,6 +474,7 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
   .mail-check input{margin-top:2px;flex-shrink:0}
   .mail-check a{color:var(--azul);font-weight:600}
   .mail-msg{font-size:13px;color:var(--azul);font-weight:600;margin:0;min-height:1em}
+  .mail-msg.ok{background:#fdf4dd;border:1px solid #f1d98a;border-radius:9px;padding:9px 12px;color:#6b5b1f}
 
   .sec-cert{padding:30px 0 6px}
   .cert{display:flex;align-items:center;justify-content:space-between;gap:22px;flex-wrap:wrap;background:#fdf4dd;border:1px solid #f1d98a;border-radius:18px;padding:24px 28px}

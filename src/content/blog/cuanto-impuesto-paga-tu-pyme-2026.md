@@ -13,7 +13,7 @@ faqs:
   - q: ¿A quién le aplica la rebaja a 12,5%?
     a: Principalmente a las empresas acogidas al régimen Pro Pyme General, que es el que paga Impuesto de Primera Categoría a nivel de empresa. Si estás en Pro Pyme Transparente, tu empresa no paga ese impuesto, así que el beneficio que te toca es la rebaja del PPM, no la de la tasa.
   - q: ¿Tengo que hacer algún trámite para que me apliquen la rebaja?
-    a: No es un trámite que se pida, se aplica al calcular tus impuestos. Pero ojo, está condicionada a que la empresa esté cumpliendo con el pago de la nueva cotización previsional del empleador. Si no estás al día con eso, puedes perder el beneficio.
+    a: No es un trámite que se pida, se aplica al calcular tus impuestos. Eso sí, está condicionada a que la empresa esté cumpliendo con el pago de la nueva cotización previsional del empleador. Si no estás al día con eso, puedes perder el beneficio.
   - q: ¿La rebaja es para siempre?
     a: No. Es transitoria. La tasa de 12,5% rige para los años comerciales 2025, 2026 y 2027. En 2028 sube a 15% y después está previsto que vuelva de forma gradual a la tasa general del régimen, que es 25%. Por eso conviene aprovechar estos años para ordenarse y planificar.
   - q: Si me bajan el PPM, ¿no me va a quedar una deuda grande en la operación renta?
