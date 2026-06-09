@@ -46,6 +46,11 @@ const seo = {
 
           <label class="f" id="isapre-wrap" hidden><span>Valor del plan de Isapre <em>(en UF, mensual)</em></span><div class="inp"><input type="text" inputmode="decimal" id="isapre-uf" placeholder="0" /><i>UF</i></div></label>
 
+          <div class="f2">
+            <label class="f"><span>Jornada</span><select id="jornada-tipo"><option value="completa">Completa (42 hrs)</option><option value="parcial">Parcial</option></select></label>
+            <label class="f" id="jornada-horas-wrap" hidden><span>Horas semanales <em>(jornada parcial)</em></span><input type="text" inputmode="decimal" id="jornada-horas" placeholder="30" /></label>
+          </div>
+
           <details class="more" id="more">
             <summary>Agregar más detalle <span class="plus">+</span></summary>
             <div class="more-body">
@@ -57,10 +62,9 @@ const seo = {
                 <label class="f"><span>Colación <em>(no imponible)</em></span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="colacion" placeholder="0" /></div></label>
                 <label class="f"><span>Movilización <em>(no imponible)</em></span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="moviliz" placeholder="0" /></div></label>
               </div>
-              <div class="f3">
+              <div class="f2">
                 <label class="f"><span>Horas extra <em>(N°)</em></span><input type="text" inputmode="decimal" id="hextra" placeholder="0" /></label>
                 <label class="f"><span>Horas de atraso <em>(N°)</em></span><input type="text" inputmode="decimal" id="hatraso" placeholder="0" /></label>
-                <label class="f"><span>Jornada semanal <em>(hrs)</em></span><input type="text" inputmode="decimal" id="jornada" placeholder="44" /></label>
               </div>
               <label class="f"><span>Anticipos y otros descuentos</span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="descuentos" placeholder="0" /></div></label>
             </div>
@@ -72,6 +76,7 @@ const seo = {
             <div class="dual-box"><span>Líquido del trabajador</span><strong id="r-liquido">$0</strong></div>
             <div class="dual-box alt"><span>Costo total para la empresa</span><strong id="r-costo">$0</strong></div>
           </div>
+          <p class="aviso-min" id="aviso-min" hidden></p>
           <p class="r-sub">Haberes</p>
           <div class="r-rows" id="r-haberes"></div>
           <p class="r-sub">Descuentos del trabajador</p>
@@ -141,18 +146,19 @@ const seo = {
     const impAFC = Math.min(imponible, D.topeAFC_UF * UF);
 
     const afp = impCap * P.afpTasa;
-    const saludLegal = impCap * 0.07;
-    const salud = P.isapre ? Math.max(P.isapreUF * UF, saludLegal) : saludLegal;
+    const saludLegal = impCap * 0.07;                                   // 7% obligatorio
+    const adicIsapre = P.isapre ? Math.max(0, P.isapreUF * UF - saludLegal) : 0; // diferencia sobre el 7%
     const afcTrab = P.indef ? impAFC * D.afcTrabajadorIndef : 0;
 
-    const baseTrib = imponible - (afp + salud + afcTrab);
+    // El impuesto deduce las cotizaciones legales (AFP, 7% salud, cesantía); el adicional de Isapre no.
+    const baseTrib = imponible - (afp + saludLegal + afcTrab);
     const tUTM = baseTrib / UTM;
     let factor = 0, rebaja = 0;
     for (const [hasta, f, r] of TRAMOS) { if (tUTM <= hasta) { factor = f; rebaja = r; break; } }
     const impuesto = Math.max(0, tUTM * factor - rebaja) * UTM;
 
     const noImp = P.colacion + P.moviliz + P.asig;
-    const liquido = imponible + noImp - afp - salud - afcTrab - impuesto - atraso - P.anticipos;
+    const liquido = imponible + noImp - afp - saludLegal - adicIsapre - afcTrab - impuesto - atraso - P.anticipos;
 
     const afcEmp = P.indef ? impAFC * D.afcEmpleadorIndef : impAFC * D.afcEmpleadorPlazo;
     const sis = impCap * D.sis;
@@ -161,16 +167,19 @@ const seo = {
     const costo = imponible + noImp + afcEmp + sis + mut + reforma;
 
     return { base, grat, bonos: P.bonos, hExtra, colacion: P.colacion, moviliz: P.moviliz, asig: P.asig,
-      afp, salud, afcTrab, impuesto, atraso, anticipos: P.anticipos,
+      afp, saludLegal, adicIsapre, afcTrab, impuesto, atraso, anticipos: P.anticipos,
       afcEmp, sis, mut, reforma, liquido, costo };
   };
 
-  const vaciar = () => { $('r-liquido').textContent = '$0'; $('r-costo').textContent = '$0'; $('r-haberes').innerHTML = '<p class="rr-empty">Ingresa el monto.</p>'; $('r-desc').innerHTML = ''; $('r-emp').innerHTML = ''; $('r-meta').textContent = ''; };
+  const vaciar = () => { $('r-liquido').textContent = '$0'; $('r-costo').textContent = '$0'; $('aviso-min').hidden = true; $('r-haberes').innerHTML = '<p class="rr-empty">Ingresa el monto.</p>'; $('r-desc').innerHTML = ''; $('r-emp').innerHTML = ''; $('r-meta').textContent = ''; };
 
   const calcular = () => {
     const modo = $('modo').value;
     const afpKey = $('afp').value;
     const saludTipo = $('salud-tipo').value;
+    const JORNADA_COMPLETA = 42; // jornada ordinaria legal vigente (Ley 40 horas, 42 hrs desde 2026)
+    const jornadaParcial = $('jornada-tipo').value === 'parcial';
+    const jornada = jornadaParcial ? (dec('jornada-horas') || 30) : JORNADA_COMPLETA;
     const P = {
       gratOn: $('grat').value === 'si',
       topeGrat: (4.75 * D.sueldoMinimo) / 12,
@@ -178,7 +187,7 @@ const seo = {
       afpTasa: D.afps[afpKey] || 0.1144,
       isapre: saludTipo === 'isapre',
       isapreUF: dec('isapre-uf'),
-      jornada: dec('jornada') || 44,
+      jornada,
       hExtraN: dec('hextra'),
       hAtrasoN: dec('hatraso'),
       bonos: num('bonos'),
@@ -205,6 +214,18 @@ const seo = {
     $('r-liquido').textContent = fmt0.format(Math.round(r.liquido));
     $('r-costo').textContent = fmt0.format(Math.round(r.costo));
 
+    // Aviso: sueldo base bajo el mínimo legal (proporcional si la jornada es parcial)
+    const minProp = jornadaParcial ? D.sueldoMinimo * (jornada / JORNADA_COMPLETA) : D.sueldoMinimo;
+    const avisoEl = $('aviso-min');
+    if (base > 0 && base < minProp - 1) {
+      avisoEl.hidden = false;
+      avisoEl.textContent = jornadaParcial
+        ? `Atención: el sueldo base está bajo el mínimo proporcional de esta jornada (${fmt0.format(Math.round(minProp))} para ${jornada} hrs). Revisa que cumpla el ingreso mínimo legal.`
+        : `Atención: el sueldo base está bajo el ingreso mínimo legal (${fmt0.format(Math.round(minProp))}).`;
+    } else {
+      avisoEl.hidden = true;
+    }
+
     $('r-haberes').innerHTML = rowsHtml([
       ['Sueldo base', r.base, false],
       P.gratOn && ['Gratificación legal', r.grat, false],
@@ -216,7 +237,8 @@ const seo = {
     ]);
     $('r-desc').innerHTML = rowsHtml([
       ['AFP (' + afpKey + ')', r.afp, true],
-      [P.isapre ? 'Salud (Isapre)' : 'Salud (Fonasa 7%)', r.salud, true],
+      ['Salud obligatoria (7%)', r.saludLegal, true],
+      r.adicIsapre > 0 && ['Adicional Isapre', r.adicIsapre, true],
       P.indef && ['Seguro de cesantía', r.afcTrab, true],
       r.impuesto > 0 && ['Impuesto único', r.impuesto, true],
       r.atraso > 0 && ['Atrasos', r.atraso, true],
@@ -242,7 +264,8 @@ const seo = {
       <li>Sueldo mínimo: <strong>${fmt0.format(D.sueldoMinimo)}</strong> · Tope imponible AFP/salud: <strong>${D.topeAFP_UF} UF</strong> · Tope cesantía: <strong>${D.topeAFC_UF} UF</strong></li>
       <li>AFP (cargo trabajador, incluye 10% + comisión): ${Object.keys(D.afps).map((k) => `${k} ${pct(D.afps[k])}%`).join(' · ')}</li>
       <li>Salud: Fonasa 7% o Isapre (si el plan en UF supera el 7% legal, el trabajador paga la diferencia)</li>
-      <li>Horas extra: recargo 50% sobre la hora ordinaria, jornada por defecto 44 hrs <strong>(confirmar jornada legal vigente)</strong> · Atrasos: hora ordinaria sin recargo</li>
+      <li>Jornada completa legal: 42 hrs (Ley 40 horas, vigente desde 2026). En jornada parcial, el ingreso mínimo se calcula proporcional a las horas</li>
+      <li>Horas extra: recargo 50% sobre la hora ordinaria · Atrasos: hora ordinaria sin recargo</li>
       <li>Cesantía trabajador indefinido: ${pct(D.afcTrabajadorIndef)}% · Cesantía empleador: ${pct(D.afcEmpleadorIndef)}% indefinido / ${pct(D.afcEmpleadorPlazo)}% plazo fijo</li>
       <li>SIS empleador: ${pct(D.sis)}% · Cargo empleador AFP: ${pct(D.cargoEmpleadorAFP)}% · Mutual: ${pct(MUTUAL)}% (referencial, varía por empresa)</li>
       <li>Impuesto único: tramos en UTM con rebaja (estructura legal estándar)</li>
@@ -252,6 +275,7 @@ const seo = {
   // Cambios de interfaz
   $('modo').addEventListener('change', () => { $('monto-label').textContent = $('modo').value === 'liquido' ? 'Sueldo líquido deseado' : 'Sueldo base mensual'; calcular(); });
   $('salud-tipo').addEventListener('change', () => { $('isapre-wrap').hidden = $('salud-tipo').value !== 'isapre'; calcular(); });
+  $('jornada-tipo').addEventListener('change', () => { $('jornada-horas-wrap').hidden = $('jornada-tipo').value !== 'parcial'; calcular(); });
   $('cw-form').addEventListener('input', calcular);
   $('cw-form').addEventListener('change', calcular);
 
@@ -298,6 +322,7 @@ const seo = {
   .dual-box.alt{background:var(--azul-prof)}
   .dual-box span{display:block;font-family:'Montserrat';font-weight:600;font-size:12.5px;color:#cfd6ea}
   .dual-box strong{display:block;font-family:'Montserrat';font-weight:800;font-size:21px;color:var(--amarillo);margin-top:4px;line-height:1.1}
+  .aviso-min{background:#fdecec;border:1px solid #f3b9b9;border-radius:10px;padding:10px 13px;font-size:13px;color:#9a2727;line-height:1.45;margin:0 0 6px}
   .r-sub{font-family:'Montserrat';font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--gris);margin:16px 0 4px}
   :global(.r-rows .rr){display:flex;justify-content:space-between;gap:14px;padding:8px 0;border-bottom:1px solid #e6e8f0;font-size:14px;color:#33384a}
   :global(.r-rows .rr-c){min-width:0}

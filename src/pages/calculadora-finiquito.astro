@@ -413,9 +413,10 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
     hintPop.textContent = h.getAttribute('data-tip') || '';
     hintPop.style.display = 'block';
     const r = h.getBoundingClientRect();
+    const vw = (window.visualViewport && window.visualViewport.width) || document.documentElement.clientWidth || window.innerWidth;
     const pw = hintPop.offsetWidth, ph = hintPop.offsetHeight;
     let left = r.left + r.width / 2 - pw / 2;
-    left = Math.max(8, Math.min(left, window.innerWidth - pw - 8));
+    left = Math.max(8, Math.min(left, vw - pw - 8));
     let top = r.top - ph - 9;
     if (top < 8) top = r.bottom + 9; // si no hay espacio arriba, lo muestra abajo
     hintPop.style.left = left + 'px';
