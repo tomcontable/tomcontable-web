@@ -1,0 +1,78 @@
+---
+// Banner rotativo y sutil que promociona los servicios de TomContable.
+// Reutilizable: se puede poner en el hub de herramientas y en cada calculadora.
+const servicios = [
+  { tag: 'Contabilidad mensual', titulo: 'Tu contabilidad al día y tus impuestos presentados, sin que tengas que estar encima del SII.', cta: 'Ver contabilidad mensual', href: '/contabilidad-mensual' },
+  { tag: 'Constitución de empresas', titulo: 'Tu empresa constituida, iniciada ante el SII y lista para facturar.', cta: 'Crear mi empresa', href: '/constitucion-de-empresas' },
+  { tag: 'Problemas con el SII', titulo: '¿Observado, con deuda o bloqueado en el SII? Revisamos tu caso y armamos un plan.', cta: 'Resolver mi caso', href: '/problemas-con-el-sii' },
+  { tag: 'Asesorías', titulo: 'Una duda puntual bien resuelta te ahorra problemas más grandes. Agenda una asesoría.', cta: 'Agendar asesoría', href: '/asesorias' },
+];
+---
+<section class="bsrv" aria-label="Servicios de TomContable">
+  <div class="bsrv-box">
+    <span class="bsrv-eyebrow">Más que calculadoras</span>
+    <div class="bsrv-stage">
+      {servicios.map((s, i) => (
+        <article class={`bsrv-slide${i === 0 ? ' on' : ''}`} data-i={i}>
+          <div class="bsrv-txt">
+            <span class="bsrv-tag">{s.tag}</span>
+            <p class="bsrv-tit">{s.titulo}</p>
+          </div>
+          <a class="bsrv-cta" href={s.href}>{s.cta}</a>
+        </article>
+      ))}
+    </div>
+    <div class="bsrv-dots">
+      {servicios.map((_, i) => (<button class={`bsrv-dot${i === 0 ? ' on' : ''}`} type="button" data-dot={i} aria-label={`Servicio ${i + 1}`}></button>))}
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll('.bsrv').forEach((root) => {
+    const slides = [...root.querySelectorAll('.bsrv-slide')];
+    const dots = [...root.querySelectorAll('.bsrv-dot')];
+    if (slides.length < 2) return;
+    let i = 0, timer = null;
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const show = (n) => {
+      i = (n + slides.length) % slides.length;
+      slides.forEach((s, k) => s.classList.toggle('on', k === i));
+      dots.forEach((d, k) => d.classList.toggle('on', k === i));
+    };
+    const start = () => { if (reduce) return; stop(); timer = setInterval(() => show(i + 1), 5500); };
+    const stop = () => { if (timer) { clearInterval(timer); timer = null; } };
+    dots.forEach((d) => d.addEventListener('click', () => { show(Number(d.dataset.dot)); start(); }));
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', start);
+    root.addEventListener('focusin', stop);
+    root.addEventListener('focusout', start);
+    root.querySelectorAll('.bsrv-cta').forEach((a) => a.addEventListener('click', () => {
+      const tag = (a.closest('.bsrv-slide')?.querySelector('.bsrv-tag')?.textContent || '').trim();
+      if (window.posthog) window.posthog.capture('banner_servicio_click', { servicio: tag, destino: a.getAttribute('href') });
+    }));
+    start();
+  });
+</script>
+
+<style>
+  .bsrv{margin:0 auto;max-width:920px;padding:0 4px}
+  .bsrv-box{position:relative;background:linear-gradient(135deg,#f3f6fd 0%, #eaf0fb 100%);border:1px solid #e1e7f4;border-radius:18px;padding:22px 26px}
+  .bsrv-eyebrow{display:inline-block;font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--azul);margin-bottom:10px}
+  .bsrv-stage{position:relative;min-height:78px}
+  .bsrv-slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;gap:20px;opacity:0;visibility:hidden;transition:opacity .5s ease, visibility .5s}
+  .bsrv-slide.on{opacity:1;visibility:visible}
+  .bsrv-tag{display:block;font-family:'Montserrat',sans-serif;font-weight:700;font-size:12.5px;color:var(--azul-prof);margin-bottom:3px}
+  .bsrv-tit{margin:0;font-size:16px;line-height:1.45;color:#33384a;max-width:60ch}
+  .bsrv-cta{flex-shrink:0;display:inline-flex;align-items:center;white-space:nowrap;background:var(--amarillo);color:var(--azul-prof);font-family:'Montserrat',sans-serif;font-weight:700;font-size:14px;text-decoration:none;padding:11px 18px;border-radius:11px;transition:.15s}
+  .bsrv-cta:hover{filter:brightness(.96);transform:translateY(-1px)}
+  .bsrv-dots{display:flex;gap:7px;justify-content:center;margin-top:16px}
+  .bsrv-dot{width:8px;height:8px;border-radius:50%;border:none;padding:0;cursor:pointer;background:#c3cce2;transition:.2s}
+  .bsrv-dot.on{background:var(--azul);transform:scale(1.25)}
+  @media(max-width:640px){
+    .bsrv-stage{min-height:150px}
+    .bsrv-slide{flex-direction:column;align-items:flex-start;gap:14px;justify-content:center}
+    .bsrv-tit{font-size:15px}
+    .bsrv-cta{width:100%;justify-content:center}
+  }
+</style>

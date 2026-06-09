@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Sugerencias from '../components/Sugerencias.astro';
+import BannerServicios from '../components/BannerServicios.astro';
 
 const seo = {
   title: 'Calculadoras gratis para pymes | UF, UTM, dólar y finiquito · TomContable',
@@ -68,6 +69,8 @@ const listSchema = {
     </div>
   </section>
 
+  <div class="banner-wrap"><BannerServicios /></div>
+
   <Sugerencias
     titulo="¿Echas de menos una calculadora?"
     subtitulo="Esta web la construimos pensando en ti. Dinos qué herramienta te serviría y nos ponemos a trabajar en las que más nos pidan."
@@ -91,5 +94,6 @@ const listSchema = {
   .card p{font-size:15px;color:#555;flex:1;margin-bottom:16px;line-height:1.6}
   .card-cta{font-family:'Montserrat';font-weight:700;font-size:14px;color:var(--azul)}
   .nota{margin-top:26px;color:var(--gris);font-size:15px}
+  .banner-wrap{padding:0 24px 48px}
   @media(max-width:880px){ .grid{grid-template-columns:1fr} }
 </style>
