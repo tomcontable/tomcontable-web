@@ -9,10 +9,11 @@ const seo = {
 };
 
 const faqs = [
-  { q: '¿Qué incluye el finiquito que calcula esta herramienta?', a: 'Calcula los conceptos más comunes: vacaciones pendientes o proporcionales, indemnización por años de servicio (cuando corresponde por necesidades de la empresa), indemnización sustitutiva del aviso previo y la remuneración pendiente. Es una estimación referencial.' },
+  { q: '¿Qué incluye el finiquito que calcula esta herramienta?', a: 'Calcula los conceptos más comunes: vacaciones pendientes o proporcionales, indemnización por años de servicio (cuando corresponde por necesidades de la empresa), indemnización sustitutiva del aviso previo y la remuneración pendiente. Además puedes sumar otros haberes y restar descuentos a mano. Es una estimación referencial.' },
   { q: '¿Es un cálculo oficial o certificado?', a: 'No. Es una herramienta de apoyo para tener una estimación rápida. Cada finiquito tiene detalles y casos especiales que deben revisarse. Para tu finiquito definitivo, escríbenos y lo revisamos contigo.' },
   { q: '¿Por qué la indemnización por años de servicio a veces sale cero?', a: 'Porque esa indemnización aplica principalmente cuando el término es por necesidades de la empresa y existe al menos un año de servicio. En causales como renuncia o mutuo acuerdo, no corresponde. Las vacaciones, en cambio, siempre se pagan.' },
   { q: '¿Qué es el tope de 11 años y el de 90 UF?', a: 'La indemnización por años de servicio se paga por cada año trabajado (y fracción superior a seis meses), con un tope legal de 11 años. Además, la base de cálculo tiene un tope de 90 UF. La calculadora aplica ambos topes.' },
+  { q: '¿Cómo cuento los días inhábiles de las vacaciones?', a: 'Con un calendario a la vista, cuenta desde el día del finiquito hacia adelante los días hábiles pendientes y suma los sábados, domingos y festivos que caen dentro de ese período. Ese número va en el campo de días inhábiles.' },
 ];
 
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
@@ -45,7 +46,6 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
               <option value="Renuncia del Trabajador">Renuncia del trabajador</option>
               <option value="Mutuo Acuerdo">Mutuo acuerdo</option>
               <option value="Fin Plazo Convenido">Fin de plazo convenido</option>
-              <option value="Fin de la Obra">Fin de la obra o faena</option>
             </select>
           </label>
 
@@ -56,23 +56,28 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
 
           <label class="f"><span>Sueldo base mensual</span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="sueldo" placeholder="0" /></div></label>
 
+          <label class="f"><span>Bono imponible <em>(promedio últimos 3 meses)</em> <span class="hint" title="Promedio mensual de los bonos imponibles de los últimos 3 meses. Si no tienes bonos, déjalo en 0.">?</span></span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="bonos" placeholder="0" /></div></label>
+
           <div class="f2">
-            <label class="f"><span>Bonos imponibles (promedio mensual)</span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="bonos" placeholder="0" /></div></label>
-            <label class="f"><span>Gratificación: se calcula sola</span><div class="inp ro"><i></i><input type="text" id="grat-view" disabled placeholder="automático" /></div></label>
+            <label class="f">
+              <span>Gratificación <span class="hint" title="Si el trabajador recibe gratificación, se calcula como el 25% del sueldo con tope mensual legal. Solo afecta la base de la indemnización.">?</span></span>
+              <select id="grat-on"><option value="si">Sí, incluir</option><option value="no">No incluir</option></select>
+            </label>
+            <label class="f"><span>Gratificación calculada</span><div class="inp ro"><i></i><input type="text" id="grat-view" disabled placeholder="automático" /></div></label>
           </div>
 
           <div class="f2">
-            <label class="f"><span>Asignación de colación (mensual)</span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="colacion" placeholder="0" /></div></label>
-            <label class="f"><span>Asignación de movilización (mensual)</span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="moviliz" placeholder="0" /></div></label>
+            <label class="f"><span>Asignación de colación <em>(mensual)</em></span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="colacion" placeholder="0" /></div></label>
+            <label class="f"><span>Asignación de movilización <em>(mensual)</em></span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="moviliz" placeholder="0" /></div></label>
           </div>
 
           <h2>Vacaciones</h2>
           <div class="f2">
-            <label class="f"><span>Días de vacaciones ya tomados</span><input type="text" inputmode="decimal" id="vac-tomadas" placeholder="0" /></label>
-            <label class="f"><span>Días inhábiles en las vacaciones pendientes <em>(sáb, dom y festivos)</em></span><input type="text" inputmode="decimal" id="vac-inhabiles" placeholder="0" /></label>
+            <label class="f"><span>N° de días de vacaciones tomados <em>(durante toda la vigencia del contrato)</em> <span class="hint" title="Total de días hábiles de vacaciones que el trabajador ya usó durante todo el contrato. Se descuentan de las vacaciones acumuladas.">?</span></span><input type="text" inputmode="decimal" id="vac-tomadas" placeholder="0" /></label>
+            <label class="f"><span>Días inhábiles en las vacaciones pendientes <em>(sáb, dom y festivos)</em> <span class="hint" title="Con calendario en mano, desde el día del finiquito hacia adelante: cuenta los días hábiles pendientes y suma los sábados, domingos y festivos que caen dentro de ese período.">?</span></span><input type="text" inputmode="decimal" id="vac-inhabiles" placeholder="0" /></label>
           </div>
 
-          <h2>Otros</h2>
+          <h2>Otros y ajustes</h2>
           <label class="f" id="aviso-wrap">
             <span>¿El empleador avisó con 30 días de anticipación?</span>
             <select id="aviso">
@@ -80,10 +85,21 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
               <option value="no">No avisó (corresponde mes de aviso)</option>
             </select>
           </label>
+          <label class="f" id="pactada-wrap">
+            <span>Indemnización pactada <em>(acuerdo entre las partes)</em> <span class="hint" title="En un finiquito por mutuo acuerdo, las partes pueden pactar libremente una indemnización. Ingresa el monto acordado.">?</span></span>
+            <div class="inp"><i>$</i><input type="text" inputmode="numeric" id="pactada" placeholder="0" /></div>
+          </label>
+          <label class="f" id="afc-wrap">
+            <span>Descuento AFC <em>(aporte del empleador)</em> <span class="hint" title="En necesidades de la empresa con más de un año, el empleador puede descontar de la indemnización por años de servicio la parte financiada por su aporte al seguro de cesantía (AFC). Ingresa ese monto para restarlo.">?</span></span>
+            <div class="inp"><i>$</i><input type="text" inputmode="numeric" id="afc" placeholder="0" /></div>
+          </label>
           <label class="f"><span>Remuneración pendiente del último período</span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="rem-pendiente" placeholder="0" /></div></label>
+          <label class="f"><span>Otros haberes a agregar <em>(a mano)</em></span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="otros-haberes" placeholder="0" /></div></label>
+          <label class="f"><span>Descuentos a restar <em>(a mano)</em></span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="descuentos" placeholder="0" /></div></label>
         </form>
 
         <div class="panel result" id="result">
+          <div class="wm" aria-hidden="true"></div>
           <h2>Resumen del finiquito</h2>
           <div class="r-rows" id="r-rows"></div>
           <div class="r-total">
@@ -93,6 +109,15 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
           <p class="r-meta" id="r-meta"></p>
           <div class="r-cta">
             <BotonWhatsApp texto="Quiero que revisen mi finiquito" mensaje="Hola vengo desde la calculadora de finiquito y quiero que revisen mi caso" />
+          </div>
+          <div class="r-mail">
+            <button type="button" class="mail-toggle" id="mail-toggle">Enviar esta estimación a mi correo</button>
+            <div class="mail-box" id="mail-box" hidden>
+              <div class="inp"><i>@</i><input type="email" id="mail-input" placeholder="tucorreo@ejemplo.cl" /></div>
+              <button type="button" class="btn btn-amber" id="mail-send">Enviármelo</button>
+              <p class="mail-consent">Te enviamos la estimación y, cada cierto tiempo, contenido útil para tu empresa. Puedes darte de baja cuando quieras.</p>
+              <p class="mail-msg" id="mail-msg" role="status"></p>
+            </div>
           </div>
         </div>
 
@@ -141,7 +166,6 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
     const n = parseFloat(String(v).replace(/\./g, '').replace(/,/g, '.').replace(/[^\d.]/g, ''));
     return isFinite(n) ? n : 0;
   };
-
   const parseFecha = (id) => {
     const v = $(id).value;
     if (!v) return null;
@@ -149,7 +173,6 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
     if (!y || !m || !d) return null;
     return new Date(y, m - 1, d);
   };
-
   const edate = (d, months) => new Date(d.getFullYear(), d.getMonth() + months, d.getDate());
   const difMeses = (d1, d2) => {
     let m = (d2.getFullYear() - d1.getFullYear()) * 12 + (d2.getMonth() - d1.getMonth());
@@ -157,13 +180,12 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
     return m;
   };
   const diffDias = (a, b) => Math.round((b - a) / 86400000);
-
   const aniosServicio = (meses) => {
     const umbrales = [12, 18, 30, 42, 54, 66, 78, 90, 102, 114, 126, 138, 150];
-    let c = 0;
-    umbrales.forEach((u) => { if (meses >= u) c++; });
-    return Math.min(c, 11); // tope legal 11 años
+    let c = 0; umbrales.forEach((u) => { if (meses >= u) c++; });
+    return Math.min(c, 11);
   };
+  const dias = (n) => (Math.round(n * 100) / 100).toLocaleString('es-CL') + (n === 1 ? ' día' : ' días');
 
   const calcular = () => {
     const causal = $('causal').value;
@@ -171,17 +193,31 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
     const df = parseFecha('f-fin');
     const sueldo = num('sueldo');
     const bonos = num('bonos');
+    const gratOn = $('grat-on').value === 'si';
     const colacion = num('colacion');
     const moviliz = num('moviliz');
     const vacTomadas = num('vac-tomadas');
     const vacInhabiles = num('vac-inhabiles');
-    const aviso = $('aviso').value; // 'si' | 'no'
+    const aviso = $('aviso').value;
+    const pactada = num('pactada');
+    const afc = num('afc');
     const remPend = num('rem-pendiente');
+    const otros = num('otros-haberes');
+    const descuentos = num('descuentos');
+
+    const esNecesidades = causal === 'Necesidades de la Empresa';
+    const esMutuo = causal === 'Mutuo Acuerdo';
 
     const rows = $('r-rows');
 
-    // mostrar/ocultar la pregunta de aviso según causal (solo necesidades)
-    $('aviso-wrap').style.display = (causal === 'Necesidades de la Empresa') ? '' : 'none';
+    // base para saber años (necesita fechas)
+    let meses = 0, anios = 0;
+    if (di && df && df > di) { meses = difMeses(di, df); anios = aniosServicio(meses); }
+
+    // mostrar/ocultar campos condicionales
+    $('aviso-wrap').style.display = esNecesidades ? '' : 'none';
+    $('pactada-wrap').style.display = esMutuo ? '' : 'none';
+    $('afc-wrap').style.display = (esNecesidades && anios >= 1) ? '' : 'none';
 
     if (!di || !df || df <= di || sueldo <= 0) {
       rows.innerHTML = '<p class="r-empty">Completa la causal, las fechas y el sueldo base para ver la estimación.</p>';
@@ -191,55 +227,86 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
       return;
     }
 
-    const meses = difMeses(di, df);
     const diasAdic = diffDias(edate(di, meses), df);
-    const anios = aniosServicio(meses);
 
-    // Vacaciones
+    // Vacaciones (nunca negativas)
     const vacAntes = Math.round((meses * 1.25 + diasAdic * 0.04167) * 100) / 100;
-    const vacPendHabiles = vacAntes - vacTomadas;
-    const totalDiasVac = vacPendHabiles + vacInhabiles;
-
-    const baseVac = sueldo + bonos;              // E8 (E7 vacío)
-    const remDiaria = baseVac / 30;              // E9
-    const pagoVac = totalDiasVac * remDiaria;    // B15
+    const vacPend = Math.max(0, vacAntes - vacTomadas);
+    const totalDiasVac = vacPend > 0 ? vacPend + vacInhabiles : 0;
+    const baseVac = sueldo + bonos;
+    const remDiaria = baseVac / 30;
+    const pagoVac = totalDiasVac * remDiaria;
 
     // Gratificación y base de indemnización
     const topeGrat = (SUELDO_MINIMO * 4.75) / 12;
-    const grat = Math.min(baseVac * 0.25, topeGrat);
-    $('grat-view').value = fmt0.format(Math.round(grat));
+    const grat = gratOn ? Math.min(baseVac * 0.25, topeGrat) : 0;
+    $('grat-view').value = gratOn ? fmt0.format(Math.round(grat)) : 'No incluida';
 
-    const baseIndem = Math.min(baseVac + grat + colacion + moviliz, UF * 90); // E13
-
-    const esNecesidades = causal === 'Necesidades de la Empresa';
+    const baseIndem = Math.min(baseVac + grat + colacion + moviliz, UF * 90);
     const indemAnios = esNecesidades ? baseIndem * anios : 0;
     const indemAviso = (esNecesidades && aviso === 'no') ? baseIndem : 0;
+    const indemPactada = esMutuo ? pactada : 0;
+    const descAFC = (esNecesidades && anios >= 1) ? afc : 0;
 
-    const total = indemAnios + indemAviso + Math.max(pagoVac, 0) + remPend;
+    const total = indemAnios + indemAviso + indemPactada + Math.max(pagoVac, 0) + remPend + otros - descAFC - descuentos;
 
-    const filas = [
-      ['Indemnización por años de servicio', anios > 0 ? anios + (anios === 1 ? ' año' : ' años') : '—', indemAnios],
-      ['Indemnización sustitutiva del aviso previo', indemAviso > 0 ? '1 mes' : '—', indemAviso],
-      ['Vacaciones pendientes y/o proporcionales', (Math.round(totalDiasVac * 100) / 100).toLocaleString('es-CL') + ' días', Math.max(pagoVac, 0)],
-      ['Remuneración pendiente del período', '', remPend],
-    ];
-    rows.innerHTML = filas.map((f) =>
-      `<div class="r-row"><div class="r-l"><span class="r-c">${f[0]}</span>${f[1] ? `<span class="r-d">${f[1]}</span>` : ''}</div><span class="r-v">${fmt0.format(Math.round(f[2]))}</span></div>`
-    ).join('');
+    // filas: {concepto, detalle, monto, resta}
+    const filas = [];
+    if (esNecesidades) filas.push(['Indemnización por años de servicio', anios >= 1 ? anios + (anios === 1 ? ' año' : ' años') : 'menos de 1 año', indemAnios, false]);
+    if (esNecesidades && indemAviso > 0) filas.push(['Indemnización sustitutiva del aviso previo', '1 mes', indemAviso, false]);
+    if (esMutuo && indemPactada > 0) filas.push(['Indemnización pactada', 'acuerdo entre las partes', indemPactada, false]);
+    filas.push(['Vacaciones pendientes y/o proporcionales', dias(totalDiasVac), Math.max(pagoVac, 0), false]);
+    if (remPend > 0) filas.push(['Remuneración pendiente del período', '', remPend, false]);
+    if (otros > 0) filas.push(['Otros haberes', '', otros, false]);
+    if (descAFC > 0) filas.push(['Descuento AFC (aporte empleador)', '', descAFC, true]);
+    if (descuentos > 0) filas.push(['Descuentos', '', descuentos, true]);
+
+    rows.innerHTML = filas.map((f) => {
+      const monto = (f[3] ? '−' : '') + fmt0.format(Math.round(f[2]));
+      const det = f[1] ? `<span class="r-d">${f[1]}</span>` : '';
+      return `<div class="r-row"><span class="r-c">${f[0]}</span><div class="r-bottom">${det}<span class="r-v${f[3] ? ' neg' : ''}">${monto}</span></div></div>`;
+    }).join('');
 
     $('r-total').textContent = fmt0.format(Math.round(total));
-    $('r-meta').textContent = `Antigüedad: ${meses} meses (${anios} ${anios === 1 ? 'año' : 'años'} para indemnización). UF usada: ${fmt0.format(UF)}.`;
+    $('r-meta').textContent = `Antigüedad: ${meses} ${meses === 1 ? 'mes' : 'meses'} (${anios} ${anios === 1 ? 'año' : 'años'} para indemnización). UF usada: ${fmt0.format(UF)}.`;
   };
 
-  // recalcular en cada cambio
-  document.getElementById('fin-form').addEventListener('input', calcular);
-  document.getElementById('fin-form').addEventListener('change', calcular);
+  $('fin-form').addEventListener('input', calcular);
+  $('fin-form').addEventListener('change', calcular);
 
-  // UF en vivo
   fetch('https://mindicador.cl/api/uf')
     .then((r) => r.json())
-    .then((data) => { if (data && data.serie && data.serie[0]) { UF = data.serie[0].valor; } calcular(); })
+    .then((data) => { if (data && data.serie && data.serie[0]) UF = data.serie[0].valor; calcular(); })
     .catch(() => calcular());
+
+  // Enviar estimación al correo (captura lead + email vía función serverless)
+  $('mail-toggle').addEventListener('click', () => {
+    const box = $('mail-box'); box.hidden = !box.hidden;
+    if (!box.hidden) $('mail-input').focus();
+  });
+  $('mail-send').addEventListener('click', async () => {
+    const email = $('mail-input').value.trim();
+    const msg = $('mail-msg');
+    const filasEls = [...document.querySelectorAll('#r-rows .r-row')];
+    if (!filasEls.length || $('r-total').textContent === '$0') { msg.textContent = 'Primero completa el cálculo arriba.'; return; }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { msg.textContent = 'Revisa tu correo, no parece válido.'; return; }
+    const filas = filasEls.map((r) => ({
+      c: r.querySelector('.r-c')?.textContent || '',
+      d: r.querySelector('.r-d')?.textContent || '',
+      v: r.querySelector('.r-v')?.textContent || '',
+    }));
+    const payload = { email, total: $('r-total').textContent, meta: $('r-meta').textContent, filas };
+    msg.textContent = 'Enviando…';
+    $('mail-send').disabled = true;
+    try {
+      const resp = await fetch('/api/enviar-finiquito', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) });
+      const j = await resp.json();
+      msg.textContent = j && j.ok ? '¡Listo! Te lo enviamos a tu correo (revisa también spam).' : 'No pudimos enviarlo ahora. Inténtalo en un rato.';
+    } catch (e) {
+      msg.textContent = 'No pudimos enviarlo ahora. Inténtalo en un rato.';
+    }
+    $('mail-send').disabled = false;
+  });
 
   calcular();
 </script>
@@ -271,21 +338,32 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
   .inp input{border:none;padding:11px 0}
   .inp.ro{background:#f6f8fc}
   .inp.ro input{background:transparent;color:var(--gris)}
+  .hint{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--amarillo);color:var(--azul-prof);font-size:11px;font-weight:800;cursor:help;font-family:'Montserrat';vertical-align:middle}
 
-  .result{position:sticky;top:92px;background:linear-gradient(160deg,#fff,#f7f9fe)}
+  .result{position:sticky;top:92px;overflow:hidden;background:linear-gradient(160deg,#fff,#f7f9fe)}
+  .wm{position:absolute;inset:0;pointer-events:none;z-index:2;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='170'%3E%3Ctext x='8' y='95' transform='rotate(-22 150 90)' font-family='Arial, sans-serif' font-size='18' font-weight='700' fill='%2313235F'%3EEstimación no certificada%3C/text%3E%3C/svg%3E");background-repeat:repeat;background-size:300px 170px}
+  .result > :not(.wm){position:relative;z-index:1}
   .r-rows{margin-bottom:6px}
   .r-empty{color:var(--gris);font-size:14.5px;line-height:1.6}
-  .r-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--linea)}
-  .r-l{display:flex;flex-direction:column;gap:2px}
-  .r-c{font-size:14px;color:#33384a;font-weight:500;max-width:30ch}
+  .r-row{padding:12px 0;border-bottom:1px solid var(--linea)}
+  .r-c{display:block;font-size:14px;color:#33384a;line-height:1.35}
+  .r-bottom{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-top:4px}
   .r-d{font-size:12.5px;color:var(--gris)}
-  .r-v{font-family:'Montserrat';font-weight:700;font-size:15px;color:var(--azul-prof);white-space:nowrap}
-  .r-total{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:14px;background:var(--azul);color:#fff;border-radius:13px;padding:16px 18px}
+  .r-v{font-family:'Montserrat';font-weight:700;font-size:15.5px;color:var(--azul-prof);white-space:nowrap;margin-left:auto}
+  .r-v.neg{color:#b03636}
+  .r-total{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:16px;background:var(--azul);color:#fff;border-radius:13px;padding:16px 18px}
   .r-total span{font-family:'Montserrat';font-weight:600;font-size:14px;color:#cfd6ea}
-  .r-total strong{font-family:'Montserrat';font-weight:800;font-size:26px;color:var(--amarillo);line-height:1}
+  .r-total strong{font-family:'Montserrat';font-weight:800;font-size:25px;color:var(--amarillo);line-height:1}
   .r-meta{font-size:12.5px;color:var(--gris);margin-top:12px;line-height:1.5}
   .r-cta{margin-top:16px}
   .r-cta :global(.btn){width:100%}
+  .r-mail{margin-top:14px;border-top:1px dashed var(--linea);padding-top:14px}
+  .mail-toggle{background:none;border:none;color:var(--azul);font-family:'Montserrat';font-weight:700;font-size:13.5px;cursor:pointer;padding:2px 0;text-decoration:underline;text-underline-offset:3px}
+  .mail-box{margin-top:10px;display:flex;flex-direction:column;gap:10px}
+  .mail-box .inp{margin:0}
+  .mail-box .btn{width:100%}
+  .mail-consent{font-size:12px;color:var(--gris);line-height:1.45;margin:0}
+  .mail-msg{font-size:13px;color:var(--azul);font-weight:600;margin:0;min-height:1em}
 
   .sec-texto{padding-top:8px}
   .angosto{max-width:760px}
