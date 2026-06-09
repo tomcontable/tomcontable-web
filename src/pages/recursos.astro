@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import Sugerencias from '../components/Sugerencias.astro';
 
 const seo = {
   title: 'Recursos gratis para emprendedores y pymes · TomContable',
@@ -49,6 +50,12 @@ const recursos = [
       <p class="rec-nota">Pronto sumaremos más recursos a esta biblioteca.</p>
     </div>
   </section>
+
+  <Sugerencias
+    titulo="¿Qué recurso te gustaría?"
+    subtitulo="Tú eres parte de esto. Pídenos una plantilla, una guía o un tema, y preparamos los que más nos pidan."
+    origen="recursos"
+  />
 
   <!-- MODAL CAPTURA -->
   <div class="modal" id="modal-recurso" aria-hidden="true">

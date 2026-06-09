@@ -1,0 +1,63 @@
+---
+// Buzón de sugerencias. Envía la idea a hola@ vía /api/sugerencia.
+const {
+  titulo = '¿Te falta algo? Cuéntanos',
+  subtitulo = 'Sugiérenos una calculadora, un recurso o un tema para el blog. Leemos todo.',
+  origen = 'web',
+} = Astro.props;
+---
+<section class="sug-sec">
+  <div class="wrap angosto">
+    <div class="sug" data-origen={origen}>
+      <span class="sug-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/></svg></span>
+      <h2>{titulo}</h2>
+      <p class="sug-sub">{subtitulo}</p>
+      <textarea class="sug-msg" rows="3" placeholder="Ej: me gustaría una calculadora de sueldo líquido, un recurso sobre IVA, o que hablen de X en el blog."></textarea>
+      <input class="sug-email" type="email" placeholder="Tu correo (opcional, por si queremos avisarte)" autocomplete="email" />
+      <input class="sug-hp" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <button type="button" class="btn btn-amber sug-send">Enviar sugerencia</button>
+      <p class="sug-nota">No podemos prometer implementar todo, pero leemos cada idea y nos esforzamos por crear lo que más le aporte a nuestra comunidad y lo que más se repita. Esta web la hacemos para ti.</p>
+      <p class="sug-out" role="status"></p>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll('.sug').forEach((box) => {
+    const send = box.querySelector('.sug-send');
+    const out = box.querySelector('.sug-out');
+    const ta = box.querySelector('.sug-msg');
+    const em = box.querySelector('.sug-email');
+    send.addEventListener('click', async () => {
+      const mensaje = ta.value.trim();
+      const email = em.value.trim();
+      const website = box.querySelector('.sug-hp').value;
+      const origen = box.dataset.origen || 'web';
+      if (mensaje.length < 3) { out.textContent = 'Escribe tu sugerencia primero.'; return; }
+      out.textContent = 'Enviando…'; send.disabled = true;
+      try {
+        const r = await fetch('/api/sugerencia', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ mensaje, email, website, origen }) });
+        const j = await r.json();
+        if (j && j.ok) { out.textContent = '¡Gracias! Recibimos tu sugerencia.'; ta.value = ''; em.value = ''; }
+        else out.textContent = 'No pudimos enviarla ahora. Inténtalo en un rato.';
+      } catch (e) { out.textContent = 'No pudimos enviarla ahora. Inténtalo en un rato.'; }
+      send.disabled = false;
+    });
+  });
+</script>
+
+<style>
+  .sug-sec{padding:10px 0 8px}
+  .sug{background:linear-gradient(160deg,#fbfcfe,#eef1f8);border:1px solid var(--linea);border-radius:18px;padding:30px 28px;text-align:center}
+  .sug-ico{display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;border-radius:14px;background:var(--amarillo);margin-bottom:14px}
+  .sug-ico svg{width:26px;height:26px;color:var(--azul-prof)}
+  .sug h2{font-size:22px;font-weight:800;color:var(--azul);margin:0 0 6px}
+  .sug-sub{font-size:15px;color:#444a63;margin:0 auto 18px;max-width:48ch;line-height:1.55}
+  .sug textarea, .sug-email{width:100%;max-width:520px;border:1px solid var(--linea);border-radius:11px;padding:12px 14px;font-family:inherit;font-size:15px;color:var(--azul-prof);margin:0 auto 12px;display:block;background:#fff;resize:vertical}
+  .sug textarea:focus, .sug-email:focus{outline:none;border-color:var(--azul)}
+  .sug-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
+  .sug .btn{margin-top:2px}
+  .sug-nota{font-size:12.5px;color:var(--gris);line-height:1.5;margin:14px auto 0;max-width:50ch}
+  .sug-out{font-size:13.5px;color:var(--azul);font-weight:600;margin:10px 0 0;min-height:1em}
+  @media(max-width:560px){ .sug{padding:24px 18px} }
+</style>
