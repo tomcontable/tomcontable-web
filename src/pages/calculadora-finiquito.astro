@@ -1,0 +1,315 @@
+---
+import Base from '../layouts/Base.astro';
+import BotonWhatsApp from '../components/BotonWhatsApp.astro';
+
+const seo = {
+  title: 'Calculadora de Finiquito en Chile | Simulador gratis · TomContable',
+  description: 'Calcula el finiquito en Chile: vacaciones proporcionales, indemnización por años de servicio y mes de aviso. Gratis, simple y con el valor de la UF al día. Por TomContable.',
+  canonical: '/calculadora-finiquito',
+};
+
+const faqs = [
+  { q: '¿Qué incluye el finiquito que calcula esta herramienta?', a: 'Calcula los conceptos más comunes: vacaciones pendientes o proporcionales, indemnización por años de servicio (cuando corresponde por necesidades de la empresa), indemnización sustitutiva del aviso previo y la remuneración pendiente. Es una estimación referencial.' },
+  { q: '¿Es un cálculo oficial o certificado?', a: 'No. Es una herramienta de apoyo para tener una estimación rápida. Cada finiquito tiene detalles y casos especiales que deben revisarse. Para tu finiquito definitivo, escríbenos y lo revisamos contigo.' },
+  { q: '¿Por qué la indemnización por años de servicio a veces sale cero?', a: 'Porque esa indemnización aplica principalmente cuando el término es por necesidades de la empresa y existe al menos un año de servicio. En causales como renuncia o mutuo acuerdo, no corresponde. Las vacaciones, en cambio, siempre se pagan.' },
+  { q: '¿Qué es el tope de 11 años y el de 90 UF?', a: 'La indemnización por años de servicio se paga por cada año trabajado (y fracción superior a seis meses), con un tope legal de 11 años. Además, la base de cálculo tiene un tope de 90 UF. La calculadora aplica ambos topes.' },
+];
+
+const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
+const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication', name: 'Calculadora de Finiquito', applicationCategory: 'FinanceApplication', operatingSystem: 'Web', inLanguage: 'es-CL', url: 'https://tomcontable.cl/calculadora-finiquito', offers: { '@type': 'Offer', price: '0', priceCurrency: 'CLP' }, publisher: { '@type': 'Organization', name: 'TomContable' } };
+---
+<Base {...seo} schema={[appSchema, faqSchema]}>
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Herramienta gratis</p>
+      <h1>Calculadora de finiquito</h1>
+      <p class="lead">Estima el finiquito en Chile en un minuto: vacaciones, indemnización por años de servicio y mes de aviso, con el valor de la UF al día.</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap calc-wrap">
+
+      <p class="aviso-top">Esta es una <strong>estimación referencial</strong>, no un cálculo certificado. Hay casos especiales que conviene revisar. ¿Necesitas tu finiquito bien hecho? <a href="https://api.whatsapp.com/send/?phone=56964933110&text=Hola%20vengo%20desde%20la%20calculadora%20de%20finiquito" target="_blank" rel="noopener">Escríbenos</a>.</p>
+
+      <div class="grid">
+
+        <form class="panel form" id="fin-form" autocomplete="off">
+          <h2>Datos</h2>
+
+          <label class="f">
+            <span>Causal de término</span>
+            <select id="causal">
+              <option value="Necesidades de la Empresa">Necesidades de la empresa</option>
+              <option value="Renuncia del Trabajador">Renuncia del trabajador</option>
+              <option value="Mutuo Acuerdo">Mutuo acuerdo</option>
+              <option value="Fin Plazo Convenido">Fin de plazo convenido</option>
+              <option value="Fin de la Obra">Fin de la obra o faena</option>
+            </select>
+          </label>
+
+          <div class="f2">
+            <label class="f"><span>Fecha de inicio del contrato</span><input type="date" id="f-inicio" /></label>
+            <label class="f"><span>Último día trabajado</span><input type="date" id="f-fin" /></label>
+          </div>
+
+          <label class="f"><span>Sueldo base mensual</span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="sueldo" placeholder="0" /></div></label>
+
+          <div class="f2">
+            <label class="f"><span>Bonos imponibles (promedio mensual)</span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="bonos" placeholder="0" /></div></label>
+            <label class="f"><span>Gratificación: se calcula sola</span><div class="inp ro"><i></i><input type="text" id="grat-view" disabled placeholder="automático" /></div></label>
+          </div>
+
+          <div class="f2">
+            <label class="f"><span>Asignación de colación (mensual)</span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="colacion" placeholder="0" /></div></label>
+            <label class="f"><span>Asignación de movilización (mensual)</span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="moviliz" placeholder="0" /></div></label>
+          </div>
+
+          <h2>Vacaciones</h2>
+          <div class="f2">
+            <label class="f"><span>Días de vacaciones ya tomados</span><input type="text" inputmode="decimal" id="vac-tomadas" placeholder="0" /></label>
+            <label class="f"><span>Días inhábiles en las vacaciones pendientes <em>(sáb, dom y festivos)</em></span><input type="text" inputmode="decimal" id="vac-inhabiles" placeholder="0" /></label>
+          </div>
+
+          <h2>Otros</h2>
+          <label class="f" id="aviso-wrap">
+            <span>¿El empleador avisó con 30 días de anticipación?</span>
+            <select id="aviso">
+              <option value="si">Sí, avisó con 30 días</option>
+              <option value="no">No avisó (corresponde mes de aviso)</option>
+            </select>
+          </label>
+          <label class="f"><span>Remuneración pendiente del último período</span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="rem-pendiente" placeholder="0" /></div></label>
+        </form>
+
+        <div class="panel result" id="result">
+          <h2>Resumen del finiquito</h2>
+          <div class="r-rows" id="r-rows"></div>
+          <div class="r-total">
+            <span>Total estimado a pagar</span>
+            <strong id="r-total">$0</strong>
+          </div>
+          <p class="r-meta" id="r-meta"></p>
+          <div class="r-cta">
+            <BotonWhatsApp texto="Quiero que revisen mi finiquito" mensaje="Hola vengo desde la calculadora de finiquito y quiero que revisen mi caso" />
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec-texto">
+    <div class="wrap angosto">
+      <h2>Cómo funciona</h2>
+      <p>Completa los datos del contrato y la calculadora estima el finiquito con las reglas generales: las vacaciones se pagan siempre (proporcionales a los meses trabajados), la indemnización por años de servicio aplica cuando el término es por necesidades de la empresa, y el mes de aviso se paga cuando no hubo aviso con 30 días de anticipación. Usamos el valor de la UF del día para el tope legal de la base de cálculo.</p>
+      <p>Es una estimación de apoyo. Cada caso real puede tener detalles (bonos, comisiones, semanas corridas, licencias, anticipos, descuentos) que conviene revisar. Si quieres tu finiquito bien calculado y respaldado, lo vemos contigo.</p>
+
+      <h2 id="faq">Preguntas frecuentes</h2>
+      <div class="faq">
+        {faqs.map((it) => (
+          <details>
+            <summary>{it.q}<span class="plus">+</span></summary>
+            <div class="ans">{it.a}</div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="cierre">
+    <div class="wrap">
+      <h2>¿Necesitas un finiquito bien hecho, o calcular las remuneraciones de tu pyme?</h2>
+      <p>Te ayudamos con remuneraciones, finiquitos y todo lo laboral de tu empresa. Conversemos por WhatsApp, sin compromiso.</p>
+      <div class="cta-row center"><BotonWhatsApp texto="Hablar por WhatsApp" mensaje="Hola vengo desde la calculadora de finiquito" /></div>
+    </div>
+  </section>
+
+</Base>
+
+<script>
+  const SUELDO_MINIMO = 539000; // parámetro: actualizar cuando cambie el sueldo mínimo
+  let UF = 40746.28;            // se reemplaza por el valor en vivo
+
+  const fmt0 = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
+  const $ = (id) => document.getElementById(id);
+
+  const num = (id) => {
+    const v = $(id).value;
+    if (!v) return 0;
+    const n = parseFloat(String(v).replace(/\./g, '').replace(/,/g, '.').replace(/[^\d.]/g, ''));
+    return isFinite(n) ? n : 0;
+  };
+
+  const parseFecha = (id) => {
+    const v = $(id).value;
+    if (!v) return null;
+    const [y, m, d] = v.split('-').map(Number);
+    if (!y || !m || !d) return null;
+    return new Date(y, m - 1, d);
+  };
+
+  const edate = (d, months) => new Date(d.getFullYear(), d.getMonth() + months, d.getDate());
+  const difMeses = (d1, d2) => {
+    let m = (d2.getFullYear() - d1.getFullYear()) * 12 + (d2.getMonth() - d1.getMonth());
+    if (d2.getDate() < d1.getDate()) m--;
+    return m;
+  };
+  const diffDias = (a, b) => Math.round((b - a) / 86400000);
+
+  const aniosServicio = (meses) => {
+    const umbrales = [12, 18, 30, 42, 54, 66, 78, 90, 102, 114, 126, 138, 150];
+    let c = 0;
+    umbrales.forEach((u) => { if (meses >= u) c++; });
+    return Math.min(c, 11); // tope legal 11 años
+  };
+
+  const calcular = () => {
+    const causal = $('causal').value;
+    const di = parseFecha('f-inicio');
+    const df = parseFecha('f-fin');
+    const sueldo = num('sueldo');
+    const bonos = num('bonos');
+    const colacion = num('colacion');
+    const moviliz = num('moviliz');
+    const vacTomadas = num('vac-tomadas');
+    const vacInhabiles = num('vac-inhabiles');
+    const aviso = $('aviso').value; // 'si' | 'no'
+    const remPend = num('rem-pendiente');
+
+    const rows = $('r-rows');
+
+    // mostrar/ocultar la pregunta de aviso según causal (solo necesidades)
+    $('aviso-wrap').style.display = (causal === 'Necesidades de la Empresa') ? '' : 'none';
+
+    if (!di || !df || df <= di || sueldo <= 0) {
+      rows.innerHTML = '<p class="r-empty">Completa la causal, las fechas y el sueldo base para ver la estimación.</p>';
+      $('r-total').textContent = '$0';
+      $('r-meta').textContent = '';
+      $('grat-view').value = '';
+      return;
+    }
+
+    const meses = difMeses(di, df);
+    const diasAdic = diffDias(edate(di, meses), df);
+    const anios = aniosServicio(meses);
+
+    // Vacaciones
+    const vacAntes = Math.round((meses * 1.25 + diasAdic * 0.04167) * 100) / 100;
+    const vacPendHabiles = vacAntes - vacTomadas;
+    const totalDiasVac = vacPendHabiles + vacInhabiles;
+
+    const baseVac = sueldo + bonos;              // E8 (E7 vacío)
+    const remDiaria = baseVac / 30;              // E9
+    const pagoVac = totalDiasVac * remDiaria;    // B15
+
+    // Gratificación y base de indemnización
+    const topeGrat = (SUELDO_MINIMO * 4.75) / 12;
+    const grat = Math.min(baseVac * 0.25, topeGrat);
+    $('grat-view').value = fmt0.format(Math.round(grat));
+
+    const baseIndem = Math.min(baseVac + grat + colacion + moviliz, UF * 90); // E13
+
+    const esNecesidades = causal === 'Necesidades de la Empresa';
+    const indemAnios = esNecesidades ? baseIndem * anios : 0;
+    const indemAviso = (esNecesidades && aviso === 'no') ? baseIndem : 0;
+
+    const total = indemAnios + indemAviso + Math.max(pagoVac, 0) + remPend;
+
+    const filas = [
+      ['Indemnización por años de servicio', anios > 0 ? anios + (anios === 1 ? ' año' : ' años') : '—', indemAnios],
+      ['Indemnización sustitutiva del aviso previo', indemAviso > 0 ? '1 mes' : '—', indemAviso],
+      ['Vacaciones pendientes y/o proporcionales', (Math.round(totalDiasVac * 100) / 100).toLocaleString('es-CL') + ' días', Math.max(pagoVac, 0)],
+      ['Remuneración pendiente del período', '', remPend],
+    ];
+    rows.innerHTML = filas.map((f) =>
+      `<div class="r-row"><div class="r-l"><span class="r-c">${f[0]}</span>${f[1] ? `<span class="r-d">${f[1]}</span>` : ''}</div><span class="r-v">${fmt0.format(Math.round(f[2]))}</span></div>`
+    ).join('');
+
+    $('r-total').textContent = fmt0.format(Math.round(total));
+    $('r-meta').textContent = `Antigüedad: ${meses} meses (${anios} ${anios === 1 ? 'año' : 'años'} para indemnización). UF usada: ${fmt0.format(UF)}.`;
+  };
+
+  // recalcular en cada cambio
+  document.getElementById('fin-form').addEventListener('input', calcular);
+  document.getElementById('fin-form').addEventListener('change', calcular);
+
+  // UF en vivo
+  fetch('https://mindicador.cl/api/uf')
+    .then((r) => r.json())
+    .then((data) => { if (data && data.serie && data.serie[0]) { UF = data.serie[0].valor; } calcular(); })
+    .catch(() => calcular());
+
+  calcular();
+</script>
+
+<style>
+  .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:58px 0 46px}
+  .hero h1{font-size:38px;font-weight:800;letter-spacing:-.5px}
+  .hero .lead{font-size:18px;color:#444a63;margin:16px 0 0;max-width:60ch}
+
+  .sec{padding:42px 0}
+  .calc-wrap{max-width:980px}
+  .aviso-top{background:#fdf4dd;border:1px solid #f1d98a;border-radius:12px;padding:14px 18px;font-size:14.5px;color:#6b5b1f;margin-bottom:24px}
+  .aviso-top a{color:var(--azul);font-weight:700}
+
+  .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:start}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:18px;padding:26px}
+  .panel h2{font-size:16px;font-weight:800;color:var(--azul);margin:6px 0 14px;letter-spacing:-.2px}
+  .panel h2:not(:first-child){margin-top:22px;padding-top:18px;border-top:1px solid var(--linea)}
+
+  .f{display:block;margin-bottom:14px}
+  .f > span{display:block;font-family:'Montserrat';font-weight:600;font-size:13.5px;color:var(--azul-prof);margin-bottom:6px}
+  .f > span em{color:var(--gris);font-weight:500;font-style:normal}
+  .f input, .f select{width:100%;border:1px solid var(--linea);border-radius:10px;padding:11px 13px;font-family:inherit;font-size:15px;color:var(--azul-prof);background:#fff}
+  .f input:focus, .f select:focus{outline:none;border-color:var(--azul)}
+  .f2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .inp{display:flex;align-items:center;border:1px solid var(--linea);border-radius:10px;padding:0 12px}
+  .inp:focus-within{border-color:var(--azul)}
+  .inp i{font-family:'Montserrat';font-weight:700;color:var(--gris);font-size:14px;margin-right:6px;font-style:normal}
+  .inp input{border:none;padding:11px 0}
+  .inp.ro{background:#f6f8fc}
+  .inp.ro input{background:transparent;color:var(--gris)}
+
+  .result{position:sticky;top:92px;background:linear-gradient(160deg,#fff,#f7f9fe)}
+  .r-rows{margin-bottom:6px}
+  .r-empty{color:var(--gris);font-size:14.5px;line-height:1.6}
+  .r-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--linea)}
+  .r-l{display:flex;flex-direction:column;gap:2px}
+  .r-c{font-size:14px;color:#33384a;font-weight:500;max-width:30ch}
+  .r-d{font-size:12.5px;color:var(--gris)}
+  .r-v{font-family:'Montserrat';font-weight:700;font-size:15px;color:var(--azul-prof);white-space:nowrap}
+  .r-total{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:14px;background:var(--azul);color:#fff;border-radius:13px;padding:16px 18px}
+  .r-total span{font-family:'Montserrat';font-weight:600;font-size:14px;color:#cfd6ea}
+  .r-total strong{font-family:'Montserrat';font-weight:800;font-size:26px;color:var(--amarillo);line-height:1}
+  .r-meta{font-size:12.5px;color:var(--gris);margin-top:12px;line-height:1.5}
+  .r-cta{margin-top:16px}
+  .r-cta :global(.btn){width:100%}
+
+  .sec-texto{padding-top:8px}
+  .angosto{max-width:760px}
+  .sec-texto h2{font-size:24px;font-weight:800;margin:30px 0 12px;letter-spacing:-.3px}
+  .sec-texto p{font-size:16px;color:#444a63;line-height:1.7;margin-bottom:14px}
+
+  .faq{margin-top:6px}
+  details{background:#fff;border:1px solid var(--linea);border-radius:14px;margin-bottom:12px;overflow:hidden}
+  summary{list-style:none;cursor:pointer;padding:18px 22px;font-family:'Montserrat';font-weight:600;font-size:16px;color:var(--azul);display:flex;justify-content:space-between;gap:14px}
+  summary::-webkit-details-marker{display:none}
+  .plus{font-size:22px;color:var(--azul);transition:.2s;flex-shrink:0}
+  details[open] .plus{transform:rotate(45deg)}
+  .ans{padding:0 22px 18px;color:#555;font-size:15.5px;line-height:1.6}
+
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap}
+  .cta-row.center{justify-content:center}
+  .cierre{background:linear-gradient(150deg,var(--azul),var(--azul-prof));color:#fff;text-align:center;padding:64px 24px}
+  .cierre h2{color:#fff;font-size:25px;font-weight:800;max-width:30ch;margin:0 auto}
+  .cierre p{color:#cfd6ea;font-size:17px;margin:14px auto 26px;max-width:54ch}
+
+  @media(max-width:860px){
+    .hero h1{font-size:30px}
+    .grid{grid-template-columns:1fr}
+    .result{position:static}
+  }
+  @media(max-width:480px){ .f2{grid-template-columns:1fr} }
+</style>
