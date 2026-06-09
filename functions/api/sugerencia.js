@@ -4,11 +4,29 @@
 const esc = (s) => String(s == null ? '' : s).replace(/[<>&]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c]));
 const json = (obj, status = 200) => new Response(JSON.stringify(obj), { status, headers: { 'content-type': 'application/json' } });
 
+// Límite de envíos por IP usando la caché de Cloudflare (por centro de datos, sin configuración).
+// Devuelve true si se debe BLOQUEAR. Fail-open: ante cualquier error, NO bloquea.
+async function excedeLimite(request, bucket, limite, ventanaSeg) {
+  try {
+    const ip = request.headers.get('CF-Connecting-IP') || 'anon';
+    const key = new Request(`https://rl.tomcontable/${bucket}/${encodeURIComponent(ip)}`);
+    const cache = caches.default;
+    const hit = await cache.match(key);
+    const n = hit ? (parseInt(await hit.text(), 10) || 0) : 0;
+    if (n >= limite) return true;
+    await cache.put(key, new Response(String(n + 1), { headers: { 'Cache-Control': `max-age=${ventanaSeg}` } }));
+    return false;
+  } catch (e) { return false; }
+}
+
 export async function onRequestPost({ request, env }) {
   let data;
   try { data = await request.json(); } catch (e) { return json({ ok: false }, 400); }
 
   if (data.website) return json({ ok: true }); // honeypot
+
+  // Anti-abuso: máximo 5 envíos por IP cada 10 minutos.
+  if (await excedeLimite(request, 'sugerencia', 5, 600)) return json({ ok: false, error: 'rate' }, 429);
 
   const apiKey = env.BREVO_API_KEY;
   if (!apiKey) return json({ ok: false, error: 'config' }, 500);

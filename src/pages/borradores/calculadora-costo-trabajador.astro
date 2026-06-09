@@ -54,6 +54,8 @@ const diasMes = Array.from({ length: 30 }, (_, i) => 30 - i);  // 30 .. 1 (tope 
             <label class="f"><span>Días trabajados <em>(en el mes)</em></span><select id="dias">{diasMes.map((d) => (<option value={d} selected={d === 30}>{d}</option>))}</select></label>
           </div>
 
+          <label class="f"><span>Mes de cálculo <em>(desde enero 2026; ajusta UF, UTM y tasas)</em></span><input type="month" id="periodo" /></label>
+
           <details class="more" id="more">
             <summary>Agregar más detalle <span class="plus">+</span></summary>
             <div class="more-body">
@@ -99,33 +101,47 @@ const diasMes = Array.from({ length: 30 }, (_, i) => 30 - i);  // 30 .. 1 (tope 
         <summary>Parámetros usados (verifícalos antes de publicar)<span class="plus">+</span></summary>
         <div id="params-body" class="params-body"></div>
       </details>
+
+      <div class="descargo">
+        <p>Simulación generada en tomcontable.cl con los datos ingresados por el usuario. No constituye liquidación de sueldo oficial, comprobante de pago, asesoría laboral ni validación profesional de TomContable. Para emitir o revisar una liquidación real, deben considerarse contrato, asistencia, haberes, descuentos, cotizaciones, topes legales y antecedentes completos del trabajador.</p>
+        <p>Los indicadores previsionales se revisan cada mes, pero podrían no reflejar el último valor publicado por la autoridad. Asegúrate de verificarlos antes de usar el resultado.</p>
+        <p class="firma">TomContable.cl · Simulación referencial</p>
+      </div>
     </div>
   </section>
 
   <section class="cierre">
     <div class="wrap">
-      <h2>¿Necesitas llevar las remuneraciones de tu pyme bien hechas?</h2>
-      <p>Calculamos liquidaciones, cotizaciones y todo lo laboral por ti. Conversemos por WhatsApp.</p>
-      <div class="cta-row center"><BotonWhatsApp texto="Hablar por WhatsApp" mensaje="Hola vengo desde la calculadora de sueldo" /></div>
+      <h2>¿Necesitas una liquidación revisada?</h2>
+      <p>Solicita una revisión profesional con TomContable. Calculamos y revisamos liquidaciones, cotizaciones y todo lo laboral por ti.</p>
+      <div class="cta-row center"><BotonWhatsApp texto="Solicitar revisión profesional" mensaje="Hola vengo desde la calculadora de sueldo y quiero una liquidación revisada" /></div>
     </div>
   </section>
 
 </Base>
 
 <script>
-  // Indicadores de respaldo (Previred mayo 2026). Si /api/indicadores-previred responde,
-  // se reemplazan por los del mes. La mutual y el impuesto único no vienen de Previred.
-  const FALLBACK = {
-    fuente: 'respaldo', periodo: 'mayo 2026', sueldoMinimo: 539000,
-    topeAFP_UF: 90, topeAFC_UF: 135.2, sis: 0.0162,
+  // Indicadores previsionales de Previred, organizados por VIGENCIA (desde tal mes).
+  // Solo se agrega una fila cuando un valor cambia. Constantes de 2026 (no cambian mes a mes):
+  const BASE = {
+    sueldoMinimo: 539000,
     afcEmpleadorIndef: 0.024, afcTrabajadorIndef: 0.006, afcEmpleadorPlazo: 0.030,
     cargoEmpleadorAFP: 0.001, expectativaVida: 0.009,
     afps: { Capital: 0.1144, Cuprum: 0.1144, Habitat: 0.1127, PlanVital: 0.1116, ProVida: 0.1145, Modelo: 0.1058, Uno: 0.1046 },
   };
+  // Lo que cambió en 2026: topes imponibles (feb) y SIS (abr). Ordenadas por fecha ascendente.
+  // Para sumar un mes futuro con cambios, agrega una fila aquí con "desde": "AAAA-MM".
+  const VIGENCIAS = [
+    { desde: '2026-01', topeAFP_UF: 89.9, topeAFC_UF: 135.1, sis: 0.0154 },
+    { desde: '2026-02', topeAFP_UF: 90,   topeAFC_UF: 135.2, sis: 0.0154 },
+    { desde: '2026-04', topeAFP_UF: 90,   topeAFC_UF: 135.2, sis: 0.0162 },
+  ];
+  const PERIODO_MIN = '2026-01';
+  const vigenciaDe = (periodo) => { let v = VIGENCIAS[0]; for (const x of VIGENCIAS) { if (x.desde <= periodo) v = x; else break; } return { ...BASE, ...v, periodo }; };
   const JORNADA_COMPLETA = 42; // jornada ordinaria legal vigente (Ley 40 horas, 42 hrs desde 2026)
   // Impuesto único 2ª categoría mensual, tramos en UTM: [hasta, factor, rebaja UTM]
   const TRAMOS = [[13.5,0,0],[30,0.04,0.54],[50,0.08,1.74],[70,0.135,4.49],[90,0.23,11.14],[120,0.304,17.8],[310,0.35,23.32],[Infinity,0.40,38.82]];
-  let D = FALLBACK;
+  let D = vigenciaDe('2099-12'); // última vigencia conocida (se recalcula por mes en cada cálculo)
   let UF = 40763, UTM = 71506;
 
   const fmt0 = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
@@ -185,6 +201,8 @@ const diasMes = Array.from({ length: 30 }, (_, i) => 30 - i);  // 30 .. 1 (tope 
   const vaciar = () => { $('r-liquido').textContent = '$0'; $('r-costo').textContent = '$0'; $('aviso-min').hidden = true; $('r-haberes').innerHTML = '<p class="rr-empty">Ingresa el monto.</p>'; $('r-desc').innerHTML = ''; $('r-emp').innerHTML = ''; $('r-meta').textContent = ''; };
 
   const calcular = () => {
+    const periodoSel = ($('periodo').value && $('periodo').value >= PERIODO_MIN) ? $('periodo').value : PERIODO_MIN;
+    D = vigenciaDe(periodoSel); // tasas previsionales vigentes en el mes seleccionado
     const modo = $('modo').value;
     const afpKey = $('afp').value;
     const saludTipo = $('salud-tipo').value;
@@ -269,15 +287,15 @@ const diasMes = Array.from({ length: 30 }, (_, i) => 30 - i);  // 30 .. 1 (tope 
       ['Expectativa de vida (' + pct(D.expectativaVida) + '%)', r.expVida, false],
     ]);
 
-    const fuenteTxt = D.fuente === 'previred' ? 'Indicadores Previred (' + D.periodo + ')' : 'Valores de respaldo, verificar';
     const sueldoBaseTxt = modo === 'liquido' ? ' · Sueldo base estimado: ' + fmt0.format(Math.round(base)) : '';
-    $('r-meta').textContent = `${fuenteTxt} · UF ${fmt0.format(Math.round(UF))} · UTM ${fmt0.format(Math.round(UTM))}${sueldoBaseTxt}.`;
+    $('r-meta').textContent = `Período ${periodoSel} · UF ${fmt0.format(Math.round(UF))} · UTM ${fmt0.format(Math.round(UTM))} · Datos Previred${sueldoBaseTxt}.`;
   };
 
   const pintarParams = () => {
-    const origen = D.fuente === 'previred' ? `cargados automáticamente desde <strong>Previred (${D.periodo})</strong>` : `<strong>valores de respaldo</strong> (Previred no respondió)`;
+    const origen = `tabla de Previred por vigencia, aplicando el mes <strong>${D.periodo}</strong>`;
     $('params-body').innerHTML = `<ul>
       <li>Origen de los datos: ${origen}.</li>
+      <li>UF y UTM: del mes seleccionado (Banco Central). Tasas previsionales: tabla de Previred por vigencia, exactas para cada mes desde enero 2026.</li>
       <li>Sueldo mínimo: <strong>${fmt0.format(D.sueldoMinimo)}</strong> · Tope imponible AFP/salud: <strong>${D.topeAFP_UF} UF</strong> · Tope cesantía: <strong>${D.topeAFC_UF} UF</strong></li>
       <li>AFP (cargo trabajador, incluye 10% + comisión): ${Object.keys(D.afps).map((k) => `${k} ${pct(D.afps[k])}%`).join(' · ')}</li>
       <li>Salud: Fonasa 7% o Isapre (si el plan en UF supera el 7%, el trabajador paga la diferencia, que no es deducible de impuesto)</li>
@@ -296,12 +314,31 @@ const diasMes = Array.from({ length: 30 }, (_, i) => 30 - i);  // 30 .. 1 (tope 
   $('cw-form').addEventListener('input', calcular);
   $('cw-form').addEventListener('change', calcular);
 
+  // Trae la UF (último día disponible del mes) y la UTM del mes para el período elegido.
+  const cargarIndicadores = async (periodo) => {
+    const y = periodo.slice(0, 4);
+    try {
+      const u = await fetch(`https://mindicador.cl/api/uf/${y}`).then((r) => r.json());
+      const m = (u.serie || []).filter((s) => s.fecha.slice(0, 7) === periodo);
+      if (m.length) UF = m[0].valor; // serie descendente: el primero es el último día del mes
+    } catch (e) {}
+    try {
+      const u = await fetch(`https://mindicador.cl/api/utm/${y}`).then((r) => r.json());
+      const m = (u.serie || []).find((s) => s.fecha.slice(0, 7) === periodo);
+      if (m) UTM = m.valor;
+    } catch (e) {}
+  };
+
+  // Período por defecto: mes actual (no permite meses futuros).
+  const ahora = new Date();
+  const periodoHoy = ahora.getFullYear() + '-' + String(ahora.getMonth() + 1).padStart(2, '0');
+  $('periodo').value = periodoHoy;
+  $('periodo').min = PERIODO_MIN; // solo desde enero 2026 en adelante
+  $('periodo').max = periodoHoy;
+  $('periodo').addEventListener('change', async () => { await cargarIndicadores($('periodo').value || periodoHoy); calcular(); pintarParams(); });
+
   llenarAFPs();
-  Promise.all([
-    fetch('https://mindicador.cl/api/uf').then((r) => r.json()).then((d) => { if (d.serie && d.serie[0]) UF = d.serie[0].valor; }).catch(() => {}),
-    fetch('https://mindicador.cl/api/utm').then((r) => r.json()).then((d) => { if (d.serie && d.serie[0]) UTM = d.serie[0].valor; }).catch(() => {}),
-    fetch('/api/indicadores-previred').then((r) => r.json()).then((d) => { if (d && d.afps && Object.keys(d.afps).length) D = d; }).catch(() => {}),
-  ]).then(() => { llenarAFPs(); calcular(); pintarParams(); });
+  cargarIndicadores(periodoHoy).then(() => { calcular(); pintarParams(); });
   calcular(); pintarParams();
 </script>
 
@@ -356,6 +393,10 @@ const diasMes = Array.from({ length: 30 }, (_, i) => 30 - i);  // 30 .. 1 (tope 
   .params-body ul{margin:0 0 10px 18px;font-size:13.5px;color:#444a63;line-height:1.7}
   .params-nota{font-size:12.5px;color:var(--gris)}
   .params-nota code{background:#eef1f8;padding:1px 5px;border-radius:4px}
+
+  .descargo{margin-top:22px;background:#f7f9fe;border:1px solid var(--linea);border-radius:12px;padding:16px 20px;color:var(--gris);font-size:12.5px;line-height:1.6}
+  .descargo p{margin:0 0 8px}.descargo p:last-child{margin-bottom:0}
+  .descargo .firma{font-family:'Montserrat';font-weight:700;color:var(--azul);font-size:12px}
 
   .cta-row{display:flex;gap:14px;flex-wrap:wrap}.cta-row.center{justify-content:center}
   .cierre{background:linear-gradient(150deg,var(--azul),var(--azul-prof));color:#fff;text-align:center;padding:62px 24px}
