@@ -36,6 +36,13 @@ a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
 
 .wrap{max-width:var(--ancho);margin:0 auto;padding:0 24px}
+
+/* Ilustración de línea en el hero de las calculadoras (opción 2). El resto del sitio queda minimal. */
+.hero:has(.hero-ill){position:relative;overflow:hidden}
+.hero:has(.hero-ill) > .wrap{position:relative;z-index:2}
+.hero-ill{position:absolute;top:50%;right:calc((100% - min(100%, 1140px)) / 2 + 24px);transform:translateY(-50%);width:150px;height:150px;pointer-events:none}
+.hero-ill svg{width:100%;height:100%;display:block}
+@media(max-width:900px){ .hero-ill{display:none} }
 .eyebrow{font-family:'Montserrat';font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--azul);margin-bottom:12px}
 .sec{padding:80px 0}
 .sec.alt{background:#eef2fb}

@@ -10,6 +10,7 @@ const {
   eyebrow,
   h1,
   lead,
+  ico = '',          // contenido SVG de la ilustración del hero (opción 2)
   intro = [],        // párrafos de "cómo usar / qué es"
   faqs = [],
   ctaTitulo,
@@ -23,6 +24,7 @@ const {
     <h1>{h1}</h1>
     <p class="lead">{lead}</p>
   </div>
+  {ico && <svg class="hero-ill" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" set:html={ico} />}
 </section>
 
 <section class="sec">
