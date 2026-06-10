@@ -1,0 +1,80 @@
+---
+// Botón flotante de sugerencias para las herramientas.
+// Aparece a los 30 segundos de uso, se puede cerrar y no vuelve a molestar
+// por 60 días (120 si la persona ya envió una idea). Usa /api/sugerencia.
+const { origen = 'herramienta' } = Astro.props;
+---
+<aside class="sgf" id="sgf" data-origen={origen} hidden>
+  <button type="button" class="sgf-chip" id="sgf-chip">
+    <span class="sgf-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/></svg></span>
+    ¿Te gustaría otra herramienta?
+  </button>
+  <div class="sgf-panel" id="sgf-panel" hidden>
+    <button type="button" class="sgf-cerrar" id="sgf-cerrar" aria-label="Cerrar">×</button>
+    <p class="sgf-titulo">¿Qué te gustaría ver en esta sección?</p>
+    <p class="sgf-sub">Una calculadora nueva, un recurso, un tema para el blog. Leemos todo y construimos lo que más se repite.</p>
+    <textarea class="sgf-msg" id="sgf-msg" rows="3" placeholder="Ej: una calculadora de vacaciones proporcionales"></textarea>
+    <input class="sgf-email" id="sgf-email" type="email" placeholder="Tu correo (opcional, por si la creamos)" autocomplete="email" />
+    <input class="sgf-hp" id="sgf-hp" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
+    <button type="button" class="sgf-send" id="sgf-send">Enviar idea</button>
+    <p class="sgf-out" id="sgf-out" role="status"></p>
+  </div>
+</aside>
+
+<script>
+  (() => {
+    const KEY = 'tc-sgf-hasta';
+    const DIA = 24 * 60 * 60 * 1000;
+    const raiz = document.getElementById('sgf');
+    if (!raiz) return;
+    try { if (Number(localStorage.getItem(KEY) || 0) > Date.now()) return; } catch (e) {}
+
+    const chip = document.getElementById('sgf-chip');
+    const panel = document.getElementById('sgf-panel');
+    const out = document.getElementById('sgf-out');
+    const silenciar = (dias) => { try { localStorage.setItem(KEY, String(Date.now() + dias * DIA)); } catch (e) {} };
+
+    setTimeout(() => { raiz.hidden = false; }, 30000);
+
+    chip.addEventListener('click', () => { panel.hidden = !panel.hidden; });
+    document.getElementById('sgf-cerrar').addEventListener('click', () => { raiz.hidden = true; silenciar(60); });
+
+    document.getElementById('sgf-send').addEventListener('click', async () => {
+      const btn = document.getElementById('sgf-send');
+      const mensaje = document.getElementById('sgf-msg').value.trim();
+      const email = document.getElementById('sgf-email').value.trim();
+      const website = document.getElementById('sgf-hp').value;
+      if (mensaje.length < 3) { out.textContent = 'Escribe tu idea primero.'; return; }
+      btn.disabled = true; out.textContent = 'Enviando…';
+      try {
+        const r = await fetch('/api/sugerencia', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ mensaje, email, website, origen: raiz.dataset.origen || 'herramienta' }) });
+        const j = await r.json();
+        if (j && j.ok) {
+          out.textContent = '¡Gracias! La leeremos con atención.';
+          silenciar(120);
+          setTimeout(() => { raiz.hidden = true; }, 2500);
+        } else { out.textContent = 'No pudimos enviarla ahora. Inténtalo en un rato.'; btn.disabled = false; }
+      } catch (e) { out.textContent = 'No pudimos enviarla ahora. Inténtalo en un rato.'; btn.disabled = false; }
+    });
+  })();
+</script>
+
+<style>
+  .sgf{position:fixed;left:18px;bottom:18px;z-index:60;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+  .sgf-chip{display:inline-flex;align-items:center;gap:8px;background:var(--azul);color:#fff;border:none;border-radius:999px;padding:10px 16px 10px 10px;font-family:'Montserrat';font-weight:700;font-size:13px;cursor:pointer;box-shadow:0 10px 26px -8px rgba(19,35,95,.55);transition:.18s}
+  .sgf-chip:hover{transform:scale(1.04)}
+  .sgf-ico{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--amarillo);flex-shrink:0}
+  .sgf-ico svg{width:16px;height:16px;color:var(--azul-prof)}
+  .sgf-panel{order:-1;background:#fff;border:1px solid var(--linea);border-radius:16px;padding:18px;width:320px;max-width:calc(100vw - 36px);box-shadow:0 18px 44px -14px rgba(19,35,95,.4);position:relative}
+  .sgf-cerrar{position:absolute;top:8px;right:10px;background:none;border:none;font-size:20px;color:var(--gris);cursor:pointer;line-height:1;padding:4px}
+  .sgf-titulo{font-family:'Montserrat';font-weight:800;font-size:15px;color:var(--azul);margin:0 14px 6px 0}
+  .sgf-sub{font-size:12.5px;color:#444a63;line-height:1.45;margin:0 0 10px}
+  .sgf-msg,.sgf-email{width:100%;border:1px solid var(--linea);border-radius:9px;padding:9px 11px;font-family:inherit;font-size:13.5px;color:var(--azul-prof);margin-bottom:8px;background:#fff;resize:vertical}
+  .sgf-msg:focus,.sgf-email:focus{outline:none;border-color:var(--azul)}
+  .sgf-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
+  .sgf-send{background:var(--amarillo);color:var(--azul-prof);border:none;border-radius:9px;padding:9px 16px;font-family:'Montserrat';font-weight:700;font-size:13px;cursor:pointer}
+  .sgf-send:hover{filter:brightness(1.05)}
+  .sgf-send:disabled{opacity:.6;cursor:default}
+  .sgf-out{font-size:12.5px;color:var(--azul);font-weight:600;margin:8px 0 0;min-height:1em}
+  @media(max-width:560px){ .sgf{left:12px;bottom:12px} .sgf-chip{font-size:12px} }
+</style>

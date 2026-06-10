@@ -4,8 +4,9 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import SEO from '../components/SEO.astro';
 import Schema from '../components/Schema.astro';
+import SugerenciaFlotante from '../components/SugerenciaFlotante.astro';
 
-const { title, description, canonical, image, noindex, schema = [] } = Astro.props;
+const { title, description, canonical, image, noindex, schema = [], sugerencia = '' } = Astro.props;
 ---
 <!DOCTYPE html>
 <html lang="es">
@@ -34,6 +35,8 @@ const { title, description, canonical, image, noindex, schema = [] } = Astro.pro
     <slot />
   </main>
   <Footer />
+
+  {sugerencia && <SugerenciaFlotante origen={sugerencia} />}
 
   <!-- WhatsApp flotante -->
   <a class="wa-float" href="https://api.whatsapp.com/send/?phone=56964933110&text=Hola%20vengo%20desde%20la%20web" target="_blank" rel="noopener" aria-label="Hablar por WhatsApp">

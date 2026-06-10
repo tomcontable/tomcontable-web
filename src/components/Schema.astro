@@ -6,10 +6,19 @@ const { blocks = [] } = Astro.props;
 const organizacion = {
   "@context": "https://schema.org",
   "@type": ["Organization", "ProfessionalService", "AccountingService"],
+  "@id": "https://tomcontable.cl/#organizacion",
   "name": "TomContable",
   "url": "https://tomcontable.cl",
   "logo": "https://tomcontable.cl/img/logo-tomcontable.png",
+  "image": "https://tomcontable.cl/img/og-tomcontable.jpg",
   "description": "Empresa contable chilena especializada en emprendedores y pymes. Constitución de empresas, contabilidad mensual, operación renta, asesorías y ayuda con el SII.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Providencia",
+    "addressRegion": "Región Metropolitana",
+    "addressCountry": "CL"
+  },
+  "priceRange": "$$",
   "areaServed": { "@type": "Country", "name": "Chile" },
   "founder": {
     "@type": "Person",

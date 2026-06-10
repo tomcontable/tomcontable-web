@@ -18,7 +18,7 @@ const faqs = [
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
 const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication', name: 'Calculadora UTM a Pesos', applicationCategory: 'FinanceApplication', operatingSystem: 'Web', inLanguage: 'es-CL', url: 'https://tomcontable.cl/calculadora-utm', offers: { '@type': 'Offer', price: '0', priceCurrency: 'CLP' }, publisher: { '@type': 'Organization', name: 'TomContable' } };
 ---
-<Base {...seo} schema={[appSchema, faqSchema]}>
+<Base {...seo} schema={[appSchema, faqSchema]} sugerencia="calculadora-utm">
   <CalculadoraIndicador
     codigo="utm"
     unidadLabel="UTM"
