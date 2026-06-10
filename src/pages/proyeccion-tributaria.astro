@@ -33,7 +33,7 @@ const servicio = {
       <h1>Llega a abril sabiendo cuánto va a pagar tu empresa.</h1>
       <p class="lead">Antes de que cierre el año revisamos tus números en el SII y proyectamos tu resultado tributario. Así sabes con tiempo si tu empresa va a pagar o le van a devolver en abril, y cómo queda la renta personal de cada socio. Con ese número en la mano todavía alcanzas a actuar.</p>
       <div class="cta-row">
-        <a class="btn btn-amber" href={sinSueldos} target="_blank" rel="noopener">Quiero mi proyección</a>
+        <a class="btn btn-amber" href="#precio">Quiero mi proyección</a>
         <BotonWhatsApp texto="Tengo dudas" mensaje={waMsg} clase="btn-ghost" />
       </div>
       <p class="micro">Informe claro · Excel de escenarios · Con los datos que ya están en tu portal del SII</p>
@@ -71,13 +71,13 @@ const servicio = {
         <div class="plan">
           <h3>Sin sueldos</h3>
           <p class="valor">$79.000 <span>+ IVA</span></p>
-          <p>Proyectamos el resultado de la empresa y la renta personal de cada socio según los ingresos de la empresa.</p>
+          <p>Para empresas sin trabajadores contratados ni sueldo patronal, es decir, que no pagan cotizaciones en Previred. Proyectamos el resultado de la empresa y la renta personal de cada socio.</p>
           <a class="btn btn-amber" href={sinSueldos} target="_blank" rel="noopener">Comprar sin sueldos</a>
         </div>
         <div class="plan destacado">
           <h3>Con sueldos</h3>
           <p class="valor">$99.000 <span>+ IVA</span></p>
-          <p>Lo mismo, pero sumando los sueldos al cálculo de la renta personal de cada socio. Ideal si los socios reciben remuneración.</p>
+          <p>Para empresas que tienen trabajadores contratados o sueldo patronal, o sea, que sí pagan cotizaciones en Previred. Hacemos lo mismo, sumando esos sueldos al cálculo.</p>
           <a class="btn btn-amber" href={conSueldos} target="_blank" rel="noopener">Comprar con sueldos</a>
         </div>
       </div>
@@ -102,7 +102,7 @@ const servicio = {
       <h2>Que abril no te sorprenda.</h2>
       <p>Proyecta tu resultado a tiempo y llega con la caja preparada y las decisiones tomadas.</p>
       <div class="cta-row center">
-        <a class="btn btn-amber" href={sinSueldos} target="_blank" rel="noopener">Quiero mi proyección</a>
+        <a class="btn btn-amber" href="#precio">Quiero mi proyección</a>
         <BotonWhatsApp texto="Hablar por WhatsApp" mensaje={waMsg} />
       </div>
     </div>
@@ -111,6 +111,7 @@ const servicio = {
 </Base>
 
 <style>
+  #precio{scroll-margin-top:92px}
   .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:64px 0}
   .hero h1{font-size:40px;font-weight:800;max-width:20ch;letter-spacing:-.5px}
   .hero .lead{font-size:18px;color:#444a63;margin:20px 0 26px;max-width:62ch}
