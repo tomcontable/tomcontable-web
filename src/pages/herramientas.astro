@@ -4,11 +4,29 @@ import Sugerencias from '../components/Sugerencias.astro';
 import BannerServicios from '../components/BannerServicios.astro';
 
 const seo = {
-  title: 'Calculadoras gratis para pymes | UF, UTM, dólar y finiquito · TomContable',
-  description: 'Calculadoras gratis para emprendedores y pymes en Chile: convierte UF, UTM y dólar a pesos con el valor oficial del día, y estima tu finiquito. Por TomContable.',
+  title: 'Calculadoras gratis para pymes en Chile | Sueldo, finiquito, IVA y más · TomContable',
+  description: 'Calculadoras gratis para emprendedores y pymes en Chile: sueldo líquido, finiquito, IVA, UF, UTM y dólar. Rápidas, al día con datos oficiales y sin registro. Por TomContable.',
 };
 
 const tools = [
+  {
+    t: 'Calculadora de sueldo líquido',
+    d: 'Calcula el sueldo líquido desde el bruto, o al revés, con AFP, salud, gratificación, impuesto y el costo real para la empresa.',
+    href: '/calculadora-sueldo-liquido',
+    ico: '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/>',
+  },
+  {
+    t: 'Calculadora de finiquito',
+    d: 'Estima tu finiquito en Chile: vacaciones, indemnización por años de servicio y mes de aviso, con la UF al día.',
+    href: '/calculadora-finiquito',
+    ico: '<path d="M9 12h6M9 16h6M9 8h2"/><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>',
+  },
+  {
+    t: 'Calculadora de IVA',
+    d: 'Agrega el IVA del 19% a un monto neto o sácalo de un total, sin equivocarte con el cálculo al revés.',
+    href: '/calculadora-iva',
+    ico: '<path d="M19 5L5 19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>',
+  },
   {
     t: 'Calculadora UF a pesos',
     d: 'Convierte UF a pesos y pesos a UF con el valor de hoy o de cualquier fecha. Ideal para arriendos, créditos y montos tributarios.',
@@ -27,18 +45,6 @@ const tools = [
     href: '/calculadora-dolar',
     ico: '<path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
   },
-  {
-    t: 'Calculadora de finiquito',
-    d: 'Estima el finiquito en Chile: vacaciones, indemnización por años de servicio y mes de aviso, con la UF al día.',
-    href: '/calculadora-finiquito',
-    ico: '<path d="M9 12h6M9 16h6M9 8h2"/><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>',
-  },
-  {
-    t: 'Calculadora de IVA',
-    d: 'Agrega el IVA del 19% a un monto neto o sácalo de un total, sin equivocarte con el cálculo al revés.',
-    href: '/calculadora-iva',
-    ico: '<path d="M19 5L5 19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>',
-  },
 ];
 
 const listSchema = {
@@ -55,7 +61,7 @@ const listSchema = {
     <div class="wrap">
       <p class="eyebrow">Herramientas</p>
       <h1>Calculadoras gratis para tu día a día</h1>
-      <p class="lead">Convierte UF, UTM y dólar a pesos con el valor oficial, estima un finiquito y más. Simples, rápidas y sin vueltas.</p>
+      <p class="lead">Calcula sueldos líquidos, finiquitos, IVA y convierte UF, UTM y dólar a pesos. Con datos oficiales al día, simples y sin vueltas.</p>
     </div>
   </section>
 
