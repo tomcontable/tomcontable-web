@@ -53,6 +53,8 @@ const diasMes = Array.from({ length: 30 }, (_, i) => 30 - i);  // 30 .. 1 (tope 
             <label class="f"><span>Días trabajados <em>(en el mes)</em></span><select id="dias">{diasMes.map((d) => (<option value={d} selected={d === 30}>{d}</option>))}</select></label>
           </div>
 
+          <p class="prop-hint" id="prop-hint" hidden></p>
+
           <label class="f"><span>Mes de cálculo <em>(desde enero 2026; ajusta UF, UTM y tasas)</em></span><input type="month" id="periodo" /></label>
 
           <details class="more" id="more">
@@ -216,7 +218,7 @@ const diasMes = Array.from({ length: 30 }, (_, i) => 30 - i);  // 30 .. 1 (tope 
       afcEmp, sis, mut, capInd, expVida, liquido, costo };
   };
 
-  const vaciar = () => { $('r-liquido').textContent = '$0'; $('r-costo').textContent = '$0'; $('aviso-min').hidden = true; $('bono-conv').hidden = true; $('r-haberes').innerHTML = '<p class="rr-empty">Ingresa el monto.</p>'; $('r-desc').innerHTML = ''; $('r-emp').innerHTML = ''; $('r-meta').textContent = ''; };
+  const vaciar = () => { $('r-liquido').textContent = '$0'; $('r-costo').textContent = '$0'; $('aviso-min').hidden = true; $('bono-conv').hidden = true; $('prop-hint').hidden = true; $('r-haberes').innerHTML = '<p class="rr-empty">Ingresa el monto.</p>'; $('r-desc').innerHTML = ''; $('r-emp').innerHTML = ''; $('r-meta').textContent = ''; };
 
   const calcular = () => {
     const periodoSel = ($('periodo').value && $('periodo').value >= PERIODO_MIN) ? $('periodo').value : PERIODO_MIN;
@@ -281,11 +283,22 @@ const diasMes = Array.from({ length: 30 }, (_, i) => 30 - i);  // 30 .. 1 (tope 
     const avisoEl = $('aviso-min');
     if (base > 0 && base < minProp - 1) {
       avisoEl.hidden = false;
-      avisoEl.textContent = jornadaParcial
-        ? `Atención: el sueldo base está bajo el mínimo proporcional de esta jornada (${fmt0.format(Math.round(minProp))} para ${jornada} hrs). Revisa que cumpla el ingreso mínimo legal.`
+      const btnMin = (modo === 'base' && jornadaParcial) ? ` <button type="button" class="prop-btn" data-prop="${Math.round(minProp)}">Usar el mínimo proporcional</button>` : '';
+      avisoEl.innerHTML = jornadaParcial
+        ? `Atención: el sueldo base está bajo el mínimo proporcional de esta jornada (${fmt0.format(Math.round(minProp))} para ${jornada} hrs). Revisa que cumpla el ingreso mínimo legal.${btnMin}`
         : `Atención: el sueldo base está bajo el ingreso mínimo legal (${fmt0.format(Math.round(minProp))}).`;
     } else {
       avisoEl.hidden = true;
+    }
+
+    // Sugerencia: si el monto parece de jornada completa y la jornada elegida es parcial, ofrecer el proporcional.
+    const hintEl = $('prop-hint');
+    if (modo === 'base' && jornadaParcial && monto >= D.sueldoMinimo && monto !== propAplicado) {
+      const prop = Math.round(monto * (jornada / JORNADA_COMPLETA));
+      hintEl.hidden = false;
+      hintEl.innerHTML = `¿${fmt0.format(monto)} es el sueldo de jornada completa? Su proporcional a ${jornada} hrs sería <strong>${fmt0.format(prop)}</strong>. <button type="button" class="prop-btn" data-prop="${prop}">Usar este monto</button>`;
+    } else {
+      hintEl.hidden = true;
     }
 
     $('r-haberes').innerHTML = rowsHtml([
@@ -410,6 +423,18 @@ const diasMes = Array.from({ length: 30 }, (_, i) => 30 - i);  // 30 .. 1 (tope 
     btn.disabled = false; btn.textContent = btnTxt;
   });
 
+  // Botones "usar este monto" (sugerencia de proporcional y mínimo legal)
+  let propAplicado = 0; // evita volver a sugerir prorratear un monto ya prorrateado
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('.prop-btn');
+    if (!b) return;
+    const v = parseInt(b.dataset.prop, 10);
+    if (!isFinite(v) || v <= 0) return;
+    propAplicado = v;
+    $('monto').value = new Intl.NumberFormat('es-CL').format(v);
+    calcular();
+  });
+
   // Cambios de interfaz
   $('modo').addEventListener('change', () => { $('monto-label').textContent = $('modo').value === 'liquido' ? 'Sueldo líquido deseado' : 'Sueldo base mensual'; calcular(); });
   $('salud-tipo').addEventListener('change', () => { $('isapre-wrap').hidden = $('salud-tipo').value !== 'isapre'; calcular(); });
@@ -472,6 +497,10 @@ const diasMes = Array.from({ length: 30 }, (_, i) => 30 - i);  // 30 .. 1 (tope 
   .more-body{padding-top:16px}
   .bono-conv{margin:-4px 0 14px;background:#eef5ff;border:1px solid #cfe0f5;border-radius:9px;padding:9px 12px;font-size:12.5px;color:#33384a;line-height:1.45}
   .bono-conv strong{color:#13235F}
+  .prop-hint{margin:-4px 0 14px;background:#eef5ff;border:1px solid #cfe0f5;border-radius:9px;padding:9px 12px;font-size:12.5px;color:#33384a;line-height:1.45}
+  .prop-hint :global(strong){color:#13235F}
+  :global(.prop-btn){display:inline-block;margin-left:6px;background:#13235F;color:#fff;border:none;border-radius:7px;padding:5px 10px;font-family:'Montserrat';font-weight:700;font-size:12px;cursor:pointer}
+  :global(.prop-btn):hover{background:#1e2f73}
 
   .result{position:sticky;top:92px;overflow:hidden;background:linear-gradient(160deg,#fff,#f7f9fe)}
   .result > :not(.wm){position:relative;z-index:1}
