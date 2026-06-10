@@ -60,22 +60,23 @@ const diasMes = Array.from({ length: 30 }, (_, i) => 30 - i);  // 30 .. 1 (tope 
             <summary>Agregar más detalle <span class="plus">+</span></summary>
             <div class="more-body">
               <div class="f2">
-                <label class="f"><span>Bonos</span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="bonos" placeholder="0" /></div></label>
-                <label class="f"><span>El bono es</span><select id="bono-tipo"><option value="bruto">Bruto (imponible)</option><option value="liquido">Líquido</option></select></label>
-              </div>
-              <div class="f2">
-                <label class="f"><span>Otras asignaciones <em>(no imponible)</em></span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="asig" placeholder="0" /></div></label>
                 <label class="f"><span>Colación <em>(no imponible)</em></span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="colacion" placeholder="0" /></div></label>
+                <label class="f"><span>Movilización <em>(no imponible)</em></span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="moviliz" placeholder="0" /></div></label>
               </div>
               <div class="f2">
-                <label class="f"><span>Movilización <em>(no imponible)</em></span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="moviliz" placeholder="0" /></div></label>
-                <label class="f"><span>Tasa de mutual <em>(%)</em></span><div class="inp"><input type="text" inputmode="decimal" id="mutual" placeholder="0,93" /><i>%</i></div></label>
+                <label class="f"><span>Bonos</span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="bonos" placeholder="0" /></div></label>
+                <label class="f"><span>El bono es</span><select id="bono-tipo"><option value="bruto">Bruto (imponible)</option><option value="liquido">Líquido (al bolsillo)</option></select></label>
               </div>
+              <p class="bono-conv" id="bono-conv" hidden></p>
               <div class="f2">
                 <label class="f"><span>Horas extra <em>(N°)</em></span><input type="text" inputmode="decimal" id="hextra" placeholder="0" /></label>
                 <label class="f"><span>Horas de atraso <em>(N°)</em></span><input type="text" inputmode="decimal" id="hatraso" placeholder="0" /></label>
               </div>
-              <label class="f"><span>Anticipos y otros descuentos</span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="descuentos" placeholder="0" /></div></label>
+              <label class="f"><span>Tasa de mutual <em>(%, costo del empleador)</em></span><div class="inp"><input type="text" inputmode="decimal" id="mutual" placeholder="0,93" /><i>%</i></div></label>
+              <div class="f2">
+                <label class="f"><span>Otras asignaciones <em>(no imponible)</em></span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="asig" placeholder="0" /></div></label>
+                <label class="f"><span>Otros descuentos o anticipos</span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="descuentos" placeholder="0" /></div></label>
+              </div>
             </div>
           </details>
         </form>
@@ -176,11 +177,14 @@ const diasMes = Array.from({ length: 30 }, (_, i) => 30 - i);  // 30 .. 1 (tope 
   // Liquidación completa a partir del sueldo base mensual contractual.
   const liquidar = (base, P) => {
     const baseEarned = base * (P.dias / 30);                 // proporcional a los días trabajados
-    const grat = P.gratOn ? Math.min(baseEarned * 0.25, P.topeGrat) : 0;
     const valHoraExtra = base * 0.35 / P.jornada;            // hora con recargo 50% (sobre sueldo mensual)
     const valHoraOrd = base * 7 / (30 * P.jornada);          // hora ordinaria (para atrasos)
     const hExtra = P.hExtraN * valHoraExtra;                 // imponible
     const atraso = P.hAtrasoN * valHoraOrd;                  // rebaja la base imponible
+
+    // Gratificación legal: 25% del total de remuneraciones imponibles (base + bonos + horas extra - atrasos), con tope.
+    const baseGrat = Math.max(0, baseEarned + P.bonos + hExtra - atraso);
+    const grat = P.gratOn ? Math.min(baseGrat * 0.25, P.topeGrat) : 0;
 
     const imponible = Math.max(0, baseEarned + grat + P.bonos + hExtra - atraso);
     const impCap = Math.min(imponible, D.topeAFP_UF * UF);
@@ -213,7 +217,7 @@ const diasMes = Array.from({ length: 30 }, (_, i) => 30 - i);  // 30 .. 1 (tope 
       afcEmp, sis, mut, capInd, expVida, liquido, costo };
   };
 
-  const vaciar = () => { $('r-liquido').textContent = '$0'; $('r-costo').textContent = '$0'; $('aviso-min').hidden = true; $('r-haberes').innerHTML = '<p class="rr-empty">Ingresa el monto.</p>'; $('r-desc').innerHTML = ''; $('r-emp').innerHTML = ''; $('r-meta').textContent = ''; };
+  const vaciar = () => { $('r-liquido').textContent = '$0'; $('r-costo').textContent = '$0'; $('aviso-min').hidden = true; $('bono-conv').hidden = true; $('r-haberes').innerHTML = '<p class="rr-empty">Ingresa el monto.</p>'; $('r-desc').innerHTML = ''; $('r-emp').innerHTML = ''; $('r-meta').textContent = ''; };
 
   const calcular = () => {
     const periodoSel = ($('periodo').value && $('periodo').value >= PERIODO_MIN) ? $('periodo').value : PERIODO_MIN;
@@ -252,13 +256,22 @@ const diasMes = Array.from({ length: 30 }, (_, i) => 30 - i);  // 30 .. 1 (tope 
 
     let base = (modo === 'liquido') ? solveBase(P) : monto;
 
-    // Embrutecer el bono si se ingresó como líquido (lo que el trabajador recibe en mano por ese bono)
-    if (bonoTipo === 'liquido' && rawBono > 0) {
+    // Conversión bruto <-> líquido del bono (cotizaciones del trabajador + impuesto marginal)
+    let bonoConvHtml = '';
+    if (rawBono > 0) {
       const prelim = liquidar(base, { ...P, bonos: 0 });
-      const keep = 1 - P.afpTasa - 0.07 - (P.indef ? D.afcTrabajadorIndef : 0) - prelim.factor;
-      P.bonos = keep > 0.05 ? rawBono / keep : rawBono;
-      if (modo === 'liquido') base = solveBase(P);
+      const keep = Math.max(0.05, 1 - P.afpTasa - 0.07 - (P.indef ? D.afcTrabajadorIndef : 0) - prelim.factor);
+      if (bonoTipo === 'liquido') {
+        P.bonos = rawBono / keep; // embrutecer
+        if (modo === 'liquido') base = solveBase(P);
+        bonoConvHtml = `Un bono líquido de ${fmt0.format(Math.round(rawBono))} equivale a <strong>${fmt0.format(Math.round(P.bonos))} bruto</strong> (lo que la empresa pone para que reciba ese líquido).`;
+      } else {
+        const liqBono = rawBono * keep;
+        bonoConvHtml = `Un bono bruto de ${fmt0.format(Math.round(rawBono))} le queda al trabajador en <strong>${fmt0.format(Math.round(liqBono))} líquido</strong> en el bolsillo.`;
+      }
     }
+    const bonoEl = $('bono-conv');
+    if (bonoConvHtml) { bonoEl.hidden = false; bonoEl.innerHTML = bonoConvHtml; } else { bonoEl.hidden = true; }
 
     const r = liquidar(base, P);
     $('r-liquido').textContent = fmt0.format(Math.round(r.liquido));
@@ -458,6 +471,8 @@ const diasMes = Array.from({ length: 30 }, (_, i) => 30 - i);  // 30 .. 1 (tope 
   .more summary::-webkit-details-marker{display:none}
   .more .plus{font-size:18px;transition:.2s}.more[open] .plus{transform:rotate(45deg)}
   .more-body{padding-top:16px}
+  .bono-conv{margin:-4px 0 14px;background:#eef5ff;border:1px solid #cfe0f5;border-radius:9px;padding:9px 12px;font-size:12.5px;color:#33384a;line-height:1.45}
+  .bono-conv strong{color:#13235F}
 
   .result{position:sticky;top:92px;overflow:hidden;background:linear-gradient(160deg,#fff,#f7f9fe)}
   .result > :not(.wm){position:relative;z-index:1}
