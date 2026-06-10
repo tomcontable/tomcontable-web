@@ -55,6 +55,17 @@ const seo = {
           <div class="ret-line" id="ret-line"></div>
           <p class="r-meta" id="r-meta"></p>
           <div class="r-cta"><BotonWhatsApp texto="Quiero ordenar mis honorarios" mensaje="Hola vengo desde la calculadora de boleta de honorarios y quiero ayuda con mis impuestos a honorarios" /></div>
+          <div class="r-mail">
+            <button type="button" class="mail-toggle" id="mail-toggle">Recibir este cálculo en PDF a mi correo</button>
+            <div class="mail-box" id="mail-box" hidden>
+              <input class="inp-solo" id="mail-nombre" type="text" placeholder="Tu nombre" autocomplete="given-name" />
+              <input class="inp-solo" type="email" id="mail-input" placeholder="tucorreo@ejemplo.cl" autocomplete="email" />
+              <input class="hp" id="mail-website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
+              <label class="mail-check"><input type="checkbox" id="mail-consent" /><span>Acepto recibir mi cálculo en PDF y, cada cierto tiempo, contenido útil de TomContable. Puedo darme de baja cuando quiera. <a href="/privacidad" target="_blank" rel="noopener">Política de privacidad</a>.</span></label>
+              <button type="button" class="btn btn-amber" id="mail-send">Enviarme el PDF</button>
+              <p class="mail-msg" id="mail-msg" role="status"></p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -80,6 +91,8 @@ const seo = {
   </section>
 
 </Base>
+
+<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
   // Retención de boletas de honorarios por año (Ley 21.133, sube gradual hasta 17% en 2028).
@@ -109,6 +122,75 @@ const seo = {
   $('modo').addEventListener('change', () => { $('monto-label').textContent = $('modo').value === 'liquido' ? 'Líquido que quieres recibir' : 'Monto de la boleta (bruto)'; $('r-bruto-label').textContent = 'Emites boleta por'; calcular(); });
   $('bh-form').addEventListener('input', calcular);
   $('bh-form').addEventListener('change', calcular);
+
+  // PDF imprimible + envío por correo (captura de lead)
+  let logoImg = null;
+  (() => { const im = new Image(); im.crossOrigin = 'anonymous'; im.onload = () => { logoImg = im; }; im.src = '/img/logo-tomcontable.png'; })();
+
+  const buildPDFBase64 = () => {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+    const W = 210, M = 18;
+    if (doc.setGState) doc.setGState(new doc.GState({ opacity: 0.09 }));
+    doc.setTextColor(19, 35, 95); doc.setFont('helvetica', 'bold'); doc.setFontSize(15);
+    let wr = 0; for (let yy = 55; yy < 290; yy += 54) { let wc = 0; for (let xx = -5; xx < 215; xx += 94) { doc.text((wr + wc) % 2 === 0 ? 'Cálculo referencial' : 'tomcontable.cl', xx, yy, { angle: 30 }); wc++; } wr++; }
+    if (doc.setGState) doc.setGState(new doc.GState({ opacity: 1 }));
+    if (logoImg) { try { const lw = 42; const ratio = (logoImg.naturalHeight && logoImg.naturalWidth) ? (logoImg.naturalHeight / logoImg.naturalWidth) : 0.26; doc.addImage(logoImg, 'PNG', M, 13, lw, lw * ratio); } catch (e) {} }
+    doc.setTextColor(30, 47, 115); doc.setFont('helvetica', 'bold'); doc.setFontSize(18);
+    doc.text('Boleta de honorarios', M, 38);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(139, 147, 179);
+    doc.text('Generada el ' + new Date().toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' }), M, 44);
+    let y = 60;
+    const retTag = ($('ret-line').querySelector('.ret-tag') || {}).textContent || 'Retención';
+    const retVal = (($('ret-line').querySelector('.ret-val') || {}).textContent || '').replace(/−/g, '-');
+    const rows = [['Monto de la boleta (bruto)', $('r-bruto').textContent, false], [retTag, '-' + retVal, true]];
+    doc.setDrawColor(230, 232, 240);
+    rows.forEach((f) => {
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(12); doc.setTextColor(51, 56, 74);
+      doc.text(f[0], M, y);
+      doc.setFont('helvetica', 'bold'); doc.setTextColor(f[2] ? 176 : 19, f[2] ? 54 : 35, f[2] ? 54 : 95);
+      doc.text(f[1], W - M, y, { align: 'right' });
+      y += 8.5; doc.line(M, y - 3, W - M, y - 3);
+    });
+    y += 4;
+    doc.setFillColor(30, 47, 115); doc.roundedRect(M, y, W - 2 * M, 15, 2, 2, 'F');
+    doc.setTextColor(207, 214, 234); doc.setFont('helvetica', 'normal'); doc.setFontSize(10);
+    doc.text('Líquido que recibes', M + 5, y + 9.5);
+    doc.setTextColor(246, 177, 26); doc.setFont('helvetica', 'bold'); doc.setFontSize(16);
+    doc.text($('r-liquido').textContent, W - M - 5, y + 10, { align: 'right' });
+    y += 24;
+    const disc = 'Cálculo referencial generado en tomcontable.cl con el monto ingresado. No constituye boleta oficial, comprobante ni asesoría tributaria. La retención depende del año de emisión y de tu situación; tu impuesto final se determina en la Operación Renta.';
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(120, 120, 130);
+    doc.text(doc.splitTextToSize(disc, W - 2 * M), M, y);
+    doc.setTextColor(139, 147, 179); doc.setFontSize(8.5);
+    doc.text('TomContable · Más que contabilidad, tranquilidad · tomcontable.cl · WhatsApp +56 9 6493 3110', M, 290);
+    return doc.output('datauristring').split(',')[1];
+  };
+
+  $('mail-toggle').addEventListener('click', () => { const box = $('mail-box'); box.hidden = !box.hidden; if (!box.hidden) $('mail-nombre').focus(); });
+  $('mail-send').addEventListener('click', async () => {
+    const msg = $('mail-msg'); const btn = $('mail-send');
+    if (btn.disabled) return;
+    const email = $('mail-input').value.trim();
+    const nombre = $('mail-nombre').value.trim();
+    const consent = $('mail-consent').checked;
+    const website = $('mail-website').value;
+    msg.className = 'mail-msg';
+    if ($('r-liquido').textContent === '$0') { msg.textContent = 'Primero completa el cálculo arriba.'; return; }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { msg.textContent = 'Revisa tu correo, no parece válido.'; return; }
+    if (!consent) { msg.textContent = 'Marca la casilla para poder enviarte el PDF.'; return; }
+    btn.disabled = true; const btnTxt = btn.textContent; btn.textContent = 'Enviando…'; msg.textContent = 'Generando tu PDF y enviándolo…';
+    await new Promise((r) => setTimeout(r, 40));
+    let pdf = ''; try { if (window.jspdf) pdf = buildPDFBase64(); } catch (e) { pdf = ''; }
+    try {
+      const resp = await fetch('/api/enviar-calculo', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ tipo: 'boleta', email, nombre, consent, website, pdf }) });
+      const j = await resp.json();
+      if (j && j.ok) { msg.className = 'mail-msg ok'; msg.textContent = '¡Listo! Te enviamos el PDF a ' + email + '. Revisa tu bandeja de entrada (y la carpeta de spam).'; }
+      else { msg.textContent = 'No pudimos enviarlo ahora. Inténtalo en un rato.'; }
+    } catch (e) { msg.textContent = 'No pudimos enviarlo ahora. Inténtalo en un rato.'; }
+    btn.disabled = false; btn.textContent = btnTxt;
+  });
+
   calcular();
 </script>
 
@@ -142,6 +224,18 @@ const seo = {
   .ret-val{font-family:'Montserrat';font-weight:700;font-size:16px;color:#b03636;white-space:nowrap}
   .r-meta{font-size:12.5px;color:var(--gris);margin-top:6px;line-height:1.5}
   .r-cta{margin-top:14px}.r-cta :global(.btn){width:100%}
+  .r-mail{margin-top:14px;border-top:1px dashed var(--linea);padding-top:14px}
+  .mail-toggle{background:none;border:none;color:var(--azul);font-family:'Montserrat';font-weight:700;font-size:13.5px;cursor:pointer;padding:2px 0;text-decoration:underline;text-underline-offset:3px}
+  .mail-box{margin-top:10px;display:flex;flex-direction:column;gap:10px}
+  .mail-box .inp-solo{border:1px solid var(--linea);border-radius:10px;padding:11px 13px;font-family:inherit;font-size:15px;color:var(--azul-prof);width:100%}
+  .mail-box .inp-solo:focus{outline:none;border-color:var(--azul)}
+  .mail-box :global(.btn){width:100%}
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
+  .mail-check{display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--gris);line-height:1.45;cursor:pointer}
+  .mail-check input{margin-top:2px;flex-shrink:0}
+  .mail-check a{color:var(--azul);font-weight:600}
+  .mail-msg{font-size:13px;color:var(--azul);font-weight:600;margin:0;min-height:1em}
+  .mail-msg.ok{background:#fdf4dd;border:1px solid #f1d98a;border-radius:9px;padding:9px 12px;color:#6b5b1f}
 
   .info{margin-top:26px;background:#fafbfe;border:1px solid var(--linea);border-radius:14px;padding:22px 24px}
   .info h3{font-size:16px;font-weight:800;color:var(--azul-prof);margin:0 0 8px}

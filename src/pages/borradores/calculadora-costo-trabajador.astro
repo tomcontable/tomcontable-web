@@ -96,6 +96,17 @@ const diasMes = Array.from({ length: 30 }, (_, i) => 30 - i);  // 30 .. 1 (tope 
           <div class="r-rows" id="r-emp"></div>
           <p class="r-meta" id="r-meta"></p>
           <div class="r-cta"><BotonWhatsApp texto="Quiero ayuda con mis remuneraciones" mensaje="Hola vengo desde la calculadora de sueldo y quiero ayuda con remuneraciones" /></div>
+          <div class="r-mail">
+            <button type="button" class="mail-toggle" id="mail-toggle">Recibir esta liquidación en PDF a mi correo</button>
+            <div class="mail-box" id="mail-box" hidden>
+              <input class="inp-solo" id="mail-nombre" type="text" placeholder="Tu nombre" autocomplete="given-name" />
+              <input class="inp-solo" type="email" id="mail-input" placeholder="tucorreo@ejemplo.cl" autocomplete="email" />
+              <input class="hp" id="mail-website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
+              <label class="mail-check"><input type="checkbox" id="mail-consent" /><span>Acepto recibir mi cálculo en PDF y, cada cierto tiempo, contenido útil de TomContable. Puedo darme de baja cuando quiera. <a href="/privacidad" target="_blank" rel="noopener">Política de privacidad</a>.</span></label>
+              <button type="button" class="btn btn-amber" id="mail-send">Enviarme el PDF</button>
+              <p class="mail-msg" id="mail-msg" role="status"></p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -121,6 +132,8 @@ const diasMes = Array.from({ length: 30 }, (_, i) => 30 - i);  // 30 .. 1 (tope 
   </section>
 
 </Base>
+
+<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
   // Indicadores previsionales de Previred, organizados por VIGENCIA (desde tal mes).
@@ -310,6 +323,81 @@ const diasMes = Array.from({ length: 30 }, (_, i) => 30 - i);  // 30 .. 1 (tope 
     </ul><p class="params-nota">Los indicadores se actualizan solos desde Previred cada mes. Falta validar la lógica completa antes de dar de alta (quitar noindex y enlazar al menú).</p>`;
   };
 
+  // PDF imprimible + envío por correo (captura de lead)
+  let logoImg = null;
+  (() => { const im = new Image(); im.crossOrigin = 'anonymous'; im.onload = () => { logoImg = im; }; im.src = '/img/logo-tomcontable.png'; })();
+  const grupo = (sel) => [...document.querySelectorAll(sel + ' .rr')].map((r) => ({ c: r.querySelector('.rr-c')?.textContent || '', v: (r.querySelector('.rr-v')?.textContent || '').replace(/−/g, '-'), neg: r.querySelector('.rr-v')?.classList.contains('neg') || false }));
+
+  const buildPDFBase64 = () => {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+    const W = 210, M = 18;
+    if (doc.setGState) doc.setGState(new doc.GState({ opacity: 0.09 }));
+    doc.setTextColor(19, 35, 95); doc.setFont('helvetica', 'bold'); doc.setFontSize(15);
+    let wr = 0; for (let yy = 50; yy < 290; yy += 52) { let wc = 0; for (let xx = -5; xx < 215; xx += 92) { doc.text((wr + wc) % 2 === 0 ? 'Simulación referencial' : 'tomcontable.cl', xx, yy, { angle: 30 }); wc++; } wr++; }
+    if (doc.setGState) doc.setGState(new doc.GState({ opacity: 1 }));
+    if (logoImg) { try { const lw = 42; const ratio = (logoImg.naturalHeight && logoImg.naturalWidth) ? (logoImg.naturalHeight / logoImg.naturalWidth) : 0.26; doc.addImage(logoImg, 'PNG', M, 13, lw, lw * ratio); } catch (e) {} }
+    doc.setTextColor(30, 47, 115); doc.setFont('helvetica', 'bold'); doc.setFontSize(18);
+    doc.text('Liquidación de sueldo', M, 38);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(139, 147, 179);
+    doc.text((($('r-meta').textContent) || '').replace(/−/g, '-'), M, 44, { maxWidth: W - 2 * M });
+    let y = 52;
+    const bw = (W - 2 * M - 6) / 2;
+    doc.setFillColor(30, 47, 115); doc.roundedRect(M, y, bw, 18, 2, 2, 'F');
+    doc.setFillColor(19, 35, 95); doc.roundedRect(M + bw + 6, y, bw, 18, 2, 2, 'F');
+    doc.setTextColor(207, 214, 234); doc.setFont('helvetica', 'normal'); doc.setFontSize(8);
+    doc.text('Líquido del trabajador', M + 4, y + 6); doc.text('Costo total empresa', M + bw + 10, y + 6);
+    doc.setTextColor(246, 177, 26); doc.setFont('helvetica', 'bold'); doc.setFontSize(14);
+    doc.text($('r-liquido').textContent, M + 4, y + 14); doc.text($('r-costo').textContent, M + bw + 10, y + 14);
+    y += 27;
+    const drawSection = (titulo, rows) => {
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(8.5); doc.setTextColor(139, 147, 179);
+      doc.text(titulo.toUpperCase(), M, y); y += 5.5;
+      doc.setDrawColor(230, 232, 240);
+      rows.forEach((f) => {
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(10.5); doc.setTextColor(51, 56, 74);
+        doc.text(f.c, M, y);
+        doc.setFont('helvetica', 'bold'); doc.setTextColor(f.neg ? 176 : 19, f.neg ? 54 : 35, f.neg ? 54 : 95);
+        doc.text(f.v, W - M, y, { align: 'right' });
+        y += 6.5; doc.line(M, y - 2.5, W - M, y - 2.5);
+      });
+      y += 5;
+    };
+    drawSection('Haberes', grupo('#r-haberes'));
+    drawSection('Descuentos del trabajador', grupo('#r-desc'));
+    drawSection('Costos del empleador', grupo('#r-emp'));
+    const disc = 'Simulación referencial generada con los datos ingresados por el usuario. No constituye liquidación de sueldo oficial, comprobante de pago, asesoría laboral ni validación profesional de TomContable. El monto final debe considerar contrato, asistencia, haberes, descuentos, cotizaciones, topes legales y antecedentes completos del trabajador.';
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(120, 120, 130);
+    doc.text(doc.splitTextToSize(disc, W - 2 * M), M, y + 1);
+    doc.setTextColor(139, 147, 179); doc.setFontSize(8.5);
+    doc.text('TomContable · Más que contabilidad, tranquilidad · tomcontable.cl · WhatsApp +56 9 6493 3110', M, 290);
+    return doc.output('datauristring').split(',')[1];
+  };
+
+  $('mail-toggle').addEventListener('click', () => { const box = $('mail-box'); box.hidden = !box.hidden; if (!box.hidden) $('mail-nombre').focus(); });
+  $('mail-send').addEventListener('click', async () => {
+    const msg = $('mail-msg'); const btn = $('mail-send');
+    if (btn.disabled) return;
+    const email = $('mail-input').value.trim();
+    const nombre = $('mail-nombre').value.trim();
+    const consent = $('mail-consent').checked;
+    const website = $('mail-website').value;
+    msg.className = 'mail-msg';
+    if ($('r-liquido').textContent === '$0') { msg.textContent = 'Primero completa el cálculo arriba.'; return; }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { msg.textContent = 'Revisa tu correo, no parece válido.'; return; }
+    if (!consent) { msg.textContent = 'Marca la casilla para poder enviarte el PDF.'; return; }
+    btn.disabled = true; const btnTxt = btn.textContent; btn.textContent = 'Enviando…'; msg.textContent = 'Generando tu PDF y enviándolo…';
+    await new Promise((r) => setTimeout(r, 40));
+    let pdf = ''; try { if (window.jspdf) pdf = buildPDFBase64(); } catch (e) { pdf = ''; }
+    try {
+      const resp = await fetch('/api/enviar-calculo', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ tipo: 'liquidacion', email, nombre, consent, website, pdf }) });
+      const j = await resp.json();
+      if (j && j.ok) { msg.className = 'mail-msg ok'; msg.textContent = '¡Listo! Te enviamos el PDF a ' + email + '. Revisa tu bandeja de entrada (y la carpeta de spam).'; }
+      else { msg.textContent = 'No pudimos enviarlo ahora. Inténtalo en un rato.'; }
+    } catch (e) { msg.textContent = 'No pudimos enviarlo ahora. Inténtalo en un rato.'; }
+    btn.disabled = false; btn.textContent = btnTxt;
+  });
+
   // Cambios de interfaz
   $('modo').addEventListener('change', () => { $('monto-label').textContent = $('modo').value === 'liquido' ? 'Sueldo líquido deseado' : 'Sueldo base mensual'; calcular(); });
   $('salud-tipo').addEventListener('change', () => { $('isapre-wrap').hidden = $('salud-tipo').value !== 'isapre'; calcular(); });
@@ -391,6 +479,18 @@ const diasMes = Array.from({ length: 30 }, (_, i) => 30 - i);  // 30 .. 1 (tope 
   :global(.r-rows .rr-empty){color:#8b93b3;font-size:14px}
   .r-meta{font-size:12px;color:var(--gris);margin-top:12px;line-height:1.5}
   .r-cta{margin-top:14px}.r-cta :global(.btn){width:100%}
+  .r-mail{margin-top:14px;border-top:1px dashed var(--linea);padding-top:14px}
+  .mail-toggle{background:none;border:none;color:var(--azul);font-family:'Montserrat';font-weight:700;font-size:13.5px;cursor:pointer;padding:2px 0;text-decoration:underline;text-underline-offset:3px}
+  .mail-box{margin-top:10px;display:flex;flex-direction:column;gap:10px}
+  .mail-box .inp-solo{border:1px solid var(--linea);border-radius:10px;padding:11px 13px;font-family:inherit;font-size:15px;color:var(--azul-prof);width:100%}
+  .mail-box .inp-solo:focus{outline:none;border-color:var(--azul)}
+  .mail-box :global(.btn){width:100%}
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
+  .mail-check{display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--gris);line-height:1.45;cursor:pointer}
+  .mail-check input{margin-top:2px;flex-shrink:0}
+  .mail-check a{color:var(--azul);font-weight:600}
+  .mail-msg{font-size:13px;color:var(--azul);font-weight:600;margin:0;min-height:1em}
+  .mail-msg.ok{background:#fdf4dd;border:1px solid #f1d98a;border-radius:9px;padding:9px 12px;color:#6b5b1f}
 
   .params{margin-top:24px;background:#fff;border:1px solid var(--linea);border-radius:14px;overflow:hidden}
   .params summary{list-style:none;cursor:pointer;padding:16px 20px;font-family:'Montserrat';font-weight:700;font-size:14.5px;color:var(--azul);display:flex;justify-content:space-between;gap:12px}

@@ -1,0 +1,139 @@
+---
+import Base from '../../layouts/Base.astro';
+import BotonWhatsApp from '../../components/BotonWhatsApp.astro';
+
+const seo = {
+  title: 'Calculadora de IVA 19% en Chile | Agregar o quitar IVA · TomContable',
+  description: 'Calcula el IVA del 19% en Chile: agrega el IVA a un monto neto o sácalo de un total. Rápido y gratis, por TomContable.',
+  canonical: '/borradores/calculadora-iva',
+  noindex: true,
+};
+---
+<Base {...seo}>
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Herramienta gratis</p>
+      <h1>Calculadora de IVA</h1>
+      <p class="lead">Agrega el IVA a un monto neto o sácalo de un total, con la tasa vigente del 19% en Chile.</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap calc-wrap">
+      <div class="grid">
+        <form class="panel form" id="iva-form" autocomplete="off">
+          <h2>Datos</h2>
+
+          <label class="f"><span>¿Qué quieres hacer?</span>
+            <select id="modo">
+              <option value="agregar">Agregar IVA a un monto neto</option>
+              <option value="quitar">Sacar el IVA de un total</option>
+            </select>
+          </label>
+
+          <label class="f"><span id="monto-label">Monto neto</span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="monto" placeholder="0" /></div></label>
+        </form>
+
+        <div class="panel result">
+          <div class="dual">
+            <div class="dual-box"><span>Monto neto</span><strong id="r-neto">$0</strong></div>
+            <div class="dual-box alt"><span>Total con IVA</span><strong id="r-total">$0</strong></div>
+          </div>
+          <div class="iva-line" id="iva-line"></div>
+          <div class="r-cta"><BotonWhatsApp texto="Quiero ordenar la contabilidad de mi empresa" mensaje="Hola vengo desde la calculadora de IVA y quiero ayuda con la contabilidad de mi empresa" /></div>
+        </div>
+      </div>
+
+      <div class="info">
+        <h3>¿Cómo funciona el IVA?</h3>
+        <p>El IVA (Impuesto al Valor Agregado) en Chile es del 19% sobre el valor neto. El precio neto es el valor del producto o servicio sin impuesto; el total o bruto es lo que finalmente se paga, ya con el IVA incluido.</p>
+        <p>Si tienes el neto y quieres el total, sumas un 19%. Si tienes el total con IVA y quieres saber el neto, divides por 1,19 (no se resta un 19%, que es el error más común). Esta calculadora hace las dos cosas.</p>
+      </div>
+
+      <div class="descargo">
+        <p>Cálculo referencial generado en tomcontable.cl. La tasa general de IVA en Chile es 19%. Algunos productos y servicios tienen tratamientos especiales o están exentos; ante dudas, consulta con tu contador.</p>
+        <p class="firma">TomContable.cl · Cálculo referencial</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cierre">
+    <div class="wrap">
+      <h2>¿El IVA de tu empresa te quita el sueño cada mes?</h2>
+      <p>Con nuestra contabilidad mensual te llevamos el F29, el IVA y todo al día, sin que tengas que estar encima. Conversemos.</p>
+      <div class="cta-row center"><BotonWhatsApp texto="Hablar por WhatsApp" mensaje="Hola vengo desde la calculadora de IVA" /></div>
+    </div>
+  </section>
+
+</Base>
+
+<script>
+  const IVA = 0.19;
+  const fmt0 = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
+  const $ = (id) => document.getElementById(id);
+  const num = (id) => { const v = $(id).value; if (!v) return 0; const n = parseFloat(String(v).replace(/\./g,'').replace(/,/g,'.').replace(/[^\d.]/g,'')); return isFinite(n) ? n : 0; };
+
+  const calcular = () => {
+    const modo = $('modo').value;
+    const monto = num('monto');
+    if (monto <= 0) { $('r-neto').textContent = '$0'; $('r-total').textContent = '$0'; $('iva-line').innerHTML = ''; return; }
+
+    let neto, total, iva;
+    if (modo === 'quitar') { total = monto; neto = total / (1 + IVA); iva = total - neto; }
+    else { neto = monto; iva = neto * IVA; total = neto + iva; }
+
+    $('r-neto').textContent = fmt0.format(Math.round(neto));
+    $('r-total').textContent = fmt0.format(Math.round(total));
+    $('iva-line').innerHTML = `<span class="iva-tag">IVA (19%)</span><span class="iva-val">${fmt0.format(Math.round(iva))}</span>`;
+  };
+
+  $('modo').addEventListener('change', () => { $('monto-label').textContent = $('modo').value === 'quitar' ? 'Monto total (con IVA)' : 'Monto neto'; calcular(); });
+  $('iva-form').addEventListener('input', calcular);
+  $('iva-form').addEventListener('change', calcular);
+  calcular();
+</script>
+
+<style>
+  .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:56px 0 44px}
+  .hero h1{font-size:34px;font-weight:800;letter-spacing:-.5px;max-width:22ch}
+  .hero .lead{font-size:18px;color:#444a63;margin:16px 0 0;max-width:60ch}
+  .sec{padding:40px 0}
+  .calc-wrap{max-width:920px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:18px;padding:26px}
+  .panel h2{font-size:16px;font-weight:800;color:var(--azul);margin:4px 0 14px}
+  .f{display:block;margin-bottom:14px}.f>span{display:block;font-family:'Montserrat';font-weight:600;font-size:13.5px;color:var(--azul-prof);margin-bottom:6px}
+  .f input,.f select{width:100%;border:1px solid var(--linea);border-radius:10px;padding:11px 13px;font-family:inherit;font-size:15px;color:var(--azul-prof);background:#fff}
+  .f input:focus,.f select:focus{outline:none;border-color:var(--azul)}
+  .inp{display:flex;align-items:center;border:1px solid var(--linea);border-radius:10px;padding:0 12px}
+  .inp:focus-within{border-color:var(--azul)}
+  .inp i{font-family:'Montserrat';font-weight:700;color:var(--gris);font-size:14px;font-style:normal;margin-right:6px}
+  .inp input{border:none;padding:11px 0;width:100%}
+
+  .result{background:linear-gradient(160deg,#fff,#f7f9fe)}
+  .dual{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+  .dual-box{border-radius:13px;padding:14px 16px;background:var(--azul);color:#fff}
+  .dual-box.alt{background:var(--azul-prof)}
+  .dual-box span{display:block;font-family:'Montserrat';font-weight:600;font-size:12.5px;color:#cfd6ea}
+  .dual-box strong{display:block;font-family:'Montserrat';font-weight:800;font-size:22px;color:var(--amarillo);margin-top:4px;line-height:1.1}
+  .iva-line{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:12px 4px;border-top:1px solid #e6e8f0}
+  .iva-tag{font-size:14px;color:#33384a}
+  .iva-val{font-family:'Montserrat';font-weight:700;font-size:16px;color:var(--azul-prof);white-space:nowrap}
+  .r-cta{margin-top:14px}.r-cta :global(.btn){width:100%}
+
+  .info{margin-top:26px;background:#fafbfe;border:1px solid var(--linea);border-radius:14px;padding:22px 24px}
+  .info h3{font-size:16px;font-weight:800;color:var(--azul-prof);margin:0 0 8px}
+  .info p{font-size:14.5px;color:#444a63;line-height:1.65;margin:0 0 10px}.info p:last-child{margin-bottom:0}
+
+  .descargo{margin-top:22px;background:#f7f9fe;border:1px solid var(--linea);border-radius:12px;padding:16px 20px;color:var(--gris);font-size:12.5px;line-height:1.6}
+  .descargo p{margin:0 0 8px}.descargo p:last-child{margin-bottom:0}
+  .descargo .firma{font-family:'Montserrat';font-weight:700;color:var(--azul);font-size:12px}
+
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap}.cta-row.center{justify-content:center}
+  .cierre{background:linear-gradient(150deg,var(--azul),var(--azul-prof));color:#fff;text-align:center;padding:62px 24px}
+  .cierre h2{color:#fff;font-size:24px;font-weight:800;max-width:28ch;margin:0 auto}
+  .cierre p{color:#cfd6ea;font-size:17px;margin:14px auto 26px;max-width:54ch}
+  @media(max-width:860px){ .hero h1{font-size:27px} .grid{grid-template-columns:1fr} }
+  @media(max-width:480px){ .dual{grid-template-columns:1fr} }
+</style>
