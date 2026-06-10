@@ -1,0 +1,553 @@
+---
+import Base from '../../layouts/Base.astro';
+import BotonWhatsApp from '../../components/BotonWhatsApp.astro';
+
+const seo = {
+  title: 'Calculadora de Sueldo Líquido con Licencia Médica (v2) | TomContable',
+  description: 'Liquidación de sueldo con días de licencia médica: lo que paga el empleador y una estimación del subsidio que cubre Fonasa o la Isapre. Versión en pruebas.',
+  canonical: '/borradores/calculadora-sueldo-licencia',
+  noindex: true,
+};
+
+const jornadas = Array.from({ length: 41 }, (_, i) => 42 - i); // 42 .. 2
+const diasLic = Array.from({ length: 31 }, (_, i) => i);       // 0 .. 30 días de licencia
+---
+<Base {...seo}>
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Herramienta gratis</p>
+      <h1>Calculadora de sueldo líquido con licencia médica</h1>
+      <p class="lead">La misma liquidación de siempre, pero ahora con días de licencia médica: te muestra lo que paga el empleador y una estimación del subsidio que cubre Fonasa o la Isapre.</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap calc-wrap">
+      <p class="aviso-top"><strong>BORRADOR: pendiente de validación.</strong> Los indicadores (sueldo mínimo, topes, tasas AFP, AFC, SIS, expectativa de vida) se cargan automáticamente desde Previred. Falta validar la lógica completa antes de dar de alta. Ver "Parámetros usados" abajo.</p>
+
+      <div class="grid">
+        <form class="panel form" id="cw-form" autocomplete="off">
+          <h2>Datos del sueldo</h2>
+
+          <div class="f2">
+            <label class="f"><span>Calcular a partir de</span>
+              <select id="modo"><option value="base">Sueldo base</option><option value="liquido">Sueldo líquido deseado</option></select>
+            </label>
+            <label class="f"><span id="monto-label">Sueldo base mensual</span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="monto" placeholder="0" /></div></label>
+          </div>
+
+          <div class="f2">
+            <label class="f"><span>Gratificación legal</span><select id="grat"><option value="si">Sí (25% con tope)</option><option value="no">No</option></select></label>
+            <label class="f"><span>AFP</span><select id="afp"></select></label>
+          </div>
+
+          <div class="f2">
+            <label class="f"><span>Salud</span><select id="salud-tipo"><option value="fonasa">Fonasa (7%)</option><option value="isapre">Isapre (plan en UF)</option></select></label>
+            <label class="f"><span>Tipo de contrato</span><select id="tipo"><option value="indef">Indefinido</option><option value="plazo">Plazo fijo / por obra</option></select></label>
+          </div>
+
+          <label class="f" id="isapre-wrap" hidden><span>Valor del plan de Isapre <em>(en UF, mensual)</em></span><div class="inp"><input type="text" inputmode="decimal" id="isapre-uf" placeholder="0" /><i>UF</i></div></label>
+
+          <div class="f2">
+            <label class="f"><span>Jornada semanal</span><select id="jornada">{jornadas.map((h) => (<option value={h} selected={h === 42}>{h} hrs</option>))}</select></label>
+            <label class="f"><span>Días de licencia médica <em>(en el mes)</em></span><select id="dias-licencia">{diasLic.map((d) => (<option value={d} selected={d === 0}>{d}</option>))}</select></label>
+          </div>
+
+          <div class="f2">
+            <label class="f" id="tipo-lic-wrap" hidden><span>Tipo de licencia</span><select id="tipo-licencia"><option value="comun">Común (Fonasa / Isapre)</option><option value="laboral">Accidente laboral o enfermedad profesional</option></select></label>
+            <label class="f"><span>Mes de cálculo <em>(desde enero 2026)</em></span><input type="month" id="periodo" /></label>
+          </div>
+
+          <details class="more" id="more">
+            <summary>Agregar más detalle <span class="plus">+</span></summary>
+            <div class="more-body">
+              <div class="f2">
+                <label class="f"><span>Bonos</span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="bonos" placeholder="0" /></div></label>
+                <label class="f"><span>El bono es</span><select id="bono-tipo"><option value="bruto">Bruto (imponible)</option><option value="liquido">Líquido</option></select></label>
+              </div>
+              <div class="f2">
+                <label class="f"><span>Otras asignaciones <em>(no imponible)</em></span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="asig" placeholder="0" /></div></label>
+                <label class="f"><span>Colación <em>(no imponible)</em></span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="colacion" placeholder="0" /></div></label>
+              </div>
+              <div class="f2">
+                <label class="f"><span>Movilización <em>(no imponible)</em></span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="moviliz" placeholder="0" /></div></label>
+                <label class="f"><span>Tasa de mutual <em>(%)</em></span><div class="inp"><input type="text" inputmode="decimal" id="mutual" placeholder="0,93" /><i>%</i></div></label>
+              </div>
+              <div class="f2">
+                <label class="f"><span>Horas extra <em>(N°)</em></span><input type="text" inputmode="decimal" id="hextra" placeholder="0" /></label>
+                <label class="f"><span>Horas de atraso <em>(N°)</em></span><input type="text" inputmode="decimal" id="hatraso" placeholder="0" /></label>
+              </div>
+              <label class="f"><span>Anticipos y otros descuentos</span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="descuentos" placeholder="0" /></div></label>
+            </div>
+          </details>
+        </form>
+
+        <div class="panel result" id="result">
+          <div class="wm" aria-hidden="true"></div>
+          <div class="res-head"><h2>Resumen de la liquidación</h2><span class="res-sub">Generado en tomcontable.cl</span></div>
+          <div class="dual">
+            <div class="dual-box"><span>Líquido del trabajador</span><strong id="r-liquido">$0</strong></div>
+            <div class="dual-box alt"><span>Costo total para la empresa</span><strong id="r-costo">$0</strong></div>
+          </div>
+          <p class="aviso-min" id="aviso-min" hidden></p>
+          <div id="r-licencia" class="lic-block" hidden></div>
+          <p class="r-sub">Haberes</p>
+          <div class="r-rows" id="r-haberes"></div>
+          <p class="r-sub">Descuentos del trabajador</p>
+          <div class="r-rows" id="r-desc"></div>
+          <p class="r-sub">Costos del empleador</p>
+          <div class="r-rows" id="r-emp"></div>
+          <p class="r-meta" id="r-meta"></p>
+          <div class="r-cta"><BotonWhatsApp texto="Quiero ayuda con mis remuneraciones" mensaje="Hola vengo desde la calculadora de sueldo y quiero ayuda con remuneraciones" /></div>
+          <div class="r-mail">
+            <button type="button" class="mail-toggle" id="mail-toggle">Recibir esta liquidación en PDF a mi correo</button>
+            <div class="mail-box" id="mail-box" hidden>
+              <input class="inp-solo" id="mail-nombre" type="text" placeholder="Tu nombre" autocomplete="given-name" />
+              <input class="inp-solo" type="email" id="mail-input" placeholder="tucorreo@ejemplo.cl" autocomplete="email" />
+              <input class="hp" id="mail-website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
+              <label class="mail-check"><input type="checkbox" id="mail-consent" /><span>Acepto recibir mi cálculo en PDF y, cada cierto tiempo, contenido útil de TomContable. Puedo darme de baja cuando quiera. <a href="/privacidad" target="_blank" rel="noopener">Política de privacidad</a>.</span></label>
+              <button type="button" class="btn btn-amber" id="mail-send">Enviarme el PDF</button>
+              <p class="mail-msg" id="mail-msg" role="status"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <details class="params">
+        <summary>Parámetros usados (verifícalos antes de publicar)<span class="plus">+</span></summary>
+        <div id="params-body" class="params-body"></div>
+      </details>
+
+      <div class="descargo">
+        <p>Simulación generada en tomcontable.cl con los datos ingresados por el usuario. No constituye liquidación de sueldo oficial, comprobante de pago, asesoría laboral ni validación profesional de TomContable. Para emitir o revisar una liquidación real, deben considerarse contrato, asistencia, haberes, descuentos, cotizaciones, topes legales y antecedentes completos del trabajador.</p>
+        <p>Los indicadores previsionales se revisan cada mes, pero podrían no reflejar el último valor publicado por la autoridad. Asegúrate de verificarlos antes de usar el resultado.</p>
+        <p class="firma">TomContable.cl · Simulación referencial</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cierre">
+    <div class="wrap">
+      <h2>¿Necesitas una liquidación revisada?</h2>
+      <p>Solicita una revisión profesional con TomContable. Calculamos y revisamos liquidaciones, cotizaciones y todo lo laboral por ti.</p>
+      <div class="cta-row center"><BotonWhatsApp texto="Solicitar revisión profesional" mensaje="Hola vengo desde la calculadora de sueldo y quiero una liquidación revisada" /></div>
+    </div>
+  </section>
+
+</Base>
+
+<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+  // Indicadores previsionales de Previred, organizados por VIGENCIA (desde tal mes).
+  // Solo se agrega una fila cuando un valor cambia. Constantes de 2026 (no cambian mes a mes):
+  const BASE = {
+    sueldoMinimo: 539000,
+    afcEmpleadorIndef: 0.024, afcTrabajadorIndef: 0.006, afcEmpleadorPlazo: 0.030,
+    cargoEmpleadorAFP: 0.001, expectativaVida: 0.009,
+    afps: { Capital: 0.1144, Cuprum: 0.1144, Habitat: 0.1127, PlanVital: 0.1116, ProVida: 0.1145, Modelo: 0.1058, Uno: 0.1046 },
+  };
+  // Lo que cambió en 2026: topes imponibles (feb) y SIS (abr). Ordenadas por fecha ascendente.
+  // Para sumar un mes futuro con cambios, agrega una fila aquí con "desde": "AAAA-MM".
+  const VIGENCIAS = [
+    { desde: '2026-01', topeAFP_UF: 89.9, topeAFC_UF: 135.1, sis: 0.0154 },
+    { desde: '2026-02', topeAFP_UF: 90,   topeAFC_UF: 135.2, sis: 0.0154 },
+    { desde: '2026-04', topeAFP_UF: 90,   topeAFC_UF: 135.2, sis: 0.0162 },
+  ];
+  const PERIODO_MIN = '2026-01';
+  const vigenciaDe = (periodo) => { let v = VIGENCIAS[0]; for (const x of VIGENCIAS) { if (x.desde <= periodo) v = x; else break; } return { ...BASE, ...v, periodo }; };
+  const JORNADA_COMPLETA = 42; // jornada ordinaria legal vigente (Ley 40 horas, 42 hrs desde 2026)
+  // Impuesto único 2ª categoría mensual, tramos en UTM: [hasta, factor, rebaja UTM]
+  const TRAMOS = [[13.5,0,0],[30,0.04,0.54],[50,0.08,1.74],[70,0.135,4.49],[90,0.23,11.14],[120,0.304,17.8],[310,0.35,23.32],[Infinity,0.40,38.82]];
+  let D = vigenciaDe('2099-12'); // última vigencia conocida (se recalcula por mes en cada cálculo)
+  let UF = 40763, UTM = 71506;
+
+  const fmt0 = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
+  const $ = (id) => document.getElementById(id);
+  const num = (id) => { const v = $(id).value; if (!v) return 0; const n = parseFloat(String(v).replace(/\./g,'').replace(/,/g,'.').replace(/[^\d.]/g,'')); return isFinite(n) ? n : 0; };
+  const dec = (id) => { const v = $(id).value; if (!v) return 0; const n = parseFloat(String(v).replace(/[^\d.,]/g,'').replace(',','.')); return isFinite(n) ? n : 0; };
+  const pct = (x) => (x * 100).toFixed(2).replace('.', ',');
+
+  const rowsHtml = (arr) => arr.filter((f) => f).map((f) => `<div class="rr"><span class="rr-c">${f[0]}</span><span class="rr-v${f[2] ? ' neg' : ''}">${(f[2] ? '-' : '') + fmt0.format(Math.round(f[1]))}</span></div>`).join('');
+
+  const llenarAFPs = () => {
+    const sel = $('afp'); const prev = sel.value;
+    sel.innerHTML = Object.keys(D.afps).map((k) => `<option value="${k}">${k} (${(D.afps[k]*100).toFixed(2).replace('.', ',')}%)</option>`).join('');
+    if (prev && D.afps[prev]) sel.value = prev; else if (D.afps.Modelo) sel.value = 'Modelo';
+  };
+
+  // Liquidación completa a partir del sueldo base mensual contractual.
+  const liquidar = (base, P) => {
+    const baseEarned = base * (P.dias / 30);                 // proporcional a los días trabajados
+    const grat = P.gratOn ? Math.min(baseEarned * 0.25, P.topeGrat) : 0;
+    const valHoraExtra = base * 0.35 / P.jornada;            // hora con recargo 50% (sobre sueldo mensual)
+    const valHoraOrd = base * 7 / (30 * P.jornada);          // hora ordinaria (para atrasos)
+    const hExtra = P.hExtraN * valHoraExtra;                 // imponible
+    const atraso = P.hAtrasoN * valHoraOrd;                  // rebaja la base imponible
+
+    const imponible = Math.max(0, baseEarned + grat + P.bonos + hExtra - atraso);
+    const impCap = Math.min(imponible, D.topeAFP_UF * UF);
+    const impAFC = Math.min(imponible, D.topeAFC_UF * UF);
+
+    const afp = impCap * P.afpTasa;
+    const saludLegal = impCap * 0.07;                                            // 7% obligatorio
+    const adicIsapre = P.isapre ? Math.max(0, P.isapreUF * UF - saludLegal) : 0; // diferencia sobre el 7%
+    const afcTrab = P.indef ? impAFC * D.afcTrabajadorIndef : 0;
+
+    // El impuesto deduce las cotizaciones legales (AFP, 7% salud, cesantía); el adicional de Isapre no.
+    const baseTrib = imponible - (afp + saludLegal + afcTrab);
+    const tUTM = baseTrib / UTM;
+    let factor = 0, rebaja = 0;
+    for (const [hasta, f, r] of TRAMOS) { if (tUTM <= hasta) { factor = f; rebaja = r; break; } }
+    const impuesto = Math.max(0, tUTM * factor - rebaja) * UTM;
+
+    const noImp = P.colacion + P.moviliz + P.asig;
+    const liquido = imponible + noImp - afp - saludLegal - adicIsapre - afcTrab - impuesto - P.anticipos;
+
+    const afcEmp = P.indef ? impAFC * D.afcEmpleadorIndef : impAFC * D.afcEmpleadorPlazo;
+    const sis = impCap * D.sis;
+    const mut = impCap * P.mutualTasa;
+    const capInd = impCap * D.cargoEmpleadorAFP;   // capitalización individual (0,1%)
+    const expVida = impCap * D.expectativaVida;    // expectativa de vida (0,9%)
+    const costo = imponible + noImp + afcEmp + sis + mut + capInd + expVida;
+
+    return { baseEarned, grat, bonos: P.bonos, hExtra, atraso, colacion: P.colacion, moviliz: P.moviliz, asig: P.asig,
+      afp, saludLegal, adicIsapre, afcTrab, impuesto, factor, anticipos: P.anticipos,
+      afcEmp, sis, mut, capInd, expVida, liquido, costo };
+  };
+
+  const vaciar = () => { $('r-liquido').textContent = '$0'; $('r-costo').textContent = '$0'; $('aviso-min').hidden = true; $('r-licencia').hidden = true; $('r-haberes').innerHTML = '<p class="rr-empty">Ingresa el monto.</p>'; $('r-desc').innerHTML = ''; $('r-emp').innerHTML = ''; $('r-meta').textContent = ''; };
+
+  const calcular = () => {
+    const periodoSel = ($('periodo').value && $('periodo').value >= PERIODO_MIN) ? $('periodo').value : PERIODO_MIN;
+    D = vigenciaDe(periodoSel); // tasas previsionales vigentes en el mes seleccionado
+    const modo = $('modo').value;
+    const afpKey = $('afp').value;
+    const saludTipo = $('salud-tipo').value;
+    const jornada = parseInt($('jornada').value, 10) || JORNADA_COMPLETA;
+    const jornadaParcial = jornada < JORNADA_COMPLETA;
+    const diasLicencia = Math.min(30, parseInt($('dias-licencia').value, 10) || 0);
+    const tipoLicencia = $('tipo-licencia').value;
+    const dias = Math.max(0, 30 - diasLicencia); // días que efectivamente paga el empleador
+    const bonoTipo = $('bono-tipo').value;
+    const rawBono = num('bonos');
+
+    const P = {
+      gratOn: $('grat').value === 'si',
+      topeGrat: (4.75 * D.sueldoMinimo) / 12,
+      indef: $('tipo').value === 'indef',
+      afpTasa: D.afps[afpKey] || 0.1144,
+      isapre: saludTipo === 'isapre',
+      isapreUF: dec('isapre-uf'),
+      jornada, dias,
+      hExtraN: dec('hextra'),
+      hAtrasoN: dec('hatraso'),
+      bonos: rawBono,
+      mutualTasa: (dec('mutual') || 0.93) / 100,
+      asig: num('asig'),
+      colacion: num('colacion'),
+      moviliz: num('moviliz'),
+      anticipos: num('descuentos'),
+    };
+
+    const monto = num('monto');
+    if (monto <= 0) { vaciar(); return; }
+
+    const solveBase = (Pp) => { let lo = 0, hi = Math.max(monto * 3, 1000000); for (let i = 0; i < 60; i++) { const mid = (lo + hi) / 2; if (liquidar(mid, Pp).liquido < monto) lo = mid; else hi = mid; } return (lo + hi) / 2; };
+
+    let base = (modo === 'liquido') ? solveBase(P) : monto;
+
+    // Embrutecer el bono si se ingresó como líquido (lo que el trabajador recibe en mano por ese bono)
+    if (bonoTipo === 'liquido' && rawBono > 0) {
+      const prelim = liquidar(base, { ...P, bonos: 0 });
+      const keep = 1 - P.afpTasa - 0.07 - (P.indef ? D.afcTrabajadorIndef : 0) - prelim.factor;
+      P.bonos = keep > 0.05 ? rawBono / keep : rawBono;
+      if (modo === 'liquido') base = solveBase(P);
+    }
+
+    const r = liquidar(base, P);
+    $('r-liquido').textContent = fmt0.format(Math.round(r.liquido));
+    $('r-costo').textContent = fmt0.format(Math.round(r.costo));
+
+    // Aviso: sueldo base bajo el mínimo legal (proporcional si la jornada es parcial)
+    const minProp = jornadaParcial ? D.sueldoMinimo * (jornada / JORNADA_COMPLETA) : D.sueldoMinimo;
+    const avisoEl = $('aviso-min');
+    if (base > 0 && base < minProp - 1) {
+      avisoEl.hidden = false;
+      avisoEl.textContent = jornadaParcial
+        ? `Atención: el sueldo base está bajo el mínimo proporcional de esta jornada (${fmt0.format(Math.round(minProp))} para ${jornada} hrs). Revisa que cumpla el ingreso mínimo legal.`
+        : `Atención: el sueldo base está bajo el ingreso mínimo legal (${fmt0.format(Math.round(minProp))}).`;
+    } else {
+      avisoEl.hidden = true;
+    }
+
+    // Licencia médica: el empleador paga solo los días trabajados; el subsidio lo paga un tercero (Fonasa/Isapre/Mutual).
+    const licEl = $('r-licencia');
+    if (diasLicencia > 0) {
+      const gratFull = P.gratOn ? Math.min(base * 0.25, P.topeGrat) : 0;
+      const impMes = base + gratFull + P.bonos; // imponible mensual completo (proxy de la base del subsidio)
+      const baseSubDiaria = Math.min(impMes, D.topeAFP_UF * UF) / 30;
+      const diasCarencia = (tipoLicencia === 'comun' && diasLicencia <= 10) ? Math.min(3, diasLicencia) : 0;
+      const diasCubiertos = Math.max(0, diasLicencia - diasCarencia);
+      const subBruto = baseSubDiaria * diasCubiertos;
+      const subLiquido = subBruto * (1 - P.afpTasa - 0.07); // se descuentan AFP y salud; sin cesantía ni impuesto
+      const pagador = tipoLicencia === 'comun' ? 'Fonasa o tu Isapre' : 'la Mutual o el ISL';
+      licEl.hidden = false;
+      licEl.innerHTML = `<p class="r-sub">Licencia médica (${diasLicencia} días)</p>
+        <div class="lic">
+          <div class="lic-row"><span>Días cubiertos por el subsidio</span><strong>${diasCubiertos}</strong></div>
+          ${diasCarencia > 0 ? `<div class="lic-row"><span>Días de carencia (no los paga nadie)</span><strong class="neg">${diasCarencia}</strong></div>` : ''}
+          <div class="lic-row"><span>Subsidio estimado (líquido)</span><strong class="amber">${fmt0.format(Math.round(subLiquido))}</strong></div>
+          <div class="lic-row tot"><span>Total que recibe el trabajador en el mes</span><strong>${fmt0.format(Math.round(r.liquido + subLiquido))}</strong></div>
+          <p class="lic-nota">El subsidio lo paga ${pagador}, no la empresa. Es una estimación referencial: la base legal es el promedio de las últimas 3 remuneraciones imponibles del trabajador, con tope de ${D.topeAFP_UF} UF.</p>
+        </div>`;
+    } else {
+      licEl.hidden = true;
+    }
+
+    $('r-haberes').innerHTML = rowsHtml([
+      ['Sueldo base' + (dias < 30 ? ` (${dias} días trabajados)` : ''), r.baseEarned, false],
+      P.gratOn && ['Gratificación legal', r.grat, false],
+      P.bonos > 0 && [bonoTipo === 'liquido' ? 'Bonos (imponible, embrutecido)' : 'Bonos (imponible)', P.bonos, false],
+      r.hExtra > 0 && ['Horas extra', r.hExtra, false],
+      r.atraso > 0 && ['Descuento por atrasos', r.atraso, true],
+      r.colacion > 0 && ['Colación', r.colacion, false],
+      r.moviliz > 0 && ['Movilización', r.moviliz, false],
+      r.asig > 0 && ['Otras asignaciones', r.asig, false],
+    ]);
+    $('r-desc').innerHTML = rowsHtml([
+      ['AFP (' + afpKey + ')', r.afp, true],
+      ['Salud obligatoria (7%)', r.saludLegal, true],
+      r.adicIsapre > 0 && ['Adicional Isapre', r.adicIsapre, true],
+      P.indef && ['Seguro de cesantía', r.afcTrab, true],
+      r.impuesto > 0 && ['Impuesto único', r.impuesto, true],
+      r.anticipos > 0 && ['Anticipos y otros descuentos', r.anticipos, true],
+    ]);
+    $('r-emp').innerHTML = rowsHtml([
+      ['Seguro de cesantía (empleador)', r.afcEmp, false],
+      ['SIS', r.sis, false],
+      ['Mutual (' + pct(P.mutualTasa) + '%)', r.mut, false],
+      ['Capitalización individual (' + pct(D.cargoEmpleadorAFP) + '%)', r.capInd, false],
+      ['Expectativa de vida (' + pct(D.expectativaVida) + '%)', r.expVida, false],
+    ]);
+
+    const sueldoBaseTxt = modo === 'liquido' ? ' · Sueldo base estimado: ' + fmt0.format(Math.round(base)) : '';
+    $('r-meta').textContent = `Período ${periodoSel} · UF ${fmt0.format(Math.round(UF))} · UTM ${fmt0.format(Math.round(UTM))} · Datos Previred${sueldoBaseTxt}.`;
+  };
+
+  const pintarParams = () => {
+    const origen = `tabla de Previred por vigencia, aplicando el mes <strong>${D.periodo}</strong>`;
+    $('params-body').innerHTML = `<ul>
+      <li>Origen de los datos: ${origen}.</li>
+      <li>UF y UTM: del mes seleccionado (Banco Central). Tasas previsionales: tabla de Previred por vigencia, exactas para cada mes desde enero 2026.</li>
+      <li>Sueldo mínimo: <strong>${fmt0.format(D.sueldoMinimo)}</strong> · Tope imponible AFP/salud: <strong>${D.topeAFP_UF} UF</strong> · Tope cesantía: <strong>${D.topeAFC_UF} UF</strong></li>
+      <li>AFP (cargo trabajador, incluye 10% + comisión): ${Object.keys(D.afps).map((k) => `${k} ${pct(D.afps[k])}%`).join(' · ')}</li>
+      <li>Salud: Fonasa 7% o Isapre (si el plan en UF supera el 7%, el trabajador paga la diferencia, que no es deducible de impuesto)</li>
+      <li>Jornada completa legal: 42 hrs (Ley 40 horas, 2026). Jornada parcial = el ingreso mínimo y la hora se calculan proporcionales. Días del mes: tope legal 30</li>
+      <li>Horas extra: recargo 50% sobre la hora ordinaria · Atrasos: hora ordinaria, rebajan la base imponible</li>
+      <li>Bono líquido: se "embrutece" según las cotizaciones del trabajador y el impuesto marginal (aproximación, validar en bordes de tramo)</li>
+      <li>Cesantía trabajador indefinido: ${pct(D.afcTrabajadorIndef)}% · Cesantía empleador: ${pct(D.afcEmpleadorIndef)}% indefinido / ${pct(D.afcEmpleadorPlazo)}% plazo fijo</li>
+      <li>Costos empleador: SIS ${pct(D.sis)}% · Capitalización individual ${pct(D.cargoEmpleadorAFP)}% · Expectativa de vida ${pct(D.expectativaVida)}% · Mutual editable (def. 0,93%)</li>
+      <li>Impuesto único: tramos en UTM con rebaja (estructura legal estándar)</li>
+    </ul><p class="params-nota">Los indicadores se actualizan solos desde Previred cada mes. Falta validar la lógica completa antes de dar de alta (quitar noindex y enlazar al menú).</p>`;
+  };
+
+  // PDF imprimible + envío por correo (captura de lead)
+  let logoImg = null;
+  (() => { const im = new Image(); im.crossOrigin = 'anonymous'; im.onload = () => { logoImg = im; }; im.src = '/img/logo-tomcontable.png'; })();
+  const grupo = (sel) => [...document.querySelectorAll(sel + ' .rr')].map((r) => ({ c: r.querySelector('.rr-c')?.textContent || '', v: (r.querySelector('.rr-v')?.textContent || '').replace(/−/g, '-'), neg: r.querySelector('.rr-v')?.classList.contains('neg') || false }));
+
+  const buildPDFBase64 = () => {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+    const W = 210, M = 18;
+    if (doc.setGState) doc.setGState(new doc.GState({ opacity: 0.09 }));
+    doc.setTextColor(19, 35, 95); doc.setFont('helvetica', 'bold'); doc.setFontSize(15);
+    let wr = 0; for (let yy = 50; yy < 290; yy += 52) { let wc = 0; for (let xx = -5; xx < 215; xx += 92) { doc.text((wr + wc) % 2 === 0 ? 'Simulación referencial' : 'tomcontable.cl', xx, yy, { angle: 30 }); wc++; } wr++; }
+    if (doc.setGState) doc.setGState(new doc.GState({ opacity: 1 }));
+    if (logoImg) { try { const lw = 42; const ratio = (logoImg.naturalHeight && logoImg.naturalWidth) ? (logoImg.naturalHeight / logoImg.naturalWidth) : 0.26; doc.addImage(logoImg, 'PNG', M, 13, lw, lw * ratio); } catch (e) {} }
+    doc.setTextColor(30, 47, 115); doc.setFont('helvetica', 'bold'); doc.setFontSize(18);
+    doc.text('Liquidación de sueldo', M, 38);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(139, 147, 179);
+    doc.text((($('r-meta').textContent) || '').replace(/−/g, '-'), M, 44, { maxWidth: W - 2 * M });
+    let y = 52;
+    const bw = (W - 2 * M - 6) / 2;
+    doc.setFillColor(30, 47, 115); doc.roundedRect(M, y, bw, 18, 2, 2, 'F');
+    doc.setFillColor(19, 35, 95); doc.roundedRect(M + bw + 6, y, bw, 18, 2, 2, 'F');
+    doc.setTextColor(207, 214, 234); doc.setFont('helvetica', 'normal'); doc.setFontSize(8);
+    doc.text('Líquido del trabajador', M + 4, y + 6); doc.text('Costo total empresa', M + bw + 10, y + 6);
+    doc.setTextColor(246, 177, 26); doc.setFont('helvetica', 'bold'); doc.setFontSize(14);
+    doc.text($('r-liquido').textContent, M + 4, y + 14); doc.text($('r-costo').textContent, M + bw + 10, y + 14);
+    y += 27;
+    const drawSection = (titulo, rows) => {
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(8.5); doc.setTextColor(139, 147, 179);
+      doc.text(titulo.toUpperCase(), M, y); y += 5.5;
+      doc.setDrawColor(230, 232, 240);
+      rows.forEach((f) => {
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(10.5); doc.setTextColor(51, 56, 74);
+        doc.text(f.c, M, y);
+        doc.setFont('helvetica', 'bold'); doc.setTextColor(f.neg ? 176 : 19, f.neg ? 54 : 35, f.neg ? 54 : 95);
+        doc.text(f.v, W - M, y, { align: 'right' });
+        y += 6.5; doc.line(M, y - 2.5, W - M, y - 2.5);
+      });
+      y += 5;
+    };
+    drawSection('Haberes', grupo('#r-haberes'));
+    drawSection('Descuentos del trabajador', grupo('#r-desc'));
+    drawSection('Costos del empleador', grupo('#r-emp'));
+    const disc = 'Simulación referencial generada con los datos ingresados por el usuario. No constituye liquidación de sueldo oficial, comprobante de pago, asesoría laboral ni validación profesional de TomContable. El monto final debe considerar contrato, asistencia, haberes, descuentos, cotizaciones, topes legales y antecedentes completos del trabajador.';
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(120, 120, 130);
+    doc.text(doc.splitTextToSize(disc, W - 2 * M), M, y + 1);
+    doc.setTextColor(139, 147, 179); doc.setFontSize(8.5);
+    doc.text('TomContable · Más que contabilidad, tranquilidad · tomcontable.cl · WhatsApp +56 9 6493 3110', M, 290);
+    return doc.output('datauristring').split(',')[1];
+  };
+
+  $('mail-toggle').addEventListener('click', () => { const box = $('mail-box'); box.hidden = !box.hidden; if (!box.hidden) $('mail-nombre').focus(); });
+  $('mail-send').addEventListener('click', async () => {
+    const msg = $('mail-msg'); const btn = $('mail-send');
+    if (btn.disabled) return;
+    const email = $('mail-input').value.trim();
+    const nombre = $('mail-nombre').value.trim();
+    const consent = $('mail-consent').checked;
+    const website = $('mail-website').value;
+    msg.className = 'mail-msg';
+    if ($('r-liquido').textContent === '$0') { msg.textContent = 'Primero completa el cálculo arriba.'; return; }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { msg.textContent = 'Revisa tu correo, no parece válido.'; return; }
+    if (!consent) { msg.textContent = 'Marca la casilla para poder enviarte el PDF.'; return; }
+    btn.disabled = true; const btnTxt = btn.textContent; btn.textContent = 'Enviando…'; msg.textContent = 'Generando tu PDF y enviándolo…';
+    await new Promise((r) => setTimeout(r, 40));
+    let pdf = ''; try { if (window.jspdf) pdf = buildPDFBase64(); } catch (e) { pdf = ''; }
+    try {
+      const resp = await fetch('/api/enviar-calculo', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ tipo: 'liquidacion', email, nombre, consent, website, pdf }) });
+      const j = await resp.json();
+      if (j && j.ok) { msg.className = 'mail-msg ok'; msg.textContent = '¡Listo! Te enviamos el PDF a ' + email + '. Revisa tu bandeja de entrada (y la carpeta de spam).'; }
+      else { msg.textContent = 'No pudimos enviarlo ahora. Inténtalo en un rato.'; }
+    } catch (e) { msg.textContent = 'No pudimos enviarlo ahora. Inténtalo en un rato.'; }
+    btn.disabled = false; btn.textContent = btnTxt;
+  });
+
+  // Cambios de interfaz
+  $('modo').addEventListener('change', () => { $('monto-label').textContent = $('modo').value === 'liquido' ? 'Sueldo líquido deseado' : 'Sueldo base mensual'; calcular(); });
+  $('salud-tipo').addEventListener('change', () => { $('isapre-wrap').hidden = $('salud-tipo').value !== 'isapre'; calcular(); });
+  $('dias-licencia').addEventListener('change', () => { $('tipo-lic-wrap').hidden = (parseInt($('dias-licencia').value, 10) || 0) === 0; calcular(); });
+  $('cw-form').addEventListener('input', calcular);
+  $('cw-form').addEventListener('change', calcular);
+
+  // Trae la UF (último día disponible del mes) y la UTM del mes para el período elegido.
+  const cargarIndicadores = async (periodo) => {
+    const y = periodo.slice(0, 4);
+    try {
+      const u = await fetch(`https://mindicador.cl/api/uf/${y}`).then((r) => r.json());
+      const m = (u.serie || []).filter((s) => s.fecha.slice(0, 7) === periodo);
+      if (m.length) UF = m[0].valor; // serie descendente: el primero es el último día del mes
+    } catch (e) {}
+    try {
+      const u = await fetch(`https://mindicador.cl/api/utm/${y}`).then((r) => r.json());
+      const m = (u.serie || []).find((s) => s.fecha.slice(0, 7) === periodo);
+      if (m) UTM = m.valor;
+    } catch (e) {}
+  };
+
+  // Período por defecto: mes actual (no permite meses futuros).
+  const ahora = new Date();
+  const periodoHoy = ahora.getFullYear() + '-' + String(ahora.getMonth() + 1).padStart(2, '0');
+  $('periodo').value = periodoHoy;
+  $('periodo').min = PERIODO_MIN; // solo desde enero 2026 en adelante
+  $('periodo').max = periodoHoy;
+  $('periodo').addEventListener('change', async () => { await cargarIndicadores($('periodo').value || periodoHoy); calcular(); pintarParams(); });
+
+  llenarAFPs();
+  cargarIndicadores(periodoHoy).then(() => { calcular(); pintarParams(); });
+  calcular(); pintarParams();
+</script>
+
+<style>
+  .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:56px 0 44px}
+  .hero h1{font-size:33px;font-weight:800;letter-spacing:-.5px;max-width:22ch}
+  .hero .lead{font-size:18px;color:#444a63;margin:16px 0 0;max-width:60ch}
+  .sec{padding:40px 0}
+  .calc-wrap{max-width:980px}
+  .aviso-top{background:#fdf4dd;border:1px solid #f1d98a;border-radius:12px;padding:13px 18px;font-size:14px;color:#6b5b1f;margin-bottom:22px}
+  .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:24px;align-items:start}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:18px;padding:26px}
+  .panel h2{font-size:16px;font-weight:800;color:var(--azul);margin:4px 0 14px}
+  .f{display:block;margin-bottom:14px}.f>span{display:block;font-family:'Montserrat';font-weight:600;font-size:13.5px;color:var(--azul-prof);margin-bottom:6px}
+  .f>span em{color:var(--gris);font-weight:500;font-style:normal}
+  .f input,.f select{width:100%;border:1px solid var(--linea);border-radius:10px;padding:11px 13px;font-family:inherit;font-size:15px;color:var(--azul-prof);background:#fff}
+  .f input:focus,.f select:focus{outline:none;border-color:var(--azul)}
+  .f2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .inp{display:flex;align-items:center;border:1px solid var(--linea);border-radius:10px;padding:0 12px}
+  .inp:focus-within{border-color:var(--azul)}
+  .inp i{font-family:'Montserrat';font-weight:700;color:var(--gris);font-size:14px;font-style:normal}
+  .inp i:first-child{margin-right:6px}.inp i:last-child{margin-left:6px}
+  .inp input{border:none;padding:11px 0;width:100%}
+
+  .more{margin-top:4px;border-top:1px solid var(--linea);padding-top:12px}
+  .more summary{list-style:none;cursor:pointer;font-family:'Montserrat';font-weight:700;font-size:14px;color:var(--azul);display:flex;align-items:center;gap:8px}
+  .more summary::-webkit-details-marker{display:none}
+  .more .plus{font-size:18px;transition:.2s}.more[open] .plus{transform:rotate(45deg)}
+  .more-body{padding-top:16px}
+
+  .result{position:sticky;top:92px;overflow:hidden;background:linear-gradient(160deg,#fff,#f7f9fe)}
+  .result > :not(.wm){position:relative;z-index:1}
+  .wm{position:absolute;inset:0;pointer-events:none;z-index:2;opacity:.13;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='440' height='330'%3E%3Cg font-family='Arial, sans-serif' font-size='17' font-weight='700' fill='%2313235F'%3E%3Ctext x='10' y='55' transform='rotate(-20 10 55)'%3ESimulación referencial%3C/text%3E%3Ctext x='250' y='95' transform='rotate(-20 250 95)'%3Etomcontable.cl%3C/text%3E%3Ctext x='80' y='172' transform='rotate(-20 80 172)'%3Etomcontable.cl%3C/text%3E%3Ctext x='255' y='215' transform='rotate(-20 255 215)'%3ESimulación referencial%3C/text%3E%3Ctext x='18' y='288' transform='rotate(-20 18 288)'%3Etomcontable.cl%3C/text%3E%3C/g%3E%3C/svg%3E");background-repeat:repeat;background-size:380px 285px}
+  .res-head{margin-bottom:14px}
+  .res-head h2{font-size:18px;font-weight:800;color:var(--azul-prof);margin:0}
+  .res-sub{display:block;font-size:12px;color:var(--gris);font-weight:500;margin-top:2px}
+  .dual{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+  .dual-box{border-radius:13px;padding:14px 16px;background:var(--azul);color:#fff}
+  .dual-box.alt{background:var(--azul-prof)}
+  .dual-box span{display:block;font-family:'Montserrat';font-weight:600;font-size:12.5px;color:#cfd6ea}
+  .dual-box strong{display:block;font-family:'Montserrat';font-weight:800;font-size:21px;color:var(--amarillo);margin-top:4px;line-height:1.1}
+  .aviso-min{background:#fdecec;border:1px solid #f3b9b9;border-radius:10px;padding:10px 13px;font-size:13px;color:#9a2727;line-height:1.45;margin:0 0 6px}
+  .lic-block{margin:6px 0 2px}
+  .lic{background:#eef5ff;border:1px solid #cfe0f5;border-radius:12px;padding:6px 16px 14px}
+  .lic-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:7px 0;font-size:14px;color:#33384a}
+  .lic-row strong{font-family:'Montserrat',sans-serif;font-weight:700;color:#13235F;white-space:nowrap}
+  .lic-row strong.neg{color:#b03636}
+  .lic-row.tot{border-top:1px solid #cfe0f5;margin-top:4px;padding-top:10px}
+  .lic-row.tot strong{font-size:16px}
+  .lic-nota{font-size:12px;color:var(--gris);line-height:1.5;margin:8px 0 0}
+  .r-sub{font-family:'Montserrat';font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--gris);margin:16px 0 4px}
+  :global(.r-rows .rr){display:flex;justify-content:space-between;gap:14px;padding:8px 0;border-bottom:1px solid #e6e8f0;font-size:14px;color:#33384a}
+  :global(.r-rows .rr-c){min-width:0}
+  :global(.r-rows .rr-v){font-family:'Montserrat',sans-serif;font-weight:700;color:#13235F;white-space:nowrap;flex-shrink:0}
+  :global(.r-rows .rr-v.neg){color:#b03636}
+  :global(.r-rows .rr-empty){color:#8b93b3;font-size:14px}
+  .r-meta{font-size:12px;color:var(--gris);margin-top:12px;line-height:1.5}
+  .r-cta{margin-top:14px}.r-cta :global(.btn){width:100%}
+  .r-mail{margin-top:14px;border-top:1px dashed var(--linea);padding-top:14px}
+  .mail-toggle{background:none;border:none;color:var(--azul);font-family:'Montserrat';font-weight:700;font-size:13.5px;cursor:pointer;padding:2px 0;text-decoration:underline;text-underline-offset:3px}
+  .mail-box{margin-top:10px;display:flex;flex-direction:column;gap:10px}
+  .mail-box .inp-solo{border:1px solid var(--linea);border-radius:10px;padding:11px 13px;font-family:inherit;font-size:15px;color:var(--azul-prof);width:100%}
+  .mail-box .inp-solo:focus{outline:none;border-color:var(--azul)}
+  .mail-box :global(.btn){width:100%}
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
+  .mail-check{display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--gris);line-height:1.45;cursor:pointer}
+  .mail-check input{margin-top:2px;flex-shrink:0}
+  .mail-check a{color:var(--azul);font-weight:600}
+  .mail-msg{font-size:13px;color:var(--azul);font-weight:600;margin:0;min-height:1em}
+  .mail-msg.ok{background:#fdf4dd;border:1px solid #f1d98a;border-radius:9px;padding:9px 12px;color:#6b5b1f}
+
+  .params{margin-top:24px;background:#fff;border:1px solid var(--linea);border-radius:14px;overflow:hidden}
+  .params summary{list-style:none;cursor:pointer;padding:16px 20px;font-family:'Montserrat';font-weight:700;font-size:14.5px;color:var(--azul);display:flex;justify-content:space-between;gap:12px}
+  .params summary::-webkit-details-marker{display:none}
+  .params .plus{font-size:20px;transition:.2s}.params[open] .plus{transform:rotate(45deg)}
+  .params-body{padding:0 20px 18px}
+  .params-body ul{margin:0 0 10px 18px;font-size:13.5px;color:#444a63;line-height:1.7}
+  .params-nota{font-size:12.5px;color:var(--gris)}
+  .params-nota code{background:#eef1f8;padding:1px 5px;border-radius:4px}
+
+  .descargo{margin-top:22px;background:#f7f9fe;border:1px solid var(--linea);border-radius:12px;padding:16px 20px;color:var(--gris);font-size:12.5px;line-height:1.6}
+  .descargo p{margin:0 0 8px}.descargo p:last-child{margin-bottom:0}
+  .descargo .firma{font-family:'Montserrat';font-weight:700;color:var(--azul);font-size:12px}
+
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap}.cta-row.center{justify-content:center}
+  .cierre{background:linear-gradient(150deg,var(--azul),var(--azul-prof));color:#fff;text-align:center;padding:62px 24px}
+  .cierre h2{color:#fff;font-size:24px;font-weight:800;max-width:28ch;margin:0 auto}
+  .cierre p{color:#cfd6ea;font-size:17px;margin:14px auto 26px;max-width:54ch}
+  @media(max-width:860px){ .hero h1{font-size:27px} .grid{grid-template-columns:1fr} .result{position:relative;top:auto} }
+  @media(max-width:480px){ .f2,.dual{grid-template-columns:1fr} }
+</style>
