@@ -89,17 +89,17 @@ const servicios = orden.map((k) => SLIDES[k]).filter(Boolean);
 
 <style>
   .bsrv{margin:0 auto;max-width:920px;padding:0 4px}
-  .bsrv-box{position:relative;background:linear-gradient(135deg,#f3f6fd 0%, #eaf0fb 100%);border:1px solid #e1e7f4;border-radius:18px;padding:22px 26px}
-  .bsrv-eyebrow{display:inline-block;font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--azul);margin-bottom:10px}
+  .bsrv-box{position:relative;background:var(--amarillo);border:none;border-radius:18px;padding:22px 26px;box-shadow:0 14px 34px -14px rgba(246,177,26,.55)}
+  .bsrv-eyebrow{display:inline-block;font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--azul-prof);margin-bottom:10px}
   .bsrv-stage{position:relative;min-height:78px}
   .bsrv-slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;gap:20px;opacity:0;visibility:hidden;transition:opacity .5s ease, visibility .5s}
   .bsrv-slide.on{opacity:1;visibility:visible}
-  .bsrv-tag{display:block;font-family:'Montserrat',sans-serif;font-weight:700;font-size:12.5px;color:var(--azul-prof);margin-bottom:3px}
-  .bsrv-tit{margin:0;font-size:16px;line-height:1.45;color:#33384a;max-width:60ch}
-  .bsrv-cta{flex-shrink:0;display:inline-flex;align-items:center;white-space:nowrap;background:var(--amarillo);color:var(--azul-prof);font-family:'Montserrat',sans-serif;font-weight:700;font-size:14px;text-decoration:none;padding:11px 18px;border-radius:11px;transition:.15s}
-  .bsrv-cta:hover{filter:brightness(.96);transform:translateY(-1px)}
+  .bsrv-tag{display:block;font-family:'Montserrat',sans-serif;font-weight:700;font-size:12.5px;color:var(--azul-prof);opacity:.75;margin-bottom:3px}
+  .bsrv-tit{margin:0;font-size:16px;line-height:1.45;color:var(--azul-prof);font-weight:600;max-width:60ch}
+  .bsrv-cta{flex-shrink:0;display:inline-flex;align-items:center;white-space:nowrap;background:var(--azul);color:#fff;font-family:'Montserrat',sans-serif;font-weight:700;font-size:14px;text-decoration:none;padding:11px 18px;border-radius:11px;transition:.15s;box-shadow:0 8px 18px -8px rgba(19,35,95,.5)}
+  .bsrv-cta:hover{filter:brightness(1.12);transform:translateY(-1px)}
   .bsrv-dots{display:flex;gap:7px;justify-content:center;margin-top:16px}
-  .bsrv-dot{width:8px;height:8px;border-radius:50%;border:none;padding:0;cursor:pointer;background:#c3cce2;transition:.2s}
+  .bsrv-dot{width:8px;height:8px;border-radius:50%;border:none;padding:0;cursor:pointer;background:rgba(19,35,95,.28);transition:.2s}
   .bsrv-dot.on{background:var(--azul);transform:scale(1.25)}
   @media(max-width:640px){
     .bsrv-stage{min-height:150px}
@@ -108,12 +108,15 @@ const servicios = orden.map((k) => SLIDES[k]).filter(Boolean);
     .bsrv-cta{width:100%;justify-content:center}
   }
 
-  /* Tarjeta lateral fija: solo en pantallas anchas donde cabe sin tocar el contenido */
-  .bsrv-side{display:none;position:fixed;left:30px;top:50%;transform:translateY(-50%);z-index:40;width:300px;max-width:none;padding:0;margin:0}
-  .bsrv-side .bsrv-box{padding:20px;box-shadow:0 18px 44px -18px rgba(19,35,95,.35)}
-  .bsrv-side .bsrv-stage{min-height:300px}
-  .bsrv-side .bsrv-slide{flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:14px}
-  .bsrv-side .bsrv-tit{font-size:14.5px;max-width:none}
-  .bsrv-side .bsrv-cta{width:100%;justify-content:center;white-space:normal;text-align:center}
-  @media(min-width:1680px){ .bsrv-side{display:block} }
+  /* Tarjeta lateral fija: aparece en cuanto hay margen libre al costado de la calculadora.
+     Se achica ella en vez de mover la calculadora: 180px desde notebooks de 1350,
+     300px en pantallas grandes. Bajo 1350 trabaja el banner amarillo de abajo. */
+  .bsrv-side{display:none;position:fixed;left:8px;top:50%;transform:translateY(-50%);z-index:40;width:180px;max-width:none;padding:0;margin:0}
+  .bsrv-side .bsrv-box{padding:14px;box-shadow:0 18px 44px -16px rgba(246,177,26,.6)}
+  .bsrv-side .bsrv-stage{min-height:360px}
+  .bsrv-side .bsrv-slide{flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:12px}
+  .bsrv-side .bsrv-tit{font-size:13px;max-width:none}
+  .bsrv-side .bsrv-cta{width:100%;justify-content:center;white-space:normal;text-align:center;font-size:12.5px;padding:9px 10px}
+  @media(min-width:1350px){ .bsrv-side{display:block} }
+  @media(min-width:1680px){ .bsrv-side{width:300px;left:30px} .bsrv-side .bsrv-box{padding:20px} .bsrv-side .bsrv-stage{min-height:300px} .bsrv-side .bsrv-tit{font-size:14.5px} .bsrv-side .bsrv-cta{font-size:14px;padding:11px 18px} }
 </style>
