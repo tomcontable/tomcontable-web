@@ -72,7 +72,7 @@ const servicios = orden.map((k) => SLIDES[k]).filter(Boolean);
       slides.forEach((s, k) => s.classList.toggle('on', k === i));
       dots.forEach((d, k) => d.classList.toggle('on', k === i));
     };
-    const start = () => { if (reduce) return; stop(); timer = setInterval(() => show(i + 1), 5500); };
+    const start = () => { if (reduce) return; stop(); timer = setInterval(() => show(i + 1), 9000); };
     const stop = () => { if (timer) { clearInterval(timer); timer = null; } };
     dots.forEach((d) => d.addEventListener('click', () => { show(Number(d.dataset.dot)); start(); }));
     root.addEventListener('mouseenter', stop);
@@ -115,7 +115,7 @@ const servicios = orden.map((k) => SLIDES[k]).filter(Boolean);
   .bsrv-side .bsrv-box{padding:14px;box-shadow:0 18px 44px -16px rgba(246,177,26,.6)}
   .bsrv-side .bsrv-stage{min-height:360px}
   .bsrv-side .bsrv-slide{flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:12px}
-  .bsrv-side .bsrv-tit{font-size:13px;max-width:none}
+  .bsrv-side .bsrv-tit{font-size:13px;max-width:none;text-align:justify;hyphens:auto;-webkit-hyphens:auto}
   .bsrv-side .bsrv-cta{width:100%;justify-content:center;white-space:normal;text-align:center;font-size:12.5px;padding:9px 10px}
   @media(min-width:1350px){ .bsrv-side{display:block} }
   @media(min-width:1680px){ .bsrv-side{width:300px;left:30px} .bsrv-side .bsrv-box{padding:20px} .bsrv-side .bsrv-stage{min-height:300px} .bsrv-side .bsrv-tit{font-size:14.5px} .bsrv-side .bsrv-cta{font-size:14px;padding:11px 18px} }
