@@ -13,7 +13,9 @@ const SLIDES = {
   'finiquito-trabajador': { tag: 'Asesoría laboral', titulo: '¿Te ofrecieron un finiquito y el número no calza con esta calculadora? No firmes todavía. Lo revisamos contigo y te decimos si está correcto.', cta: 'Revisar mi finiquito', href: '/asesorias' },
   'finiquito-empleador': { tag: 'Contabilidad y remuneraciones', titulo: '¿Calculando finiquitos por tu cuenta? No tienes por qué hacerlo solo: llevamos tus remuneraciones y tu contabilidad, y te respondemos cuando lo necesitas.', cta: 'Quiero ese respaldo', href: '/contabilidad-mensual' },
 };
-const { orden = ['contabilidad', 'proyeccion', 'constitucion', 'sii', 'asesorias'] } = Astro.props;
+// "lateral": además del banner normal, muestra una tarjeta fija al costado
+// izquierdo en pantallas anchas (donde el banner de abajo nadie lo ve).
+const { orden = ['contabilidad', 'proyeccion', 'constitucion', 'sii', 'asesorias'], lateral = false } = Astro.props;
 const servicios = orden.map((k) => SLIDES[k]).filter(Boolean);
 ---
 <section class="bsrv" aria-label="Servicios de TomContable">
@@ -35,6 +37,28 @@ const servicios = orden.map((k) => SLIDES[k]).filter(Boolean);
     </div>
   </div>
 </section>
+
+{lateral && (
+<aside class="bsrv bsrv-side" aria-label="Servicios de TomContable">
+  <div class="bsrv-box">
+    <span class="bsrv-eyebrow">Ya que estás con los números…</span>
+    <div class="bsrv-stage">
+      {servicios.map((s, i) => (
+        <article class={`bsrv-slide${i === 0 ? ' on' : ''}`} data-i={i}>
+          <div class="bsrv-txt">
+            <span class="bsrv-tag">{s.tag}</span>
+            <p class="bsrv-tit">{s.titulo}</p>
+          </div>
+          <a class="bsrv-cta" href={s.href}>{s.cta}</a>
+        </article>
+      ))}
+    </div>
+    <div class="bsrv-dots">
+      {servicios.map((_, i) => (<button class={`bsrv-dot${i === 0 ? ' on' : ''}`} type="button" data-dot={i} aria-label={`Servicio ${i + 1}`}></button>))}
+    </div>
+  </div>
+</aside>
+)}
 
 <script>
   document.querySelectorAll('.bsrv').forEach((root) => {
@@ -83,4 +107,13 @@ const servicios = orden.map((k) => SLIDES[k]).filter(Boolean);
     .bsrv-tit{font-size:15px}
     .bsrv-cta{width:100%;justify-content:center}
   }
+
+  /* Tarjeta lateral fija: solo en pantallas anchas donde cabe sin tocar el contenido */
+  .bsrv-side{display:none;position:fixed;left:30px;top:50%;transform:translateY(-50%);z-index:40;width:300px;max-width:none;padding:0;margin:0}
+  .bsrv-side .bsrv-box{padding:20px;box-shadow:0 18px 44px -18px rgba(19,35,95,.35)}
+  .bsrv-side .bsrv-stage{min-height:300px}
+  .bsrv-side .bsrv-slide{flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:14px}
+  .bsrv-side .bsrv-tit{font-size:14.5px;max-width:none}
+  .bsrv-side .bsrv-cta{width:100%;justify-content:center;white-space:normal;text-align:center}
+  @media(min-width:1680px){ .bsrv-side{display:block} }
 </style>
