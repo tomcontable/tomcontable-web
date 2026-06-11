@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import BotonWhatsApp from '../components/BotonWhatsApp.astro';
+import BannerServicios from '../components/BannerServicios.astro';
 
 const seo = {
   title: 'Calculadora de Sueldo Líquido 2026 Chile | Bruto y Líquido · TomContable',
@@ -124,6 +125,8 @@ const diasMes = Array.from({ length: 30 }, (_, i) => 30 - i);  // 30 .. 1 (tope 
       </div>
     </div>
   </section>
+
+  <div style="margin:10px auto 56px;padding:0 20px"><BannerServicios orden={['remuneraciones', 'proyeccion', 'contabilidad', 'asesorias']} /></div>
 
   <section class="cierre">
     <div class="wrap">

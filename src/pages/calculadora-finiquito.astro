@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import BotonWhatsApp from '../components/BotonWhatsApp.astro';
+import BannerServicios from '../components/BannerServicios.astro';
 
 const seo = {
   title: 'Calculadora de Finiquito Chile 2026 | Cuánto te corresponde · TomContable',
@@ -163,6 +164,8 @@ const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication',
       </div>
     </div>
   </section>
+
+  <div style="margin:10px auto 56px;padding:0 20px"><BannerServicios orden={['finiquito-trabajador', 'finiquito-empleador', 'proyeccion']} /></div>
 
   <section class="cierre">
     <div class="wrap">

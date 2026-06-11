@@ -3,6 +3,7 @@
 // Toda la lógica (valor en vivo, selector de fecha, conversión) la maneja el script
 // según el "codigo". Para sumar otra calculadora basta crear una página que use este componente.
 import BotonWhatsApp from './BotonWhatsApp.astro';
+import BannerServicios from './BannerServicios.astro';
 
 const {
   codigo,            // 'uf' | 'utm' | 'dolar'
@@ -85,6 +86,8 @@ const {
     </div>
   </div>
 </section>
+
+<div style="margin:10px auto 56px;padding:0 20px"><BannerServicios orden={['contabilidad', 'proyeccion', 'constitucion', 'asesorias']} /></div>
 
 <section class="cierre">
   <div class="wrap">

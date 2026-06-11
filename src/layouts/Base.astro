@@ -27,6 +27,18 @@ const { title, description, canonical, image, noindex, schema = [], sugerencia =
       defaults: '2026-05-30',
       person_profiles: 'identified_only',
     })
+    // Exclusión del equipo: entrar UNA vez a tomcontable.cl/?soyTom en cada navegador
+    // (computador y celular de cada uno). Ese dispositivo queda fuera de las estadísticas
+    // para siempre. Para revertirlo: tomcontable.cl/?yaNoSoyTom
+    if (location.search.indexOf('soyTom') > -1) {
+      if (location.search.indexOf('yaNoSoyTom') > -1) {
+        posthog.opt_in_capturing();
+        alert('Este navegador vuelve a contar en las estadísticas.');
+      } else {
+        posthog.opt_out_capturing();
+        alert('Listo: este navegador quedó fuera de las estadísticas de TomContable.');
+      }
+    }
   </script>
 </head>
 <body>
