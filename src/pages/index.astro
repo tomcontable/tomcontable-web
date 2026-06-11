@@ -205,8 +205,11 @@ const servicios = [
 </Base>
 
 <script>
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fino = window.matchMedia('(pointer: fine)').matches;
+
   // Tilt 3D sutil en las tarjetas de servicio (solo escritorio)
-  if (window.matchMedia('(pointer: fine)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (fino && !reduce) {
     document.querySelectorAll('.serv').forEach((c) => {
       c.addEventListener('mousemove', (e) => {
         const r = c.getBoundingClientRect();
@@ -216,6 +219,93 @@ const servicios = [
       });
       c.addEventListener('mouseleave', () => { c.style.transform = ''; });
     });
+  }
+
+  // Números de la barra de prueba social: atraviesan la pantalla hasta su lugar
+  if (!reduce && 'IntersectionObserver' in window) {
+    const enes = [...document.querySelectorAll('.proof .n')];
+    enes.forEach((n, i) => { n.classList.add('vuela'); n.style.transitionDelay = (i * 130) + 'ms'; });
+    const vio = new IntersectionObserver((es) => {
+      es.forEach((e) => { if (e.isIntersecting) { enes.forEach((n) => n.classList.add('llega')); vio.disconnect(); } });
+    }, { threshold: 0.4 });
+    const pg = document.querySelector('.proof-grid');
+    if (pg) vio.observe(pg);
+  }
+
+  // EL HILO: láser amarillo que nace en la foto y atraviesa la home al ritmo del scroll
+  if (!reduce && window.matchMedia('(min-width: 1100px)').matches) {
+    const NS = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.style.cssText = 'position:absolute;top:0;left:0;z-index:1;pointer-events:none;overflow:visible';
+    const halo = document.createElementNS(NS, 'path');
+    halo.setAttribute('fill', 'none'); halo.setAttribute('stroke', 'rgba(246,177,26,.18)'); halo.setAttribute('stroke-width', '7'); halo.setAttribute('stroke-linecap', 'round');
+    const linea = document.createElementNS(NS, 'path');
+    linea.setAttribute('fill', 'none'); linea.setAttribute('stroke', 'rgba(246,177,26,.65)'); linea.setAttribute('stroke-width', '2.4'); linea.setAttribute('stroke-linecap', 'round');
+    const cabeza = document.createElementNS(NS, 'circle');
+    cabeza.setAttribute('r', '5'); cabeza.setAttribute('fill', '#F6B11A');
+    cabeza.style.filter = 'drop-shadow(0 0 7px rgba(246,177,26,.9))';
+    svg.append(halo, linea, cabeza);
+    document.body.appendChild(svg);
+
+    let largo = 0;
+    const centro = (el, fx, fy) => {
+      const r = el.getBoundingClientRect();
+      return { x: r.left + window.scrollX + r.width * fx, y: r.top + window.scrollY + r.height * fy };
+    };
+    function construir() {
+      const foto = document.querySelector('.photo-card');
+      const proof = document.querySelector('.proof-grid');
+      const sg = document.querySelector('.serv-grid');
+      const nums = document.querySelectorAll('.step .num');
+      const tf = document.querySelector('.tst-foot');
+      const fin = document.querySelector('.cierre .btn-wa, .cierre .btn');
+      if (!foto || !proof || !sg || nums.length < 3 || !fin) return;
+      const pts = [
+        centro(foto, 0.5, 0.9),
+        centro(proof, 0.5, 0.5),
+        centro(sg, 1 / 3, 0.18),
+        centro(sg, 2 / 3, 0.82),
+        centro(nums[0], 0.5, 0.5),
+        centro(nums[1], 0.5, 0.5),
+        centro(nums[2], 0.5, 0.5),
+        centro(tf || fin, 0.5, 0.5),
+        centro(fin, 0.5, 0.1),
+      ];
+      const doc = document.documentElement;
+      svg.setAttribute('width', doc.scrollWidth); svg.setAttribute('height', doc.scrollHeight);
+      svg.setAttribute('viewBox', `0 0 ${doc.scrollWidth} ${doc.scrollHeight}`);
+      let d = `M ${pts[0].x} ${pts[0].y}`;
+      for (let i = 0; i < pts.length - 1; i++) {
+        const a = pts[i], b = pts[i + 1];
+        const dx = b.x - a.x, dy = b.y - a.y;
+        if (Math.abs(dy) >= Math.abs(dx)) d += ` C ${a.x} ${a.y + dy * 0.5}, ${b.x} ${b.y - dy * 0.5}, ${b.x} ${b.y}`;
+        else d += ` C ${a.x + dx * 0.5} ${a.y}, ${b.x - dx * 0.5} ${b.y}, ${b.x} ${b.y}`;
+      }
+      linea.setAttribute('d', d); halo.setAttribute('d', d);
+      largo = linea.getTotalLength();
+      linea.setAttribute('stroke-dasharray', largo); halo.setAttribute('stroke-dasharray', largo);
+      pintar();
+    }
+    function pintar() {
+      if (!largo) return;
+      const ini = parseFloat(linea.getAttribute('d').split(' ')[2]);
+      const docAlto = document.documentElement.scrollHeight;
+      const visto = window.scrollY + window.innerHeight * 0.72;
+      const prog = Math.max(0, Math.min(1, (visto - ini) / (docAlto - ini - window.innerHeight * 0.2)));
+      const dibujado = largo * prog;
+      linea.setAttribute('stroke-dashoffset', largo - dibujado);
+      halo.setAttribute('stroke-dashoffset', largo - dibujado);
+      const p = linea.getPointAtLength(dibujado);
+      cabeza.setAttribute('cx', p.x); cabeza.setAttribute('cy', p.y);
+      cabeza.style.opacity = prog > 0.005 && prog < 0.998 ? 1 : 0;
+    }
+    let raf = null;
+    addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(() => { pintar(); raf = null; }); }, { passive: true });
+    let rto = null;
+    addEventListener('resize', () => { clearTimeout(rto); rto = setTimeout(construir, 220); });
+    addEventListener('load', () => { construir(); setTimeout(construir, 900); });
+    construir();
   }
 </script>
 
@@ -236,7 +326,10 @@ const servicios = [
   .photo-badge small{color:var(--gris);font-size:12px}
   @media(max-width:960px){ .hero-grid{grid-template-columns:1fr;gap:34px;padding:48px 24px 56px} .hero h1{font-size:34px} .photo-card{max-width:420px;margin:0 auto} }
 
-  .proof{background:var(--azul);color:#fff}
+  .proof{background:var(--azul);color:#fff;overflow:hidden}
+  /* Números que atraviesan la pantalla hasta su lugar */
+  .proof .n.vuela{transform:translateX(-108vw)}
+  .proof .n.vuela.llega{transform:none;transition:transform .95s cubic-bezier(.22,.8,.25,1.04)}
   .proof-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;padding:38px 24px;text-align:center}
   .proof .n{font-family:'Montserrat';font-weight:800;font-size:38px;display:block;color:var(--amarillo);line-height:1.05}
   .proof .n em{color:var(--amarillo);font-style:normal}
