@@ -118,6 +118,8 @@ const { title, description, canonical, image, noindex, schema = [], sugerencia =
 </script>
 
 <style is:global>
+  /* Evita barras de scroll horizontales por elementos animados fuera de pantalla */
+  html{overflow-x:clip}
   /* Luz del cursor */
   #luz-cursor{display:none}
   #luz-cursor.on{display:block;position:fixed;inset:0;pointer-events:none;z-index:38;background:radial-gradient(340px 340px at var(--lx,-500px) var(--ly,-500px),rgba(246,177,26,.075),transparent 70%)}

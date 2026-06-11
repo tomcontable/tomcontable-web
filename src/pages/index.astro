@@ -221,13 +221,24 @@ const servicios = [
     });
   }
 
-  // Números de la barra de prueba social: atraviesan la pantalla hasta su lugar
+  // Números de la barra de prueba social: cada uno cruza la pantalla desde
+  // un punto cardinal distinto (izquierda, arriba, abajo, derecha) y se juntan en la barra.
   if (!reduce && 'IntersectionObserver' in window) {
     const enes = [...document.querySelectorAll('.proof .n')];
-    enes.forEach((n, i) => { n.classList.add('vuela'); n.style.transitionDelay = (i * 130) + 'ms'; });
+    const rumbos = ['translate(-105vw,0)', 'translate(0,-80vh)', 'translate(0,80vh)', 'translate(105vw,0)'];
+    enes.forEach((n, i) => { n.style.transform = rumbos[i % rumbos.length]; n.style.opacity = '0.9'; });
     const vio = new IntersectionObserver((es) => {
-      es.forEach((e) => { if (e.isIntersecting) { enes.forEach((n) => n.classList.add('llega')); vio.disconnect(); } });
-    }, { threshold: 0.4 });
+      es.forEach((e) => {
+        if (!e.isIntersecting) return;
+        vio.disconnect();
+        enes.forEach((n, i) => {
+          n.style.transition = `transform .95s cubic-bezier(.22,.8,.25,1.04) ${i * 120}ms, opacity .4s ${i * 120}ms`;
+          n.style.transform = '';
+          n.style.opacity = '';
+          setTimeout(() => { n.style.transition = ''; }, 1300 + i * 120);
+        });
+      });
+    }, { threshold: 0.45 });
     const pg = document.querySelector('.proof-grid');
     if (pg) vio.observe(pg);
   }
@@ -326,10 +337,7 @@ const servicios = [
   .photo-badge small{color:var(--gris);font-size:12px}
   @media(max-width:960px){ .hero-grid{grid-template-columns:1fr;gap:34px;padding:48px 24px 56px} .hero h1{font-size:34px} .photo-card{max-width:420px;margin:0 auto} }
 
-  .proof{background:var(--azul);color:#fff;overflow:hidden}
-  /* Números que atraviesan la pantalla hasta su lugar */
-  .proof .n.vuela{transform:translateX(-108vw)}
-  .proof .n.vuela.llega{transform:none;transition:transform .95s cubic-bezier(.22,.8,.25,1.04)}
+  .proof{background:var(--azul);color:#fff;position:relative;z-index:5}
   .proof-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;padding:38px 24px;text-align:center}
   .proof .n{font-family:'Montserrat';font-weight:800;font-size:38px;display:block;color:var(--amarillo);line-height:1.05}
   .proof .n em{color:var(--amarillo);font-style:normal}
