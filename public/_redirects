@@ -1,0 +1,6 @@
+# Redirecciones de Cloudflare Pages
+# Si alguien tipea una URL corta o incompleta de calculadora, lo mandamos al hub.
+/calculadora       /herramientas   301
+/calculadora/*     /herramientas   301
+/calculadoras      /herramientas   301
+/herramienta       /herramientas   301
