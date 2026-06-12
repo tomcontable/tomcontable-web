@@ -25,8 +25,23 @@ const servicio = {
     "description": "Revisión de situación tributaria, 3 UF + IVA, para empresas con ventas netas anuales de hasta 200 millones."
   }
 };
+
+// FAQ visible espejada para FAQPage (mantener en sync con el accordion de la página).
+const faqs = [
+  { q: '¿Qué incluye la revisión?', a: 'La revisión de los últimos 3 años de la información visible de tu empresa en el SII y Tesorería, más un informe claro con cada observación, inconsistencia, multa, interés o saldo a favor que encontremos, y qué conviene hacer en cada caso.' },
+  { q: '¿Y si encuentran algo que hay que corregir?', a: 'Te lo explicamos en el informe y lo cotizamos aparte. La revisión te da el diagnóstico claro; la corrección, si la necesitas, la avanzamos contigo.' },
+  { q: '¿Para qué tamaño de empresa es el valor de 3 UF?', a: 'Para empresas con ventas netas anuales de hasta 200 millones de pesos. Si superas ese monto, escríbenos por WhatsApp y lo cotizamos según tu caso.' },
+  { q: '¿Tengo que enviarles información?', a: 'Trabajamos con la información visible en el SII y Tesorería. Te indicamos si necesitamos algún acceso o dato puntual para completar la revisión.' },
+  { q: '¿Me garantizan que se soluciona?', a: 'No prometemos resultados imposibles. Te entregamos un diagnóstico honesto y un plan claro. Resolver bien empieza por saber exactamente qué pasa.' },
+];
+const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
+const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+  { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://tomcontable.cl/' },
+  { '@type': 'ListItem', position: 2, name: 'Servicios', item: 'https://tomcontable.cl/servicios' },
+  { '@type': 'ListItem', position: 3, name: 'Problemas con el SII', item: 'https://tomcontable.cl/problemas-con-el-sii' }
+] };
 ---
-<Base {...seo} schema={[servicio]}>
+<Base {...seo} schema={[servicio, faqSchema, breadcrumb]}>
 
   <!-- HERO -->
   <section class="hero">

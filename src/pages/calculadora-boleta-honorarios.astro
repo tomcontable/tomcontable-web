@@ -8,8 +8,24 @@ const seo = {
   description: 'Calcula tu boleta de honorarios 2026 en Chile: cuánto recibes líquido tras la retención del 15,25%, o por cuánto emitir para recibir un líquido objetivo. Gratis y al día.',
   canonical: '/calculadora-boleta-honorarios',
 };
+
+const faqs = [
+  { q: '¿Cuánto es la retención de la boleta de honorarios en 2026?', a: 'En 2026 la retención es 15,25% del monto bruto de la boleta. Sube de forma gradual cada año: fue 14,5% en 2025 y, según la ley, continúa subiendo a 16% en 2027 y 17% en 2028.' },
+  { q: '¿Cómo se calcula el líquido de una boleta de honorarios?', a: 'Al monto bruto se le descuenta la retención (15,25% en 2026) y lo que queda es el líquido que recibes. Esta calculadora también funciona al revés: le dices cuánto quieres recibir líquido y te dice por cuánto emitir la boleta.' },
+  { q: '¿La retención es un impuesto que pierdo?', a: 'No. La retención es un adelanto de tus impuestos. En la operación renta del año siguiente se descuenta de lo que te toca pagar, y si retuvieron de más, te lo devuelven. Por eso conviene tenerla ordenada y no gastarla.' },
+  { q: '¿Quién paga la retención, quien emite o quien recibe la boleta?', a: 'Depende de a quién le emitas. Si emites a una empresa, por lo general ella retiene y entera ese monto al SII. Si emites a una persona natural, normalmente te toca a ti declararlo y pagarlo en tu propia declaración de renta.' },
+  { q: '¿Conviene guardar plata para la operación renta?', a: 'Sí. Si trabajas a honorarios, a veces la retención no alcanza a cubrir todo el impuesto final, sobre todo si tienes varios ingresos. Reservar un porcentaje cada mes ayuda a no llevarse sustos en abril. Si quieres saber con tiempo cómo vas a llegar, te ayudamos a proyectarlo.' },
+];
+
+const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
+const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication', name: 'Calculadora de Boleta de Honorarios', applicationCategory: 'FinanceApplication', operatingSystem: 'Web', inLanguage: 'es-CL', url: 'https://tomcontable.cl/calculadora-boleta-honorarios', offers: { '@type': 'Offer', price: '0', priceCurrency: 'CLP' }, publisher: { '@type': 'Organization', name: 'TomContable' } };
+const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+  { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://tomcontable.cl/' },
+  { '@type': 'ListItem', position: 2, name: 'Herramientas', item: 'https://tomcontable.cl/herramientas' },
+  { '@type': 'ListItem', position: 3, name: 'Calculadora de boleta de honorarios', item: 'https://tomcontable.cl/calculadora-boleta-honorarios' }
+] };
 ---
-<Base {...seo} sugerencia="calculadora-boleta-honorarios">
+<Base {...seo} schema={[appSchema, faqSchema, breadcrumb]} sugerencia="calculadora-boleta-honorarios">
 
   <section class="hero">
     <div class="wrap">
@@ -83,6 +99,20 @@ const seo = {
   </section>
 
   <div style="margin:10px auto 56px;padding:0 20px"><BannerServicios orden={['constitucion', 'asesorias', 'proyeccion', 'contabilidad']} lateral={true} /></div>
+
+  <section class="sec-texto">
+    <div class="wrap angosto">
+      <h2 id="faq">Preguntas frecuentes</h2>
+      <div class="faq">
+        {faqs.map((it) => (
+          <details>
+            <summary>{it.q}<span class="plus">+</span></summary>
+            <div class="ans">{it.a}</div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
 
   <section class="cierre">
     <div class="wrap">
@@ -248,6 +278,16 @@ const seo = {
   .descargo .firma{font-family:'Montserrat';font-weight:700;color:var(--azul);font-size:12px}
 
   .cta-row{display:flex;gap:14px;flex-wrap:wrap}.cta-row.center{justify-content:center}
+  .sec-texto{padding:8px 0 44px}
+  .angosto{max-width:760px;margin:0 auto}
+  .sec-texto h2{font-size:24px;font-weight:800;margin:0 0 14px;letter-spacing:-.3px}
+  .faq{margin-top:6px}
+  details{background:#fff;border:1px solid var(--linea);border-radius:14px;margin-bottom:12px;overflow:hidden}
+  summary{list-style:none;cursor:pointer;padding:18px 22px;font-family:'Montserrat';font-weight:600;font-size:16px;color:var(--azul);display:flex;justify-content:space-between;gap:14px}
+  summary::-webkit-details-marker{display:none}
+  .plus{font-size:22px;color:var(--azul);transition:.2s;flex-shrink:0}
+  details[open] .plus{transform:rotate(45deg)}
+  .ans{padding:0 22px 18px;color:#555;font-size:15.5px;line-height:1.6}
   .cierre{background:linear-gradient(150deg,var(--azul),var(--azul-prof));color:#fff;text-align:center;padding:62px 24px}
   .cierre h2{color:#fff;font-size:24px;font-weight:800;max-width:28ch;margin:0 auto}
   .cierre p{color:#cfd6ea;font-size:17px;margin:14px auto 26px;max-width:54ch}

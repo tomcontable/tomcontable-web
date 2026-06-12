@@ -17,8 +17,13 @@ const faqs = [
 
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
 const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication', name: 'Calculadora Dólar a Pesos', applicationCategory: 'FinanceApplication', operatingSystem: 'Web', inLanguage: 'es-CL', url: 'https://tomcontable.cl/calculadora-dolar', offers: { '@type': 'Offer', price: '0', priceCurrency: 'CLP' }, publisher: { '@type': 'Organization', name: 'TomContable' } };
+const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+  { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://tomcontable.cl/' },
+  { '@type': 'ListItem', position: 2, name: 'Herramientas', item: 'https://tomcontable.cl/herramientas' },
+  { '@type': 'ListItem', position: 3, name: 'Calculadora dólar a pesos', item: 'https://tomcontable.cl/calculadora-dolar' }
+] };
 ---
-<Base {...seo} schema={[appSchema, faqSchema]} sugerencia="calculadora-dolar">
+<Base {...seo} schema={[appSchema, faqSchema, breadcrumb]} sugerencia="calculadora-dolar">
   <CalculadoraIndicador
     codigo="dolar"
     unidadLabel="Dólares (USD)"

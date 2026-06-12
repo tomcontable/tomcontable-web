@@ -60,8 +60,12 @@ const listSchema = {
     '@type': 'ListItem', position: i + 1, name: t.t, url: 'https://tomcontable.cl' + t.href,
   })),
 };
+const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+  { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://tomcontable.cl/' },
+  { '@type': 'ListItem', position: 2, name: 'Herramientas', item: 'https://tomcontable.cl/herramientas' }
+] };
 ---
-<Base {...seo} schema={[listSchema]}>
+<Base {...seo} schema={[listSchema, breadcrumb]}>
 
   <section class="hero">
     <div class="wrap">

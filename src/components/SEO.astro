@@ -6,6 +6,7 @@ const {
   canonical = Astro.url.pathname,
   image = '/img/og-tomcontable.jpg',
   noindex = false,
+  type = 'website',
 } = Astro.props;
 
 const site = Astro.site ?? new URL('https://tomcontable.cl');
@@ -18,7 +19,7 @@ const imageURL = new URL(image, site).href;
 {noindex && <meta name="robots" content="noindex,nofollow" />}
 
 <!-- Open Graph -->
-<meta property="og:type" content="website" />
+<meta property="og:type" content={type} />
 <meta property="og:locale" content="es_CL" />
 <meta property="og:site_name" content="TomContable" />
 <meta property="og:title" content={title} />

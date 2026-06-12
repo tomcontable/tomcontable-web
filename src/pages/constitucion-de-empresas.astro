@@ -37,8 +37,24 @@ const incluye = [
   ['Guías y materiales para operar desde el día uno', '$25.000'],
   ['Acceso de por vida a la comunidad de emprendedores', 'No existe'],
 ];
+
+// FAQ visible espejada para FAQPage (mantener en sync con el accordion de la página).
+const faqs = [
+  { q: '¿Por qué cuesta más que una oferta de menor precio?', a: 'Las ofertas baratas suelen cubrir solo la escritura. Nuestro servicio deja la empresa iniciada ante el SII, con giro, régimen tributario y facturación electrónica habilitada: lista para operar. Pagas el proceso completo, no un trámite a medias.' },
+  { q: '¿Puedo pagar en cuotas?', a: 'Sí, con tarjeta en 3 cuotas sin interés, al precio contado.' },
+  { q: '¿Qué tipo de sociedad conviene?', a: 'Constituimos SpA, EIRL y Limitada. Lo más común para emprendedores es una SpA, pero depende de tu caso: lo definimos contigo antes de constituir.' },
+  { q: '¿Incluye el inicio de actividades?', a: 'Sí. Sin inicio de actividades la empresa no puede facturar, por eso es parte central del servicio.' },
+  { q: '¿Cuánto se demora?', a: 'La constitución y el inicio de actividades quedan listos de un día para otro. La habilitación de la facturación electrónica depende de la autorización del SII, así que puede tomar algo más; te avisamos apenas esté lista.' },
+  { q: '¿Y si ya tengo la sociedad creada pero a medias?', a: 'Te ayudamos a completar lo que falta: inicio, giro, facturación. Escríbenos por WhatsApp y revisamos tu caso.' },
+];
+const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
+const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+  { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://tomcontable.cl/' },
+  { '@type': 'ListItem', position: 2, name: 'Servicios', item: 'https://tomcontable.cl/servicios' },
+  { '@type': 'ListItem', position: 3, name: 'Constitución de empresas', item: 'https://tomcontable.cl/constitucion-de-empresas' }
+] };
 ---
-<Base {...seo} schema={[servicio]}>
+<Base {...seo} schema={[servicio, faqSchema, breadcrumb]}>
 
   <!-- HERO -->
   <section class="hero">

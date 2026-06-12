@@ -19,13 +19,21 @@ const aboutPage = {
 const persona = {
   "@context": "https://schema.org",
   "@type": "Person",
-  "name": "Tomás Gómez",
+  "@id": "https://tomcontable.cl/#tomas",
+  "name": "Tomás Gómez Fuenzalida",
   "jobTitle": "Fundador, Ingeniero Comercial y Contador Colegiado",
-  "worksFor": { "@type": "Organization", "name": "TomContable" },
+  "image": "https://tomcontable.cl/img/foto-tom.jpg",
+  "worksFor": { "@id": "https://tomcontable.cl/#organizacion" },
+  "hasCredential": { "@type": "EducationalOccupationalCredential", "credentialCategory": "Contador Colegiado" },
+  "knowsAbout": ["Contabilidad", "Impuestos en Chile", "IVA", "Operación renta", "Constitución de empresas", "SII", "Remuneraciones"],
   "sameAs": ["https://www.instagram.com/tomcontable"]
 };
+const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+  { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://tomcontable.cl/' },
+  { '@type': 'ListItem', position: 2, name: 'Sobre TomContable', item: 'https://tomcontable.cl/sobre-tomcontable' }
+] };
 ---
-<Base {...seo} schema={[aboutPage, persona]}>
+<Base {...seo} schema={[aboutPage, persona, breadcrumb]}>
 
   <section class="hero">
     <div class="wrap hero-grid">

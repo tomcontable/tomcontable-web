@@ -6,7 +6,7 @@ import SEO from '../components/SEO.astro';
 import Schema from '../components/Schema.astro';
 import SugerenciaFlotante from '../components/SugerenciaFlotante.astro';
 
-const { title, description, canonical, image, noindex, schema = [], sugerencia = '' } = Astro.props;
+const { title, description, canonical, image, noindex, type = 'website', schema = [], sugerencia = '' } = Astro.props;
 ---
 <!DOCTYPE html>
 <html lang="es">
@@ -17,7 +17,7 @@ const { title, description, canonical, image, noindex, schema = [], sugerencia =
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet" />
-  <SEO title={title} description={description} canonical={canonical} image={image} noindex={noindex} />
+  <SEO title={title} description={description} canonical={canonical} image={image} noindex={noindex} type={type} />
   <Schema blocks={schema} />
   <!-- PostHog (analítica de comportamiento: pageviews, clics y grabaciones). Key pública. -->
   <script is:inline>

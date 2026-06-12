@@ -11,8 +11,24 @@ const seo = {
 
 const jornadas = Array.from({ length: 41 }, (_, i) => 42 - i); // 42 .. 2
 const diasMes = Array.from({ length: 30 }, (_, i) => 30 - i);  // 30 .. 1 (tope legal 30)
+
+const faqs = [
+  { q: '¿Cómo se calcula el sueldo líquido a partir del bruto?', a: 'Al sueldo bruto imponible se le descuentan las cotizaciones del trabajador (AFP, salud y seguro de cesantía) y el impuesto único de segunda categoría si la renta supera el tramo exento. A ese resultado se le suman los haberes no imponibles, como colación y movilización, y eso es el líquido. La calculadora aplica los topes y valores vigentes en Previred.' },
+  { q: '¿Qué descuentos se le hacen al sueldo en Chile?', a: 'Del lado del trabajador: AFP (alrededor de 10% más la comisión de cada administradora), salud (7% en Fonasa o el valor del plan en isapre) y seguro de cesantía (0,6% con contrato indefinido). Si la renta es alta, se suma el impuesto único. La gratificación legal, cuando corresponde, aumenta la base imponible.' },
+  { q: '¿La calculadora incluye la gratificación legal?', a: 'Sí. Si la activas, calcula el 25% de lo imponible con el tope legal de 4,75 ingresos mínimos al año, tal como lo define el Código del Trabajo. Por eso se calcula sobre el total imponible y no solo sobre el sueldo base.' },
+  { q: '¿Cuánto le cuesta realmente el trabajador a la empresa?', a: 'Además del sueldo bruto, la empresa paga aportes de su cargo: el seguro de cesantía del empleador (2,4% con contrato indefinido), el seguro de invalidez y sobrevivencia (SIS) y la cotización de la mutual. La calculadora te muestra ese costo total empresa, no solo el líquido del trabajador.' },
+  { q: '¿Sirve para calcular desde el líquido que quiero pagar?', a: 'Sí. Puedes partir del sueldo base y ver el líquido, o ingresar el líquido que quieres que reciba el trabajador y la calculadora estima el bruto necesario para llegar a ese monto.' },
+];
+
+const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
+const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication', name: 'Calculadora de Sueldo Líquido', applicationCategory: 'FinanceApplication', operatingSystem: 'Web', inLanguage: 'es-CL', url: 'https://tomcontable.cl/calculadora-sueldo-liquido', offers: { '@type': 'Offer', price: '0', priceCurrency: 'CLP' }, publisher: { '@type': 'Organization', name: 'TomContable' } };
+const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+  { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://tomcontable.cl/' },
+  { '@type': 'ListItem', position: 2, name: 'Herramientas', item: 'https://tomcontable.cl/herramientas' },
+  { '@type': 'ListItem', position: 3, name: 'Calculadora de sueldo líquido', item: 'https://tomcontable.cl/calculadora-sueldo-liquido' }
+] };
 ---
-<Base {...seo} sugerencia="calculadora-sueldo-liquido">
+<Base {...seo} schema={[appSchema, faqSchema, breadcrumb]} sugerencia="calculadora-sueldo-liquido">
 
   <section class="hero">
     <div class="wrap">
@@ -127,6 +143,20 @@ const diasMes = Array.from({ length: 30 }, (_, i) => 30 - i);  // 30 .. 1 (tope 
   </section>
 
   <div style="margin:10px auto 56px;padding:0 20px"><BannerServicios orden={['remuneraciones', 'proyeccion', 'contabilidad', 'asesorias']} lateral={true} /></div>
+
+  <section class="faqs">
+    <div class="faqs-in">
+      <h2 id="faq">Preguntas frecuentes</h2>
+      <div class="faq">
+        {faqs.map((it) => (
+          <details>
+            <summary>{it.q}<span class="plus">+</span></summary>
+            <div class="ans">{it.a}</div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
 
   <section class="cierre">
     <div class="wrap">
@@ -552,6 +582,16 @@ const diasMes = Array.from({ length: 30 }, (_, i) => 30 - i);  // 30 .. 1 (tope 
   .descargo .firma{font-family:'Montserrat';font-weight:700;color:var(--azul);font-size:12px}
 
   .cta-row{display:flex;gap:14px;flex-wrap:wrap}.cta-row.center{justify-content:center}
+  .faqs{padding:8px 0 44px}
+  .faqs-in{max-width:760px;margin:0 auto;padding:0 24px}
+  .faqs h2{font-size:24px;font-weight:800;margin:0 0 14px;letter-spacing:-.3px}
+  .faq{margin-top:6px}
+  .faq details{background:#fff;border:1px solid var(--linea);border-radius:14px;margin-bottom:12px;overflow:hidden}
+  .faq summary{list-style:none;cursor:pointer;padding:18px 22px;font-family:'Montserrat';font-weight:600;font-size:16px;color:var(--azul);display:flex;justify-content:space-between;gap:14px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq .plus{font-size:22px;color:var(--azul);transition:.2s;flex-shrink:0}
+  .faq details[open] .plus{transform:rotate(45deg)}
+  .faq .ans{padding:0 22px 18px;color:#555;font-size:15.5px;line-height:1.6}
   .cierre{background:linear-gradient(150deg,var(--azul),var(--azul-prof));color:#fff;text-align:center;padding:62px 24px}
   .cierre h2{color:#fff;font-size:24px;font-weight:800;max-width:28ch;margin:0 auto}
   .cierre p{color:#cfd6ea;font-size:17px;margin:14px auto 26px;max-width:54ch}

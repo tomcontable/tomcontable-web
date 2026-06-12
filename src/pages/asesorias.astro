@@ -19,8 +19,23 @@ const servicio = {
   "areaServed": { "@type": "Country", "name": "Chile" },
   "description": "Sesión de asesoría online con un contador colegiado para resolver una duda tributaria o contable puntual y salir con un plan claro. Disponible en formatos de 15, 30 y 60 minutos."
 };
+
+// FAQ visible espejada para FAQPage (mantener en sync con el accordion de la página).
+const faqs = [
+  { q: '¿Para qué tipo de dudas sirve?', a: 'Para temas tributarios y contables concretos: régimen, impuestos, formalización, una decisión puntual o una segunda opinión. Si tu caso necesita un servicio mayor, te lo decimos.' },
+  { q: '¿Es online?', a: 'Sí, por videollamada. Agendas el horario que te acomode y te conectas desde donde estés.' },
+  { q: '¿Cuánto dura y cuánto cuesta?', a: 'Hay formatos de 15, 30 y 60 minutos, desde $35.000. El valor de cada uno lo ves al momento de agendar.' },
+  { q: '¿Y si después quiero contratar otro servicio?', a: 'Perfecto. La asesoría es un buen primer paso y desde ahí seguimos con lo que necesites, sea contabilidad mensual, constituir tu empresa u otro.' },
+  { q: '¿Puedo pagar en línea?', a: 'Sí, agendas y pagas en el mismo paso, de forma segura.' },
+];
+const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
+const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+  { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://tomcontable.cl/' },
+  { '@type': 'ListItem', position: 2, name: 'Servicios', item: 'https://tomcontable.cl/servicios' },
+  { '@type': 'ListItem', position: 3, name: 'Asesorías', item: 'https://tomcontable.cl/asesorias' }
+] };
 ---
-<Base {...seo} schema={[servicio]}>
+<Base {...seo} schema={[servicio, faqSchema, breadcrumb]}>
 
   <section class="hero">
     <div class="wrap">

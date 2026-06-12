@@ -18,8 +18,24 @@ const servicio = {
   "areaServed": { "@type": "Country", "name": "Chile" },
   "description": "Llevamos tu contabilidad mes a mes: F29, libros electrónicos, reportes, asesoría ilimitada y acompañamiento. El valor se ajusta a las ventas de tu empresa."
 };
+
+// FAQ visible espejada para FAQPage (mantener en sync con el accordion de la página).
+const faqs = [
+  { q: '¿Cuánto cuesta exactamente?', a: 'Depende de tus ventas del mes, desde 0,70 UF + IVA (unos $28.500 mensuales). Cuéntanos cuánto vendes y te calculamos tu plan exacto por WhatsApp.' },
+  { q: '¿Tengo que mandarles mis documentos?', a: 'No. Revisamos todo directamente en el SII. No tienes que escanear ni enviar boletas.' },
+  { q: '¿Ustedes pagan mis impuestos?', a: 'No tocamos tu dinero. Te enviamos el link y el pago lo haces tú, para que todo quede bajo tu control.' },
+  { q: '¿Y si cometen un error?', a: 'Lo asumimos nosotros. Si una multa o interés se genera por un error o atraso nuestro, lo pagamos nosotros.' },
+  { q: '¿Incluye la operación renta?', a: 'La operación renta de tu empresa es parte del acompañamiento anual del plan. Se cobra una vez al año, pero no es un servicio aparte que tengas que buscar por tu cuenta: nosotros te avisamos y la preparamos a tiempo.' },
+  { q: '¿Incluye conciliación bancaria o liquidaciones de sueldo?', a: 'Esas van por separado. Te explicamos cómo funcionan si las necesitas.' },
+];
+const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
+const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+  { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://tomcontable.cl/' },
+  { '@type': 'ListItem', position: 2, name: 'Servicios', item: 'https://tomcontable.cl/servicios' },
+  { '@type': 'ListItem', position: 3, name: 'Contabilidad mensual', item: 'https://tomcontable.cl/contabilidad-mensual' }
+] };
 ---
-<Base {...seo} schema={[servicio]}>
+<Base {...seo} schema={[servicio, faqSchema, breadcrumb]}>
 
   <!-- HERO -->
   <section class="hero">

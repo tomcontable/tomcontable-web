@@ -11,7 +11,9 @@ const webSite = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   "name": "TomContable",
-  "url": "https://tomcontable.cl"
+  "url": "https://tomcontable.cl",
+  "inLanguage": "es-CL",
+  "publisher": { "@id": "https://tomcontable.cl/#organizacion" }
 };
 
 const servicios = [
@@ -21,8 +23,18 @@ const servicios = [
   { t: 'Asesoría tributaria cuando la necesitas', d: 'Una sesión con un experto que te deja con un plan claro para tu duda puntual.', href: '/asesorias', et: 'Desde $35.000', ico: '<path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.5 8.4 8.4 0 0 1-3.9-.9L3 21l1.9-5.6A8.4 8.4 0 0 1 4 11.5 8.4 8.4 0 0 1 12.5 3 8.4 8.4 0 0 1 21 11.5z"/><path d="M9.6 9a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.3-2.4 2.3M12 16h.01"/>' },
   { t: 'Proyección tributaria antes de abril', d: 'Proyectamos cuánto pagará tu empresa y cada socio, para que decidas a tiempo.', href: '/proyeccion-tributaria', et: 'Desde $79.000 + IVA', ico: '<path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/><path d="M19 7h-3M19 7v3"/>' },
 ];
+
+// FAQ visible espejada para FAQPage (mantener en sync con el accordion del home).
+const faqs = [
+  { q: '¿Prestan servicios de contabilidad mensual?', a: 'Sí, es nuestro servicio principal. Llevamos tu contabilidad mes a mes: tus impuestos al día, consultas ilimitadas y alguien mirando tu negocio todos los meses. Los planes comienzan en 0,7 UF + IVA al mes (unos $28.500).' },
+  { q: '¿Trabajan con empresas como la mía?', a: 'Trabajamos sobre todo con emprendedores, profesionales independientes y pymes. Si recién estás partiendo o ya tienes años funcionando, igual te podemos ayudar.' },
+  { q: '¿Atienden online o presencial?', a: 'Trabajamos online con clientes de todo Chile. Nos coordinamos por WhatsApp y videollamada cuando hace falta.' },
+  { q: '¿Cuánto cuesta?', a: 'Depende del servicio. La constitución y las asesorías tienen su valor publicado al contratar. La contabilidad mensual comienza en 0,7 UF + IVA al mes (unos $28.500) y se ajusta a tu tipo de empresa, ventas y necesidades. Te lo decimos claro antes de empezar.' },
+  { q: '¿En cuánto responden?', a: 'Por WhatsApp, en horario hábil, lo antes posible. No te vamos a dejar esperando.' },
+];
+const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
 ---
-<Base {...seo} schema={[webSite]}>
+<Base {...seo} schema={[webSite, faqSchema]}>
 
   <!-- HERO -->
   <section class="hero">

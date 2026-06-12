@@ -8,8 +8,24 @@ const seo = {
   description: 'Calcula el IVA del 19% en Chile: agrega el IVA a un monto neto o sácalo de un total. Rápido y gratis, por TomContable.',
   canonical: '/calculadora-iva',
 };
+
+const faqs = [
+  { q: '¿Cómo se calcula el IVA en Chile?', a: 'El IVA es 19% sobre el valor neto. Para agregarlo, multiplicas el neto por 1,19. Para sacarlo de un total que ya lo incluye, divides el total por 1,19; no se resta un 19%, que es el error más común.' },
+  { q: '¿Cómo saco el IVA de un monto con IVA incluido?', a: 'Divides el total por 1,19. Por ejemplo, $11.900 dividido por 1,19 da $10.000 de neto, y la diferencia, $1.900, es el IVA. Restarle 19% al total da un número equivocado.' },
+  { q: '¿La tasa de IVA en Chile es 19%?', a: 'Sí, la tasa general es 19% y se aplica a la mayoría de las ventas y servicios. Algunos productos y servicios tienen tratamientos especiales o están exentos, pero para el grueso de las operaciones la tasa es 19%.' },
+  { q: '¿Qué diferencia hay entre neto, bruto y total?', a: 'El neto es el valor sin IVA. El total o bruto es lo que finalmente se paga, con el IVA incluido. Esta calculadora convierte entre ambos en los dos sentidos.' },
+  { q: '¿El IVA que cobro lo tengo que pagar al SII?', a: 'El IVA que cobras a tus clientes lo declaras en el F29, descontando el IVA que pagaste en tus compras (crédito fiscal); en la práctica pagas la diferencia. Dejar eso ordenado cada mes es justo lo que hacemos en la contabilidad mensual.' },
+];
+
+const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
+const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication', name: 'Calculadora de IVA', applicationCategory: 'FinanceApplication', operatingSystem: 'Web', inLanguage: 'es-CL', url: 'https://tomcontable.cl/calculadora-iva', offers: { '@type': 'Offer', price: '0', priceCurrency: 'CLP' }, publisher: { '@type': 'Organization', name: 'TomContable' } };
+const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+  { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://tomcontable.cl/' },
+  { '@type': 'ListItem', position: 2, name: 'Herramientas', item: 'https://tomcontable.cl/herramientas' },
+  { '@type': 'ListItem', position: 3, name: 'Calculadora de IVA', item: 'https://tomcontable.cl/calculadora-iva' }
+] };
 ---
-<Base {...seo} sugerencia="calculadora-iva">
+<Base {...seo} schema={[appSchema, faqSchema, breadcrumb]} sugerencia="calculadora-iva">
 
   <section class="hero">
     <div class="wrap">
@@ -60,6 +76,20 @@ const seo = {
   </section>
 
   <div style="margin:10px auto 56px;padding:0 20px"><BannerServicios orden={['contabilidad', 'sii', 'proyeccion', 'asesorias']} lateral={true} /></div>
+
+  <section class="sec-texto">
+    <div class="wrap angosto">
+      <h2 id="faq">Preguntas frecuentes</h2>
+      <div class="faq">
+        {faqs.map((it) => (
+          <details>
+            <summary>{it.q}<span class="plus">+</span></summary>
+            <div class="ans">{it.a}</div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
 
   <section class="cierre">
     <div class="wrap">
@@ -137,6 +167,16 @@ const seo = {
   .cierre{background:linear-gradient(150deg,var(--azul),var(--azul-prof));color:#fff;text-align:center;padding:62px 24px}
   .cierre h2{color:#fff;font-size:24px;font-weight:800;max-width:28ch;margin:0 auto}
   .cierre p{color:#cfd6ea;font-size:17px;margin:14px auto 26px;max-width:54ch}
+  .sec-texto{padding:8px 0 44px}
+  .angosto{max-width:760px;margin:0 auto}
+  .sec-texto h2{font-size:24px;font-weight:800;margin:0 0 14px;letter-spacing:-.3px}
+  .faq{margin-top:6px}
+  details{background:#fff;border:1px solid var(--linea);border-radius:14px;margin-bottom:12px;overflow:hidden}
+  summary{list-style:none;cursor:pointer;padding:18px 22px;font-family:'Montserrat';font-weight:600;font-size:16px;color:var(--azul);display:flex;justify-content:space-between;gap:14px}
+  summary::-webkit-details-marker{display:none}
+  .plus{font-size:22px;color:var(--azul);transition:.2s;flex-shrink:0}
+  details[open] .plus{transform:rotate(45deg)}
+  .ans{padding:0 22px 18px;color:#555;font-size:15.5px;line-height:1.6}
   @media(max-width:860px){ .hero h1{font-size:27px} .grid{grid-template-columns:1fr} }
   @media(max-width:480px){ .dual{grid-template-columns:1fr} }
 </style>

@@ -24,8 +24,22 @@ const servicio = {
     { "@type": "Offer", "price": "99000", "priceCurrency": "CLP", "description": "Proyección tributaria con sueldos, $99.000 + IVA" }
   ]
 };
+
+// FAQ visible espejada para FAQPage (mantener en sync con el accordion de la página).
+const faqs = [
+  { q: '¿Cuál es la diferencia entre con y sin sueldos?', a: 'La diferencia está en si tu empresa paga cotizaciones en Previred. Si tiene trabajadores contratados o sueldo patronal (es decir, paga Previred), te corresponde la versión con sueldos. Si no paga cotizaciones, la versión sin sueldos.' },
+  { q: '¿Tengo que enviarles información?', a: 'No. El reporte se hace con los documentos que ya están en tu portal del SII. Si necesitas reflejar gastos que no están ahí, lo cotizamos aparte por WhatsApp.' },
+  { q: '¿En qué se diferencia de la operación renta?', a: 'La proyección es antes del cierre del año, para que alcances a tomar decisiones. La operación renta es la declaración formal en abril. La proyección te prepara para llegar bien a esa fecha.' },
+  { q: '¿Sirve si tengo problemas con el SII?', a: 'La proyección es para planificar. Si lo que necesitas es revisar observaciones o inconsistencias ya existentes, eso es nuestra revisión de situación tributaria.' },
+];
+const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
+const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+  { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://tomcontable.cl/' },
+  { '@type': 'ListItem', position: 2, name: 'Servicios', item: 'https://tomcontable.cl/servicios' },
+  { '@type': 'ListItem', position: 3, name: 'Proyección tributaria', item: 'https://tomcontable.cl/proyeccion-tributaria' }
+] };
 ---
-<Base {...seo} schema={[servicio]}>
+<Base {...seo} schema={[servicio, faqSchema, breadcrumb]}>
 
   <section class="hero">
     <div class="wrap">
