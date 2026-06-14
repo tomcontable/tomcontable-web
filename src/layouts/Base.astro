@@ -74,8 +74,8 @@ const { title, description, canonical, image, noindex, type = 'website', schema 
 
   // 2. Revelado suave al hacer scroll (con leve escalonado en grillas)
   if (!reduceMotion && 'IntersectionObserver' in window) {
-    const grupos = ['.cards-3 > *', '.serv-grid > *', '.steps > *', '.cards-2 > *', '.rec-grid > *', '.grid > .card'];
-    const sueltos = ['.sec-head', '.faq', '.tst-foot', '.about > *', '.planes > *'];
+    const grupos = ['.cards-3 > *', '.serv-grid > *', '.steps > *', '.cards-2 > *', '.rec-grid > *', '.grid > .card', '.pain-grid > *'];
+    const sueltos = ['.sec-head', '.faq', '.tst-foot', '.about > *', '.planes > *', '.feat'];
     const objetivos = [];
     grupos.forEach((sel) => {
       document.querySelectorAll(sel).forEach((el, i) => { el.style.transitionDelay = Math.min(i * 70, 280) + 'ms'; objetivos.push(el); });

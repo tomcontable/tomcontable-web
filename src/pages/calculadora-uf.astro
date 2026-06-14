@@ -4,7 +4,7 @@ import CalculadoraIndicador from '../components/CalculadoraIndicador.astro';
 
 const seo = {
   title: 'Calculadora UF a Pesos 2026 | Cuánto vale la UF hoy · TomContable',
-  description: 'Convierte UF a pesos y pesos a UF con el valor de la UF de hoy o de cualquier fecha, actualizado desde el Banco Central. Calculadora gratis y simple de TomContable.',
+  description: 'Convierte UF a pesos con el valor de hoy o de cualquier fecha, y te mostramos el IVA y el total con IVA incluido. Gratis y con datos del Banco Central, por TomContable.',
   canonical: '/calculadora-uf',
 };
 
@@ -13,6 +13,7 @@ const faqs = [
   { q: '¿Puedo ver el valor de la UF de una fecha pasada?', a: 'Sí. Esta calculadora te deja elegir la fecha con las flechas o el calendario, y toma el valor oficial de la UF de ese día, no solo el de hoy. Es útil para arriendos, contratos o deudas pactadas en otra fecha.' },
   { q: '¿Cada cuánto cambia el valor de la UF?', a: 'Todos los días. El Banco Central de Chile publica el valor diario, que se reajusta según la variación del IPC del mes anterior.' },
   { q: '¿De dónde sale el valor que usa esta calculadora?', a: 'Del valor oficial publicado por el Banco Central de Chile. Se consulta en línea, así que el resultado siempre usa la UF vigente para la fecha seleccionada.' },
+  { q: '¿La calculadora me muestra el monto con IVA?', a: 'Sí. Además de convertir la UF a pesos, te mostramos el neto, el IVA del 19% y el total con IVA, listo para tu cotización o factura. Es muy útil cuando un servicio está fijado en UF, por ejemplo un plan de contabilidad de 0,7 UF + IVA: ves el monto final de inmediato, sin tener que ir a otra calculadora a multiplicar por 1,19.' },
 ];
 
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
@@ -27,9 +28,10 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   <CalculadoraIndicador
     codigo="uf"
     unidadLabel="UF"
+    iva={true}
     eyebrow="Herramienta gratis"
     h1="Calculadora UF a pesos"
-    lead="Convierte de UF a pesos y de pesos a UF al instante, con el valor de la UF de hoy o de la fecha que elijas, según el Banco Central."
+    lead="Convierte de UF a pesos al instante y, además, te calculamos el IVA y el total con IVA incluido. Con el valor de la UF de hoy o de la fecha que elijas, según el Banco Central."
     ico={`<path d="M22 100V20" stroke="#1E2F73" stroke-width="3.5" stroke-linecap="round"/><path d="M22 100h78" stroke="#1E2F73" stroke-width="3.5" stroke-linecap="round"/><path d="M34 84l18-20 16 12 26-34" stroke="#F6B11A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M80 42h14v14" stroke="#F6B11A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>`}
     intro={[
       'Escribe un monto en UF y verás cuántos pesos son, o escribe pesos y verás a cuántas UF equivale. Por defecto usa la UF de hoy, pero puedes moverte día a día con las flechas o abrir el calendario para cualquier fecha.',

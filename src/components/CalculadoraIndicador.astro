@@ -12,6 +12,7 @@ const {
   h1,
   lead,
   ico = '',          // contenido SVG de la ilustración del hero (opción 2)
+  iva = false,       // si true, muestra el desglose Neto / IVA 19% / Total (para UF, montos de empresa)
   intro = [],        // párrafos de "cómo usar / qué es"
   faqs = [],
   ctaTitulo,
@@ -63,6 +64,15 @@ const {
         </div>
       </div>
     </div>
+
+    {iva && (
+      <div class="iva-box" id="iva-box">
+        <p class="iva-cap">Tu monto con IVA incluido</p>
+        <div class="iva-row"><span>Neto</span><strong id="iva-neto">—</strong></div>
+        <div class="iva-row"><span>IVA (19%)</span><strong id="iva-iva">—</strong></div>
+        <div class="iva-row iva-total"><span>Total con IVA</span><strong id="iva-total">—</strong></div>
+      </div>
+    )}
 
     <p class="calc-nota">Escribe un monto en cualquiera de los dos campos y se convierte solo, con el valor de la fecha elegida.</p>
 
@@ -124,6 +134,20 @@ const {
 
   $('pref-unidad').textContent = meta.prefijo;
 
+  // Desglose de IVA (solo existe el cuadro si la página lo pidió con iva={true}, ej. UF).
+  const ivaBox = $('iva-box');
+  const actualizarIva = (neto) => {
+    if (!ivaBox) return;
+    if (!isFinite(neto) || neto <= 0) {
+      $('iva-neto').textContent = '—'; $('iva-iva').textContent = '—'; $('iva-total').textContent = '—'; return;
+    }
+    const netoR = Math.round(neto);
+    const totalR = Math.round(neto * 1.19);
+    $('iva-neto').textContent = fmtCLP0.format(netoR);
+    $('iva-iva').textContent = fmtCLP0.format(totalR - netoR);
+    $('iva-total').textContent = fmtCLP0.format(totalR);
+  };
+
   const parseCL = (txt) => {
     if (!txt) return NaN;
     return parseFloat(String(txt).replace(/\./g, '').replace(/,/g, '.').replace(/[^\d.]/g, ''));
@@ -160,12 +184,14 @@ const {
     if (bloqueo) return; bloqueo = true;
     const u = parseCL(inUnidad.value);
     inPesos.value = isFinite(u) && u > 0 ? fmtMiles2.format(u * valor) : '';
+    actualizarIva(isFinite(u) && u > 0 ? u * valor : 0);
     bloqueo = false;
   });
   inPesos.addEventListener('input', () => {
     if (bloqueo) return; bloqueo = true;
     const p = parseCL(inPesos.value);
     inUnidad.value = isFinite(p) && p > 0 ? fmtUnidad.format(p / valor) : '';
+    actualizarIva(isFinite(p) && p > 0 ? p : 0);
     bloqueo = false;
   });
   const recalcular = () => {
@@ -304,6 +330,14 @@ const {
   .input-wrap input{border:none;outline:none;font-family:'Montserrat';font-weight:700;font-size:22px;color:var(--azul-prof);padding:13px 0;width:100%;background:transparent}
   .swap{align-self:center;color:var(--amarillo);font-size:24px;font-weight:800;padding-bottom:10px}
   .calc-nota{margin-top:16px;color:var(--gris);font-size:14.5px;text-align:center}
+
+  .iva-box{margin-top:18px;background:#fff;border:1px solid var(--linea);border-radius:16px;padding:14px 24px 16px;max-width:430px;margin-left:auto;margin-right:auto}
+  .iva-cap{font-family:'Montserrat';font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--gris);margin:0 0 8px;text-align:center}
+  .iva-row{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;font-size:15px;color:#444a63}
+  .iva-row strong{font-family:'Montserrat';font-weight:700;color:var(--azul-prof);font-size:16px}
+  .iva-total{border-top:2px solid #eef1f8;margin-top:4px;padding-top:12px}
+  .iva-total span{font-family:'Montserrat';font-weight:700;color:var(--azul)}
+  .iva-total strong{font-size:22px;color:var(--azul-prof)}
 
   .otros{margin-top:34px}
   :global(.otros-titulo){text-align:center;font-family:'Montserrat';font-weight:700;font-size:12.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--gris);margin-bottom:16px}
