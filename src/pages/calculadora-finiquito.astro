@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import BotonWhatsApp from '../components/BotonWhatsApp.astro';
 import BannerServicios from '../components/BannerServicios.astro';
+import BotonWhatsAppFlotante from '../components/BotonWhatsAppFlotante.astro';
 
 const seo = {
   title: 'Calculadora de Finiquito Chile 2026 | Cuánto te corresponde · TomContable',
@@ -41,7 +42,14 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   <section class="sec">
     <div class="wrap calc-wrap">
 
-      <p class="aviso-top">Esta es una <strong>estimación referencial</strong>, no un cálculo certificado. Hay casos especiales que conviene revisar. ¿Necesitas tu finiquito bien hecho? <a href="https://api.whatsapp.com/send/?phone=56964933110&text=Hola%20vengo%20desde%20la%20calculadora%20de%20finiquito" target="_blank" rel="noopener">Escríbenos</a>.</p>
+      <div class="aviso-top" role="region" aria-label="Información importante">
+        <p style="margin: 0 0 12px 0;"><strong>Esta es una estimación referencial</strong>, no un cálculo certificado.</p>
+        <p style="margin: 0 0 12px 0;">Hay casos especiales (bonos, comisiones, licencias, etc.) que conviene revisar con un contador antes de firmar.</p>
+        <p style="margin: 0;"><strong>¿Quieres que validemos tu finiquito antes de firmarlo?</strong> Usa esta calculadora para tener números de referencia, y si el resultado no calza con lo que te ofrecen, escríbenos.</p>
+        <div style="margin-top: 14px;">
+          <BotonWhatsApp texto="Revisar mi finiquito" mensaje="Hola vengo desde la calculadora de finiquito y quiero que revisen mi caso" />
+        </div>
+      </div>
 
       <div class="grid">
 
@@ -155,6 +163,8 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   </section>
 
   <div style="margin:10px auto 42px;padding:0 20px"><BannerServicios orden={['finiquito-trabajador', 'finiquito-empleador', 'proyeccion']} lateral={true} /></div>
+
+  <BotonWhatsAppFlotante mensaje="Hola vengo desde la calculadora de finiquito" />
 
   <section class="sec sec-texto">
     <div class="wrap angosto">

@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import BotonWhatsApp from '../components/BotonWhatsApp.astro';
 import BannerServicios from '../components/BannerServicios.astro';
+import BotonWhatsAppFlotante from '../components/BotonWhatsAppFlotante.astro';
 
 const seo = {
   title: 'Calculadora de IVA 19% en Chile | Agregar o quitar IVA · TomContable',
@@ -98,6 +99,8 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
       <div class="cta-row center"><BotonWhatsApp texto="Hablar por WhatsApp" mensaje="Hola vengo desde la calculadora de IVA" /></div>
     </div>
   </section>
+
+  <BotonWhatsAppFlotante mensaje="Hola vengo desde la calculadora de IVA" />
 
 </Base>
 

@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import CalculadoraIndicador from '../components/CalculadoraIndicador.astro';
+import BotonWhatsAppFlotante from '../components/BotonWhatsAppFlotante.astro';
 
 const seo = {
   title: 'Calculadora UF a Pesos 2026 | Cuánto vale la UF hoy · TomContable',
@@ -42,4 +43,7 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
     ctaTexto="Eso es lo nuestro. Cuéntanos de tu empresa por WhatsApp y te orientamos en simple, sin compromiso."
     ctaMensaje="Hola vengo desde la calculadora UF"
   />
+
+  <BotonWhatsAppFlotante mensaje="Hola vengo desde la calculadora UF" />
+
 </Base>
