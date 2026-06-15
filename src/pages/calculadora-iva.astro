@@ -6,9 +6,11 @@ import BotonWhatsAppFlotante from '../components/BotonWhatsAppFlotante.astro';
 
 const seo = {
   title: 'Calculadora de IVA 19% en Chile | Agregar o quitar IVA · TomContable',
-  description: 'Calcula el IVA del 19% en Chile: agrega el IVA a un monto neto o sácalo de un total. Rápido y gratis, por TomContable.',
+  description: 'Calcula el IVA del 19% en Chile: agrega el IVA a un monto neto o sácalo de un total sin equivocarte. Gratis y al instante, con el detalle de neto, IVA y total.',
   canonical: '/calculadora-iva',
 };
+
+const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year: 'numeric' });
 
 const faqs = [
   { q: '¿Cómo se calcula el IVA en Chile?', a: 'El IVA es 19% sobre el valor neto. Para agregarlo, multiplicas el neto por 1,19. Para sacarlo de un total que ya lo incluye, divides el total por 1,19; no se resta un 19%, que es el error más común.' },
@@ -16,6 +18,10 @@ const faqs = [
   { q: '¿La tasa de IVA en Chile es 19%?', a: 'Sí, la tasa general es 19% y se aplica a la mayoría de las ventas y servicios. Algunos productos y servicios tienen tratamientos especiales o están exentos, pero para el grueso de las operaciones la tasa es 19%.' },
   { q: '¿Qué diferencia hay entre neto, bruto y total?', a: 'El neto es el valor sin IVA. El total o bruto es lo que finalmente se paga, con el IVA incluido. Esta calculadora convierte entre ambos en los dos sentidos.' },
   { q: '¿El IVA que cobro lo tengo que pagar al SII?', a: 'El IVA que cobras a tus clientes lo declaras en el F29, descontando el IVA que pagaste en tus compras (crédito fiscal); en la práctica pagas la diferencia. Dejar eso ordenado cada mes es justo lo que hacemos en la contabilidad mensual.' },
+  { q: '¿Por qué no se resta directamente el 19% para sacar el IVA?', a: 'Porque ese 19% se calculó sobre el neto, no sobre el total. Si a un total con IVA le restas un 19%, te queda un número más bajo que el neto real. La forma correcta es dividir el total por 1,19.' },
+  { q: '¿Qué son el IVA débito y el IVA crédito?', a: 'El IVA débito es el que cobras a tus clientes en tus ventas. El IVA crédito es el que pagaste en tus compras y puedes descontar. En el F29 del mes pagas la diferencia entre ambos.' },
+  { q: '¿Cuándo se paga el IVA en Chile?', a: 'El IVA se declara y paga mensualmente en el formulario F29, que para la mayoría vence alrededor del día 20 del mes siguiente cuando se hace por internet. Ahí se cruzan las ventas y las compras del mes.' },
+  { q: '¿Esta calculadora sirve para llenar el F29?', a: 'Te ayuda a calcular el IVA de un monto puntual, pero el F29 reúne todas las ventas y compras del mes, con crédito y débito fiscal, PPM y otros antecedentes. Para presentarlo bien y a tiempo, eso lo vemos en la contabilidad mensual.' },
 ];
 
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
@@ -31,8 +37,8 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   <section class="hero">
     <div class="wrap">
       <p class="eyebrow">Herramienta gratis</p>
-      <h1>Calculadora de IVA</h1>
-      <p class="lead">Agrega el IVA a un monto neto o sácalo de un total, con la tasa vigente del 19% en Chile.</p>
+      <h1>Calculadora de IVA en Chile: agrega o quita el 19%</h1>
+      <p class="lead">Agrega el IVA a un monto neto o sácalo de un total, con la tasa vigente del 19% en Chile, y mira el detalle de neto, IVA y total.</p>
     </div>
     <svg class="hero-ill" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="60" cy="60" r="50" stroke="#1E2F73" stroke-width="3.5"/><path d="M42 78L78 42" stroke="#1E2F73" stroke-width="4" stroke-linecap="round"/><circle cx="46" cy="46" r="9" fill="#F6B11A" fill-opacity="0.3" stroke="#1E2F73" stroke-width="3"/><circle cx="74" cy="74" r="9" fill="#F6B11A" fill-opacity="0.3" stroke="#1E2F73" stroke-width="3"/></svg>
   </section>
@@ -63,12 +69,6 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
         </div>
       </div>
 
-      <div class="info">
-        <h3>¿Cómo funciona el IVA?</h3>
-        <p>El IVA (Impuesto al Valor Agregado) en Chile es del 19% sobre el valor neto. El precio neto es el valor del producto o servicio sin impuesto; el total o bruto es lo que finalmente se paga, ya con el IVA incluido.</p>
-        <p>Si tienes el neto y quieres el total, sumas un 19%. Si tienes el total con IVA y quieres saber el neto, divides por 1,19 (no se resta un 19%, que es el error más común). Esta calculadora hace las dos cosas.</p>
-      </div>
-
       <div class="descargo">
         <p>Cálculo referencial generado en tomcontable.cl. La tasa general de IVA en Chile es 19%. Algunos productos y servicios tienen tratamientos especiales o están exentos; ante dudas, consulta con tu contador.</p>
         <p class="firma">TomContable.cl · Cálculo referencial</p>
@@ -80,6 +80,26 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
 
   <section class="sec-texto">
     <div class="wrap angosto">
+      <div class="resp-rapida">
+        <p><strong>Respuesta rápida:</strong> en Chile el IVA general es del 19%. Para agregar IVA a un monto neto, lo multiplicas por 1,19. Para quitar el IVA de un total que ya lo incluye, lo divides por 1,19. No se resta un 19%, porque eso entrega un resultado incorrecto.</p>
+        <p class="resp-fecha">Última actualización: {actualizado}. Fuente: tasa general de IVA vigente en Chile (19%).</p>
+      </div>
+
+      <h2>Qué es el IVA y cómo se calcula en Chile</h2>
+      <p>El IVA (Impuesto al Valor Agregado) es un impuesto del 19% que se aplica sobre el valor neto de la mayoría de las ventas y servicios en Chile. El neto es el precio sin impuesto; el total o bruto es lo que finalmente se paga, ya con el IVA incluido. La diferencia entre uno y otro es el IVA.</p>
+
+      <h2>Cómo agregar el IVA a un monto neto</h2>
+      <p>Multiplicas el neto por 1,19. Por ejemplo, un servicio de $100.000 netos queda en $119.000 con IVA, donde los $19.000 son el impuesto. Es el cálculo que necesitas al cotizar o emitir una factura partiendo del valor sin impuesto.</p>
+
+      <h2>Cómo sacar el IVA de un total, sin restar 19%</h2>
+      <p>Cuando ya tienes el total con IVA y quieres saber el neto, divides por 1,19. Un total de $11.900 dividido por 1,19 da $10.000 de neto, y la diferencia, $1.900, es el IVA. El error más común es restarle 19% al total: queda un número más bajo que el neto real, porque ese 19% se calculó sobre el neto y no sobre el total.</p>
+
+      <h2>Neto, IVA y total: qué es cada uno</h2>
+      <p>El neto es la base sobre la que se calcula el impuesto. El IVA es el 19% de ese neto. Y el total es la suma de los dos, lo que efectivamente paga el cliente. Esta calculadora te muestra los tres y convierte en los dos sentidos, así no andas multiplicando y dividiendo a mano.</p>
+
+      <h2>IVA débito, IVA crédito y el F29</h2>
+      <p>En tu negocio se cruzan dos IVA: el débito, que es el que cobras en tus ventas, y el crédito, que es el que pagaste en tus compras y puedes descontar. Mes a mes declaras la diferencia en el formulario F29. Esta calculadora sirve para el IVA de un monto puntual, pero no reemplaza el cálculo completo del F29, donde también influyen ventas, compras, crédito y débito fiscal, PPM y otros antecedentes. Si quieres dejar eso ordenado y presentado a tiempo, lo vemos en la <a href="/contabilidad-mensual/">contabilidad mensual</a>.</p>
+
       <h2 id="faq">Preguntas frecuentes</h2>
       <div class="faq">
         {faqs.map((it) => (
@@ -88,6 +108,17 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
             <div class="ans">{it.a}</div>
           </details>
         ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="relac">
+    <div class="relac-in">
+      <h2>Herramientas relacionadas</h2>
+      <div class="relac-grid">
+        <a href="/calculadora-boleta-honorarios">Calculadora de boleta de honorarios</a>
+        <a href="/calculadora-uf">Calculadora UF a pesos</a>
+        <a href="/contabilidad-mensual/">Contabilidad mensual</a>
       </div>
     </div>
   </section>
@@ -172,7 +203,19 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   .cierre p{color:#cfd6ea;font-size:17px;margin:14px auto 26px;max-width:54ch}
   .sec-texto{padding:8px 0 44px}
   .angosto{max-width:760px;margin:0 auto}
-  .sec-texto h2{font-size:24px;font-weight:800;margin:0 0 14px;letter-spacing:-.3px}
+  .sec-texto h2{font-size:24px;font-weight:800;margin:28px 0 12px;letter-spacing:-.3px}
+  .sec-texto p{font-size:16px;color:#444a63;line-height:1.7;margin-bottom:14px}
+  .sec-texto p a{color:var(--azul);font-weight:600}
+  .resp-rapida{background:#eef5ff;border:1px solid #cfe0f5;border-radius:14px;padding:16px 20px;margin:6px 0 8px}
+  .resp-rapida p{margin:0;font-size:15.5px;line-height:1.6;color:#33384a}
+  .resp-rapida strong{color:var(--azul-prof)}
+  .resp-rapida .resp-fecha{margin-top:8px;font-size:12.5px;color:var(--gris)}
+  .relac{padding:0 0 8px}
+  .relac-in{max-width:760px;margin:0 auto;padding:0 24px}
+  .relac h2{font-size:18px;font-weight:800;margin:0 0 12px;letter-spacing:-.3px}
+  .relac-grid{display:flex;flex-wrap:wrap;gap:10px}
+  .relac-grid a{font-family:'Montserrat';font-weight:600;font-size:14px;color:var(--azul);background:#fff;border:1px solid var(--linea);border-radius:10px;padding:9px 14px;text-decoration:none;transition:.15s}
+  .relac-grid a:hover{border-color:var(--azul)}
   .faq{margin-top:6px}
   details{background:#fff;border:1px solid var(--linea);border-radius:14px;margin-bottom:12px;overflow:hidden}
   summary{list-style:none;cursor:pointer;padding:18px 22px;font-family:'Montserrat';font-weight:600;font-size:16px;color:var(--azul);display:flex;justify-content:space-between;gap:14px}

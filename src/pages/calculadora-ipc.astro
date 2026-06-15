@@ -27,6 +27,8 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   { '@type': 'ListItem', position: 2, name: 'Herramientas', item: 'https://tomcontable.cl/herramientas' },
   { '@type': 'ListItem', position: 3, name: 'Calculadora IPC', item: 'https://tomcontable.cl/calculadora-ipc' }
 ] };
+
+const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year: 'numeric' });
 ---
 <Base {...seo} schema={[appSchema, faqSchema, breadcrumb]}>
 
@@ -82,6 +84,10 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
 
   <section class="sec-texto">
     <div class="wrap angosto">
+      <div class="resp-rapida">
+        <p><strong>Respuesta rápida:</strong> esta calculadora de IPC actualiza un monto en pesos entre dos fechas usando la variación del Índice de Precios al Consumidor que informa el INE en Chile. El resultado es referencial y sirve para estimar reajustes de arriendos, deudas, pensiones de alimentos o contratos.</p>
+        <p class="resp-fecha">Última actualización: {actualizado}. Fuente: Instituto Nacional de Estadísticas (INE).</p>
+      </div>
       <h2>¿Qué es el reajuste por IPC?</h2>
       <p>El reajuste por IPC es la forma de actualizar un monto en pesos según cuánto subieron los precios entre dos fechas. El IPC (Índice de Precios al Consumidor) lo publica cada mes el INE y mide la inflación en Chile. Cuando un valor está pactado en pesos, como un arriendo o una deuda, reajustarlo por IPC sirve para que mantenga su valor real con el paso del tiempo.</p>
 
@@ -249,6 +255,10 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   .sec-texto h2{font-size:23px;font-weight:800;margin:26px 0 10px;letter-spacing:-.3px;color:var(--azul-prof)}
   .sec-texto h2:first-child{margin-top:0}
   .sec-texto p{font-size:16px;color:#444a63;line-height:1.7;margin:0 0 14px}
+  .resp-rapida{background:#eef5ff;border:1px solid #cfe0f5;border-radius:14px;padding:16px 20px;margin:0 0 18px}
+  .resp-rapida p{margin:0;font-size:15.5px;line-height:1.6;color:#33384a}
+  .resp-rapida strong{color:var(--azul-prof)}
+  .resp-rapida .resp-fecha{margin-top:8px;font-size:12.5px;color:var(--gris)}
 
   .faq{margin-top:6px}
   details{background:#fff;border:1px solid var(--linea);border-radius:14px;margin-bottom:12px;overflow:hidden}

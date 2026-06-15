@@ -19,6 +19,9 @@ const faqs = [
   { q: '¿La calculadora incluye la gratificación legal?', a: 'Sí. Si la activas, calcula el 25% de lo imponible con el tope legal de 4,75 ingresos mínimos al año, tal como lo define el Código del Trabajo. Por eso se calcula sobre el total imponible y no solo sobre el sueldo base.' },
   { q: '¿Cuánto le cuesta realmente el trabajador a la empresa?', a: 'Además del sueldo bruto, la empresa paga aportes de su cargo: el seguro de cesantía del empleador (2,4% con contrato indefinido), el seguro de invalidez y sobrevivencia (SIS) y la cotización de la mutual. La calculadora te muestra ese costo total empresa, no solo el líquido del trabajador.' },
   { q: '¿Sirve para calcular desde el líquido que quiero pagar?', a: 'Sí. Puedes partir del sueldo base y ver el líquido, o ingresar el líquido que quieres que reciba el trabajador y la calculadora estima el bruto necesario para llegar a ese monto.' },
+  { q: '¿Desde qué sueldo se paga impuesto único de segunda categoría?', a: 'El impuesto único es progresivo y se calcula en UTM. Las rentas mensuales bajo 13,5 UTM están exentas y, sobre ese tramo, la tasa sube por escalones. La calculadora lo aplica solo cuando la renta imponible del mes supera el límite exento.' },
+  { q: '¿La calculadora está al día con los valores de 2026?', a: 'Sí. Usa el ingreso mínimo, los topes imponibles, la UF y la UTM vigentes, y los ajusta según el mes de cálculo que elijas desde enero de 2026. Los indicadores previsionales salen de Previred.' },
+  { q: '¿Sirve para jornada parcial o sueldos proporcionales?', a: 'Sí. Puedes ajustar la jornada semanal y los días trabajados en el mes, y el cálculo se hace proporcional. Es útil para contratos part-time, ingresos a mitad de mes o ausencias.' },
 ];
 
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
@@ -28,6 +31,8 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   { '@type': 'ListItem', position: 2, name: 'Herramientas', item: 'https://tomcontable.cl/herramientas' },
   { '@type': 'ListItem', position: 3, name: 'Calculadora de sueldo líquido', item: 'https://tomcontable.cl/calculadora-sueldo-liquido' }
 ] };
+
+const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year: 'numeric' });
 ---
 <Base {...seo} schema={[appSchema, faqSchema, breadcrumb]} sugerencia="calculadora-sueldo-liquido">
 
@@ -145,6 +150,32 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
 
   <div style="margin:10px auto 56px;padding:0 20px"><BannerServicios orden={['remuneraciones', 'proyeccion', 'contabilidad', 'asesorias']} lateral={true} /></div>
 
+  <section class="guia">
+    <div class="guia-in">
+      <div class="resp-rapida">
+        <p><strong>Respuesta rápida:</strong> la calculadora de sueldo líquido estima cuánto recibe un trabajador después de los descuentos legales (AFP, salud, seguro de cesantía e impuesto único) y cuánto cuesta realmente contratarlo para la empresa en Chile. Considera gratificación legal, haberes no imponibles y los aportes del empleador. El resultado es referencial.</p>
+        <p class="resp-fecha">Última actualización: {actualizado}. Fuente: indicadores previsionales de Previred y normativa laboral vigente.</p>
+      </div>
+      <h2>Qué es el sueldo líquido y cómo se calcula</h2>
+      <p>El sueldo líquido es lo que finalmente le llega al trabajador a su cuenta, después de los descuentos legales. Se parte del sueldo bruto imponible, se le restan las cotizaciones del trabajador (AFP, salud y seguro de cesantía) y, si la renta lo amerita, el impuesto único de segunda categoría. A ese resultado se le suman los haberes que no cotizan, como colación y movilización. Eso es el líquido.</p>
+
+      <h2>Bruto, líquido y costo empresa no son lo mismo</h2>
+      <p>Es la confusión más común al contratar. El bruto es el sueldo pactado antes de descuentos. El líquido es lo que recibe la persona en la mano. Y el costo empresa es lo que de verdad te cuesta a ti como empleador, porque sobre el bruto pagas además aportes de tu cargo: el seguro de cesantía del empleador, el seguro de invalidez y sobrevivencia y la cotización de la mutual. Por eso esta calculadora te muestra los tres números y no solo el líquido.</p>
+
+      <h2>Qué descuentos se le hacen al sueldo en Chile</h2>
+      <p>Del lado del trabajador hay tres descuentos previsionales. La AFP, que ronda el 10% más la comisión de cada administradora. La salud, que es el 7% en Fonasa o el valor del plan en isapre. Y el seguro de cesantía, un 0,6% cuando el contrato es indefinido. Si la renta supera el tramo exento, se suma el impuesto único de segunda categoría, que es progresivo y se expresa en UTM.</p>
+
+      <h2>Cómo entra la gratificación legal</h2>
+      <p>Si la activas, la calculadora suma la gratificación del artículo 50: un 25% de lo imponible con un tope de 4,75 ingresos mínimos al año. Es un haber imponible, así que aumenta la base sobre la que se calculan las cotizaciones. Por eso conviene incluirla cuando corresponde, para ver el número real y no uno más bajo de la cuenta.</p>
+
+      <h2>Calcula desde el bruto o desde el líquido que quieres pagar</h2>
+      <p>Funciona en los dos sentidos. Si sabes el sueldo base, ves de inmediato el líquido y el costo empresa. Si lo que tienes claro es el líquido que quieres que reciba la persona, ingresas ese monto y la calculadora estima el bruto necesario para llegar ahí. Es lo que necesitas cuando ofreces un sueldo conversado en la mano.</p>
+
+      <h2>Cuando las remuneraciones se vuelven un tema, te ayudamos</h2>
+      <p>Calcular es una cosa. Emitir las liquidaciones, pagar las cotizaciones en Previred y mantener todo en regla mes a mes es otra. Si tu pyme ya tiene trabajadores o estás por contratar al primero, eso lo vemos dentro de la <a href="/contabilidad-mensual/">contabilidad mensual</a>, que incluye el área de remuneraciones.</p>
+    </div>
+  </section>
+
   <section class="faqs">
     <div class="faqs-in">
       <h2 id="faq">Preguntas frecuentes</h2>
@@ -155,6 +186,18 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
             <div class="ans">{it.a}</div>
           </details>
         ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="relac">
+    <div class="relac-in">
+      <h2>Herramientas relacionadas</h2>
+      <div class="relac-grid">
+        <a href="/calculadora-finiquito">Calculadora de finiquito</a>
+        <a href="/calculadora-utm">Calculadora UTM a pesos</a>
+        <a href="/calculadora-uf">Calculadora UF a pesos</a>
+        <a href="/contabilidad-mensual/">Contabilidad y remuneraciones</a>
       </div>
     </div>
   </section>
@@ -595,6 +638,21 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   .faq .plus{font-size:22px;color:var(--azul);transition:.2s;flex-shrink:0}
   .faq details[open] .plus{transform:rotate(45deg)}
   .faq .ans{padding:0 22px 18px;color:#555;font-size:15.5px;line-height:1.6}
+  .guia{padding:8px 0 6px}
+  .guia-in{max-width:760px;margin:0 auto;padding:0 24px}
+  .guia h2{font-size:24px;font-weight:800;margin:28px 0 12px;letter-spacing:-.3px}
+  .guia p{font-size:16px;color:#444a63;line-height:1.7;margin-bottom:14px}
+  .guia p a{color:var(--azul);font-weight:600}
+  .resp-rapida{background:#eef5ff;border:1px solid #cfe0f5;border-radius:14px;padding:16px 20px;margin:0 0 22px}
+  .resp-rapida p{margin:0;font-size:15.5px;line-height:1.6;color:#33384a}
+  .resp-rapida strong{color:var(--azul-prof)}
+  .resp-rapida .resp-fecha{margin-top:8px;font-size:12.5px;color:var(--gris)}
+  .relac{padding:0 0 8px}
+  .relac-in{max-width:760px;margin:0 auto;padding:0 24px}
+  .relac h2{font-size:18px;font-weight:800;margin:0 0 12px;letter-spacing:-.3px}
+  .relac-grid{display:flex;flex-wrap:wrap;gap:10px}
+  .relac-grid a{font-family:'Montserrat';font-weight:600;font-size:14px;color:var(--azul);background:#fff;border:1px solid var(--linea);border-radius:10px;padding:9px 14px;text-decoration:none;transition:.15s}
+  .relac-grid a:hover{border-color:var(--azul)}
   .cierre{background:linear-gradient(150deg,var(--azul),var(--azul-prof));color:#fff;text-align:center;padding:62px 24px}
   .cierre h2{color:#fff;font-size:24px;font-weight:800;max-width:28ch;margin:0 auto}
   .cierre p{color:#cfd6ea;font-size:17px;margin:14px auto 26px;max-width:54ch}

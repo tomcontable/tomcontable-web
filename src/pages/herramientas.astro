@@ -4,8 +4,9 @@ import Sugerencias from '../components/Sugerencias.astro';
 import BannerServicios from '../components/BannerServicios.astro';
 
 const seo = {
-  title: 'Calculadoras gratis para pymes en Chile | Sueldo, finiquito, IVA y más · TomContable',
-  description: 'Calculadoras gratis para emprendedores y pymes en Chile: sueldo líquido, finiquito, IVA, UF, UTM y dólar. Rápidas, al día con datos oficiales y sin registro. Por TomContable.',
+  title: 'Calculadoras gratis para pymes en Chile | Sueldo, finiquito, IVA e IPC · TomContable',
+  description: 'Calculadoras gratis para emprendedores y pymes en Chile: sueldo líquido y costo empresa, finiquito, IVA, boleta de honorarios, UF, UTM, dólar e IPC. Al día con datos oficiales y sin registro.',
+  canonical: '/herramientas',
 };
 
 const tools = [
@@ -59,25 +60,40 @@ const tools = [
   },
 ];
 
+const faqs = [
+  { q: '¿Las calculadoras de TomContable son gratis?', a: 'Sí. Todas son gratuitas, sin registro y sin límite de uso. Puedes ocuparlas las veces que quieras desde el computador o el celular.' },
+  { q: '¿Qué calculadoras hay disponibles?', a: 'Hoy tienes calculadora de sueldo líquido y costo empresa, de finiquito, de IVA, de boleta de honorarios, y conversores de UF, UTM, dólar e IPC a pesos. Vamos sumando más según lo que nos piden.' },
+  { q: '¿Los resultados son oficiales?', a: 'Son referenciales. Las conversiones de UF, UTM y dólar usan los valores del Banco Central, y el reajuste por IPC usa la variación oficial del INE. Los cálculos laborales y tributarios son estimaciones hechas con los datos que ingresas, no documentos oficiales.' },
+  { q: '¿La calculadora de finiquito reemplaza una revisión profesional?', a: 'No. Te da una estimación rápida, pero el monto final depende del contrato, la causal de término, las remuneraciones y la normativa vigente. Para un finiquito bien hecho conviene revisarlo con un profesional.' },
+  { q: '¿La calculadora de sueldo líquido considera el costo empresa?', a: 'Sí. Además del líquido que recibe el trabajador, te muestra el costo real para la empresa, que es lo que de verdad necesitas saber al momento de contratar.' },
+  { q: '¿La calculadora de IVA sirve para declarar el F29?', a: 'Te ayuda a calcular rápido el IVA de un monto puntual, pero el F29 reúne todas las ventas y compras del mes. Para presentarlo bien y a tiempo, eso lo vemos en la contabilidad mensual.' },
+  { q: '¿Cada cuánto se actualizan los valores de UF, UTM, dólar e IPC?', a: 'La UF cambia todos los días, el dólar observado cada día hábil, la UTM una vez al mes y el IPC lo publica el INE mensualmente. Las calculadoras toman el valor vigente al momento de usarlas.' },
+  { q: '¿Puedo usar estas herramientas si soy emprendedor o pyme?', a: 'Para eso están. Las pensamos justo para emprendedores, profesionales independientes y pymes que quieren resolver una duda concreta sin tener que entender toda la letra chica.' },
+];
+
 const listSchema = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
+  name: 'Calculadoras gratis para pymes y emprendedores en Chile',
+  description: 'Calculadoras gratuitas de TomContable para estimar sueldos, finiquitos, IVA y boletas, y convertir UF, UTM, dólar e IPC a pesos.',
   itemListElement: tools.map((t, i) => ({
-    '@type': 'ListItem', position: i + 1, name: t.t, url: 'https://tomcontable.cl' + t.href,
+    '@type': 'ListItem', position: i + 1, url: 'https://tomcontable.cl' + t.href,
+    item: { '@type': 'WebApplication', name: t.t, description: t.d, applicationCategory: 'FinanceApplication', operatingSystem: 'Web', url: 'https://tomcontable.cl' + t.href, offers: { '@type': 'Offer', price: '0', priceCurrency: 'CLP' } },
   })),
 };
+const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
   { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://tomcontable.cl/' },
   { '@type': 'ListItem', position: 2, name: 'Herramientas', item: 'https://tomcontable.cl/herramientas' }
 ] };
 ---
-<Base {...seo} schema={[listSchema, breadcrumb]}>
+<Base {...seo} schema={[listSchema, faqSchema, breadcrumb]}>
 
   <section class="hero">
     <div class="wrap">
       <p class="eyebrow">Herramientas</p>
-      <h1>Calculadoras gratis para tu día a día</h1>
-      <p class="lead">Calcula sueldos líquidos, finiquitos, IVA y convierte UF, UTM y dólar a pesos. Con datos oficiales al día, simples y sin vueltas.</p>
+      <h1>Calculadoras gratis para pymes y emprendedores en Chile</h1>
+      <p class="lead">Calcula sueldos líquidos, finiquitos, IVA, boletas de honorarios y convierte UF, UTM, dólar e IPC a pesos. Herramientas simples, gratuitas y pensadas para emprendedores y pymes en Chile.</p>
     </div>
   </section>
 
@@ -96,11 +112,30 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
     </div>
   </section>
 
+  <section class="sec sec-texto">
+    <div class="wrap angosto">
+      <h2>Calculadoras para el día a día de tu negocio</h2>
+      <p>Aquí reunimos todas nuestras calculadoras gratuitas, pensadas para emprendedores, profesionales independientes y pymes en Chile. En un solo lugar puedes estimar el sueldo líquido y el costo real de contratar, calcular un finiquito, sacar el IVA de un monto, ver cuánto recibes al emitir una boleta de honorarios y convertir UF, UTM, dólar e IPC a pesos.</p>
+      <p>Las hicimos para resolver las dudas que aparecen cuando llevas un negocio: cuánto cuesta sumar a alguien al equipo, cuánto podría salir un finiquito, cómo reajustar un arriendo o una deuda por IPC, o a cuántos pesos equivale un monto pactado en UF. Cada una usa, cuando corresponde, los valores oficiales del Banco Central y del INE, así que siempre trabajas con datos al día.</p>
+      <p>Los resultados son referenciales y se calculan con lo que ingresas. No reemplazan la mirada de un contador, pero te ayudan a decidir con más claridad antes de dar el siguiente paso. Y si después quieres dejar la contabilidad de tu empresa ordenada y sin sorpresas, eso es justo lo que hacemos en la <a href="/contabilidad-mensual/">contabilidad mensual</a>.</p>
+
+      <h2 id="faq">Preguntas frecuentes</h2>
+      <div class="faq">
+        {faqs.map((it) => (
+          <details>
+            <summary>{it.q}<span class="plus">+</span></summary>
+            <div class="ans">{it.a}</div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <div class="banner-wrap"><BannerServicios /></div>
 
   <Sugerencias
     titulo="¿Echas de menos una calculadora?"
-    subtitulo="Esta web la construimos pensando en ti. Dinos qué herramienta te serviría y nos ponemos a trabajar en las que más nos pidan."
+    subtitulo="Esta web la construimos pensando en ti. Si te falta una calculadora tributaria, laboral, contable o financiera para Chile, cuéntanos qué herramienta te serviría y nos ponemos a trabajar en las que más nos pidan."
     origen="herramientas"
   />
 
@@ -108,8 +143,8 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
 
 <style>
   .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:62px 0}
-  .hero h1{font-size:40px;font-weight:800;letter-spacing:-.5px;max-width:18ch}
-  .hero .lead{font-size:18px;color:#444a63;margin:18px 0 0;max-width:60ch}
+  .hero h1{font-size:40px;font-weight:800;letter-spacing:-.5px;max-width:26ch}
+  .hero .lead{font-size:18px;color:#444a63;margin:18px 0 0;max-width:62ch}
 
   .sec{padding:54px 0}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:22px}
@@ -120,7 +155,22 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   .card h2{font-size:19px;font-weight:800;margin-bottom:8px}
   .card p{font-size:15px;color:#555;flex:1;margin-bottom:16px;line-height:1.6}
   .card-cta{font-family:'Montserrat';font-weight:700;font-size:14px;color:var(--azul)}
-  .nota{margin-top:26px;color:var(--gris);font-size:15px}
+
+  .sec-texto{padding-top:8px}
+  .angosto{max-width:760px}
+  .sec-texto h2{font-size:24px;font-weight:800;margin:30px 0 12px;letter-spacing:-.3px}
+  .sec-texto p{font-size:16px;color:#444a63;line-height:1.7;margin-bottom:14px}
+  .sec-texto p a{color:var(--azul);font-weight:600}
+
+  .faq{margin-top:6px}
+  details{background:#fff;border:1px solid var(--linea);border-radius:14px;margin-bottom:12px;overflow:hidden}
+  summary{list-style:none;cursor:pointer;padding:18px 22px;font-family:'Montserrat';font-weight:600;font-size:16px;color:var(--azul);display:flex;justify-content:space-between;gap:14px}
+  summary::-webkit-details-marker{display:none}
+  .plus{font-size:22px;color:var(--azul);transition:.2s;flex-shrink:0}
+  details[open] .plus{transform:rotate(45deg)}
+  .ans{padding:0 22px 18px;color:#555;font-size:15.5px;line-height:1.6}
+
   .banner-wrap{padding:0 24px 48px}
   @media(max-width:880px){ .grid{grid-template-columns:1fr} }
+  @media(max-width:640px){ .hero h1{font-size:31px} }
 </style>

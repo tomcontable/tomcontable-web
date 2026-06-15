@@ -15,6 +15,9 @@ const faqs = [
   { q: '¿La retención es un impuesto que pierdo?', a: 'No. La retención es un adelanto de tus impuestos. En la operación renta del año siguiente se descuenta de lo que te toca pagar, y si retuvieron de más, te lo devuelven. Por eso conviene tenerla ordenada y no gastarla.' },
   { q: '¿Quién paga la retención, quien emite o quien recibe la boleta?', a: 'Depende de a quién le emitas. Si emites a una empresa, por lo general ella retiene y entera ese monto al SII. Si emites a una persona natural, normalmente te toca a ti declararlo y pagarlo en tu propia declaración de renta.' },
   { q: '¿Conviene guardar plata para la operación renta?', a: 'Sí. Si trabajas a honorarios, a veces la retención no alcanza a cubrir todo el impuesto final, sobre todo si tienes varios ingresos. Reservar un porcentaje cada mes ayuda a no llevarse sustos en abril. Si quieres saber con tiempo cómo vas a llegar, te ayudamos a proyectarlo.' },
+  { q: '¿Cuánto tengo que boletear para recibir un líquido determinado?', a: 'Divides el líquido que quieres recibir por uno menos la tasa de retención del año. En 2026, con retención de 15,25%, divides por 0,8475. La calculadora lo hace sola: ingresas el líquido objetivo y te muestra el bruto a emitir.' },
+  { q: '¿Las boletas de honorarios pagan cotizaciones de AFP y salud?', a: 'Sí. Desde la reforma, los trabajadores a honorarios cotizan de forma obligatoria, y eso se financia con parte de la retención a través de la Operación Renta. Por eso la retención fue subiendo de forma gradual hasta llegar a 17% en 2028.' },
+  { q: '¿Me conviene seguir a honorarios o crear una empresa?', a: 'Depende de cuánto facturas y de tus gastos. A medida que la retención sube y tus ingresos crecen, a varios independientes les empieza a convenir tener empresa propia. Conviene hacer el número antes de decidir; podemos revisar tu caso.' },
 ];
 
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
@@ -24,14 +27,16 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   { '@type': 'ListItem', position: 2, name: 'Herramientas', item: 'https://tomcontable.cl/herramientas' },
   { '@type': 'ListItem', position: 3, name: 'Calculadora de boleta de honorarios', item: 'https://tomcontable.cl/calculadora-boleta-honorarios' }
 ] };
+
+const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year: 'numeric' });
 ---
 <Base {...seo} schema={[appSchema, faqSchema, breadcrumb]} sugerencia="calculadora-boleta-honorarios">
 
   <section class="hero">
     <div class="wrap">
       <p class="eyebrow">Herramienta gratis</p>
-      <h1>Calculadora de boleta de honorarios</h1>
-      <p class="lead">Calcula cuánto recibes líquido después de la retención, o por cuánto emitir tu boleta para recibir el líquido que necesitas.</p>
+      <h1>Calculadora de boleta de honorarios 2026: retención y líquido</h1>
+      <p class="lead">Calcula cuánto recibes líquido después de la retención (15,25% en 2026), o por cuánto emitir tu boleta para recibir el líquido que necesitas.</p>
     </div>
     <svg class="hero-ill" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M32 10h56v98l-9.3-6-9.3 6-9.4-6-9.3 6-9.4-6z" stroke="#1E2F73" stroke-width="3.5" stroke-linejoin="round"/><g stroke="#1E2F73" stroke-width="3" stroke-linecap="round"><path d="M44 32h32M44 46h32"/></g><circle cx="60" cy="78" r="15" fill="#F6B11A" fill-opacity="0.25"/><path d="M60 70v18M55 74h7a3 3 0 0 1 0 6h-5a3 3 0 0 0 0 6h7" stroke="#1E2F73" stroke-width="2.6" stroke-linecap="round"/></svg>
   </section>
@@ -85,12 +90,6 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
         </div>
       </div>
 
-      <div class="info">
-        <h3>¿Qué es esa retención?</h3>
-        <p>Cuando emites una boleta de honorarios, una parte se retiene y se entera al SII a tu nombre. No es plata que pierdes: es un anticipo a cuenta de tus impuestos del año. En la Operación Renta de abril se ajusta, y según tu situación te devuelven una parte o queda como pago de lo que te corresponde. Por eso conviene proyectarlo y no llevarte sorpresas.</p>
-        <p>Si emites tú la boleta, quien te paga no retiene: el monto completo te llega y la retención la declaras y pagas tú. Si emite una empresa (boleta de honorarios de terceros), la empresa retiene y te paga el líquido. En ambos casos el total retenido en el año es el mismo.</p>
-      </div>
-
       <div class="descargo">
         <p>Cálculo referencial generado en tomcontable.cl con el monto ingresado. No constituye boleta oficial, comprobante ni asesoría tributaria. La retención depende del año de emisión y de tu situación; tu impuesto final se determina en la Operación Renta.</p>
         <p class="firma">TomContable.cl · Cálculo referencial</p>
@@ -102,6 +101,29 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
 
   <section class="sec-texto">
     <div class="wrap angosto">
+      <div class="resp-rapida">
+        <p><strong>Respuesta rápida:</strong> la calculadora de boleta de honorarios estima cuánto recibes líquido después de la retención vigente en Chile (15,25% en 2026), o cuánto debes boletear para recibir un líquido determinado. Sirve para profesionales independientes que emiten boletas. El resultado es referencial.</p>
+        <p class="resp-fecha">Última actualización: {actualizado}. Fuente: tasa de retención vigente (Ley 21.133), 15,25% en 2026.</p>
+      </div>
+
+      <h2>Qué es la boleta de honorarios y la retención</h2>
+      <p>La boleta de honorarios es el documento que emiten quienes prestan servicios de forma independiente, sin contrato de trabajo. Al emitirla se aplica una retención, que en 2026 es del 15,25% del monto bruto. Esa retención no es plata que pierdes: es un anticipo a cuenta de tus impuestos del año, que se ajusta en la Operación Renta de abril.</p>
+
+      <h2>Cómo se calcula el líquido de una boleta</h2>
+      <p>Al monto bruto de la boleta se le descuenta la retención del año y lo que queda es el líquido que recibes. Por ejemplo, una boleta de $1.000.000 en 2026 tiene una retención de $152.500, así que recibes $847.500. La calculadora hace este cálculo al instante y para cualquiera de los años, porque la tasa sube de forma gradual.</p>
+
+      <h2>Cuánto boletear para recibir un líquido objetivo</h2>
+      <p>También funciona al revés. Si necesitas recibir un monto líquido específico, le dices a la calculadora cuánto quieres en el bolsillo y te dice por cuánto emitir la boleta para llegar ahí, ya considerando la retención. Es lo que necesitas cuando acuerdas un pago neto con un cliente.</p>
+
+      <h2>Quién paga la retención: tú o la empresa</h2>
+      <p>Depende de a quién le emitas. Si le emites a una empresa, por lo general ella retiene el porcentaje y lo entera al SII a tu nombre, y te paga el líquido. Si le emites a una persona natural, normalmente el pago te llega completo y la retención la declaras y pagas tú en tu propia renta. En el año, el total retenido es el mismo.</p>
+
+      <h2>La retención y la Operación Renta</h2>
+      <p>En abril, en la Operación Renta, se suma todo lo que boleteaste en el año y se calcula tu impuesto real. La retención que te hicieron se descuenta de ahí. Si retuvieron de más, te devuelven; si tus ingresos fueron altos y la retención no alcanzó, te puede tocar pagar. Además, una parte de la retención financia tus cotizaciones obligatorias como trabajador independiente. Por eso conviene proyectar con tiempo y no gastarse la retención.</p>
+
+      <h2>¿Te conviene seguir a honorarios o crear una empresa?</h2>
+      <p>Mientras la retención sigue subiendo año a año, a muchos independientes con ingresos que crecen les empieza a convenir facturar con empresa propia en vez de a honorarios. No es para todos, pero vale la pena hacer el número. Si quieres ver tu caso lo conversamos, y si decides dar el paso te dejamos la <a href="/constitucion-de-empresas/">empresa constituida y lista para facturar</a>.</p>
+
       <h2 id="faq">Preguntas frecuentes</h2>
       <div class="faq">
         {faqs.map((it) => (
@@ -110,6 +132,18 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
             <div class="ans">{it.a}</div>
           </details>
         ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="relac">
+    <div class="relac-in">
+      <h2>Herramientas relacionadas</h2>
+      <div class="relac-grid">
+        <a href="/calculadora-iva">Calculadora de IVA</a>
+        <a href="/constitucion-de-empresas/">Constituir una empresa</a>
+        <a href="/proyeccion-tributaria/">Proyección tributaria</a>
+        <a href="/asesorias/">Asesorías</a>
       </div>
     </div>
   </section>
@@ -280,7 +314,19 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   .cta-row{display:flex;gap:14px;flex-wrap:wrap}.cta-row.center{justify-content:center}
   .sec-texto{padding:8px 0 44px}
   .angosto{max-width:760px;margin:0 auto}
-  .sec-texto h2{font-size:24px;font-weight:800;margin:0 0 14px;letter-spacing:-.3px}
+  .sec-texto h2{font-size:24px;font-weight:800;margin:28px 0 12px;letter-spacing:-.3px}
+  .sec-texto p{font-size:16px;color:#444a63;line-height:1.7;margin-bottom:14px}
+  .sec-texto p a{color:var(--azul);font-weight:600}
+  .resp-rapida{background:#eef5ff;border:1px solid #cfe0f5;border-radius:14px;padding:16px 20px;margin:6px 0 8px}
+  .resp-rapida p{margin:0;font-size:15.5px;line-height:1.6;color:#33384a}
+  .resp-rapida strong{color:var(--azul-prof)}
+  .resp-rapida .resp-fecha{margin-top:8px;font-size:12.5px;color:var(--gris)}
+  .relac{padding:0 0 8px}
+  .relac-in{max-width:760px;margin:0 auto;padding:0 24px}
+  .relac h2{font-size:18px;font-weight:800;margin:0 0 12px;letter-spacing:-.3px}
+  .relac-grid{display:flex;flex-wrap:wrap;gap:10px}
+  .relac-grid a{font-family:'Montserrat';font-weight:600;font-size:14px;color:var(--azul);background:#fff;border:1px solid var(--linea);border-radius:10px;padding:9px 14px;text-decoration:none;transition:.15s}
+  .relac-grid a:hover{border-color:var(--azul)}
   .faq{margin-top:6px}
   details{background:#fff;border:1px solid var(--linea);border-radius:14px;margin-bottom:12px;overflow:hidden}
   summary{list-style:none;cursor:pointer;padding:18px 22px;font-family:'Montserrat';font-weight:600;font-size:16px;color:var(--azul);display:flex;justify-content:space-between;gap:14px}

@@ -19,7 +19,11 @@ const {
   ctaTitulo,
   ctaTexto,
   ctaMensaje,
+  respuestaRapida = '',   // caja GEO bajo la calculadora (texto, admite HTML)
+  fuente = '',            // fuente del dato, para la línea de última actualización
 } = Astro.props;
+
+const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year: 'numeric' });
 ---
 <section class="hero">
   <div class="wrap">
@@ -85,6 +89,12 @@ const {
 
 <section class="sec sec-texto">
   <div class="wrap angosto">
+    {respuestaRapida && (
+      <div class="resp-rapida">
+        <p><strong>Respuesta rápida:</strong> <span set:html={respuestaRapida} /></p>
+        <p class="resp-fecha">Última actualización: {actualizado}.{fuente ? ` Fuente: ${fuente}.` : ''}</p>
+      </div>
+    )}
     {secciones.map((s) => (
       <Fragment>
         <h2>{s.h2}</h2>
@@ -138,6 +148,11 @@ const {
   let valor = meta.fallback;
   let latestStr = '';                 // fecha del valor más reciente (YYYY-MM-DD)
   const cacheAnio = {};               // { '2025': { map:{fecha:valor}, arr:[{fecha,valor}] desc } }
+
+  // Memoria del último valor conocido (sobrevive entre visitas), para mostrarlo si el Banco Central no responde.
+  const LS_KEY = 'tc_ind_' + codigo;
+  const guardarUltimo = (v, f) => { try { localStorage.setItem(LS_KEY, JSON.stringify({ v, f })); } catch (e) {} };
+  const leerUltimo = () => { try { return JSON.parse(localStorage.getItem(LS_KEY) || 'null'); } catch (e) { return null; } };
 
   $('pref-unidad').textContent = meta.prefijo;
 
@@ -281,16 +296,29 @@ const {
         const map = {}; const arr = [];
         data.serie.forEach((it) => { const f = it.fecha.slice(0, 10); map[f] = it.valor; arr.push({ fecha: f, valor: it.valor }); });
         cacheAnio[anio] = { map, arr };
+        guardarUltimo(valor, realLatest);
       }
       inUnidad.value = '1';
       pintar(inFecha.value, null);
       recalcular();
     })
     .catch(() => {
-      inFecha.value = hoyLocal; latestStr = hoyLocal;
       inUnidad.value = '1';
-      pintar(hoyLocal, null);
-      $('vc-aviso').textContent = 'Mostrando un valor de referencia (no pudimos conectar con el Banco Central).';
+      const ultimo = leerUltimo();
+      const notaHabil = (codigo === 'dolar') ? ' El dólar observado se publica solo en días hábiles.' : '';
+      if (ultimo && ultimo.v) {
+        valor = ultimo.v;
+        latestStr = meta.mensual ? hoyLocal : ultimo.f;
+        inFecha.value = latestStr;
+        inFecha.max = latestStr;
+        pintar(inFecha.value, null);
+        const cuando = meta.mensual ? fmtMesAnio(ultimo.f) : fmtLarga(ultimo.f);
+        $('vc-aviso').textContent = `No pudimos conectar con el Banco Central en este momento. Te mostramos el último valor conocido, del ${cuando}.${notaHabil}`;
+      } else {
+        inFecha.value = hoyLocal; latestStr = hoyLocal;
+        pintar(hoyLocal, null);
+        $('vc-aviso').textContent = `No pudimos conectar con el Banco Central. Te mostramos un valor de referencia; vuelve a intentarlo en unos minutos.${notaHabil}`;
+      }
       recalcular();
     });
 
@@ -362,6 +390,10 @@ const {
   .angosto{max-width:760px}
   .sec-texto h2{font-size:24px;font-weight:800;margin:30px 0 12px;letter-spacing:-.3px}
   .sec-texto p{font-size:16px;color:#444a63;line-height:1.7;margin-bottom:14px}
+  .resp-rapida{background:#eef5ff;border:1px solid #cfe0f5;border-radius:14px;padding:16px 20px;margin:6px 0 20px}
+  .resp-rapida p{margin:0;font-size:15.5px;line-height:1.6;color:#33384a}
+  .resp-rapida strong{color:var(--azul-prof)}
+  .resp-rapida .resp-fecha{margin-top:8px;font-size:12.5px;color:var(--gris)}
 
   .faq{margin-top:6px}
   details{background:#fff;border:1px solid var(--linea);border-radius:14px;margin-bottom:12px;overflow:hidden}

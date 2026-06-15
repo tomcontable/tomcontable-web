@@ -18,6 +18,9 @@ const faqs = [
   { q: '¿Por qué la indemnización por años de servicio a veces sale cero?', a: 'Porque esa indemnización aplica principalmente cuando el término es por necesidades de la empresa y existe al menos un año de servicio. En causales como renuncia o mutuo acuerdo, no corresponde. Las vacaciones, en cambio, siempre se pagan.' },
   { q: '¿Qué es el tope de 11 años y el de 90 UF?', a: 'La indemnización por años de servicio se paga por cada año trabajado (y fracción superior a seis meses), con un tope legal de 11 años. Además, la base de cálculo tiene un tope de 90 UF. La calculadora aplica ambos topes.' },
   { q: '¿Cómo cuento los días inhábiles de las vacaciones?', a: 'Con un calendario a la vista, cuenta desde el día del finiquito hacia adelante los días hábiles pendientes y suma los sábados, domingos y festivos que caen dentro de ese período. Ese número va en el campo de días inhábiles.' },
+  { q: '¿Las vacaciones se pagan aunque renuncie?', a: 'Sí. Las vacaciones pendientes o proporcionales se pagan siempre, cualquiera sea la causal de término, incluida la renuncia. Lo que cambia según la causal es la indemnización por años de servicio.' },
+  { q: '¿Cuánto es la indemnización por años de servicio?', a: 'Un mes de remuneración por cada año trabajado y por la fracción superior a seis meses, con tope de 11 años y una base limitada a 90 UF. Aplica cuando el término es por necesidades de la empresa.' },
+  { q: '¿Me tienen que avisar antes de despedirme?', a: 'En el despido por necesidades de la empresa, el empleador debe avisar con 30 días de anticipación. Si no avisa, paga un mes de remuneración como indemnización sustitutiva del aviso previo.' },
 ];
 
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
@@ -27,13 +30,15 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   { '@type': 'ListItem', position: 2, name: 'Herramientas', item: 'https://tomcontable.cl/herramientas' },
   { '@type': 'ListItem', position: 3, name: 'Calculadora de finiquito', item: 'https://tomcontable.cl/calculadora-finiquito' }
 ] };
+
+const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year: 'numeric' });
 ---
 <Base {...seo} schema={[appSchema, faqSchema, breadcrumb]} sugerencia="calculadora-finiquito">
 
   <section class="hero">
     <div class="wrap">
       <p class="eyebrow">Herramienta gratis</p>
-      <h1>Calculadora de finiquito</h1>
+      <h1>Calculadora de finiquito en Chile 2026</h1>
       <p class="lead">Estima el finiquito en Chile en un minuto: vacaciones, indemnización por años de servicio y mes de aviso, con el valor de la UF al día.</p>
     </div>
     <svg class="hero-ill" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M30 10h40l22 22v74a4 4 0 0 1-4 4H30a4 4 0 0 1-4-4V14a4 4 0 0 1 4-4z" stroke="#1E2F73" stroke-width="3.5"/><path d="M70 10v22h22" stroke="#1E2F73" stroke-width="3.5" stroke-linejoin="round"/><g stroke="#1E2F73" stroke-width="3" stroke-linecap="round"><path d="M40 52h40M40 66h40"/></g><circle cx="78" cy="88" r="17" fill="#F6B11A" fill-opacity="0.25" stroke="#F6B11A" stroke-width="3"/><path d="M70 88l6 6 10-11" stroke="#1E2F73" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -168,9 +173,25 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
 
   <section class="sec sec-texto">
     <div class="wrap angosto">
+      <div class="resp-rapida">
+        <p><strong>Respuesta rápida:</strong> esta calculadora estima un finiquito en Chile considerando la causal de término, las fechas del contrato, el sueldo, las vacaciones pendientes, la indemnización por años de servicio y el aviso previo. El resultado es referencial y no reemplaza un finiquito oficial.</p>
+        <p class="resp-fecha">Última actualización: {actualizado}. Fuente: normativa laboral vigente (Código del Trabajo) y valor de la UF del Banco Central.</p>
+      </div>
+
       <h2>Cómo funciona</h2>
       <p>Completa los datos del contrato y la calculadora estima el finiquito con las reglas generales: las vacaciones se pagan siempre (proporcionales a los meses trabajados), la indemnización por años de servicio aplica cuando el término es por necesidades de la empresa, y el mes de aviso se paga cuando no hubo aviso con 30 días de anticipación. Usamos el valor de la UF del día para el tope legal de la base de cálculo.</p>
       <p>Es una estimación de apoyo. Cada caso real puede tener detalles (bonos, comisiones, semanas corridas, licencias, anticipos, descuentos) que conviene revisar. Si quieres tu finiquito bien calculado y respaldado, lo vemos contigo.</p>
+
+      <h2>Cómo se calculan las vacaciones proporcionales</h2>
+      <p>Las vacaciones se pagan siempre, sin importar la causal. Si no alcanzaste a tomarlas, se pagan los días pendientes, y si llevas menos de un año, se pagan proporcionales a los meses trabajados. En Chile corresponden 15 días hábiles al año, así que cada mes trabajado suma alrededor de 1,25 días hábiles. Al contarlas hay que sumar los días inhábiles (sábados, domingos y festivos) que caen dentro del período.</p>
+
+      <h2>Cuándo corresponde la indemnización por años de servicio</h2>
+      <p>La indemnización por años de servicio aplica principalmente cuando el contrato termina por necesidades de la empresa y hay al menos un año de antigüedad. Se paga un mes de remuneración por cada año trabajado y por la fracción superior a seis meses, con un tope de 11 años, y la base de cálculo tiene un tope de 90 UF. En causales como renuncia voluntaria o mutuo acuerdo, no corresponde.</p>
+
+      <h2>Qué pasa si no hubo aviso con 30 días</h2>
+      <p>Cuando el término es por necesidades de la empresa, el empleador debe avisar con 30 días de anticipación. Si no lo hace, paga la indemnización sustitutiva del aviso previo, que equivale a un mes de remuneración. La calculadora la suma cuando indicas que no hubo aviso, así ves el efecto en el total.</p>
+
+      <p>Esta herramienta sirve como referencia tanto para trabajadores que quieren revisar un finiquito que les ofrecieron como para empleadores que necesitan estimar el costo de terminar un contrato antes de preparar el documento formal.</p>
 
       <h2 id="faq">Preguntas frecuentes</h2>
       <div class="faq">
@@ -180,6 +201,17 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
             <div class="ans">{it.a}</div>
           </details>
         ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="relac">
+    <div class="relac-in">
+      <h2>Herramientas relacionadas</h2>
+      <div class="relac-grid">
+        <a href="/calculadora-sueldo-liquido">Calculadora de sueldo líquido</a>
+        <a href="/calculadora-uf">Calculadora UF a pesos</a>
+        <a href="/contabilidad-mensual/">Contabilidad y remuneraciones</a>
       </div>
     </div>
   </section>
@@ -548,6 +580,17 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   details[open] .plus{transform:rotate(45deg)}
   .ans{padding:0 22px 18px;color:#555;font-size:15.5px;line-height:1.6}
 
+  .sec-texto p a{color:var(--azul);font-weight:600}
+  .resp-rapida{background:#eef5ff;border:1px solid #cfe0f5;border-radius:14px;padding:16px 20px;margin:0 0 8px}
+  .resp-rapida p{margin:0;font-size:15.5px;line-height:1.6;color:#33384a}
+  .resp-rapida strong{color:var(--azul-prof)}
+  .resp-rapida .resp-fecha{margin-top:8px;font-size:12.5px;color:var(--gris)}
+  .relac{padding:6px 0 8px}
+  .relac-in{max-width:760px;margin:0 auto;padding:0 24px}
+  .relac h2{font-size:18px;font-weight:800;margin:0 0 12px;letter-spacing:-.3px}
+  .relac-grid{display:flex;flex-wrap:wrap;gap:10px}
+  .relac-grid a{font-family:'Montserrat';font-weight:600;font-size:14px;color:var(--azul);background:#fff;border:1px solid var(--linea);border-radius:10px;padding:9px 14px;text-decoration:none;transition:.15s}
+  .relac-grid a:hover{border-color:var(--azul)}
   .cta-row{display:flex;gap:14px;flex-wrap:wrap}
   .cta-row.center{justify-content:center}
   .cierre{background:linear-gradient(150deg,var(--azul),var(--azul-prof));color:#fff;text-align:center;padding:64px 24px}
