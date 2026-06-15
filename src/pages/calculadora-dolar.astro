@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import CalculadoraIndicador from '../components/CalculadoraIndicador.astro';
 
 const seo = {
-  title: 'Calculadora Dólar a Pesos | Valor del dólar observado hoy · TomContable',
+  title: 'Calculadora Dólar a Pesos 2026 | Valor del dólar observado hoy · TomContable',
   description: 'Convierte dólares a pesos y pesos a dólares con el dólar observado de hoy o de la fecha que elijas, según el Banco Central. Calculadora gratis de TomContable.',
   canonical: '/calculadora-dolar',
 };
@@ -13,6 +13,9 @@ const faqs = [
   { q: '¿Puedo ver el valor del dólar de una fecha pasada?', a: 'Sí. Con las flechas o el calendario eliges la fecha y tomamos el dólar observado de ese día. Si la fecha cae en fin de semana o feriado (sin valor publicado), te mostramos el del último día hábil.' },
   { q: '¿Cada cuánto cambia el dólar observado?', a: 'Cada día hábil. El Banco Central publica el valor del día siguiente, así que el valor más reciente suele ser el del último día hábil.' },
   { q: '¿Sirve para mi contabilidad o mis facturas en dólares?', a: 'Te da una referencia rápida con el valor oficial. Para registrar operaciones en moneda extranjera conviene revisar el tipo de cambio correcto según la fecha de cada operación; si tienes dudas, podemos ayudarte.' },
+  { q: '¿Cuánto está el dólar hoy?', a: 'El valor del dólar observado de hoy aparece arriba en la calculadora, tomado del Banco Central. Se publica cada día hábil, así que aquí ves siempre el valor vigente.' },
+  { q: '¿Cómo convierto dólares a pesos?', a: 'Multiplicas la cantidad de dólares por el valor del dólar observado del día. Para el camino inverso, divides el monto en pesos por ese valor. La calculadora lo hace sola en los dos sentidos.' },
+  { q: '¿Qué diferencia hay entre el dólar observado y el dólar del día?', a: 'El dólar observado es el valor oficial del Banco Central, usado como referencia en contabilidad y contratos. El dólar del día de una casa de cambio puede ser distinto, porque incluye su margen. Esta calculadora usa el observado.' },
 ];
 
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
@@ -28,12 +31,16 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
     codigo="dolar"
     unidadLabel="Dólares (USD)"
     eyebrow="Herramienta gratis"
-    h1="Calculadora dólar a pesos"
+    h1="Calculadora dólar a pesos: valor del dólar observado hoy"
     lead="Convierte de dólares a pesos y de pesos a dólares con el dólar observado de hoy o de la fecha que elijas, según el Banco Central."
     ico={`<rect x="12" y="34" width="96" height="52" rx="9" stroke="#1E2F73" stroke-width="3.5"/><circle cx="60" cy="60" r="16" fill="#F6B11A" fill-opacity="0.25" stroke="#1E2F73" stroke-width="3"/><path d="M60 49v22M55 53h7a3.2 3.2 0 0 1 0 6.4h-5a3.2 3.2 0 0 0 0 6.4h7" stroke="#1E2F73" stroke-width="2.6" stroke-linecap="round"/><circle cx="26" cy="60" r="3" fill="#1E2F73"/><circle cx="94" cy="60" r="3" fill="#1E2F73"/>`}
-    intro={[
-      'Escribe un monto en dólares y verás cuántos pesos son, o al revés. Usamos el dólar observado oficial. Puedes moverte día a día con las flechas o abrir el calendario para cualquier fecha.',
-      'Si eliges un fin de semana o feriado, que no tienen valor publicado, te mostramos automáticamente el del último día hábil, que es el valor vigente.',
+    secciones={[
+      { h2: '¿Qué es el dólar observado?', p: ['El dólar observado es el tipo de cambio oficial que publica el Banco Central de Chile cada día hábil. Refleja el promedio de las transacciones del día hábil anterior y es el valor que se usa como referencia en contabilidad, contratos y trámites en Chile.'] },
+      { h2: '¿Cuánto está el dólar hoy?', p: ['Arriba ves el valor del dólar observado de hoy en pesos, tomado del Banco Central. Como se publica cada día hábil, la calculadora muestra siempre el valor vigente, y con las flechas o el calendario puedes consultar el dólar de cualquier fecha pasada.'] },
+      { h2: '¿Para qué se usa el dólar observado?', p: ['Para registrar operaciones en moneda extranjera en la contabilidad, valorizar facturas de importación o exportación, contratos pactados en dólares y cualquier conversión oficial entre dólares y pesos. Si llevas operaciones en dólares, te ayudamos a registrarlas bien con la <a href="/contabilidad-mensual/">contabilidad mensual</a>.'] },
+      { h2: 'Dólar observado, dólar del día y dólar acuerdo', p: ['El dólar observado es el oficial del Banco Central y el más usado como referencia. El dólar del día de una casa de cambio puede variar respecto al observado, porque incluye el margen de cada operador. Para fines contables y de contratos, lo habitual es usar el dólar observado.'] },
+      { h2: '¿Cómo convertir dólares a pesos?', p: ['Multiplicas la cantidad de dólares por el valor del dólar observado del día. Para el camino inverso, divides el monto en pesos por ese valor. La calculadora hace las dos conversiones al instante.'] },
+      { h2: '¿De dónde sale el valor?', p: ['Del valor oficial del dólar observado publicado por el Banco Central de Chile. Se consulta en línea, así que usa el valor vigente para la fecha que elijas. En fines de semana y feriados, sin publicación, se muestra el del último día hábil.'] },
     ]}
     faqs={faqs}
     ctaTitulo="¿Tienes operaciones o facturas en dólares y no sabes cómo registrarlas?"

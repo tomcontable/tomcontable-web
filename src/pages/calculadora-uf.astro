@@ -14,6 +14,9 @@ const faqs = [
   { q: '¿Puedo ver el valor de la UF de una fecha pasada?', a: 'Sí. Esta calculadora te deja elegir la fecha con las flechas o el calendario, y toma el valor oficial de la UF de ese día, no solo el de hoy. Es útil para arriendos, contratos o deudas pactadas en otra fecha.' },
   { q: '¿Cada cuánto cambia el valor de la UF?', a: 'Todos los días. El Banco Central de Chile publica el valor diario, que se reajusta según la variación del IPC del mes anterior.' },
   { q: '¿De dónde sale el valor que usa esta calculadora?', a: 'Del valor oficial publicado por el Banco Central de Chile. Se consulta en línea, así que el resultado siempre usa la UF vigente para la fecha seleccionada.' },
+  { q: '¿Cuánto vale la UF hoy?', a: 'El valor de la UF de hoy aparece arriba en la calculadora, tomado del Banco Central. Como cambia todos los días, aquí siempre ves el valor vigente, y puedes consultar también el de cualquier fecha anterior.' },
+  { q: '¿Cómo se pasa de UF a pesos?', a: 'Multiplicas la cantidad de UF por el valor de la UF del día. Para el camino inverso, divides el monto en pesos por ese valor. La calculadora hace las dos conversiones sola: escribes en un campo y el otro se completa.' },
+  { q: '¿Para qué se usa la UF en Chile?', a: 'Para arriendos, dividendos de créditos hipotecarios, planes de isapre, seguros, multas, y muchos topes y montos tributarios y previsionales. Convertir la UF a pesos te deja ver el monto real que estás pagando o cobrando.' },
   { q: '¿La calculadora me muestra el monto con IVA?', a: 'Sí. Además de convertir la UF a pesos, te mostramos el neto, el IVA del 19% y el total con IVA, listo para tu cotización o factura. Es muy útil cuando un servicio está fijado en UF, por ejemplo un plan de contabilidad de 0,7 UF + IVA: ves el monto final de inmediato, sin tener que ir a otra calculadora a multiplicar por 1,19.' },
 ];
 
@@ -31,12 +34,16 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
     unidadLabel="UF"
     iva={true}
     eyebrow="Herramienta gratis"
-    h1="Calculadora UF a pesos"
+    h1="Calculadora UF a pesos: cuánto vale la UF hoy en Chile"
     lead="Convierte de UF a pesos al instante y, además, te calculamos el IVA y el total con IVA incluido. Con el valor de la UF de hoy o de la fecha que elijas, según el Banco Central."
     ico={`<path d="M22 100V20" stroke="#1E2F73" stroke-width="3.5" stroke-linecap="round"/><path d="M22 100h78" stroke="#1E2F73" stroke-width="3.5" stroke-linecap="round"/><path d="M34 84l18-20 16 12 26-34" stroke="#F6B11A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M80 42h14v14" stroke="#F6B11A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>`}
-    intro={[
-      'Escribe un monto en UF y verás cuántos pesos son, o escribe pesos y verás a cuántas UF equivale. Por defecto usa la UF de hoy, pero puedes moverte día a día con las flechas o abrir el calendario para cualquier fecha.',
-      'La UF aparece en arriendos, créditos, planes de salud, multas, topes imponibles y varios montos tributarios. Tener claro el equivalente en pesos te ayuda a decidir con el número real sobre la mesa.',
+    secciones={[
+      { h2: '¿Qué es la UF (Unidad de Fomento)?', p: ['La Unidad de Fomento (UF) es una unidad de cuenta reajustable según la inflación. Su valor en pesos se actualiza todos los días siguiendo la variación del IPC del mes anterior, así que protege los montos del alza de precios. En Chile se usa para arriendos, créditos, planes de salud, multas y muchos valores tributarios.'] },
+      { h2: '¿Cuánto vale la UF hoy?', p: ['Arriba, en el recuadro azul, ves el valor de la UF de hoy en pesos, tomado directamente del Banco Central. Como cambia a diario, esta calculadora siempre muestra el valor vigente, y con las flechas o el calendario también puedes consultar la UF de cualquier fecha pasada.'] },
+      { h2: '¿Para qué se usa la UF?', p: ['La UF aparece en buena parte de la vida financiera chilena: arriendos y contratos pactados en UF, dividendos de créditos hipotecarios, planes de isapre, primas de seguros, multas, y topes y montos del mundo tributario y previsional. Pasarla a pesos te deja decidir con el número real sobre la mesa.', 'Si tienes un arriendo o una deuda en pesos que se reajusta por inflación, mira también la <a href="/calculadora-ipc/">calculadora de reajuste por IPC</a>.'] },
+      { h2: '¿Por qué la UF cambia todos los días?', p: ['El Banco Central publica un valor diario de la UF que se reajusta según la variación del IPC del mes anterior, repartida día a día. Por eso, entre el 10 de un mes y el 9 del siguiente, la UF sube o baja un poco cada día, en vez de dar un salto una vez al mes como la UTM.'] },
+      { h2: '¿Cómo paso de UF a pesos y de pesos a UF?', p: ['Para pasar de UF a pesos, multiplicas la cantidad de UF por el valor del día. Para el camino inverso, divides el monto en pesos por ese mismo valor. Esta calculadora hace las dos conversiones al instante: escribe en cualquiera de los dos campos y el otro se completa solo.'] },
+      { h2: 'UF más IVA: tu monto final con IVA', p: ['Si un servicio está fijado en UF más IVA, como muchos planes profesionales, la calculadora te muestra además el neto, el IVA del 19% y el total con IVA incluido. Así no tienes que ir a otra calculadora a multiplicar por 1,19: ves el monto final listo para tu cotización o factura.'] },
     ]}
     faqs={faqs}
     ctaTitulo="¿Tus impuestos o tu contabilidad te tienen en UF y no sabes por dónde partir?"

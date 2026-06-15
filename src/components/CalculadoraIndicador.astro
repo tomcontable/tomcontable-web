@@ -14,6 +14,7 @@ const {
   ico = '',          // contenido SVG de la ilustración del hero (opción 2)
   iva = false,       // si true, muestra el desglose Neto / IVA 19% / Total (para UF, montos de empresa)
   intro = [],        // párrafos de "cómo usar / qué es"
+  secciones = [],    // guía SEO: array de { h2, p: [párrafos, admite HTML] }
   faqs = [],
   ctaTitulo,
   ctaTexto,
@@ -84,6 +85,12 @@ const {
 
 <section class="sec sec-texto">
   <div class="wrap angosto">
+    {secciones.map((s) => (
+      <Fragment>
+        <h2>{s.h2}</h2>
+        {s.p.map((par) => <p set:html={par} />)}
+      </Fragment>
+    ))}
     {intro.length > 0 && <h2>Cómo usar la calculadora</h2>}
     {intro.map((p) => <p>{p}</p>)}
 

@@ -13,6 +13,10 @@ const faqs = [
   { q: '¿Cada cuánto cambia la UTM?', a: 'Una vez al mes. A diferencia de la UF, el valor de la UTM es el mismo durante todo el mes y cambia al mes siguiente. Por eso al elegir una fecha verás el valor vigente de ese mes.' },
   { q: '¿Para qué se usa la UTM?', a: 'Sobre todo para temas tributarios: el monto de las multas del SII, los tramos del impuesto, ciertos topes y sanciones. Si te llegó una multa o un cobro expresado en UTM, aquí ves cuánto es en pesos.' },
   { q: '¿De dónde sale el valor?', a: 'Del valor oficial publicado por el Banco Central de Chile, en línea, así que el resultado siempre usa la UTM vigente para la fecha seleccionada.' },
+  { q: '¿Cuánto vale la UTM este mes?', a: 'El valor de la UTM del mes en curso aparece arriba en la calculadora. La UTM mantiene el mismo valor durante todo el mes y se actualiza el mes siguiente; aquí siempre ves el vigente.' },
+  { q: '¿Cómo convierto UTM a pesos?', a: 'Multiplicas la cantidad de UTM por el valor de la UTM del mes. Para el camino inverso, divides el monto en pesos por ese valor. La calculadora lo hace sola en los dos sentidos.' },
+  { q: '¿Qué diferencia hay entre UTM y UTA?', a: 'La UTM es mensual; la UTA (Unidad Tributaria Anual) equivale a 12 UTM y se usa para cálculos anuales, como el impuesto a la renta. Para un valor anual, multiplica la UTM del período por 12.' },
+  { q: '¿Puedo ver la UTM de un mes pasado?', a: 'Sí. Con las flechas o el calendario eliges el mes y la calculadora toma la UTM vigente de ese período, no solo la de hoy.' },
 ];
 
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
@@ -28,12 +32,16 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
     codigo="utm"
     unidadLabel="UTM"
     eyebrow="Herramienta gratis"
-    h1="Calculadora UTM a pesos"
+    h1="Calculadora UTM a pesos: valor de la UTM de este mes en Chile"
     lead="Convierte de UTM a pesos y de pesos a UTM con el valor de este mes o del mes que elijas, según el valor oficial."
     ico={`<rect x="16" y="24" width="88" height="82" rx="11" stroke="#1E2F73" stroke-width="3.5"/><path d="M16 44h88" stroke="#1E2F73" stroke-width="3.5"/><path d="M40 14v18M80 14v18" stroke="#1E2F73" stroke-width="3.5" stroke-linecap="round"/><rect x="52" y="58" width="18" height="16" rx="3" fill="#F6B11A" fill-opacity="0.3" stroke="#1E2F73" stroke-width="2.5"/><g fill="#1E2F73"><circle cx="33" cy="66" r="2.6"/><circle cx="87" cy="66" r="2.6"/><circle cx="33" cy="88" r="2.6"/><circle cx="60" cy="88" r="2.6"/><circle cx="87" cy="88" r="2.6"/></g>`}
-    intro={[
-      'Escribe un monto en UTM y verás cuántos pesos son, o al revés. La UTM cambia una vez al mes, así que al elegir una fecha tomamos el valor vigente de ese mes. Puedes moverte con las flechas o abrir el calendario.',
-      'La UTM se usa sobre todo en lo tributario: multas del SII, intereses, tramos de impuesto y varios topes. Si te llegó un cobro en UTM, aquí ves de inmediato cuánto significa en pesos.',
+    secciones={[
+      { h2: '¿Qué es la UTM (Unidad Tributaria Mensual)?', p: ['La Unidad Tributaria Mensual (UTM) es una unidad que se usa en Chile para fines tributarios: multas, intereses, tramos del impuesto a la renta, sanciones y varios topes. Su valor en pesos se reajusta una vez al mes según la inflación.'] },
+      { h2: '¿Cuánto vale la UTM este mes?', p: ['Arriba ves el valor de la UTM del mes en curso en pesos. A diferencia de la UF, la UTM no cambia día a día: mantiene el mismo valor durante todo el mes y se actualiza el mes siguiente. Con las flechas o el calendario puedes consultar la UTM de meses anteriores.'] },
+      { h2: '¿Para qué se usa la UTM?', p: ['Se usa sobre todo en lo tributario: el monto de las multas y sanciones del SII, los intereses por mora, los tramos del impuesto a la renta y varios topes legales. Si te llegó una multa o un cobro expresado en UTM, aquí ves al instante cuánto es en pesos.', 'Si el cobro del SII te tiene complicado, en <a href="/problemas-con-el-sii/">problemas con el SII</a> revisamos tu caso.'] },
+      { h2: '¿Cada cuánto cambia la UTM?', p: ['Una vez al mes. El valor es único para todo el mes y cambia al mes siguiente, reajustado según la variación del IPC. Por eso, al elegir una fecha, la calculadora toma el valor vigente de ese mes.'] },
+      { h2: 'UTM y UTA: ¿en qué se diferencian?', p: ['La UTM es mensual; la UTA (Unidad Tributaria Anual) equivale a 12 UTM y se usa para cálculos anuales, como el impuesto a la renta. Si necesitas un valor anual, multiplica la UTM del período por 12.'] },
+      { h2: '¿Cómo convertir UTM a pesos?', p: ['Multiplicas la cantidad de UTM por el valor de la UTM del mes. Para el camino inverso, divides el monto en pesos por ese valor. La calculadora lo hace sola en los dos sentidos: escribe en un campo y el otro se completa.'] },
     ]}
     faqs={faqs}
     ctaTitulo="¿Te llegó una multa o un cobro del SII en UTM y no sabes qué hacer?"
