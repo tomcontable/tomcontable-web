@@ -1,0 +1,274 @@
+---
+import Base from '../layouts/Base.astro';
+import BannerServicios from '../components/BannerServicios.astro';
+
+const seo = {
+  title: 'Calculadora IPC Chile | Reajuste por IPC entre dos fechas',
+  description: 'Calcula el reajuste por IPC en Chile entre dos fechas. Actualiza arriendos, deudas, pensiones de alimentos o montos en pesos con la variación oficial del IPC del INE. Gratis.',
+  canonical: '/calculadora-ipc',
+};
+
+const faqs = [
+  { q: '¿Qué es el IPC?', a: 'El Índice de Precios al Consumidor (IPC) mide la variación de los precios de una canasta de bienes y servicios que consume un hogar promedio en Chile. Lo publica cada mes el Instituto Nacional de Estadísticas (INE) y es la referencia oficial para medir la inflación y reajustar montos en pesos.' },
+  { q: '¿Cómo se calcula el reajuste por IPC?', a: 'Se aplica la variación acumulada del IPC entre el mes de inicio y el mes de término. Si en ese período el IPC subió, por ejemplo, 4%, el monto reajustado es 4% mayor que el original. Esta calculadora hace ese cálculo con los datos oficiales del INE.' },
+  { q: '¿Qué IPC se usa para reajustar un arriendo?', a: 'Se usa la variación del IPC entre el mes en que empezó el contrato (o el último reajuste) y el mes del nuevo reajuste. En arriendos de vivienda, la ley no permite reajustar por encima de la variación del IPC de ese período.' },
+  { q: '¿Cada cuánto se reajusta un arriendo por IPC?', a: 'Depende de lo que diga el contrato. Lo más común es cada 12 meses, pero también se pacta cada 3 o 6 meses. La calculadora sirve para cualquier período: tú eliges el mes de inicio y el de término.' },
+  { q: '¿Cómo se reajusta una pensión de alimentos por IPC?', a: 'Las pensiones de alimentos se reajustan por IPC, y por ley, si no se pactó otra cosa, el reajuste es semestral según la variación del IPC. Esta herramienta te da la referencia matemática, pero siempre debe revisarse la resolución judicial o el acuerdo que corresponda.' },
+  { q: '¿Esta calculadora usa datos del INE?', a: 'Sí. Consulta en línea el cálculo oficial del INE, así que el resultado usa la serie oficial del IPC y coincide con la calculadora del propio INE.' },
+  { q: '¿El resultado es oficial?', a: 'El dato del IPC es oficial del INE. El resultado es una estimación referencial para que tengas el número claro; para usos legales o contractuales conviene confirmar el período exacto que corresponde aplicar.' },
+  { q: '¿Puedo usarla para deudas y contratos?', a: 'Sí. Sirve para actualizar cualquier monto pactado en pesos con cláusula de reajuste por IPC: deudas, contratos, indemnizaciones u otros valores. Siempre conviene revisar el documento que establece la obligación.' },
+  { q: '¿Por qué mi resultado puede ser distinto a otro cálculo?', a: 'Casi siempre es por las fechas. Cambiar el mes de inicio o de término modifica la variación acumulada. También influye si el otro cálculo usó variaciones redondeadas en vez de la serie oficial. Esta calculadora usa el cálculo del INE para evitar esas diferencias.' },
+];
+
+const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
+const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication', name: 'Calculadora IPC Chile', applicationCategory: 'FinanceApplication', operatingSystem: 'Web', inLanguage: 'es-CL', url: 'https://tomcontable.cl/calculadora-ipc', description: 'Calculadora gratuita para reajustar montos en pesos según la variación oficial del IPC en Chile entre dos fechas.', offers: { '@type': 'Offer', price: '0', priceCurrency: 'CLP' }, publisher: { '@type': 'Organization', name: 'TomContable' } };
+const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+  { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://tomcontable.cl/' },
+  { '@type': 'ListItem', position: 2, name: 'Herramientas', item: 'https://tomcontable.cl/herramientas' },
+  { '@type': 'ListItem', position: 3, name: 'Calculadora IPC', item: 'https://tomcontable.cl/calculadora-ipc' }
+] };
+---
+<Base {...seo} schema={[appSchema, faqSchema, breadcrumb]}>
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Herramienta gratis</p>
+      <h1>Calculadora IPC Chile: reajusta montos entre dos fechas</h1>
+      <p class="lead">Calcula el reajuste por IPC y actualiza el valor de un arriendo, una deuda, una pensión de alimentos o cualquier monto en pesos. Con la variación oficial del IPC del INE, al instante.</p>
+    </div>
+    <svg class="hero-ill" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M20 100V20" stroke="#1E2F73" stroke-width="3.5" stroke-linecap="round"/><path d="M20 100h80" stroke="#1E2F73" stroke-width="3.5" stroke-linecap="round"/><path d="M30 86l18-18 14 10 26-30" stroke="#F6B11A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M78 48h14v14" stroke="#F6B11A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </section>
+
+  <section class="sec">
+    <div class="wrap calc-wrap">
+      <div class="grid">
+        <form class="panel form" id="ipc-form" autocomplete="off">
+          <h2>Datos</h2>
+          <label class="f"><span>Monto a reajustar</span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="monto" placeholder="Ej: 500.000" /></div></label>
+          <div class="f2">
+            <label class="f"><span>Desde (mes)</span><select id="mes-ini"></select></label>
+            <label class="f"><span>Año</span><select id="anio-ini"></select></label>
+          </div>
+          <div class="f2">
+            <label class="f"><span>Hasta (mes)</span><select id="mes-fin"></select></label>
+            <label class="f"><span>Año</span><select id="anio-fin"></select></label>
+          </div>
+          <p class="form-nota" id="form-nota"></p>
+        </form>
+
+        <!-- Comprobante: pensado para captura de pantalla / impresión -->
+        <div class="comp" id="comp">
+          <div class="comp-head">
+            <div class="comp-marca">TomContable<span>tomcontable.cl</span></div>
+            <span class="comp-tag">Reajuste por IPC</span>
+          </div>
+          <div class="comp-row"><span>Monto original</span><b id="c-orig">$500.000</b></div>
+          <div class="comp-peri" id="c-pini">Enero 2025</div>
+          <div class="comp-big">
+            <span>Monto reajustado</span>
+            <strong id="c-final">$—</strong>
+            <em id="c-pfin">—</em>
+          </div>
+          <div class="comp-var" id="c-var">Variación del IPC del período: —</div>
+          <div class="comp-foot">Calculado con la variación oficial del IPC del INE · <span id="c-fecha"></span></div>
+        </div>
+      </div>
+
+      <p class="ine-nota">Datos basados en la variación oficial del IPC publicada por el <a href="https://www.ine.gob.cl/" target="_blank" rel="noopener nofollow">Instituto Nacional de Estadísticas (INE)</a>.</p>
+    </div>
+  </section>
+
+  <div class="banner-zona"><BannerServicios orden={['contabilidad', 'asesorias', 'proyeccion', 'constitucion']} lateral={true} /></div>
+
+  <section class="sec-texto">
+    <div class="wrap angosto">
+      <h2>¿Qué es el reajuste por IPC?</h2>
+      <p>El reajuste por IPC es la forma de actualizar un monto en pesos según cuánto subieron los precios entre dos fechas. El IPC (Índice de Precios al Consumidor) lo publica cada mes el INE y mide la inflación en Chile. Cuando un valor está pactado en pesos, como un arriendo o una deuda, reajustarlo por IPC sirve para que mantenga su valor real con el paso del tiempo.</p>
+
+      <h2>¿Para qué sirve esta calculadora IPC?</h2>
+      <p>Sirve para saber cuánto vale hoy un monto original después de aplicarle la variación del IPC entre un mes de inicio y un mes de término. Solo ingresas el monto, eliges el período desde y hasta, y la herramienta te muestra el monto reajustado y la variación del IPC de ese período. Pensada para tenerlo claro al tiro y, si lo necesitas, dejar el resultado como respaldo.</p>
+
+      <h2>¿Cómo se calcula el reajuste por IPC?</h2>
+      <p>Se aplica la variación acumulada del IPC entre las dos fechas. Si la variación del período es positiva, el monto reajustado queda mayor que el original; si la variación es baja o negativa, el reajuste será menor o casi no cambia. Esta calculadora no estima a ojo: consulta el cálculo oficial del INE, que usa la serie con todos sus decimales, así que el número coincide con el de ellos.</p>
+
+      <h2>Ejemplo de reajuste por IPC</h2>
+      <p>Si un arriendo de $500.000 se reajusta entre enero de 2024 y enero de 2025, y la variación del IPC de ese período fue, por ejemplo, 4,5%, el nuevo arriendo sería de $522.500. La calculadora te entrega ese resultado con la cifra oficial exacta del período que elijas.</p>
+
+      <h2>Reajuste de arriendo por IPC</h2>
+      <p>La mayoría de los contratos de arriendo incluyen una cláusula que reajusta el valor según el IPC, casi siempre una vez al año. Para calcularlo, pon el valor del arriendo, el mes en que partió o se reajustó por última vez, y el mes del nuevo reajuste. Recuerda que en arriendos de vivienda la ley no permite subir más que la variación del IPC del período, y que siempre manda lo que diga tu contrato.</p>
+
+      <h2>Reajuste de pensión de alimentos por IPC</h2>
+      <p>Las pensiones de alimentos en pesos se reajustan por IPC. Por ley, si las partes no pactaron otra cosa, el reajuste es semestral según la variación del IPC. Esta herramienta te da la referencia del monto actualizado, pero no reemplaza la resolución judicial ni el acuerdo: ahí está la regla exacta que corresponde aplicar.</p>
+
+      <h2>Reajuste de deudas y contratos por IPC</h2>
+      <p>También puedes actualizar deudas, indemnizaciones o cualquier monto de un contrato que tenga cláusula de reajuste por IPC. La calculadora te da el valor al día; el documento que origina la obligación es el que define el período y las condiciones del reajuste.</p>
+    </div>
+  </section>
+
+  <section class="sec-texto">
+    <div class="wrap angosto">
+      <h2 id="faq">Preguntas frecuentes</h2>
+      <div class="faq">
+        {faqs.map((it) => (
+          <details>
+            <summary>{it.q}<span class="plus">+</span></summary>
+            <div class="ans">{it.a}</div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="sec-texto relacionadas">
+    <div class="wrap angosto">
+      <h2>Otras calculadoras</h2>
+      <div class="rel-grid">
+        <a href="/calculadora-uf/">Calculadora UF a pesos</a>
+        <a href="/calculadora-utm/">Calculadora UTM a pesos</a>
+        <a href="/calculadora-dolar/">Calculadora dólar a pesos</a>
+        <a href="/calculadora-finiquito/">Calculadora de finiquito</a>
+        <a href="/calculadora-sueldo-liquido/">Calculadora de sueldo líquido</a>
+        <a href="/herramientas/">Ver todas las herramientas</a>
+      </div>
+    </div>
+  </section>
+
+</Base>
+
+<script>
+  const API = 'https://api-calculadora.ine.cl';
+  const MESES = ['', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  const $ = (id) => document.getElementById(id);
+  const montoEl = $('monto'), mesIni = $('mes-ini'), anioIni = $('anio-ini'), mesFin = $('mes-fin'), anioFin = $('anio-fin'), formNota = $('form-nota');
+
+  const parseMonto = (v) => { const n = parseInt(String(v).replace(/\D/g, ''), 10); return isFinite(n) ? n : 0; };
+  const fmtMiles = (n) => new Intl.NumberFormat('es-CL').format(n);
+
+  $('c-fecha').textContent = new Date().toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  montoEl.addEventListener('input', () => { const n = parseMonto(montoEl.value); montoEl.value = n > 0 ? fmtMiles(n) : ''; calcular(); });
+
+  const opt = (val, txt) => { const o = document.createElement('option'); o.value = val; o.textContent = txt; return o; };
+
+  const cargarMeses = async (anio, sel, preferido) => {
+    sel.innerHTML = '';
+    const data = await fetch(`${API}/ServiciosCalculadoraMeses?anio=${anio}`).then((r) => r.json());
+    const meses = data.map((x) => x.nmes).sort((a, b) => a - b);
+    meses.forEach((m) => sel.appendChild(opt(m, MESES[m])));
+    sel.value = (preferido && meses.includes(preferido)) ? preferido : meses[meses.length - 1];
+  };
+
+  const calcular = async () => {
+    const mi = mesIni.value, ai = anioIni.value, mf = mesFin.value, af = anioFin.value;
+    if (!mi || !ai || !mf || !af) return;
+    if (Number(ai) * 12 + Number(mi) > Number(af) * 12 + Number(mf)) {
+      formNota.textContent = 'La fecha de inicio debe ser anterior o igual a la de término.';
+      return;
+    }
+    formNota.textContent = '';
+    const monto = parseMonto(montoEl.value);
+    try {
+      const url = `${API}/ServiciosCalculadoraVariacion?mesInicio=${mi}&AnioInicio=${ai}&mesTermino=${mf}&AnioTermino=${af}&valor_a_ajustar=${monto}`;
+      const res = await fetch(url).then((r) => r.json());
+      const d = res && res[0];
+      if (!d) throw new Error('sin datos');
+      $('c-orig').textContent = monto > 0 ? '$' + fmtMiles(monto) : '$0';
+      $('c-pini').textContent = `${MESES[Number(mi)]} ${ai}`;
+      $('c-final').textContent = monto > 0 ? '$' + d.valorajustado : 'Ingresa un monto';
+      $('c-pfin').textContent = `${MESES[Number(mf)]} ${af}`;
+      $('c-var').textContent = `Variación del IPC del período: ${(d.variacion_ipc || '').trim()}`;
+    } catch (e) {
+      $('c-final').textContent = '—';
+      $('c-var').textContent = 'No pudimos conectar con el INE. Intenta de nuevo en unos segundos.';
+    }
+  };
+
+  const trackUso = () => { try { window.posthog && window.posthog.capture('calculo_ipc', { desde: `${anioIni.value}-${mesIni.value}`, hasta: `${anioFin.value}-${mesFin.value}` }); } catch (e) {} };
+
+  (async () => {
+    try {
+      const anios = await fetch(`${API}/ServiciosCalculadoraAnio`).then((r) => r.json());
+      const lista = anios.map((x) => x.agno).sort((a, b) => b - a);
+      lista.forEach((a) => { anioIni.appendChild(opt(a, a)); anioFin.appendChild(opt(a, a)); });
+      const ultimo = lista[0], anterior = lista.includes(ultimo - 1) ? ultimo - 1 : ultimo;
+      anioFin.value = ultimo; anioIni.value = anterior;
+      await cargarMeses(ultimo, mesFin);
+      await cargarMeses(anterior, mesIni, Number(mesFin.value));
+      montoEl.value = '500.000';
+      calcular();
+    } catch (e) { formNota.textContent = 'No pudimos cargar los datos del INE. Revisa tu conexión e intenta de nuevo.'; }
+  })();
+
+  anioFin.addEventListener('change', async () => { await cargarMeses(anioFin.value, mesFin, Number(mesFin.value)); calcular(); trackUso(); });
+  anioIni.addEventListener('change', async () => { await cargarMeses(anioIni.value, mesIni, Number(mesIni.value)); calcular(); trackUso(); });
+  mesFin.addEventListener('change', () => { calcular(); trackUso(); });
+  mesIni.addEventListener('change', () => { calcular(); trackUso(); });
+</script>
+
+<style>
+  .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:56px 0 44px}
+  .hero h1{font-size:33px;font-weight:800;letter-spacing:-.5px;max-width:24ch}
+  .hero .lead{font-size:18px;color:#444a63;margin:16px 0 0;max-width:62ch}
+  .sec{padding:40px 0}
+  .calc-wrap{max-width:920px}
+  .grid{display:grid;grid-template-columns:1fr 1.05fr;gap:24px;align-items:stretch}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:18px;padding:26px}
+  .panel h2{font-size:16px;font-weight:800;color:var(--azul);margin:4px 0 14px}
+  .f{display:block;margin-bottom:14px}.f>span{display:block;font-family:'Montserrat';font-weight:600;font-size:13.5px;color:var(--azul-prof);margin-bottom:6px}
+  .f select{width:100%;border:1px solid var(--linea);border-radius:10px;padding:11px 13px;font-family:inherit;font-size:15px;color:var(--azul-prof);background:#fff}
+  .f select:focus{outline:none;border-color:var(--azul)}
+  .f2{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end}
+  .inp{display:flex;align-items:center;border:1px solid var(--linea);border-radius:10px;padding:0 12px}
+  .inp:focus-within{border-color:var(--azul)}
+  .inp i{font-family:'Montserrat';font-weight:700;color:var(--gris);font-size:14px;font-style:normal;margin-right:6px}
+  .inp input{border:none;padding:11px 0;width:100%;font-size:15px}
+  .form-nota{font-size:13px;color:#c0392b;margin:4px 0 0;min-height:1em}
+
+  /* Comprobante (recuadro azul para captura/print) */
+  .comp{background:linear-gradient(155deg,var(--azul),var(--azul-prof));color:#fff;border-radius:18px;padding:24px 26px;display:flex;flex-direction:column;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .comp-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;border-bottom:1px solid rgba(255,255,255,.16);padding-bottom:14px;margin-bottom:16px}
+  .comp-marca{font-family:'Montserrat';font-weight:800;font-size:17px;line-height:1;color:#fff}
+  .comp-marca span{display:block;font-weight:600;font-size:11px;letter-spacing:.04em;color:var(--amarillo);margin-top:3px}
+  .comp-tag{font-family:'Montserrat';font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#cfd6ea;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:5px 10px;white-space:nowrap}
+  .comp-row{display:flex;justify-content:space-between;align-items:baseline;font-size:14.5px;color:#cfd6ea}
+  .comp-row b{font-family:'Montserrat';font-weight:700;font-size:17px;color:#fff}
+  .comp-peri{font-size:12.5px;color:#9fb0d8;margin:2px 0 14px}
+  .comp-big{border-top:1px solid rgba(255,255,255,.16);padding-top:14px}
+  .comp-big>span{display:block;font-family:'Montserrat';font-weight:600;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:#cfd6ea}
+  .comp-big strong{display:block;font-family:'Montserrat';font-weight:800;font-size:38px;line-height:1.05;color:var(--amarillo);margin:4px 0 2px}
+  .comp-big em{font-style:normal;font-size:12.5px;color:#9fb0d8}
+  .comp-var{margin-top:16px;background:rgba(255,255,255,.10);border-radius:10px;padding:11px 14px;font-size:14px;font-weight:600;color:#fff}
+  .comp-foot{margin-top:14px;font-size:11.5px;color:#9fb0d8;line-height:1.4}
+
+  .ine-nota{margin-top:18px;text-align:center;font-size:13px;color:var(--gris)}
+  .ine-nota a{color:var(--azul);text-decoration:underline}
+  .banner-zona{max-width:920px;margin:6px auto 8px;padding:0 24px}
+
+  .sec-texto{padding:18px 0}
+  .angosto{max-width:760px;margin:0 auto}
+  .sec-texto h2{font-size:23px;font-weight:800;margin:26px 0 10px;letter-spacing:-.3px;color:var(--azul-prof)}
+  .sec-texto h2:first-child{margin-top:0}
+  .sec-texto p{font-size:16px;color:#444a63;line-height:1.7;margin:0 0 14px}
+
+  .faq{margin-top:6px}
+  details{background:#fff;border:1px solid var(--linea);border-radius:14px;margin-bottom:12px;overflow:hidden}
+  summary{list-style:none;cursor:pointer;padding:18px 22px;font-family:'Montserrat';font-weight:600;font-size:16px;color:var(--azul);display:flex;justify-content:space-between;gap:14px}
+  summary::-webkit-details-marker{display:none}
+  .plus{font-size:22px;color:var(--azul);transition:.2s;flex-shrink:0}
+  details[open] .plus{transform:rotate(45deg)}
+  .ans{padding:0 22px 18px;color:#555;font-size:15.5px;line-height:1.6}
+
+  .relacionadas{padding-bottom:56px}
+  .rel-grid{display:flex;flex-wrap:wrap;gap:10px}
+  .rel-grid a{font-family:'Montserrat';font-weight:600;font-size:14px;color:var(--azul);background:#fff;border:1px solid var(--linea);border-radius:10px;padding:10px 16px;text-decoration:none;transition:.15s}
+  .rel-grid a:hover{border-color:var(--azul);background:#f7f9fe}
+
+  @media(max-width:860px){ .hero h1{font-size:26px} .grid{grid-template-columns:1fr} .comp-big strong{font-size:32px} }
+
+  @media print{
+    :global(header), :global(footer), :global(.wa-float), .hero, .form, .ine-nota, .banner-zona, .sec-texto{display:none !important}
+    .sec{padding:0}
+    .grid{display:block}
+    .comp{box-shadow:none;border:1px solid #1E2F73}
+  }
+</style>
