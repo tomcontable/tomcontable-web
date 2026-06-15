@@ -46,7 +46,7 @@ export async function onRequestPost({ request, env }) {
           <td style="padding:16px 18px;font-size:13.5px;line-height:20px;color:#33384a;"><strong style="color:#1E2F73;">Documento adjunto:</strong> estimacion-finiquito-tomcontable.pdf<br/><span style="color:#8b93b3;">Ábrelo para ver el detalle de tu estimación. El monto no se incluye en este correo a propósito: el cálculo vive en el PDF, que lleva la marca de agua y el descargo correspondiente.</span></td>
         </tr></table>
       </td></tr>`
-    : `<tr><td style="padding:0 36px;font-size:14.5px;line-height:22px;color:#444a63;">${saludo} preparamos tu estimación de finiquito, pero no pudimos adjuntar el PDF en este envío. Escríbenos por WhatsApp al <strong>+56 9 6493 3110</strong> y te la hacemos llegar al instante.</td></tr>`;
+    : `<tr><td style="padding:0 36px;font-size:14.5px;line-height:22px;color:#444a63;">${saludo} preparamos tu estimación de finiquito, pero no pudimos adjuntar el PDF en este envío. Escríbenos por WhatsApp al <strong>+56 9 3650 6297</strong> y te la hacemos llegar al instante.</td></tr>`;
 
   const html = `<!DOCTYPE html><html><body style="margin:0;padding:0;background:#f4f6fb;font-family:Helvetica,Arial,sans-serif;">
   <table width="100%" cellspacing="0" cellpadding="0" bgcolor="#f4f6fb"><tr><td align="center" style="padding:30px 10px;">
@@ -59,7 +59,7 @@ export async function onRequestPost({ request, env }) {
       ${cuerpo}
       <tr><td style="padding:18px 34px 0;">
         <table width="100%" cellspacing="0" cellpadding="0" bgcolor="#fdf4dd" style="background:#fdf4dd;border:1px solid #f1d98a;border-radius:10px;"><tr>
-          <td style="padding:12px 16px;font-size:12.5px;line-height:18px;color:#6b5b1f;"><strong>Estimación no certificada.</strong> Es una herramienta de apoyo referencial; no constituye finiquito oficial ni asesoría laboral. El monto final debe revisarse según contrato, antecedentes laborales, remuneraciones, vacaciones, causales y normativa vigente. ¿Quieres tu finiquito bien hecho? Escríbenos al WhatsApp +56 9 6493 3110.</td>
+          <td style="padding:12px 16px;font-size:12.5px;line-height:18px;color:#6b5b1f;"><strong>Estimación no certificada.</strong> Es una herramienta de apoyo referencial; no constituye finiquito oficial ni asesoría laboral. El monto final debe revisarse según contrato, antecedentes laborales, remuneraciones, vacaciones, causales y normativa vigente. ¿Quieres tu finiquito bien hecho? Escríbenos al WhatsApp +56 9 3650 6297.</td>
         </tr></table>
       </td></tr>
       <tr><td height="26" style="font-size:0;line-height:0;">&nbsp;</td></tr>

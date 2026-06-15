@@ -5,7 +5,7 @@ const {
   mensaje = 'Hola vengo desde la web',
 } = Astro.props;
 
-const href = `https://api.whatsapp.com/send/?phone=56964933110&text=${encodeURIComponent(mensaje)}`;
+const href = `https://api.whatsapp.com/send/?phone=56936506297&text=${encodeURIComponent(mensaje)}`;
 ---
 <a class="wa-flotante" href={href} target="_blank" rel="noopener" data-msg={mensaje} onclick="window.posthog&&window.posthog.capture('whatsapp_flotante_click',{mensaje:this.dataset.msg,ubicacion:location.pathname})" title="Hablar por WhatsApp">
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">

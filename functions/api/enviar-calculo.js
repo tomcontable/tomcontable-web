@@ -13,14 +13,14 @@ const TIPOS = {
     titulo: 'Tu liquidación de sueldo',
     pdfName: 'liquidacion-sueldo-tomcontable.pdf',
     fuente: 'calculadora-sueldo',
-    descargo: 'Es una simulación referencial generada con los datos ingresados, no una liquidación oficial ni asesoría laboral. ¿La necesitas revisada? Escríbenos al WhatsApp +56 9 6493 3110.',
+    descargo: 'Es una simulación referencial generada con los datos ingresados, no una liquidación oficial ni asesoría laboral. ¿La necesitas revisada? Escríbenos al WhatsApp +56 9 3650 6297.',
   },
   boleta: {
     asunto: 'Tu cálculo de boleta de honorarios · TomContable',
     titulo: 'Tu boleta de honorarios',
     pdfName: 'boleta-honorarios-tomcontable.pdf',
     fuente: 'calculadora-boleta-honorarios',
-    descargo: 'Es un cálculo referencial generado con el monto ingresado, no constituye boleta oficial ni asesoría tributaria. ¿Trabajas a honorarios y quieres ordenarte? Escríbenos al WhatsApp +56 9 6493 3110.',
+    descargo: 'Es un cálculo referencial generado con el monto ingresado, no constituye boleta oficial ni asesoría tributaria. ¿Trabajas a honorarios y quieres ordenarte? Escríbenos al WhatsApp +56 9 3650 6297.',
   },
 };
 
@@ -49,7 +49,7 @@ export async function onRequestPost({ request, env }) {
           <td style="padding:16px 18px;font-size:13.5px;line-height:20px;color:#33384a;"><strong style="color:#1E2F73;">Documento adjunto:</strong> ${cfg.pdfName}<br/><span style="color:#8b93b3;">Ábrelo para ver el detalle. Los montos no se incluyen en este correo a propósito: el cálculo vive en el PDF.</span></td>
         </tr></table>
       </td></tr>`
-    : `<tr><td style="padding:0 36px;font-size:14.5px;line-height:22px;color:#444a63;">${saludo} preparamos tu cálculo, pero no pudimos adjuntar el PDF en este envío. Escríbenos por WhatsApp al <strong>+56 9 6493 3110</strong> y te lo hacemos llegar al instante.</td></tr>`;
+    : `<tr><td style="padding:0 36px;font-size:14.5px;line-height:22px;color:#444a63;">${saludo} preparamos tu cálculo, pero no pudimos adjuntar el PDF en este envío. Escríbenos por WhatsApp al <strong>+56 9 3650 6297</strong> y te lo hacemos llegar al instante.</td></tr>`;
 
   const html = `<!DOCTYPE html><html><body style="margin:0;padding:0;background:#f4f6fb;font-family:Helvetica,Arial,sans-serif;">
   <table width="100%" cellspacing="0" cellpadding="0" bgcolor="#f4f6fb"><tr><td align="center" style="padding:30px 10px;">

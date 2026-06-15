@@ -372,7 +372,7 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
     doc.text(lines, M, y);
     // Pie
     doc.setTextColor(139, 147, 179); doc.setFontSize(8.5);
-    doc.text('TomContable · Más que contabilidad, tranquilidad · tomcontable.cl · WhatsApp +56 9 6493 3110', M, 287);
+    doc.text('TomContable · Más que contabilidad, tranquilidad · tomcontable.cl · WhatsApp +56 9 3650 6297', M, 287);
     return doc.output('datauristring').split(',')[1];
   };
 
@@ -465,6 +465,7 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
 <style>
   .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:58px 0 46px}
   .hero h1{font-size:38px;font-weight:800;letter-spacing:-.5px}
+  @media(min-width:901px){ .hero h1{max-width:calc(100% - 180px)} }
   .hero .lead{font-size:18px;color:#444a63;margin:16px 0 0;max-width:60ch}
 
   .sec{padding:42px 0}
