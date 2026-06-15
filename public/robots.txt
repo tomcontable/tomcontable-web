@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /borradores/
+Disallow: /api/
 
 Sitemap: https://tomcontable.cl/sitemap.xml

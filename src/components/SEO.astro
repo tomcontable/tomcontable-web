@@ -10,7 +10,9 @@ const {
 } = Astro.props;
 
 const site = Astro.site ?? new URL('https://tomcontable.cl');
-const canonicalURL = new URL(canonical, site).href;
+// El sitio se sirve con barra final (Cloudflare Pages). Canonical consistente para no apuntar a una URL que redirige.
+const canonPath = (canonical === '/' || canonical.endsWith('/')) ? canonical : canonical + '/';
+const canonicalURL = new URL(canonPath, site).href;
 const imageURL = new URL(image, site).href;
 ---
 <title>{title}</title>
