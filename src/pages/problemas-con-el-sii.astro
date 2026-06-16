@@ -33,6 +33,8 @@ const faqs = [
   { q: '¿Para qué tamaño de empresa es el valor de 3 UF?', a: 'Para empresas con ventas netas anuales de hasta 200 millones de pesos. Si superas ese monto, escríbenos por WhatsApp y lo cotizamos según tu caso.' },
   { q: '¿Tengo que enviarles información?', a: 'Trabajamos con la información visible en el SII y Tesorería. Te indicamos si necesitamos algún acceso o dato puntual para completar la revisión.' },
   { q: '¿Me garantizan que se soluciona?', a: 'No prometemos resultados imposibles. Te entregamos un diagnóstico honesto y un plan claro. Resolver bien empieza por saber exactamente qué pasa.' },
+  { q: '¿Qué significa tener el IVA observado?', a: 'Que el SII detectó diferencias entre lo que declaraste en tu F29 y la información que tiene de tus compras y ventas. Conviene revisarlo pronto, porque mientras más pasa, más se acumula. En la revisión vemos el origen y qué corresponde hacer.' },
+  { q: '¿Qué es la renta observada?', a: 'Es cuando el SII marca diferencias en tu declaración anual de renta (F22): ingresos, gastos o créditos que no le cuadran. Te puede retener la devolución o pedir que rectifiques. Lo primero es entender qué observó, y eso es justo parte de la revisión.' },
 ];
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
@@ -129,6 +131,8 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
         <details><summary>¿Para qué tamaño de empresa es el valor de 3 UF?<span class="plus">+</span></summary><div class="ans">Para empresas con ventas netas anuales de hasta 200 millones de pesos. Si superas ese monto, escríbenos por WhatsApp y lo cotizamos según tu caso.</div></details>
         <details><summary>¿Tengo que enviarles información?<span class="plus">+</span></summary><div class="ans">Trabajamos con la información visible en el SII y Tesorería. Te indicamos si necesitamos algún acceso o dato puntual para completar la revisión.</div></details>
         <details><summary>¿Me garantizan que se soluciona?<span class="plus">+</span></summary><div class="ans">No prometemos resultados imposibles. Te entregamos un diagnóstico honesto y un plan claro. Resolver bien empieza por saber exactamente qué pasa.</div></details>
+        <details><summary>¿Qué significa tener el IVA observado?<span class="plus">+</span></summary><div class="ans">Que el SII detectó diferencias entre lo que declaraste en tu F29 y la información que tiene de tus compras y ventas. Conviene revisarlo pronto, porque mientras más pasa, más se acumula. En la revisión vemos el origen y qué corresponde hacer.</div></details>
+        <details><summary>¿Qué es la renta observada?<span class="plus">+</span></summary><div class="ans">Es cuando el SII marca diferencias en tu declaración anual de renta (F22): ingresos, gastos o créditos que no le cuadran. Te puede retener la devolución o pedir que rectifiques. Lo primero es entender qué observó, y eso es justo parte de la revisión.</div></details>
       </div>
     </div>
   </section>

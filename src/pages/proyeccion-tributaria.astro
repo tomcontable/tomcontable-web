@@ -31,6 +31,8 @@ const faqs = [
   { q: '¿Tengo que enviarles información?', a: 'No. El reporte se hace con los documentos que ya están en tu portal del SII. Si necesitas reflejar gastos que no están ahí, lo cotizamos aparte por WhatsApp.' },
   { q: '¿En qué se diferencia de la operación renta?', a: 'La proyección es antes del cierre del año, para que alcances a tomar decisiones. La operación renta es la declaración formal en abril. La proyección te prepara para llegar bien a esa fecha.' },
   { q: '¿Sirve si tengo problemas con el SII?', a: 'La proyección es para planificar. Si lo que necesitas es revisar observaciones o inconsistencias ya existentes, eso es nuestra revisión de situación tributaria.' },
+  { q: '¿Cuándo conviene hacer la proyección?', a: 'Lo ideal es antes del cierre del año, entre octubre y enero, cuando todavía puedes tomar decisiones que bajen la cuenta. Después de diciembre el resultado ya está jugado y solo queda declarar lo que salga.' },
+  { q: '¿Qué me entregan al final?', a: 'Un informe claro con cuánto pagaría tu empresa y cada socio, más un Excel con los escenarios, para que veas el efecto de cada decisión antes de tomarla.' },
 ];
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
@@ -118,6 +120,8 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
         <details><summary>¿Tengo que enviarles información?<span class="plus">+</span></summary><div class="ans">No. El reporte se hace con los documentos que ya están en tu portal del SII. Si necesitas reflejar gastos que no están ahí, lo cotizamos aparte por WhatsApp.</div></details>
         <details><summary>¿En qué se diferencia de la operación renta?<span class="plus">+</span></summary><div class="ans">La proyección es antes del cierre del año, para que alcances a tomar decisiones. La operación renta es la declaración formal en abril. La proyección te prepara para llegar bien a esa fecha.</div></details>
         <details><summary>¿Sirve si tengo problemas con el SII?<span class="plus">+</span></summary><div class="ans">La proyección es para planificar. Si lo que necesitas es revisar observaciones o inconsistencias ya existentes, eso es nuestra revisión de situación tributaria.</div></details>
+        <details><summary>¿Cuándo conviene hacer la proyección?<span class="plus">+</span></summary><div class="ans">Lo ideal es antes del cierre del año, entre octubre y enero, cuando todavía puedes tomar decisiones que bajen la cuenta. Después de diciembre el resultado ya está jugado y solo queda declarar lo que salga.</div></details>
+        <details><summary>¿Qué me entregan al final?<span class="plus">+</span></summary><div class="ans">Un informe claro con cuánto pagaría tu empresa y cada socio, más un Excel con los escenarios, para que veas el efecto de cada decisión antes de tomarla.</div></details>
       </div>
     </div>
   </section>
