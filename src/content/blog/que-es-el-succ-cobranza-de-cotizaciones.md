@@ -46,10 +46,10 @@ Hay una práctica común cuando una empresa anda apretada de caja: declarar las 
 
 ## Por qué esto importa el doble ahora
 
-Si leíste lo que escribimos sobre la [rebaja de impuesto del régimen Pro Pyme](/blog/cuanto-impuesto-paga-tu-pyme-2026), te va a hacer sentido. Esa rebaja tributaria está condicionada a estar al día con las cotizaciones previsionales. O sea que tener tus cotizaciones pagadas dejó de ser solo una obligación laboral, ahora también es la llave de un beneficio tributario. Por un lado el SUCC hace más eficiente el cobro de lo que debes, y por el otro, estar al día te mantiene dentro de la rebaja. Las dos cosas empujan en la misma dirección: pagar las cotizaciones a tiempo conviene más que nunca.
+Si leíste lo que escribimos sobre la [rebaja de impuesto del régimen Pro Pyme](/blog/cuanto-impuesto-paga-tu-pyme-2026/), te va a hacer sentido. Esa rebaja tributaria está condicionada a estar al día con las cotizaciones previsionales. O sea que tener tus cotizaciones pagadas dejó de ser solo una obligación laboral, ahora también es la llave de un beneficio tributario. Por un lado el SUCC hace más eficiente el cobro de lo que debes, y por el otro, estar al día te mantiene dentro de la rebaja. Las dos cosas empujan en la misma dirección: pagar las cotizaciones a tiempo conviene más que nunca.
 
 ## Qué hacer con esto
 
 Si pagas todo al día, tranquilo, esto no te complica. Si vienes arrastrando deuda previsional, lo peor es dejarla quieta esperando que no la cobren, porque ahora la van a cobrar mejor y mientras tanto crece con reajustes e intereses. Lo sano es saber cuánto debes, desde cuándo, y ordenar un plan para regularizar.
 
-En TomContable llevamos las remuneraciones y cotizaciones como parte de la [contabilidad mensual](/contabilidad-mensual), justamente para que esto no se te escape y no termines con una deuda que se podía evitar. Si tienes trabajadores y quieres dejar este tema ordenado, escríbenos por WhatsApp y lo vemos.
+En TomContable llevamos las remuneraciones y cotizaciones como parte de la [contabilidad mensual](/contabilidad-mensual/), justamente para que esto no se te escape y no termines con una deuda que se podía evitar. Si tienes trabajadores y quieres dejar este tema ordenado, escríbenos por WhatsApp y lo vemos.

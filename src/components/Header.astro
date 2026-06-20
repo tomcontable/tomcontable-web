@@ -29,7 +29,7 @@ const herramientas = [
     <nav class="links" aria-label="Principal">
       <a href="/">Inicio</a>
       <div class="dropdown">
-        <a class="drop-toggle" href="/servicios" aria-haspopup="true">
+        <a class="drop-toggle" href="/servicios/" aria-haspopup="true">
           Servicios
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
         </a>
@@ -37,10 +37,10 @@ const herramientas = [
           {servicios.map((s) => <a href={s.href}>{s.texto}</a>)}
         </div>
       </div>
-      <a href="/blog">Blog</a>
-      <a href="/recursos">Recursos</a>
+      <a href="/blog/">Blog</a>
+      <a href="/recursos/">Recursos</a>
       <div class="dropdown">
-        <a class="drop-toggle" href="/herramientas" aria-haspopup="true">
+        <a class="drop-toggle" href="/herramientas/" aria-haspopup="true">
           Herramientas
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
         </a>
@@ -48,7 +48,7 @@ const herramientas = [
           {herramientas.map((h) => <a href={h.href}>{h.texto}</a>)}
         </div>
       </div>
-      <a href="/sobre-tomcontable">Sobre nosotros</a>
+      <a href="/sobre-tomcontable/">Sobre nosotros</a>
     </nav>
     <div class="nav-acciones">
       <BotonWhatsApp texto="WhatsApp" clase="btn-wa nav-cta" />
@@ -59,13 +59,13 @@ const herramientas = [
   </div>
   <nav class="menu-movil" id="menu-movil" aria-label="Menú móvil">
     <a href="/">Inicio</a>
-    <a href="/servicios">Servicios</a>
+    <a href="/servicios/">Servicios</a>
     {servicios.map((s) => <a class="mm-serv" href={s.href}>{s.texto}</a>)}
-    <a href="/blog">Blog</a>
-    <a href="/recursos">Recursos</a>
-    <a href="/herramientas">Herramientas</a>
+    <a href="/blog/">Blog</a>
+    <a href="/recursos/">Recursos</a>
+    <a href="/herramientas/">Herramientas</a>
     {herramientas.map((h) => <a class="mm-serv" href={h.href}>{h.texto}</a>)}
-    <a href="/sobre-tomcontable">Sobre nosotros</a>
+    <a href="/sobre-tomcontable/">Sobre nosotros</a>
   </nav>
 </header>
 

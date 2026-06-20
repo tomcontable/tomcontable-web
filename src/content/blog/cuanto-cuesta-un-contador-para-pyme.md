@@ -44,13 +44,13 @@ La cuarta es qué tan ordenado llega tu mes. Una empresa que entrega sus documen
 
 ## Qué deberías esperar que incluya
 
-Antes de mirar el precio, mira qué incluye. Un buen servicio de [contabilidad mensual](/contabilidad-mensual) para una pyme no es solo presentar el F29 y desaparecer. Debería cubrir el orden de tu contabilidad, el cumplimiento de tus obligaciones con el SII en plazo, las respuestas a tus dudas durante el mes y alguien que efectivamente esté mirando tu negocio y te avise si ve algo raro antes de que crezca.
+Antes de mirar el precio, mira qué incluye. Un buen servicio de [contabilidad mensual](/contabilidad-mensual/) para una pyme no es solo presentar el F29 y desaparecer. Debería cubrir el orden de tu contabilidad, el cumplimiento de tus obligaciones con el SII en plazo, las respuestas a tus dudas durante el mes y alguien que efectivamente esté mirando tu negocio y te avise si ve algo raro antes de que crezca.
 
 Esa última parte es la que más se nota y la que casi nunca aparece en la cotización barata. Pagar contabilidad mensual no debería ser pagar un trámite, debería ser pagar tranquilidad, saber que hay alguien confiable revisando tu tema todos los meses.
 
 ## Lo barato que sale caro
 
-El error más común que vemos es elegir al más barato y darse cuenta meses después de que nadie estaba mirando de verdad. Llega una observación del SII, una declaración mal hecha o una multa que se pudo evitar, y ahí el ahorro inicial se da vuelta. Arreglar un [problema con el SII](/problemas-con-el-sii) casi siempre cuesta más, en plata y en estrés, que haberlo prevenido.
+El error más común que vemos es elegir al más barato y darse cuenta meses después de que nadie estaba mirando de verdad. Llega una observación del SII, una declaración mal hecha o una multa que se pudo evitar, y ahí el ahorro inicial se da vuelta. Arreglar un [problema con el SII](/problemas-con-el-sii/) casi siempre cuesta más, en plata y en estrés, que haberlo prevenido.
 
 No te decimos esto para asustarte ni para vender caro. Te lo decimos porque lo hemos visto muchas veces. El contador más conveniente no es el más barato ni el más caro, es el que entiende tu negocio, te explica las cosas en simple y está presente todo el año, no solo en abril.
 

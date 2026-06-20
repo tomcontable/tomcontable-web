@@ -46,6 +46,6 @@ Acá hay una confusión común. Existen dos sabores del Pro Pyme. En el General,
 
 ## Qué deberías hacer con esto
 
-Lo primero es saber en qué régimen estás, porque define todo. Lo segundo es aprovechar estos años de tasa baja con cabeza. Pagar menos hoy está bueno, pero si bajaste el PPM y no lo proyectaste, en abril te puede llegar una diferencia más grande de lo que esperabas. No es un problema, es algo que se anticipa. Justamente para eso sirve sentarse antes de fin de año a [proyectar tus impuestos](/proyeccion-tributaria) y llegar a la operación renta sin sustos.
+Lo primero es saber en qué régimen estás, porque define todo. Lo segundo es aprovechar estos años de tasa baja con cabeza. Pagar menos hoy está bueno, pero si bajaste el PPM y no lo proyectaste, en abril te puede llegar una diferencia más grande de lo que esperabas. No es un problema, es algo que se anticipa. Justamente para eso sirve sentarse antes de fin de año a [proyectar tus impuestos](/proyeccion-tributaria/) y llegar a la operación renta sin sustos.
 
-Si quieres que revisemos tu caso, en qué régimen estás, cuánto te corresponde pagar este año y si estás cumpliendo la condición para no perder la rebaja, escríbenos por WhatsApp y lo vemos en simple. Y si todavía no tienes a nadie mirando tu empresa mes a mes, eso es justamente lo que hacemos con la [contabilidad mensual](/contabilidad-mensual).
+Si quieres que revisemos tu caso, en qué régimen estás, cuánto te corresponde pagar este año y si estás cumpliendo la condición para no perder la rebaja, escríbenos por WhatsApp y lo vemos en simple. Y si todavía no tienes a nadie mirando tu empresa mes a mes, eso es justamente lo que hacemos con la [contabilidad mensual](/contabilidad-mensual/).

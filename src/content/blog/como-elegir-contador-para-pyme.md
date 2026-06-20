@@ -40,7 +40,7 @@ Esto importa más de lo que parece. Cuando entiendes tu situación tomas mejores
 
 Mucho contador aparece en marzo y abril, te hace la operación renta y desaparece el resto del año. El problema es que los problemas no esperan a abril. Una observación del SII, una duda sobre una compra grande, un trabajador nuevo que contratar, todo eso pasa en cualquier mes.
 
-Lo que necesita una pyme es alguien que esté mirando su negocio de forma continua, que avise antes de que algo se transforme en multa y que esté disponible cuando surge la duda. Eso es justamente lo que buscamos con la [contabilidad mensual](/contabilidad-mensual). Pregunta directamente cómo es el acompañamiento durante el año, no solo qué hacen en la temporada de renta. La respuesta te dice mucho.
+Lo que necesita una pyme es alguien que esté mirando su negocio de forma continua, que avise antes de que algo se transforme en multa y que esté disponible cuando surge la duda. Eso es justamente lo que buscamos con la [contabilidad mensual](/contabilidad-mensual/). Pregunta directamente cómo es el acompañamiento durante el año, no solo qué hacen en la temporada de renta. La respuesta te dice mucho.
 
 ## Credenciales reales y experiencia comprobable
 

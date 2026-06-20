@@ -52,6 +52,6 @@ Con la empresa creada e iniciada todavía quedan cosas por dejar en orden: el do
 
 Es perfectamente posible hacer todo esto por tu cuenta. Lo que pasa en la práctica es que mucha gente entra al portal, crea la SpA en una tarde, cree que ya está lista y se da cuenta semanas después de que no puede facturar, porque le falta el inicio de actividades o la habilitación electrónica. La sociedad existe, pero la empresa no está operativa. Esa es la diferencia entre crear una sociedad y dejar una empresa lista para trabajar.
 
-En TomContable hacemos justamente eso: te [constituimos la empresa](/constitucion-de-empresas), la dejamos iniciada ante el SII y técnicamente lista para facturar, sin que tengas que adivinar cada paso. Y si después quieres que alguien se haga cargo de la parte mensual, eso lo cubrimos con la contabilidad mensual.
+En TomContable hacemos justamente eso: te [constituimos la empresa](/constitucion-de-empresas/), la dejamos iniciada ante el SII y técnicamente lista para facturar, sin que tengas que adivinar cada paso. Y si después quieres que alguien se haga cargo de la parte mensual, eso lo cubrimos con la contabilidad mensual.
 
 Si estás por dar el paso y prefieres hacerlo bien de una vez, escríbenos por WhatsApp y te contamos cómo funciona.

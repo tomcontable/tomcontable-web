@@ -80,7 +80,7 @@ const schema = [articleSchema, breadcrumb, ...(faqSchema ? [faqSchema] : [])];
   <article>
     <header class="cab">
       <div class="wrap angosto">
-        <p class="ruta"><a href="/blog">Blog</a><span>/</span>{d.keyword}</p>
+        <p class="ruta"><a href="/blog/">Blog</a><span>/</span>{d.keyword}</p>
         <h1>{d.title}</h1>
         <p class="lead">{d.lead}</p>
         <p class="meta">Por Tom · {fmtFecha(d.pubDate)} · {minutos} min de lectura</p>
