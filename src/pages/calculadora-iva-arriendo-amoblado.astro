@@ -1,0 +1,226 @@
+---
+import Base from '../layouts/Base.astro';
+import BannerServicios from '../components/BannerServicios.astro';
+
+const seo = {
+  title: 'Calculadora de IVA en arriendo amoblado 2026 | Rebaja del 11% del avalúo · TomContable',
+  description: 'Calcula el IVA de un arriendo amoblado o de corto plazo (tipo Airbnb) en Chile, con la rebaja obligatoria del 11% del avalúo fiscal proporcional a los días. Gratis y al instante.',
+  canonical: '/calculadora-iva-arriendo-amoblado',
+};
+
+const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year: 'numeric' });
+
+const faqs = [
+  { q: '¿El arriendo amoblado paga IVA?', a: 'Sí. El arriendo de un inmueble amoblado o con instalaciones que permiten usarlo de inmediato está afecto a IVA, a diferencia del arriendo de una vivienda sin amoblar, que está exento. Aplica tanto al arriendo amoblado largo como al de corto plazo o por días.' },
+  { q: '¿Qué es la rebaja del 11% del avalúo fiscal?', a: 'Antes de aplicar el IVA, la ley obliga a rebajar de la renta una cantidad equivalente al 11% del avalúo fiscal anual del inmueble, o la proporción que corresponda según el período arrendado. El IVA del 19% se calcula solo sobre lo que queda después de esa rebaja.' },
+  { q: '¿Cómo calculo el IVA si arriendo por días?', a: 'El arriendo amoblado incluye el IVA. Tomas el 11% del avalúo prorrateado por los días (avalúo por 0,11 por los días dividido en 365) y se lo restas al arriendo: eso es el valor bruto. Ese valor bruto lo divides por 1,19 para obtener la base imponible, y el IVA a pagar es el 19% de esa base. La calculadora lo hace solo.' },
+  { q: '¿Cuándo no tengo que pagar IVA por el arriendo amoblado?', a: 'Cuando la renta del período no supera la rebaja del 11% del avalúo proporcional. En ese caso la base afecta queda en cero y no se genera IVA. Por eso, mientras más alto es el avalúo respecto del arriendo, menos IVA resulta.' },
+  { q: '¿La rebaja del 11% aplica al subarriendo?', a: 'No. La rebaja del 11% del avalúo fiscal solo la puede usar el dueño que arrienda directamente su propiedad. No aplica al subarriendo ni a otras cesiones de uso.' },
+  { q: '¿Dónde encuentro el avalúo fiscal de mi propiedad?', a: 'En tu boleta de contribuciones, o en el buscador de roles y avalúos del SII, ingresando la dirección o el rol. Es dato público, no necesitas clave.' },
+  { q: '¿El IVA del arriendo se declara una vez al mes?', a: 'Sí. El IVA se declara y paga mensualmente en el formulario F29. Si arriendas varias veces en un mismo mes, la rebaja del 11% se aplica una vez sobre el total del mes, no por cada arriendo por separado.' },
+  { q: '¿Esta calculadora reemplaza el cálculo oficial?', a: 'No. Es una estimación referencial para orientarte. El cálculo definitivo depende de tu caso, del avalúo vigente y de cómo declares el mes. Si arriendas amoblado y quieres ordenarlo bien, podemos ayudarte.' },
+];
+
+const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
+const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication', name: 'Calculadora de IVA en arriendo amoblado', applicationCategory: 'FinanceApplication', operatingSystem: 'Web', inLanguage: 'es-CL', url: 'https://tomcontable.cl/calculadora-iva-arriendo-amoblado', description: 'Calcula el IVA de un arriendo amoblado o de corto plazo en Chile aplicando la rebaja del 11% del avalúo fiscal proporcional a los días.', offers: { '@type': 'Offer', price: '0', priceCurrency: 'CLP' }, publisher: { '@type': 'Organization', name: 'TomContable' } };
+const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+  { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://tomcontable.cl/' },
+  { '@type': 'ListItem', position: 2, name: 'Herramientas', item: 'https://tomcontable.cl/herramientas' },
+  { '@type': 'ListItem', position: 3, name: 'Calculadora de IVA en arriendo amoblado', item: 'https://tomcontable.cl/calculadora-iva-arriendo-amoblado' }
+] };
+---
+<Base {...seo} schema={[appSchema, faqSchema, breadcrumb]}>
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Herramienta gratis</p>
+      <h1>Calculadora de IVA para arriendo amoblado, con la rebaja del 11% del avalúo</h1>
+      <p class="lead">Si arriendas amoblado o por días (tipo Airbnb), antes de aplicar el IVA se rebaja el 11% del avalúo fiscal. Esta calculadora te dice cuánto IVA corresponde, o si no corresponde.</p>
+    </div>
+    <svg class="hero-ill" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M20 56 60 24l40 32" stroke="#1E2F73" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M30 50v44h60V50" stroke="#1E2F73" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="52" y="68" width="16" height="26" fill="#F6B11A" fill-opacity="0.3" stroke="#1E2F73" stroke-width="2.5"/><circle cx="46" cy="40" r="4" fill="#F6B11A"/><path d="M74 78l14-14" stroke="#1E2F73" stroke-width="2.6" stroke-linecap="round"/></svg>
+  </section>
+
+  <section class="sec">
+    <div class="wrap calc-wrap">
+      <div class="grid">
+        <form class="panel form" id="ar-form" autocomplete="off">
+          <h2>Datos del arriendo</h2>
+          <label class="f"><span>Avalúo fiscal del inmueble</span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="avaluo" placeholder="0" /></div></label>
+          <label class="f"><span>Arriendo del período <em>(lo que cobras, IVA incluido)</em></span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="renta" placeholder="0" /></div></label>
+          <label class="f"><span>Días arrendados</span><div class="inp"><input type="text" inputmode="numeric" id="dias" placeholder="0" /><i>días</i></div></label>
+          <p class="hint">¿No sabes tu avalúo fiscal? Lo encuentras en tu boleta de contribuciones o en el <a href="https://www4.sii.cl/busquedarolesinternetui/" target="_blank" rel="noopener">buscador de roles del SII</a>, gratis y sin clave.</p>
+        </form>
+
+        <div class="panel result" id="result">
+          <div class="res-head"><h2>Resultado</h2><span class="res-sub">Estimación referencial</span></div>
+          <div class="rrow"><span>Arriendo del período (incluye IVA)</span><strong id="r-renta">$0</strong></div>
+          <div class="rrow"><span>Menos rebaja del 11% (por los días)</span><strong id="r-rebaja">$0</strong></div>
+          <div class="rrow"><span>Valor bruto</span><strong id="r-bruto">$0</strong></div>
+          <div class="rrow"><span>Base imponible (valor bruto ÷ 1,19)</span><strong id="r-base">$0</strong></div>
+          <div class="rrow dest"><span>IVA a pagar (19%)</span><strong id="r-iva">$0</strong></div>
+          <p class="msg" id="r-msg"></p>
+        </div>
+      </div>
+
+      <div class="descargo">
+        <p>Cálculo referencial generado en tomcontable.cl con los datos ingresados. Aplica la rebaja del 11% del avalúo fiscal anual proporcional a los días (artículo 17 de la Ley del IVA). No constituye asesoría tributaria. El IVA se declara mensualmente en el F29; si arriendas varias veces en el mes, la rebaja del 11% se aplica una vez sobre el total del mes.</p>
+        <p class="firma">TomContable.cl · Cálculo referencial</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="banner-zona"><BannerServicios orden={['contabilidad', 'asesorias', 'proyeccion', 'sii']} lateral={true} /></div>
+
+  <section class="sec-texto">
+    <div class="wrap angosto">
+      <div class="resp-rapida">
+        <p><strong>Respuesta rápida:</strong> el arriendo de un inmueble amoblado o por días está afecto a IVA, pero antes de calcularlo se rebaja, de forma obligatoria, el 11% del avalúo fiscal anual proporcional al período arrendado. Si la renta no supera esa rebaja, no se genera IVA. El resultado es referencial.</p>
+        <p class="resp-fecha">Última actualización: {actualizado}. Fuente: artículo 17 de la Ley del IVA (D.L. 825) y normativa del SII.</p>
+      </div>
+
+      <h2>¿Por qué un arriendo amoblado paga IVA?</h2>
+      <p>El arriendo de una vivienda sin amoblar está exento de IVA. Pero cuando el inmueble se arrienda amoblado, o con instalaciones que permiten usarlo de inmediato, la ley lo considera un servicio afecto a IVA. Esto incluye el arriendo de corto plazo o por días, como el de las plataformas tipo Airbnb.</p>
+
+      <h2>Qué es la rebaja del 11% del avalúo fiscal</h2>
+      <p>Para que el IVA no caiga sobre todo el arriendo, la ley obliga a rebajar primero una cantidad equivalente al 11% del avalúo fiscal anual del inmueble (o la proporción que corresponda según el período). El IVA del 19% se aplica solo sobre lo que queda después de esa rebaja. Es una rebaja obligatoria, no opcional.</p>
+
+      <h2>Cómo se calcula el IVA del arriendo amoblado</h2>
+      <p>El arriendo amoblado se cobra con el IVA incluido, así que el cálculo va distinto de lo que muchos creen. Primero se le resta al arriendo la rebaja: el 11% del avalúo prorrateado por los días (avalúo por 0,11 por los días dividido en 365). Eso da el valor bruto. Después ese valor bruto se divide por 1,19 para obtener la base imponible, es decir, el valor sin IVA. Y el IVA a pagar es el 19% de esa base. La calculadora hace todos los pasos al instante. Por ejemplo, con un avalúo de 70 millones y un arriendo de $50.000 al día, la rebaja diaria es $21.096, el valor bruto $28.904, la base imponible $24.289 y el IVA a pagar $4.615.</p>
+
+      <h2>Arriendo por días: Airbnb y temporada</h2>
+      <p>Como la rebaja del 11% es anual, en un arriendo de pocos días se prorratea por esos días. Por eso esta calculadora pide cuántos días arrendaste. Ten presente que el IVA se declara mes a mes en el F29: si en un mismo mes arriendas varias veces, la rebaja del 11% se aplica una sola vez sobre el total de ese mes, no por cada arriendo por separado.</p>
+
+      <h2>¿Cuándo no se paga IVA?</h2>
+      <p>Cuando la renta del período no alcanza a superar la rebaja del 11% del avalúo proporcional, la base afecta queda en cero y no hay IVA que pagar. Mientras más alto sea el avalúo del inmueble respecto del arriendo cobrado, más probable es que no resulte IVA.</p>
+
+      <h2>Dónde encontrar tu avalúo fiscal</h2>
+      <p>El avalúo fiscal aparece en tu boleta de contribuciones y en el <a href="https://www4.sii.cl/busquedarolesinternetui/" target="_blank" rel="noopener">buscador de roles del SII</a>, donde puedes consultarlo por dirección o por rol. Es un dato público: no necesitas RUT ni clave para verlo.</p>
+
+      <h2>Esto aplica solo al arriendo directo del dueño</h2>
+      <p>La rebaja del 11% la puede usar únicamente el propietario que arrienda su inmueble. No aplica al subarriendo ni a otras cesiones de uso. Si tu caso es distinto, conviene revisarlo bien antes de declarar.</p>
+
+      <h2 id="faq">Preguntas frecuentes</h2>
+      <div class="faq">
+        {faqs.map((it) => (
+          <details>
+            <summary>{it.q}<span class="plus">+</span></summary>
+            <div class="ans">{it.a}</div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="sec-texto relacionadas">
+    <div class="wrap angosto">
+      <h2>Otras calculadoras</h2>
+      <div class="relac-grid">
+        <a href="/calculadora-iva">Calculadora de IVA</a>
+        <a href="/calculadora-ipc">Calculadora de reajuste por IPC</a>
+        <a href="/calculadora-uf">Calculadora UF a pesos</a>
+      </div>
+    </div>
+  </section>
+
+</Base>
+
+<script>
+  const fmt0 = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
+  const $ = (id) => document.getElementById(id);
+  const num = (id) => { const v = $(id).value; if (!v) return 0; const n = parseFloat(String(v).replace(/\./g,'').replace(/,/g,'.').replace(/[^\d.]/g,'')); return isFinite(n) ? n : 0; };
+
+  const calcular = () => {
+    const avaluo = num('avaluo');
+    const renta = num('renta');
+    const dias = num('dias');
+    const rebaja = Math.round(avaluo * 0.11 * (dias > 0 ? dias / 365 : 0));
+    const bruto = Math.max(0, renta - rebaja);
+    const base = Math.round(bruto / 1.19);
+    const iva = Math.round(base * 0.19);
+
+    $('r-renta').textContent = fmt0.format(Math.round(renta));
+    $('r-rebaja').textContent = '- ' + fmt0.format(rebaja);
+    $('r-bruto').textContent = fmt0.format(bruto);
+    $('r-base').textContent = fmt0.format(base);
+    $('r-iva').textContent = fmt0.format(iva);
+
+    const msg = $('r-msg');
+    if (renta <= 0 || avaluo <= 0 || dias <= 0) { msg.textContent = ''; msg.className = 'msg'; return; }
+    if (bruto <= 0) {
+      msg.textContent = 'Con estos datos, este arriendo no genera IVA: la rebaja del 11% del avalúo cubre todo el arriendo del período.';
+      msg.className = 'msg ok';
+    } else {
+      msg.textContent = 'El arriendo amoblado se cobra con el IVA incluido. El IVA calculado arriba es lo que debes declarar y pagar al SII por el período. Se declara mensual en el F29.';
+      msg.className = 'msg info';
+    }
+  };
+
+  $('ar-form').addEventListener('input', calcular);
+  calcular();
+</script>
+
+<style>
+  .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:56px 0 44px}
+  .hero h1{font-size:33px;font-weight:800;letter-spacing:-.5px;max-width:24ch}
+  @media(min-width:901px){ .hero h1{max-width:calc(100% - 180px)} }
+  .hero .lead{font-size:18px;color:#444a63;margin:16px 0 0;max-width:60ch}
+
+  .sec{padding:40px 0}
+  .calc-wrap{max-width:920px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:18px;padding:26px}
+  .panel h2{font-size:16px;font-weight:800;color:var(--azul);margin:4px 0 14px}
+  .f{display:block;margin-bottom:16px}.f>span{display:block;font-family:'Montserrat';font-weight:600;font-size:13.5px;color:var(--azul-prof);margin-bottom:6px}
+  .f>span em{color:var(--gris);font-weight:500;font-style:normal}
+  .inp{display:flex;align-items:center;border:1px solid var(--linea);border-radius:10px;padding:0 12px}
+  .inp:focus-within{border-color:var(--azul)}
+  .inp i{font-family:'Montserrat';font-weight:700;color:var(--gris);font-size:14px;font-style:normal}
+  .inp i:first-child{margin-right:6px}.inp i:last-child{margin-left:6px}
+  .inp input{border:none;outline:none;padding:12px 0;width:100%;font-size:16px;color:var(--azul-prof);background:transparent}
+  .hint{margin-top:4px;font-size:13px;color:var(--gris);line-height:1.5}
+  .hint a{color:var(--azul);font-weight:600}
+
+  .result{background:linear-gradient(160deg,#fff,#f7f9fe)}
+  .res-head{margin-bottom:12px}
+  .res-head h2{font-size:18px;font-weight:800;color:var(--azul-prof);margin:0}
+  .res-sub{display:block;font-size:12px;color:var(--gris);font-weight:500;margin-top:2px}
+  .rrow{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:11px 0;border-top:1px solid #e6e8f0;font-size:14.5px;color:#33384a}
+  .rrow:first-of-type{border-top:none}
+  .rrow strong{font-family:'Montserrat';font-weight:700;color:var(--azul-prof);white-space:nowrap}
+  .rrow.dest{background:var(--azul);color:#fff;border-radius:11px;padding:13px 14px;border-top:none;margin:6px 0}
+  .rrow.dest strong{color:var(--amarillo);font-size:18px}
+  .msg{margin:12px 0 0;font-size:14px;line-height:1.5;border-radius:10px;padding:0}
+  .msg.ok{background:#eaf6ee;border:1px solid #bfe3cb;color:#1f6b3a;padding:11px 13px}
+  .msg.info{background:#eef5ff;border:1px solid #cfe0f5;color:#33384a;padding:11px 13px}
+
+  .descargo{margin-top:22px;background:#f7f9fe;border:1px solid var(--linea);border-radius:12px;padding:16px 20px;color:var(--gris);font-size:12.5px;line-height:1.6}
+  .descargo p{margin:0 0 8px}.descargo p:last-child{margin-bottom:0}
+  .descargo .firma{font-family:'Montserrat';font-weight:700;color:var(--azul);font-size:12px}
+
+  .banner-zona{max-width:920px;margin:6px auto 8px;padding:0 24px}
+
+  .sec-texto{padding:8px 0 44px}
+  .angosto{max-width:760px;margin:0 auto}
+  .sec-texto h2{font-size:24px;font-weight:800;margin:28px 0 12px;letter-spacing:-.3px}
+  .sec-texto p{font-size:16px;color:#444a63;line-height:1.7;margin-bottom:14px}
+  .sec-texto p a{color:var(--azul);font-weight:600}
+  .resp-rapida{background:#eef5ff;border:1px solid #cfe0f5;border-radius:14px;padding:16px 20px;margin:6px 0 8px}
+  .resp-rapida p{margin:0;font-size:15.5px;line-height:1.6;color:#33384a}
+  .resp-rapida strong{color:var(--azul-prof)}
+  .resp-rapida .resp-fecha{margin-top:8px;font-size:12.5px;color:var(--gris)}
+
+  .faq{margin-top:6px}
+  details{background:#fff;border:1px solid var(--linea);border-radius:14px;margin-bottom:12px;overflow:hidden}
+  summary{list-style:none;cursor:pointer;padding:18px 22px;font-family:'Montserrat';font-weight:600;font-size:16px;color:var(--azul);display:flex;justify-content:space-between;gap:14px}
+  summary::-webkit-details-marker{display:none}
+  .plus{font-size:22px;color:var(--azul);transition:.2s;flex-shrink:0}
+  details[open] .plus{transform:rotate(45deg)}
+  .ans{padding:0 22px 18px;color:#555;font-size:15.5px;line-height:1.6}
+
+  .relacionadas{padding-top:0}
+  .relac-grid{display:flex;flex-wrap:wrap;gap:10px}
+  .relac-grid a{font-family:'Montserrat';font-weight:600;font-size:14px;color:var(--azul);background:#fff;border:1px solid var(--linea);border-radius:10px;padding:9px 14px;text-decoration:none;transition:.15s}
+  .relac-grid a:hover{border-color:var(--azul)}
+
+  @media(max-width:860px){ .hero h1{font-size:27px} .grid{grid-template-columns:1fr} }
+</style>
