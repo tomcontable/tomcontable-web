@@ -51,13 +51,22 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
           <p class="hint">¿No sabes tu avalúo fiscal? Lo encuentras en tu boleta de contribuciones o en el <a href="https://www4.sii.cl/busquedarolesinternetui/" target="_blank" rel="noopener">buscador de roles del SII</a>, gratis y sin clave.</p>
         </form>
 
-        <div class="panel result" id="result">
-          <div class="res-head"><h2>Resultado</h2><span class="res-sub">Estimación referencial</span></div>
-          <div class="rrow"><span>Arriendo del período (incluye IVA)</span><strong id="r-renta">$0</strong></div>
-          <div class="rrow"><span>Menos rebaja del 11% (por los días)</span><strong id="r-rebaja">$0</strong></div>
-          <div class="rrow"><span>Valor bruto</span><strong id="r-bruto">$0</strong></div>
-          <div class="rrow"><span>Base imponible (valor bruto ÷ 1,19)</span><strong id="r-base">$0</strong></div>
-          <div class="rrow dest"><span>IVA a pagar (19%)</span><strong id="r-iva">$0</strong></div>
+        <div class="panel comp" id="result">
+          <div class="comp-head">
+            <div class="comp-marca"><strong>TomContable</strong><span>tomcontable.cl</span></div>
+            <span class="comp-tag">IVA arriendo amoblado</span>
+          </div>
+          <div class="comp-rows">
+            <div class="crow"><span>Arriendo del período (incluye IVA)</span><b id="r-renta">$0</b></div>
+            <div class="crow"><span>Parte exenta · 11% del avalúo</span><b id="r-rebaja">$0</b></div>
+            <div class="crow"><span>Valor bruto afecto</span><b id="r-bruto">$0</b></div>
+            <div class="crow"><span>Base imponible (÷ 1,19)</span><b id="r-base">$0</b></div>
+          </div>
+          <div class="comp-big">
+            <div class="cb"><span>IVA a pagar (19%)</span><strong id="r-iva">$0</strong></div>
+            <div class="cb alt"><span>Arriendo neto que recibes</span><strong id="r-neto">$0</strong></div>
+          </div>
+          <p class="comp-pie">Estimación referencial · rebaja del 11% del avalúo (Art. 17 Ley IVA) · tomcontable.cl</p>
           <p class="msg" id="r-msg"></p>
         </div>
       </div>
@@ -137,12 +146,15 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
     const bruto = Math.max(0, renta - rebaja);
     const base = Math.round(bruto / 1.19);
     const iva = Math.round(base * 0.19);
+    const exenta = Math.min(renta, rebaja);
+    const neto = Math.max(0, renta - iva);
 
     $('r-renta').textContent = fmt0.format(Math.round(renta));
-    $('r-rebaja').textContent = '- ' + fmt0.format(rebaja);
+    $('r-rebaja').textContent = fmt0.format(exenta);
     $('r-bruto').textContent = fmt0.format(bruto);
     $('r-base').textContent = fmt0.format(base);
     $('r-iva').textContent = fmt0.format(iva);
+    $('r-neto').textContent = fmt0.format(neto);
 
     const msg = $('r-msg');
     if (renta <= 0 || avaluo <= 0 || dias <= 0) { msg.textContent = ''; msg.className = 'msg'; return; }
@@ -180,18 +192,24 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   .hint{margin-top:4px;font-size:13px;color:var(--gris);line-height:1.5}
   .hint a{color:var(--azul);font-weight:600}
 
-  .result{background:linear-gradient(160deg,#fff,#f7f9fe)}
-  .res-head{margin-bottom:12px}
-  .res-head h2{font-size:18px;font-weight:800;color:var(--azul-prof);margin:0}
-  .res-sub{display:block;font-size:12px;color:var(--gris);font-weight:500;margin-top:2px}
-  .rrow{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:11px 0;border-top:1px solid #e6e8f0;font-size:14.5px;color:#33384a}
-  .rrow:first-of-type{border-top:none}
-  .rrow strong{font-family:'Montserrat';font-weight:700;color:var(--azul-prof);white-space:nowrap}
-  .rrow.dest{background:var(--azul);color:#fff;border-radius:11px;padding:13px 14px;border-top:none;margin:6px 0}
-  .rrow.dest strong{color:var(--amarillo);font-size:18px}
-  .msg{margin:12px 0 0;font-size:14px;line-height:1.5;border-radius:10px;padding:0}
-  .msg.ok{background:#eaf6ee;border:1px solid #bfe3cb;color:#1f6b3a;padding:11px 13px}
-  .msg.info{background:#eef5ff;border:1px solid #cfe0f5;color:#33384a;padding:11px 13px}
+  .comp{background:linear-gradient(155deg,var(--azul),var(--azul-prof));color:#fff;border:none;box-shadow:0 18px 40px -20px rgba(19,35,95,.6)}
+  .comp-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.16)}
+  .comp-marca strong{display:block;font-family:'Montserrat';font-weight:800;font-size:19px;color:#fff;line-height:1}
+  .comp-marca span{display:block;font-family:'Montserrat';font-weight:700;font-size:12.5px;color:var(--amarillo);margin-top:3px}
+  .comp-tag{font-family:'Montserrat';font-weight:700;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:#cfd6ea;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:5px 9px;white-space:nowrap}
+  .comp-rows{margin:8px 0}
+  .crow{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.10);font-size:14px;color:#dfe4f2}
+  .crow b{font-family:'Montserrat';font-weight:700;color:#fff;white-space:nowrap}
+  .comp-big{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+  .cb{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:12px 13px}
+  .cb span{display:block;font-family:'Montserrat';font-weight:600;font-size:12px;color:#cfd6ea}
+  .cb strong{display:block;font-family:'Montserrat';font-weight:800;font-size:20px;color:var(--amarillo);margin-top:4px;line-height:1.1}
+  .cb.alt strong{color:#fff}
+  .comp-pie{margin:14px 0 0;font-size:11px;color:#aeb7d4;line-height:1.4}
+  .msg{margin:12px 0 0;font-size:13.5px;line-height:1.5;border-radius:10px;padding:0;color:#dfe4f2}
+  .msg.ok{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);color:#fff;padding:11px 13px}
+  .msg.info{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);color:#dfe4f2;padding:11px 13px}
+  @media(max-width:420px){ .comp-big{grid-template-columns:1fr} }
 
   .descargo{margin-top:22px;background:#f7f9fe;border:1px solid var(--linea);border-radius:12px;padding:16px 20px;color:var(--gris);font-size:12.5px;line-height:1.6}
   .descargo p{margin:0 0 8px}.descargo p:last-child{margin-bottom:0}
