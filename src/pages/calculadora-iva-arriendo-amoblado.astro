@@ -62,10 +62,14 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
             <div class="crow"><span>Valor bruto afecto</span><b id="r-bruto">$0</b></div>
             <div class="crow"><span>Base imponible (÷ 1,19)</span><b id="r-base">$0</b></div>
           </div>
-          <div class="comp-big">
-            <div class="cb"><span>IVA a pagar (19%)</span><strong id="r-iva">$0</strong></div>
-            <div class="cb alt"><span>Arriendo neto que recibes</span><strong id="r-neto">$0</strong></div>
+          <div class="comp-factura">
+            <p class="cf-title">Así queda tu factura</p>
+            <div class="cfrow"><span>Exento</span><b id="f-exento">$0</b></div>
+            <div class="cfrow"><span>Neto</span><b id="f-neto">$0</b></div>
+            <div class="cfrow"><span>IVA</span><b id="f-iva">$0</b></div>
+            <div class="cfrow total"><span>Total</span><b id="f-total">$0</b></div>
           </div>
+          <div class="comp-neto"><span>Arriendo neto que recibes <em>(después de IVA)</em></span><strong id="r-neto">$0</strong></div>
           <p class="comp-pie">Estimación referencial · rebaja del 11% del avalúo (Art. 17 Ley IVA) · tomcontable.cl</p>
           <p class="msg" id="r-msg"></p>
         </div>
@@ -149,11 +153,15 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
     const exenta = Math.min(renta, rebaja);
     const neto = Math.max(0, renta - iva);
 
+    const total = exenta + base + iva;
     $('r-renta').textContent = fmt0.format(Math.round(renta));
     $('r-rebaja').textContent = fmt0.format(exenta);
     $('r-bruto').textContent = fmt0.format(bruto);
     $('r-base').textContent = fmt0.format(base);
-    $('r-iva').textContent = fmt0.format(iva);
+    $('f-exento').textContent = fmt0.format(exenta);
+    $('f-neto').textContent = fmt0.format(base);
+    $('f-iva').textContent = fmt0.format(iva);
+    $('f-total').textContent = fmt0.format(total);
     $('r-neto').textContent = fmt0.format(neto);
 
     const msg = $('r-msg');
@@ -200,16 +208,22 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   .comp-rows{margin:8px 0}
   .crow{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.10);font-size:14px;color:#dfe4f2}
   .crow b{font-family:'Montserrat';font-weight:700;color:#fff;white-space:nowrap}
-  .comp-big{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-  .cb{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:12px 13px}
-  .cb span{display:block;font-family:'Montserrat';font-weight:600;font-size:12px;color:#cfd6ea}
-  .cb strong{display:block;font-family:'Montserrat';font-weight:800;font-size:20px;color:var(--amarillo);margin-top:4px;line-height:1.1}
-  .cb.alt strong{color:#fff}
+  .comp-factura{margin-top:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:13px;padding:13px 15px}
+  .cf-title{font-family:'Montserrat';font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--amarillo);margin:0 0 8px}
+  .cfrow{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:6px 0;font-size:14px;color:#dfe4f2}
+  .cfrow b{font-family:'Montserrat';font-weight:700;color:#fff;white-space:nowrap}
+  .cfrow.total{border-top:1px solid rgba(255,255,255,.16);margin-top:4px;padding-top:9px}
+  .cfrow.total span{font-family:'Montserrat';font-weight:700;color:#fff}
+  .cfrow.total b{font-size:17px;color:var(--amarillo)}
+  .comp-neto{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:12px 14px}
+  .comp-neto span{font-family:'Montserrat';font-weight:600;font-size:12.5px;color:#cfd6ea}
+  .comp-neto em{font-style:normal;color:#aeb7d4;font-weight:500}
+  .comp-neto strong{font-family:'Montserrat';font-weight:800;font-size:19px;color:#fff;white-space:nowrap}
   .comp-pie{margin:14px 0 0;font-size:11px;color:#aeb7d4;line-height:1.4}
   .msg{margin:12px 0 0;font-size:13.5px;line-height:1.5;border-radius:10px;padding:0;color:#dfe4f2}
   .msg.ok{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);color:#fff;padding:11px 13px}
   .msg.info{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);color:#dfe4f2;padding:11px 13px}
-  @media(max-width:420px){ .comp-big{grid-template-columns:1fr} }
+  @media(max-width:420px){ .comp-neto{flex-direction:column;align-items:flex-start;gap:4px} }
 
   .descargo{margin-top:22px;background:#f7f9fe;border:1px solid var(--linea);border-radius:12px;padding:16px 20px;color:var(--gris);font-size:12.5px;line-height:1.6}
   .descargo p{margin:0 0 8px}.descargo p:last-child{margin-bottom:0}
