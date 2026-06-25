@@ -65,6 +65,12 @@ const tools = [
     ico: '<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
   },
   {
+    t: 'Calculadora de multas e intereses del SII',
+    d: 'Estima la multa, el reajuste por IPC y el interés diario por declarar o pagar fuera de plazo el IVA o la renta, según el tipo de impuesto.',
+    href: '/calculadora-multas-intereses-sii',
+    ico: '<rect x="4" y="3" width="13" height="18" rx="2"/><path d="M8 8h5M8 12h4"/><circle cx="17" cy="16" r="4.5"/><path d="M17 14v2.2M17 18.5h.01"/>',
+  },
+  {
     t: 'Indicadores previsionales',
     d: 'UF, UTM, comisiones de cada AFP, topes imponibles, sueldo mínimo, asignación familiar y más, al día y en un solo lugar.',
     href: '/indicadores-previsionales',
@@ -98,6 +104,13 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://tomcontable.cl/' },
   { '@type': 'ListItem', position: 2, name: 'Herramientas', item: 'https://tomcontable.cl/herramientas' }
 ] };
+
+// Agrupación visual de las herramientas. Para sumar una nueva, agrégala a tools y a la categoría que corresponda.
+const cats = [
+  { titulo: 'Sueldos y trabajo', hrefs: ['/calculadora-sueldo-liquido', '/calculadora-finiquito', '/indicadores-previsionales'] },
+  { titulo: 'Impuestos', hrefs: ['/calculadora-iva', '/calculadora-boleta-honorarios', '/calculadora-iva-arriendo-amoblado', '/calculadora-multas-intereses-sii'] },
+  { titulo: 'Indicadores y conversores', hrefs: ['/calculadora-uf', '/calculadora-utm', '/calculadora-dolar', '/calculadora-ipc'] },
+];
 ---
 <Base {...seo} schema={[listSchema, faqSchema, breadcrumb]}>
 
@@ -111,16 +124,21 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
 
   <section class="sec">
     <div class="wrap">
-      <div class="grid">
-        {tools.map((t) => (
-          <a class="card" href={t.href}>
-            <span class="ico"><svg viewBox="0 0 24 24" set:html={t.ico} /></span>
-            <h2>{t.t}</h2>
-            <p>{t.d}</p>
-            <span class="card-cta">Abrir calculadora →</span>
-          </a>
-        ))}
-      </div>
+      {cats.map((c) => (
+        <div class="cat-bloque">
+          <h2 class="cat-titulo">{c.titulo}</h2>
+          <div class="grid">
+            {tools.filter((t) => c.hrefs.includes(t.href)).map((t) => (
+              <a class="card" href={t.href}>
+                <span class="ico"><svg viewBox="0 0 24 24" set:html={t.ico} /></span>
+                <h3>{t.t}</h3>
+                <p>{t.d}</p>
+                <span class="card-cta">Abrir →</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   </section>
 
@@ -164,7 +182,10 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   .card:hover{transform:translateY(-3px);border-color:#c9cfe2;box-shadow:0 16px 30px -18px rgba(19,35,95,.5)}
   .ico{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:13px;background:var(--amarillo);margin-bottom:14px}
   .ico svg{width:23px;height:23px;fill:none;stroke:var(--azul-prof);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-  .card h2{font-size:19px;font-weight:800;margin-bottom:8px}
+  .card h3{font-size:19px;font-weight:800;margin-bottom:8px}
+  .cat-bloque{margin-bottom:40px}
+  .cat-bloque:last-child{margin-bottom:0}
+  .cat-titulo{font-size:22px;font-weight:800;margin:0 0 18px;letter-spacing:-.3px}
   .card p{font-size:15px;color:#555;flex:1;margin-bottom:16px;line-height:1.6}
   .card-cta{font-family:'Montserrat';font-weight:700;font-size:14px;color:var(--azul)}
 

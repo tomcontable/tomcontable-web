@@ -1,0 +1,369 @@
+---
+import Base from '../layouts/Base.astro';
+import BannerServicios from '../components/BannerServicios.astro';
+
+const seo = {
+  title: 'Calculadora de multas e intereses del SII 2026 | Atraso en IVA y renta · TomContable',
+  description: 'Calcula la multa, el reajuste por IPC y el interés penal diario por declarar o pagar impuestos fuera de plazo en Chile (IVA, renta). Con la tasa vigente 2026. Gratis y al instante.',
+  canonical: '/calculadora-multas-intereses-sii',
+};
+
+const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year: 'numeric' });
+
+const faqs = [
+  { q: '¿Cómo se calcula una multa del SII por declarar fuera de plazo?', a: 'Sobre el impuesto adeudado se suman tres cosas: el reajuste por la variación del IPC entre el vencimiento y el pago, el interés penal diario, y la multa que corresponde según el tipo de declaración. El interés y la multa se calculan sobre el impuesto ya reajustado.' },
+  { q: '¿Cuánto es el interés por pagar impuestos fuera de plazo en 2026?', a: 'Para el primer semestre de 2026 el interés penal es de 0,022% por día (7,92% anual), fijado por la Resolución Exenta SII N°205. Desde la Ley 21.713 el interés es diario y ya no es el antiguo 1,5% mensual. El SII fija esta tasa cada semestre.' },
+  { q: '¿De cuánto es la multa por declarar el IVA (F29) fuera de plazo?', a: 'El IVA es un impuesto de recargo, así que se rige por el artículo 97 N°11 del Código Tributario: 10% del impuesto adeudado hasta 5 meses de atraso, más 2% por cada mes o fracción desde el sexto, con tope de 30%. Si el SII lo detecta en una fiscalización, sube a 20% con tope de 60%.' },
+  { q: '¿De cuánto es la multa por declarar la renta (F22) fuera de plazo con pago?', a: 'Una declaración de renta con impuesto a pagar presentada fuera de plazo se rige por el artículo 97 N°2: 10% del impuesto hasta 5 meses de atraso, más 2% por cada mes o fracción desde el sexto, con tope de 30%. Se suma el reajuste por IPC y el interés penal diario.' },
+  { q: '¿Qué multa tiene un F29 sin movimiento o en remanente?', a: 'Cuando la declaración no tiene impuesto a pagar (calzada, sin movimiento o en remanente a favor) se aplica el artículo 97 N°1: una multa regulada entre 1 UTM y 1 UTA. No lleva reajuste ni interés porque no hay impuesto adeudado.' },
+  { q: '¿El SII todavía cobra el 1,5% mensual de interés?', a: 'No. Ese 1,5% mensual fue reemplazado por la Ley 21.713. Hoy el interés es diario y lo fija el SII cada semestre a partir de la tasa de interés corriente que publica la CMF más un 3,5%. Aplica también a deudas antiguas.' },
+  { q: '¿La multa se puede rebajar con condonación?', a: 'Sí, pero la condonación es transitoria y se evalúa caso a caso. La política vigente desde junio de 2026 condona parte del interés y de la multa según la antigüedad de la deuda, sin garantizar un porcentaje fijo. Por la misma multa, a una persona pueden rebajarle bastante y a otra nada. Esta calculadora muestra el monto máximo, sin condonación.' },
+  { q: '¿Esta calculadora reemplaza el cálculo del SII?', a: 'No. Es una estimación referencial pensada para tener claro el techo de lo que te pueden cobrar y dejar de calcularlo a ojo. El monto definitivo, y la condonación que aplique a tu caso, los confirma el SII.' },
+];
+
+const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
+const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication', name: 'Calculadora de multas e intereses del SII', applicationCategory: 'FinanceApplication', operatingSystem: 'Web', inLanguage: 'es-CL', url: 'https://tomcontable.cl/calculadora-multas-intereses-sii', description: 'Calcula la multa, el reajuste por IPC y el interés penal diario por declarar o pagar impuestos fuera de plazo en Chile, según el tipo de impuesto.', offers: { '@type': 'Offer', price: '0', priceCurrency: 'CLP' }, publisher: { '@type': 'Organization', name: 'TomContable' } };
+const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+  { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://tomcontable.cl/' },
+  { '@type': 'ListItem', position: 2, name: 'Herramientas', item: 'https://tomcontable.cl/herramientas' },
+  { '@type': 'ListItem', position: 3, name: 'Calculadora de multas e intereses del SII', item: 'https://tomcontable.cl/calculadora-multas-intereses-sii' }
+] };
+---
+<Base {...seo} schema={[appSchema, faqSchema, breadcrumb]}>
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Herramienta gratis</p>
+      <h1>Calculadora de multas e intereses del SII por pagar fuera de plazo</h1>
+      <p class="lead">Estima cuánto suma una declaración atrasada: el reajuste por IPC, el interés penal diario y la multa que corresponde según el tipo de impuesto. Con la tasa vigente en Chile, sin tener que calcularlo a ojo.</p>
+    </div>
+    <svg class="hero-ill" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="26" y="18" width="50" height="68" rx="6" stroke="#1E2F73" stroke-width="3.5"/><path d="M38 38h26M38 50h26M38 62h15" stroke="#1E2F73" stroke-width="3" stroke-linecap="round"/><circle cx="84" cy="82" r="18" fill="#F6B11A" fill-opacity="0.28" stroke="#1E2F73" stroke-width="3"/><path d="M84 74v9" stroke="#1E2F73" stroke-width="3.2" stroke-linecap="round"/><circle cx="84" cy="89" r="1.9" fill="#1E2F73"/></svg>
+  </section>
+
+  <section class="sec">
+    <div class="wrap calc-wrap">
+      <div class="grid">
+        <form class="panel form" id="m-form" autocomplete="off">
+          <h2>Datos de la deuda</h2>
+          <label class="f"><span>Origen de la multa</span>
+            <select id="origen">
+              <option value="iva">IVA u otra retención o recargo, con impuesto a pagar (F29)</option>
+              <option value="renta">Renta con impuesto a pagar (F22)</option>
+              <option value="sinimp">Declaración sin impuesto o en remanente</option>
+            </select>
+          </label>
+          <label class="f" id="wrap-monto"><span>Impuesto adeudado</span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="monto" placeholder="0" /></div></label>
+          <div class="f2">
+            <label class="f"><span>Vencimiento</span><input type="date" id="venc" class="date" /></label>
+            <label class="f"><span>Fecha de pago</span><input type="date" id="pago" class="date" /></label>
+          </div>
+          <label class="check" id="wrap-fisc"><input type="checkbox" id="fisc" /><span>El SII la detectó en una fiscalización (multa 20%, tope 60%)</span></label>
+          <p class="hint" id="hint-origen"></p>
+          <p class="form-nota" id="form-nota"></p>
+        </form>
+
+        <div class="panel comp" id="result">
+          <div class="comp-head">
+            <div class="comp-marca"><strong>TomContable</strong><span>tomcontable.cl</span></div>
+            <span class="comp-tag" id="comp-tag">Multas e intereses SII</span>
+          </div>
+          <div class="comp-rows" id="rows-imp">
+            <div class="crow"><span>Impuesto adeudado</span><b id="r-impuesto">$0</b></div>
+            <div class="crow"><span id="l-reajuste">Reajuste por IPC</span><b id="r-reajuste">$0</b></div>
+            <div class="crow"><span id="l-interes">Interés penal</span><b id="r-interes">$0</b></div>
+            <div class="crow"><span id="l-multa">Multa</span><b id="r-multa">$0</b></div>
+          </div>
+          <div class="comp-factura" id="total-block">
+            <div class="cfrow total"><span id="l-total">Total a pagar (máximo)</span><b id="r-total">$0</b></div>
+          </div>
+          <div class="comp-sinimp" id="sinimp-block">
+            <div class="comp-neto"><span>Multa Art. 97 N°1, entre 1 UTM y 1 UTA</span><strong id="r-rango">—</strong></div>
+          </div>
+          <p class="comp-cond">Es el monto máximo, sin condonación. La condonación es transitoria y caso a caso. <a href="/problemas-con-el-sii/">Revisa tu caso con nosotros</a>.</p>
+          <p class="comp-pie">Estimación referencial · interés vigente 1er semestre 2026 · tomcontable.cl</p>
+          <p class="msg" id="r-msg"></p>
+        </div>
+      </div>
+
+      <div class="descargo">
+        <p>Cálculo referencial generado en tomcontable.cl con los datos ingresados. Considera el reajuste por la variación del IPC del INE, el interés penal diario vigente para el primer semestre de 2026 (0,022% diario, Resolución Exenta SII N°205) y la multa del artículo 97 del Código Tributario según el tipo de declaración. Es el monto máximo, sin condonación. No constituye asesoría tributaria ni reemplaza el cálculo oficial del SII.</p>
+        <p class="firma">TomContable.cl · Cálculo referencial</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="banner-zona"><BannerServicios orden={['sii', 'asesorias', 'contabilidad', 'proyeccion']} lateral={true} /></div>
+
+  <section class="sec-texto">
+    <div class="wrap angosto">
+      <div class="resp-rapida">
+        <p><strong>Respuesta rápida:</strong> cuando una declaración se paga fuera de plazo, el SII suma sobre el impuesto el reajuste por IPC, un interés penal diario (0,022% al día en el primer semestre de 2026) y una multa que depende del tipo de impuesto: 10% a 30% en IVA y renta con pago, o de 1 UTM a 1 UTA cuando no hay impuesto. Esta calculadora estima ese total máximo, sin condonación.</p>
+        <p class="resp-fecha">Última actualización: {actualizado}. Fuente: Código Tributario (artículos 53 y 97) y Resolución Exenta SII N°205 de 2026.</p>
+      </div>
+
+      <h2>¿Cómo se calcula una multa del SII?</h2>
+      <p>Mucha gente cree que la multa es un porcentaje y listo. En realidad, una declaración pagada fuera de plazo suma tres cosas distintas sobre el impuesto adeudado: el reajuste por IPC, el interés penal y la multa propiamente tal. El interés y la multa se aplican sobre el impuesto ya reajustado, no sobre el valor original. Por eso el número final crece más rápido de lo que uno calcula a ojo.</p>
+
+      <h2>El reajuste por IPC</h2>
+      <p>Primero, el impuesto no se queda congelado: se reajusta por la variación del IPC entre el vencimiento y el pago, para que mantenga su valor real. Si pagas dentro del mismo mes en que caíste en mora, no hay reajuste. Una vez que cruzas el mes, empieza a correr. Esta calculadora toma esa variación de la serie oficial del INE.</p>
+
+      <h2>El interés penal diario, que ya no es el 1,5% mensual</h2>
+      <p>Este es el punto donde más gente se equivoca. Hasta hace poco el interés era un 1,5% por cada mes de atraso, y muchos todavía lo calculan así. La Ley 21.713 lo cambió: hoy el interés es diario. Para el primer semestre de 2026 es de 0,022% por día, equivalente a 7,92% anual, según la Resolución Exenta SII N°205. El SII fija esta tasa cada semestre, a partir de la tasa de interés corriente que publica la CMF más un 3,5%, y corre por cada día de atraso sobre el monto reajustado.</p>
+
+      <h2>La multa, según el tipo de impuesto</h2>
+      <p>La multa cambia según qué declaraste y si hay impuesto a pagar. No es lo mismo un IVA con débito que un F29 en remanente:</p>
+      <p>En el <strong>IVA y otros impuestos de retención o recargo con impuesto a pagar</strong>, aplica el artículo 97 N°11 del Código Tributario: 10% del impuesto adeudado hasta 5 meses de atraso, más 2% por cada mes o fracción desde el sexto, con tope de 30%. Si el SII detecta la omisión en una fiscalización, la multa parte en 20% con tope de 60%.</p>
+      <p>En la <strong>renta con impuesto a pagar</strong>, aplica el artículo 97 N°2, con la misma mecánica: 10% hasta 5 meses, más 2% por mes desde el sexto, con tope de 30%.</p>
+      <p>Cuando la <strong>declaración no tiene impuesto a pagar</strong>, ya sea calzada, sin movimiento o en remanente a favor, aplica el artículo 97 N°1: una multa regulada entre 1 UTM y 1 UTA, sin reajuste ni interés, porque no hay impuesto adeudado.</p>
+
+      <h2>Un ejemplo</h2>
+      <p>Supón un IVA con $1.000.000 de impuesto, que vencía el 12 de febrero de 2026 y se paga el 20 de junio: 128 días y poco más de cuatro meses de atraso. El impuesto se reajusta por el IPC del período, sobre ese monto reajustado corre el interés de 0,022% por día (cerca de un 2,8%), y la multa del artículo 97 N°11 es del 10%, porque el atraso no supera los 5 meses. El total termina bastante por encima del millón original. La calculadora arma ese desglose con tus propias fechas y montos.</p>
+
+      <h2>¿Y las condonaciones?</h2>
+      <p>La condonación puede bajar harto lo que finalmente pagas, pero es transitoria y se resuelve caso a caso. La política vigente desde junio de 2026 condona una parte del interés y de la multa según la antigüedad de la deuda, y se pide por internet o de forma presencial. Lo importante: no hay un porcentaje garantizado. Por la misma multa, hay quien obtiene una rebaja grande y quien no obtiene nada. Por eso esta calculadora te muestra el techo, el máximo que te pueden cobrar, y la condonación real conviene revisarla con tu caso a la vista. Si quieres entender cómo funciona, lee nuestra guía sobre la <a href="/blog/condonacion-de-intereses-y-multas-sii-2026/">condonación de intereses y multas del SII</a>.</p>
+
+      <h2>Cómo dejar de pagar multas por atraso</h2>
+      <p>La mejor multa es la que nunca llega. Si te pasa seguido que las fechas se te van encima, o ya tienes una deuda con el SII y no sabes por dónde tomarla, podemos ayudarte a ordenarlo: revisamos tu situación, vemos qué condonación aplica y armamos un plan para ponerte al día sin que el problema siga creciendo. Mira cómo abordamos los <a href="/problemas-con-el-sii/">problemas con el SII</a> o cómo funciona la <a href="/contabilidad-mensual/">contabilidad mensual</a> para que esto deje de pasar.</p>
+
+      <h2 id="faq">Preguntas frecuentes</h2>
+      <div class="faq">
+        {faqs.map((it) => (
+          <details>
+            <summary>{it.q}<span class="plus">+</span></summary>
+            <div class="ans">{it.a}</div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="sec-texto relacionadas">
+    <div class="wrap angosto">
+      <h2>Otras calculadoras</h2>
+      <div class="relac-grid">
+        <a href="/calculadora-iva">Calculadora de IVA</a>
+        <a href="/calculadora-utm">Calculadora UTM a pesos</a>
+        <a href="/calculadora-ipc">Calculadora de reajuste por IPC</a>
+        <a href="/herramientas/">Ver todas las herramientas</a>
+      </div>
+    </div>
+  </section>
+
+</Base>
+
+<script>
+  const API = 'https://api-calculadora.ine.cl';
+  const TASA_DIARIA = 0.00022; // 0,022% diario, 1er semestre 2026 (Res. Ex. SII N°205). Se actualiza cada semestre.
+  const FALLBACK_UTM = 69265;
+  const fmt0 = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
+  const $ = (id) => document.getElementById(id);
+  const num = (id) => { const v = $(id).value; if (!v) return 0; const n = parseInt(String(v).replace(/\D/g, ''), 10); return isFinite(n) ? n : 0; };
+  const fmtMiles = (n) => new Intl.NumberFormat('es-CL').format(n);
+
+  let UTM = FALLBACK_UTM;
+  const ipcCache = {};
+
+  try { const c = localStorage.getItem('tc_utm_multas'); if (c) UTM = parseInt(c, 10) || FALLBACK_UTM; } catch (e) {}
+  fetch('https://mindicador.cl/api/utm').then((r) => r.json()).then((d) => {
+    if (d && d.serie && d.serie[0] && d.serie[0].valor) {
+      UTM = Math.round(d.serie[0].valor);
+      try { localStorage.setItem('tc_utm_multas', String(UTM)); } catch (e) {}
+      if (origenEl.value === 'sinimp') renderSinImp();
+    }
+  }).catch(() => {});
+
+  const origenEl = $('origen'), vencEl = $('venc'), pagoEl = $('pago'), fiscEl = $('fisc');
+
+  const parseDate = (s) => { if (!s) return null; const p = s.split('-').map(Number); if (p.length !== 3 || !p[0] || !p[1] || !p[2]) return null; return { y: p[0], m: p[1], d: p[2], t: Date.UTC(p[0], p[1] - 1, p[2]) }; };
+  const daysBetween = (a, b) => Math.round((b.t - a.t) / 86400000);
+  const mesesAtraso = (a, b) => { let mm = (b.y - a.y) * 12 + (b.m - a.m); let frac; if (b.d > a.d) frac = true; else if (b.d < a.d) { mm -= 1; frac = true; } else frac = false; return mm + (frac ? 1 : 0); };
+  const lag2 = (y, m) => { let mm = m - 2, yy = y; if (mm <= 0) { mm += 12; yy -= 1; } return { m: mm, y: yy }; };
+
+  const fetchFactor = async (ini, ter) => {
+    const key = `${ini.m}-${ini.y}-${ter.m}-${ter.y}`;
+    if (key in ipcCache) return ipcCache[key];
+    let f = 0;
+    try {
+      const url = `${API}/ServiciosCalculadoraVariacion?mesInicio=${ini.m}&AnioInicio=${ini.y}&mesTermino=${ter.m}&AnioTermino=${ter.y}&valor_a_ajustar=1000000`;
+      const res = await fetch(url).then((r) => r.json());
+      const d = res && res[0];
+      if (d) {
+        const pct = parseFloat(String(d.variacion_ipc || '').replace('%', '').replace(/\s/g, '').replace(',', '.'));
+        if (isFinite(pct)) f = pct / 100;
+        else { const va = parseInt(String(d.valorajustado || '').replace(/\D/g, ''), 10); if (isFinite(va) && va > 0) f = (va - 1000000) / 1000000; }
+      }
+    } catch (e) { f = 0; }
+    f = Math.max(0, f);
+    ipcCache[key] = f;
+    return f;
+  };
+
+  const nota = (t) => { $('form-nota').textContent = t || ''; };
+
+  const toggle = (origen) => {
+    const esSin = origen === 'sinimp';
+    $('wrap-monto').style.display = esSin ? 'none' : 'block';
+    $('wrap-fisc').style.display = origen === 'iva' ? 'flex' : 'none';
+    $('rows-imp').style.display = esSin ? 'none' : 'block';
+    $('total-block').style.display = esSin ? 'none' : 'block';
+    $('sinimp-block').style.display = esSin ? 'block' : 'none';
+    $('comp-tag').textContent = esSin ? 'Declaración sin impuesto' : 'Multas e intereses SII';
+    const hints = {
+      iva: 'El IVA y otros impuestos de retención o recargo se rigen por el Art. 97 N°11: 10% hasta 5 meses de atraso, más 2% por mes desde el sexto, con tope de 30%. Si el SII lo detecta en fiscalización, sube a 20% con tope de 60%.',
+      renta: 'La renta con impuesto a pagar se rige por el Art. 97 N°2: 10% hasta 5 meses de atraso, más 2% por mes desde el sexto, con tope de 30%.',
+      sinimp: 'Una declaración sin impuesto a pagar (calzada, sin movimiento o en remanente) se rige por el Art. 97 N°1: multa regulada entre 1 UTM y 1 UTA, sin reajuste ni interés. No depende del monto ni de los meses de atraso.'
+    };
+    $('hint-origen').textContent = hints[origen];
+  };
+
+  const renderSinImp = () => {
+    const uta = UTM * 12;
+    $('r-rango').textContent = `${fmt0.format(UTM)} a ${fmt0.format(uta)}`;
+    const msg = $('r-msg');
+    msg.textContent = 'El SII regula esta multa dentro de ese rango y, en la práctica, suele quedar en el tramo más bajo o condonarse. No lleva reajuste ni interés porque no hay impuesto adeudado.';
+    msg.className = 'msg info';
+  };
+
+  const calcular = async () => {
+    const origen = origenEl.value;
+    toggle(origen);
+    if (origen === 'sinimp') { nota(''); renderSinImp(); return; }
+
+    const monto = num('monto');
+    const venc = parseDate(vencEl.value), pago = parseDate(pagoEl.value);
+    if (!venc || !pago) { nota(''); return; }
+    if (pago.t < venc.t) { nota('La fecha de pago debe ser posterior al vencimiento.'); return; }
+    nota('');
+
+    const dias = daysBetween(venc, pago);
+    const M = mesesAtraso(venc, pago);
+    const ini = lag2(venc.y, venc.m), ter = lag2(pago.y, pago.m);
+    const factor = await fetchFactor(ini, ter);
+    const reajuste = Math.max(0, Math.round(monto * factor));
+    const montoReaj = monto + reajuste;
+    const interes = Math.round(montoReaj * TASA_DIARIA * dias);
+
+    let base, tope, art;
+    if (origen === 'iva') { const f = fiscEl.checked; base = f ? 0.20 : 0.10; tope = f ? 0.60 : 0.30; art = '11'; }
+    else { base = 0.10; tope = 0.30; art = '2'; }
+    const multaPct = M <= 5 ? base : Math.min(tope, base + 0.02 * (M - 5));
+    const multa = Math.round(montoReaj * multaPct);
+    const total = montoReaj + interes + multa;
+
+    $('r-impuesto').textContent = fmt0.format(monto);
+    $('l-reajuste').textContent = `Reajuste por IPC (${(factor * 100).toLocaleString('es-CL', { maximumFractionDigits: 1 })}%)`;
+    $('r-reajuste').textContent = '+ ' + fmt0.format(reajuste);
+    $('l-interes').textContent = `Interés penal (${dias} ${dias === 1 ? 'día' : 'días'} · 0,022%/día)`;
+    $('r-interes').textContent = '+ ' + fmt0.format(interes);
+    $('l-multa').textContent = `Multa Art. 97 N°${art} (${(multaPct * 100).toLocaleString('es-CL', { maximumFractionDigits: 0 })}%)`;
+    $('r-multa').textContent = '+ ' + fmt0.format(multa);
+    $('l-total').textContent = 'Total a pagar (máximo, sin condonación)';
+    $('r-total').textContent = fmt0.format(total);
+
+    const msg = $('r-msg');
+    if (monto <= 0) { msg.textContent = 'Ingresa el impuesto adeudado para ver el cálculo.'; msg.className = 'msg'; return; }
+    if (dias <= 0) { msg.textContent = 'Con estas fechas no hay atraso: no se genera multa ni interés.'; msg.className = 'msg ok'; return; }
+    msg.textContent = 'Es el monto máximo, sin condonación. El interés y la multa se calculan sobre el impuesto ya reajustado.';
+    msg.className = 'msg info';
+  };
+
+  // Valores iniciales: ejemplo con atraso
+  const today = new Date();
+  const pad = (n) => String(n).padStart(2, '0');
+  const iso = (dt) => `${dt.getFullYear()}-${pad(dt.getMonth() + 1)}-${pad(dt.getDate())}`;
+  pagoEl.value = iso(today);
+  const venc0 = new Date(today); venc0.setMonth(venc0.getMonth() - 4);
+  vencEl.value = iso(venc0);
+  $('monto').value = '1.000.000';
+
+  $('monto').addEventListener('input', () => { const n = num('monto'); $('monto').value = n > 0 ? fmtMiles(n) : ''; calcular(); });
+  origenEl.addEventListener('change', calcular);
+  vencEl.addEventListener('change', calcular);
+  pagoEl.addEventListener('change', calcular);
+  fiscEl.addEventListener('change', calcular);
+
+  calcular();
+</script>
+
+<style>
+  .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:56px 0 44px}
+  .hero h1{font-size:33px;font-weight:800;letter-spacing:-.5px;max-width:24ch}
+  @media(min-width:901px){ .hero h1{max-width:calc(100% - 180px)} }
+  .hero .lead{font-size:18px;color:#444a63;margin:16px 0 0;max-width:62ch}
+
+  .sec{padding:40px 0}
+  .calc-wrap{max-width:920px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:18px;padding:26px}
+  .panel h2{font-size:16px;font-weight:800;color:var(--azul);margin:4px 0 14px}
+  .f{display:block;margin-bottom:16px}.f>span{display:block;font-family:'Montserrat';font-weight:600;font-size:13.5px;color:var(--azul-prof);margin-bottom:6px}
+  .f select,.f .date{width:100%;border:1px solid var(--linea);border-radius:10px;padding:11px 13px;font-family:inherit;font-size:15px;color:var(--azul-prof);background:#fff}
+  .f select:focus,.f .date:focus{outline:none;border-color:var(--azul)}
+  .f2{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end}
+  .inp{display:flex;align-items:center;border:1px solid var(--linea);border-radius:10px;padding:0 12px}
+  .inp:focus-within{border-color:var(--azul)}
+  .inp i{font-family:'Montserrat';font-weight:700;color:var(--gris);font-size:14px;font-style:normal;margin-right:6px}
+  .inp input{border:none;outline:none;padding:12px 0;width:100%;font-size:16px;color:var(--azul-prof);background:transparent}
+  .check{display:flex;align-items:flex-start;gap:9px;margin:2px 0 12px;cursor:pointer}
+  .check input{margin-top:2px;width:16px;height:16px;accent-color:var(--azul);flex-shrink:0}
+  .check span{font-size:13.5px;color:var(--azul-prof);line-height:1.45}
+  .hint{margin:2px 0 0;font-size:13px;color:var(--gris);line-height:1.5}
+  .form-nota{font-size:13px;color:#c0392b;margin:6px 0 0;min-height:1em}
+
+  .comp{background:linear-gradient(155deg,var(--azul),var(--azul-prof));color:#fff;border:none;box-shadow:0 18px 40px -20px rgba(19,35,95,.6)}
+  .comp-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.16)}
+  .comp-marca strong{display:block;font-family:'Montserrat';font-weight:800;font-size:19px;color:#fff;line-height:1}
+  .comp-marca span{display:block;font-family:'Montserrat';font-weight:700;font-size:12.5px;color:var(--amarillo);margin-top:3px}
+  .comp-tag{font-family:'Montserrat';font-weight:700;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:#cfd6ea;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:5px 9px;white-space:nowrap}
+  .comp-rows{margin:8px 0}
+  .crow{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.10);font-size:14px;color:#dfe4f2}
+  .crow:last-child{border-bottom:none}
+  .crow b{font-family:'Montserrat';font-weight:700;color:#fff;white-space:nowrap}
+  .comp-factura{margin-top:6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:13px;padding:6px 15px}
+  .cfrow{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:8px 0;font-size:14px;color:#dfe4f2}
+  .cfrow.total span{font-family:'Montserrat';font-weight:700;color:#fff;font-size:14.5px}
+  .cfrow.total b{font-size:21px;color:var(--amarillo);font-family:'Montserrat';font-weight:800;white-space:nowrap}
+  .comp-sinimp{margin-top:8px}
+  .comp-neto{display:flex;justify-content:space-between;align-items:center;gap:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:14px}
+  .comp-neto span{font-family:'Montserrat';font-weight:600;font-size:12.5px;color:#cfd6ea;max-width:48%}
+  .comp-neto strong{font-family:'Montserrat';font-weight:800;font-size:18px;color:var(--amarillo);white-space:nowrap}
+  .comp-cond{margin:14px 0 0;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:11px;padding:11px 14px;font-size:13px;color:#dfe4f2;line-height:1.5}
+  .comp-cond a{color:var(--amarillo);font-weight:700;text-decoration:underline}
+  .comp-pie{margin:12px 0 0;font-size:11px;color:#aeb7d4;line-height:1.4}
+  .msg{margin:12px 0 0;font-size:13.5px;line-height:1.5;border-radius:10px;color:#dfe4f2}
+  .msg.ok{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);color:#fff;padding:11px 13px}
+  .msg.info{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);color:#dfe4f2;padding:11px 13px}
+  @media(max-width:420px){ .comp-neto{flex-direction:column;align-items:flex-start;gap:6px} .comp-neto span{max-width:100%} }
+
+  .descargo{margin-top:22px;background:#f7f9fe;border:1px solid var(--linea);border-radius:12px;padding:16px 20px;color:var(--gris);font-size:12.5px;line-height:1.6}
+  .descargo p{margin:0 0 8px}.descargo p:last-child{margin-bottom:0}
+  .descargo .firma{font-family:'Montserrat';font-weight:700;color:var(--azul);font-size:12px}
+
+  .banner-zona{max-width:920px;margin:6px auto 8px;padding:0 24px}
+
+  .sec-texto{padding:8px 0 44px}
+  .angosto{max-width:760px;margin:0 auto}
+  .sec-texto h2{font-size:24px;font-weight:800;margin:28px 0 12px;letter-spacing:-.3px}
+  .sec-texto p{font-size:16px;color:#444a63;line-height:1.7;margin-bottom:14px}
+  .sec-texto p a{color:var(--azul);font-weight:600}
+  .sec-texto p strong{color:var(--azul-prof)}
+  .resp-rapida{background:#eef5ff;border:1px solid #cfe0f5;border-radius:14px;padding:16px 20px;margin:6px 0 8px}
+  .resp-rapida p{margin:0;font-size:15.5px;line-height:1.6;color:#33384a}
+  .resp-rapida strong{color:var(--azul-prof)}
+  .resp-rapida .resp-fecha{margin-top:8px;font-size:12.5px;color:var(--gris)}
+
+  .faq{margin-top:6px}
+  details{background:#fff;border:1px solid var(--linea);border-radius:14px;margin-bottom:12px;overflow:hidden}
+  summary{list-style:none;cursor:pointer;padding:18px 22px;font-family:'Montserrat';font-weight:600;font-size:16px;color:var(--azul);display:flex;justify-content:space-between;gap:14px}
+  summary::-webkit-details-marker{display:none}
+  .plus{font-size:22px;color:var(--azul);transition:.2s;flex-shrink:0}
+  details[open] .plus{transform:rotate(45deg)}
+  .ans{padding:0 22px 18px;color:#555;font-size:15.5px;line-height:1.6}
+
+  .relacionadas{padding-top:0}
+  .relac-grid{display:flex;flex-wrap:wrap;gap:10px}
+  .relac-grid a{font-family:'Montserrat';font-weight:600;font-size:14px;color:var(--azul);background:#fff;border:1px solid var(--linea);border-radius:10px;padding:9px 14px;text-decoration:none;transition:.15s}
+  .relac-grid a:hover{border-color:var(--azul)}
+
+  @media(max-width:860px){ .hero h1{font-size:27px} .grid{grid-template-columns:1fr} }
+</style>
