@@ -1,0 +1,312 @@
+---
+import Base from '../layouts/Base.astro';
+import BannerServicios from '../components/BannerServicios.astro';
+
+const periodo = 'Junio 2026';
+
+const seo = {
+  title: 'Indicadores previsionales ' + periodo + ' | UF, UTM, AFP, topes y mínimo · TomContable',
+  description: 'Indicadores previsionales de ' + periodo + ' en Chile: UF, UTM, comisiones de cada AFP, topes imponibles, sueldo mínimo, asignación familiar, SIS, seguro social y APV. Claros y al día.',
+  canonical: '/indicadores-previsionales',
+};
+
+const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year: 'numeric' });
+
+const afps = [
+  { n: 'Uno', t: 10.46 },
+  { n: 'Modelo', t: 10.58 },
+  { n: 'PlanVital', t: 11.16 },
+  { n: 'Habitat', t: 11.27 },
+  { n: 'Capital', t: 11.44 },
+  { n: 'Cuprum', t: 11.44 },
+  { n: 'Provida', t: 11.45 },
+];
+
+const asigFam = [
+  { tr: 'A', monto: '$22.601', req: 'Renta hasta $649.039' },
+  { tr: 'B', monto: '$13.870', req: 'Renta entre $649.039 y $947.990' },
+  { tr: 'C', monto: '$4.382', req: 'Renta entre $947.990 y $1.478.539' },
+  { tr: 'D', monto: '$0', req: 'Renta sobre $1.478.539' },
+];
+
+const faqs = [
+  { q: '¿Qué son los indicadores previsionales?', a: 'Son los valores y tasas que se usan cada mes para calcular sueldos y cotizaciones en Chile: UF, UTM, comisiones de AFP, topes imponibles, sueldo mínimo, asignación familiar, salud, seguro de cesantía y el seguro social. Los publica Previred mensualmente.' },
+  { q: '¿Cuál es el sueldo mínimo en Chile en 2026?', a: 'El ingreso mínimo mensual es de $553.553 para trabajadores de 18 a 65 años, vigente desde las remuneraciones de mayo de 2026. Para menores de 18 o mayores de 65 es $412.938, y para fines no remuneracionales $356.815.' },
+  { q: '¿Cuánto cobra cada AFP de comisión?', a: 'La cotización del trabajador es 10% más la comisión de cada AFP. Hoy la más barata es Uno (10,46% en total) y la más cara Provida (11,45%). En el medio están Modelo, PlanVital, Habitat, Capital y Cuprum. La diferencia es solo la comisión; el 10% es igual en todas.' },
+  { q: '¿Cuál es el tope imponible?', a: 'Para AFP y salud el tope es 90 UF (unos $3.673.828); para el seguro de cesantía es 135,2 UF (unos $5.518.906). Sobre esos montos no se cotiza.' },
+  { q: '¿Qué es el seguro social de la reforma?', a: 'Es la cotización adicional de cargo del empleador que introdujo la reforma de pensiones, que entra de forma gradual. Hoy es un 1% del empleador: 0,1% a la cuenta individual del trabajador y 0,9% al seguro social (expectativa de vida).' },
+  { q: '¿Cada cuánto se actualizan estos valores?', a: 'La UF, la UTM y el dólar cambian a diario o mensualmente y aquí se muestran en vivo. El resto (topes, comisiones, mínimo, asignación familiar) cambia una vez al mes o al año, y lo actualizamos según lo que publica Previred.' },
+  { q: '¿De dónde salen estos datos?', a: 'La UF, la UTM y el dólar vienen del Banco Central. El resto de los indicadores los publica Previred cada mes. Son valores referenciales para orientarte; el cálculo oficial de una liquidación se hace con todos los antecedentes del trabajador.' },
+];
+
+const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
+const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+  { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://tomcontable.cl/' },
+  { '@type': 'ListItem', position: 2, name: 'Herramientas', item: 'https://tomcontable.cl/herramientas' },
+  { '@type': 'ListItem', position: 3, name: 'Indicadores previsionales', item: 'https://tomcontable.cl/indicadores-previsionales' }
+] };
+---
+<Base {...seo} schema={[faqSchema, breadcrumb]}>
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Herramienta gratis</p>
+      <h1>Indicadores previsionales en Chile</h1>
+      <p class="lead">UF, UTM, comisiones de cada AFP, topes imponibles, sueldo mínimo, asignación familiar y más, claros y al día. Lo que necesitas para calcular sueldos, sin entrar a Previred.</p>
+      <span class="periodo">{periodo} · vigente</span>
+    </div>
+    <svg class="hero-ill" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="16" y="20" width="88" height="84" rx="11" stroke="#1E2F73" stroke-width="3.5"/><path d="M16 40h88" stroke="#1E2F73" stroke-width="3.5"/><path d="M30 58h26M30 72h26M30 86h16" stroke="#1E2F73" stroke-width="3" stroke-linecap="round"/><rect x="68" y="56" width="22" height="34" rx="4" fill="#F6B11A" fill-opacity="0.3" stroke="#1E2F73" stroke-width="2.5"/><path d="M73 80l5 5 9-11" stroke="#1E2F73" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </section>
+
+  <section class="sec-texto">
+    <div class="wrap angosto">
+      <div class="resp-rapida">
+        <p><strong>Respuesta rápida:</strong> en {periodo}, el sueldo mínimo es $553.553, la AFP más barata es Uno (10,46% en total) y el tope imponible para AFP y salud es 90 UF. Abajo tienes todos los indicadores del mes, con la UF, la UTM y el dólar en vivo del Banco Central.</p>
+        <p class="resp-fecha">Última actualización: {actualizado}. Fuente: Previred y Banco Central de Chile.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap ancho">
+
+      <h2 class="bloque">Valores del mes</h2>
+      <p class="bloque-n">UF, UTM y dólar en vivo del Banco Central. La UTA es 12 UTM.</p>
+      <div class="grid g4">
+        <div class="m"><p class="m-l">UF</p><p class="m-v" id="v-uf">$40.820</p><div class="spark" id="sp-uf"></div><p class="m-n">al día</p></div>
+        <div class="m"><p class="m-l">UTM</p><p class="m-v" id="v-utm">$71.506</p><div class="spark" id="sp-utm"></div><p class="m-n">{periodo}</p></div>
+        <div class="m"><p class="m-l">UTA</p><p class="m-v" id="v-uta">$858.072</p><div class="spark" id="sp-uta"></div><p class="m-n">12 UTM</p></div>
+        <div class="m"><p class="m-l">Dólar observado</p><p class="m-v" id="v-dolar">$945</p><div class="spark" id="sp-dolar"></div><p class="m-n">al día</p></div>
+      </div>
+
+      <h2 class="bloque">Comisión por AFP</h2>
+      <p class="bloque-n">Cotización del trabajador: 10% obligatorio más la comisión de cada AFP. La más barata, destacada.</p>
+      <div class="afp-box">
+        {afps.map((a, i) => (
+          <div class="bar">
+            <span class="bnm">{a.n}</span>
+            <span class="btk"><span class={i === 0 ? 'bfill best' : 'bfill'} style={`width:${Math.round((a.t - 10) / 1.45 * 100)}%`}></span></span>
+            <span class="bpc">{a.t.toFixed(2).replace('.', ',')}%</span>
+          </div>
+        ))}
+        <p class="afp-nota">Más el SIS de 1,62%, de cargo del empleador. El 10% es igual en todas; lo que cambia es la comisión.</p>
+      </div>
+
+      <h2 class="bloque">Cargas del empleador y seguro social</h2>
+      <div class="grid g4">
+        <div class="m"><p class="m-l">Seguro de cesantía</p><p class="m-v">2,4%</p><p class="m-n">indefinido · trabajador 0,6%</p></div>
+        <div class="m"><p class="m-l">SIS</p><p class="m-v">1,62%</p><p class="m-n">invalidez y sobrevivencia</p></div>
+        <div class="m"><p class="m-l">Seguro social <span class="chip">reforma</span></p><p class="m-v">1,0%</p><p class="m-n">0,1% cuenta + 0,9% exp. de vida</p></div>
+        <div class="m"><p class="m-l">Cesantía plazo fijo</p><p class="m-v">3,0%</p><p class="m-n">empleador</p></div>
+      </div>
+
+      <h2 class="bloque">Salud y cajas de compensación</h2>
+      <div class="grid g3">
+        <div class="m"><p class="m-l">Salud (Fonasa)</p><p class="m-v">7%</p><p class="m-n">o plan de isapre en UF</p></div>
+        <div class="m"><p class="m-l">Con caja (CCAF)</p><p class="m-v">4,2% + 2,8%</p><p class="m-n">caja + Fonasa, suman 7%</p></div>
+        <div class="m"><p class="m-l">Sin caja</p><p class="m-v">7%</p><p class="m-n">todo a Fonasa</p></div>
+      </div>
+
+      <h2 class="bloque">Topes imponibles, APV y depósitos convenidos</h2>
+      <div class="grid g4">
+        <div class="m"><p class="m-l">Tope AFP y salud</p><p class="m-v">90 <small>UF</small></p><p class="m-n">$3.673.828</p></div>
+        <div class="m"><p class="m-l">Tope cesantía</p><p class="m-v">135,2 <small>UF</small></p><p class="m-n">$5.518.906</p></div>
+        <div class="m"><p class="m-l">APV</p><p class="m-v">50 <small>UF/mes</small></p><p class="m-n">600 UF al año · $24.492.186</p></div>
+        <div class="m"><p class="m-l">Depósitos convenidos</p><p class="m-v">900 <small>UF</small></p><p class="m-n">tope anual · $36.738.279</p></div>
+      </div>
+
+      <h2 class="bloque">Asignación familiar</h2>
+      <div class="tabla">
+        {asigFam.map((t) => (
+          <div class="trow"><span class="ttr">Tramo {t.tr}</span><span class="treq">{t.req}</span><strong class="tmonto">{t.monto}</strong></div>
+        ))}
+      </div>
+
+      <h2 class="bloque">Ingreso mínimo</h2>
+      <div class="grid g3">
+        <div class="m"><p class="m-l">General</p><p class="m-v">$553.553</p><p class="m-n">18 a 65 años</p></div>
+        <div class="m"><p class="m-l">Menor de 18 o mayor de 65</p><p class="m-v">$412.938</p></div>
+        <div class="m"><p class="m-l">No remuneracional</p><p class="m-v">$356.815</p></div>
+      </div>
+
+      <div class="descargo">
+        <p>Valores referenciales del período {periodo}, según Previred y el Banco Central de Chile. La UF, la UTM y el dólar se cargan en vivo; el resto se actualiza cada mes. No constituye asesoría laboral ni previsional. El cálculo oficial de una liquidación o cotización se hace con todos los antecedentes del trabajador.</p>
+        <p class="firma">TomContable.cl · Indicadores referenciales</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="banner-zona"><BannerServicios orden={['remuneraciones', 'contabilidad', 'asesorias', 'proyeccion']} lateral={true} /></div>
+
+  <section class="sec-texto">
+    <div class="wrap angosto">
+      <h2>Para qué sirven los indicadores previsionales</h2>
+      <p>Cada vez que se calcula un sueldo en Chile se necesitan estos valores: la UF y la UTM para los topes y los impuestos, las comisiones de la AFP, las tasas de salud y de cesantía, el seguro social de la reforma, y el sueldo mínimo. Cambian mes a mes, así que tenerlos a mano y al día evita errores en las liquidaciones.</p>
+
+      <h2>El sueldo mínimo en 2026</h2>
+      <p>Desde las remuneraciones de mayo de 2026, el ingreso mínimo mensual subió a $553.553 para trabajadores de 18 a 65 años. Ese valor también es la renta mínima imponible y la base del tope de la gratificación legal. Si calculas un sueldo, asegúrate de usar el mínimo vigente.</p>
+
+      <h2>Qué AFP conviene por comisión</h2>
+      <p>Todas las AFP descuentan el 10% obligatorio; lo que cambia entre una y otra es la comisión. Hoy la más barata es Uno y la más cara Provida, con una diferencia de casi un punto porcentual sobre el sueldo imponible. Es un dato simple que, mes a mes, hace diferencia en el bolsillo.</p>
+
+      <h2>Calcula el sueldo completo</h2>
+      <p>Si además de mirar los indicadores quieres el cálculo completo, con líquido del trabajador y costo para la empresa, usa la <a href="/calculadora-sueldo-liquido/">calculadora de sueldo líquido</a>, que toma estos mismos valores y los aplica a tu caso.</p>
+
+      <h2 id="faq">Preguntas frecuentes</h2>
+      <div class="faq">
+        {faqs.map((it) => (
+          <details>
+            <summary>{it.q}<span class="plus">+</span></summary>
+            <div class="ans">{it.a}</div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="sec-texto relacionadas">
+    <div class="wrap angosto">
+      <h2>Herramientas relacionadas</h2>
+      <div class="relac-grid">
+        <a href="/calculadora-sueldo-liquido">Calculadora de sueldo líquido</a>
+        <a href="/calculadora-finiquito">Calculadora de finiquito</a>
+        <a href="/calculadora-uf">Calculadora UF a pesos</a>
+        <a href="/calculadora-utm">Calculadora UTM a pesos</a>
+      </div>
+    </div>
+  </section>
+
+</Base>
+
+<script>
+  const fmt0 = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
+  const $ = (id) => document.getElementById(id);
+
+  const drawSpark = (el, data) => {
+    if (!el || !data || data.length < 2) return;
+    const W = 120, H = 34, pad = 4, n = data.length;
+    const mn = Math.min(...data), mx = Math.max(...data), rg = (mx - mn) || 1;
+    const pts = data.map((v, i) => [i / (n - 1) * W, (H - pad) - ((v - mn) / rg) * (H - 2 * pad)]);
+    const poly = pts.map((p) => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
+    const area = 'M0,' + H + ' L' + poly.split(' ').join(' L') + ' L' + W + ',' + H + ' Z';
+    const last = pts[n - 1];
+    el.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" width="100%" height="34" aria-hidden="true">' +
+      '<path class="ar" d="' + area + '" fill="#1E2F73" fill-opacity="0"/>' +
+      '<polyline class="ln" points="' + poly + '" fill="none" stroke="#1E2F73" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>' +
+      '<circle class="dt" cx="' + last[0].toFixed(1) + '" cy="' + last[1].toFixed(1) + '" r="2.8" fill="#F6B11A" style="opacity:0"/></svg>';
+    const ln = el.querySelector('.ln'), ar = el.querySelector('.ar'), dt = el.querySelector('.dt');
+    const L = ln.getTotalLength();
+    ln.style.strokeDasharray = L; ln.style.strokeDashoffset = L;
+    requestAnimationFrame(() => {
+      ln.style.transition = 'stroke-dashoffset 1.05s ease';
+      ln.style.strokeDashoffset = 0;
+      ar.style.transition = 'fill-opacity .8s ease .35s';
+      ar.style.fillOpacity = 0.12;
+      setTimeout(() => { dt.style.transition = 'opacity .4s'; dt.style.opacity = 1; dt.classList.add('pulse'); }, 1050);
+    });
+  };
+
+  const cargar = async (codigo) => {
+    try {
+      const d = await fetch('https://mindicador.cl/api/' + codigo).then((r) => r.json());
+      return (d.serie || []);
+    } catch (e) { return []; }
+  };
+
+  (async () => {
+    const [uf, utm, dolar] = await Promise.all([cargar('uf'), cargar('utm'), cargar('dolar')]);
+    if (uf[0]) {
+      $('v-uf').textContent = fmt0.format(Math.round(uf[0].valor));
+      drawSpark($('sp-uf'), uf.slice(0, 12).reverse().map((s) => s.valor));
+    }
+    if (utm[0]) {
+      $('v-utm').textContent = fmt0.format(Math.round(utm[0].valor));
+      $('v-uta').textContent = fmt0.format(Math.round(utm[0].valor * 12));
+      drawSpark($('sp-utm'), utm.slice(0, 12).reverse().map((s) => s.valor));
+      drawSpark($('sp-uta'), utm.slice(0, 12).reverse().map((s) => s.valor * 12));
+    }
+    if (dolar[0]) {
+      $('v-dolar').textContent = fmt0.format(Math.round(dolar[0].valor));
+      drawSpark($('sp-dolar'), dolar.slice(0, 12).reverse().map((s) => s.valor));
+    }
+  })();
+</script>
+
+<style>
+  .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:56px 0 44px}
+  .hero h1{font-size:36px;font-weight:800;letter-spacing:-.5px;max-width:20ch}
+  @media(min-width:901px){ .hero h1{max-width:calc(100% - 180px)} }
+  .hero .lead{font-size:18px;color:#444a63;margin:16px 0 0;max-width:62ch}
+  .periodo{display:inline-block;margin-top:16px;font-family:'Montserrat';font-weight:700;font-size:13px;letter-spacing:.04em;color:var(--azul-prof);background:var(--amarillo);border-radius:9px;padding:6px 13px}
+
+  .sec{padding:30px 0 44px}
+  .ancho{max-width:900px}
+  .bloque{font-size:20px;font-weight:800;margin:30px 0 4px;letter-spacing:-.3px}
+  .bloque:first-of-type{margin-top:0}
+  .bloque-n{font-size:13.5px;color:var(--gris);margin:0 0 14px}
+
+  .grid{display:grid;gap:12px}
+  .g4{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+  .g3{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+  .m{background:#fff;border:1px solid var(--linea);border-radius:14px;padding:16px 18px;box-shadow:0 6px 18px -16px rgba(19,35,95,.4)}
+  .m-l{font-family:'Montserrat';font-weight:600;font-size:13px;color:var(--azul-prof);margin:0;display:flex;align-items:center;gap:7px}
+  .m-v{font-family:'Montserrat';font-weight:800;font-size:24px;color:var(--azul);margin:5px 0 0;line-height:1.1}
+  .m-v small{font-size:14px;color:var(--gris);font-weight:600}
+  .m-n{font-size:12px;color:var(--gris);margin:6px 0 0}
+  .chip{font-family:'Montserrat';font-weight:700;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--azul-prof);background:var(--amarillo);border-radius:6px;padding:2px 7px}
+  .spark{height:34px;margin:9px 0 2px}
+  @keyframes pls{0%,100%{opacity:.4}50%{opacity:1}}
+  .dt.pulse{animation:pls 1.8s ease-in-out infinite}
+
+  .afp-box{background:#fff;border:1px solid var(--linea);border-radius:16px;padding:20px 22px}
+  .bar{display:grid;grid-template-columns:86px 1fr 58px;align-items:center;gap:12px;margin:9px 0}
+  .bnm{font-family:'Montserrat';font-weight:600;font-size:14px;color:var(--azul-prof)}
+  .btk{height:15px;background:#eef1f8;border-radius:5px;overflow:hidden}
+  .bfill{display:block;height:100%;background:var(--azul);border-radius:5px}
+  .bfill.best{background:var(--amarillo)}
+  .bpc{font-family:'Montserrat';font-weight:700;font-size:14px;color:var(--azul-prof);text-align:right}
+  .afp-nota{font-size:12.5px;color:var(--gris);margin:14px 0 0}
+
+  .tabla{background:#fff;border:1px solid var(--linea);border-radius:14px;overflow:hidden}
+  .trow{display:grid;grid-template-columns:90px 1fr auto;align-items:center;gap:14px;padding:13px 18px;border-top:1px solid var(--linea);font-size:14.5px;color:#33384a}
+  .trow:first-child{border-top:none}
+  .ttr{font-family:'Montserrat';font-weight:700;color:var(--azul)}
+  .treq{color:#555}
+  .tmonto{font-family:'Montserrat';font-weight:800;color:var(--azul-prof);white-space:nowrap}
+
+  .descargo{margin-top:26px;background:#f7f9fe;border:1px solid var(--linea);border-radius:12px;padding:16px 20px;color:var(--gris);font-size:12.5px;line-height:1.6}
+  .descargo p{margin:0 0 8px}.descargo p:last-child{margin-bottom:0}
+  .descargo .firma{font-family:'Montserrat';font-weight:700;color:var(--azul);font-size:12px}
+
+  .banner-zona{max-width:900px;margin:6px auto 8px;padding:0 24px}
+
+  .sec-texto{padding:8px 0 40px}
+  .angosto{max-width:760px;margin:0 auto}
+  .sec-texto h2{font-size:24px;font-weight:800;margin:28px 0 12px;letter-spacing:-.3px}
+  .sec-texto p{font-size:16px;color:#444a63;line-height:1.7;margin-bottom:14px}
+  .sec-texto p a{color:var(--azul);font-weight:600}
+  .resp-rapida{background:#eef5ff;border:1px solid #cfe0f5;border-radius:14px;padding:16px 20px;margin:0}
+  .resp-rapida p{margin:0;font-size:15.5px;line-height:1.6;color:#33384a}
+  .resp-rapida strong{color:var(--azul-prof)}
+  .resp-rapida .resp-fecha{margin-top:8px;font-size:12.5px;color:var(--gris)}
+
+  .faq{margin-top:6px}
+  details{background:#fff;border:1px solid var(--linea);border-radius:14px;margin-bottom:12px;overflow:hidden}
+  summary{list-style:none;cursor:pointer;padding:18px 22px;font-family:'Montserrat';font-weight:600;font-size:16px;color:var(--azul);display:flex;justify-content:space-between;gap:14px}
+  summary::-webkit-details-marker{display:none}
+  .plus{font-size:22px;color:var(--azul);transition:.2s;flex-shrink:0}
+  details[open] .plus{transform:rotate(45deg)}
+  .ans{padding:0 22px 18px;color:#555;font-size:15.5px;line-height:1.6}
+
+  .relacionadas{padding-top:0}
+  .relac-grid{display:flex;flex-wrap:wrap;gap:10px}
+  .relac-grid a{font-family:'Montserrat';font-weight:600;font-size:14px;color:var(--azul);background:#fff;border:1px solid var(--linea);border-radius:10px;padding:9px 14px;text-decoration:none;transition:.15s}
+  .relac-grid a:hover{border-color:var(--azul)}
+
+  @media(max-width:640px){
+    .hero h1{font-size:29px}
+    .bar{grid-template-columns:72px 1fr 50px;gap:9px}
+    .trow{grid-template-columns:62px 1fr auto;gap:10px;font-size:13.5px}
+  }
+</style>
