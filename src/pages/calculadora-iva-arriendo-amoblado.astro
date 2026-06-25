@@ -75,6 +75,16 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
         </div>
       </div>
 
+      <div class="anual" id="anual">
+        <span class="anual-tag">Tu rebaja anual del 11%</span>
+        <div class="anual-rows">
+          <div class="arow"><span>11% del avalúo fiscal <em>(tu tope del año)</em></span><b id="a-tope">$0</b></div>
+          <div class="arow"><span>Usado en este cálculo <em>(proporcional a los días)</em></span><b id="a-usado">$0</b></div>
+          <div class="arow saldo"><span>Saldo de rebaja para el resto del año</span><b id="a-saldo">$0</b></div>
+        </div>
+        <p class="anual-nota">La rebaja del 11% es anual: cada arriendo descuenta la parte proporcional a los días. Cuando se agota, lo que arriendes después en el año paga IVA sobre el total.</p>
+      </div>
+
       <div class="descargo">
         <p>Cálculo referencial generado en tomcontable.cl con los datos ingresados. Aplica la rebaja del 11% del avalúo fiscal anual proporcional a los días (artículo 17 de la Ley del IVA). No constituye asesoría tributaria. El IVA se declara mensualmente en el F29; si arriendas varias veces en el mes, la rebaja del 11% se aplica una vez sobre el total del mes.</p>
         <p class="firma">TomContable.cl · Cálculo referencial</p>
@@ -164,6 +174,11 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
     $('f-total').textContent = fmt0.format(total);
     $('r-neto').textContent = fmt0.format(neto);
 
+    const tope = Math.round(avaluo * 0.11);
+    $('a-tope').textContent = fmt0.format(tope);
+    $('a-usado').textContent = fmt0.format(rebaja);
+    $('a-saldo').textContent = fmt0.format(Math.max(0, tope - rebaja));
+
     const msg = $('r-msg');
     if (renta <= 0 || avaluo <= 0 || dias <= 0) { msg.textContent = ''; msg.className = 'msg'; return; }
     if (bruto <= 0) {
@@ -224,6 +239,17 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   .msg.ok{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);color:#fff;padding:11px 13px}
   .msg.info{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);color:#dfe4f2;padding:11px 13px}
   @media(max-width:420px){ .comp-neto{flex-direction:column;align-items:flex-start;gap:4px} }
+
+  .anual{margin-top:18px;background:#fff;border:1px solid var(--linea);border-radius:16px;padding:20px 24px;box-shadow:0 6px 18px -14px rgba(19,35,95,.4)}
+  .anual-tag{display:inline-block;font-family:'Montserrat';font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul);background:#eef2fb;border-radius:7px;padding:5px 11px}
+  .anual-rows{margin-top:14px}
+  .arow{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:11px 0;border-bottom:1px solid var(--linea);font-size:15px;color:#444a63}
+  .arow em{color:var(--gris);font-style:normal;font-weight:500;font-size:13px}
+  .arow b{font-family:'Montserrat';font-weight:700;color:var(--azul-prof);font-size:16px;white-space:nowrap}
+  .arow.saldo{border-bottom:none;background:#eef5ff;border:1px solid #cfe0f5;border-radius:11px;margin-top:8px;padding:13px 16px}
+  .arow.saldo span{font-family:'Montserrat';font-weight:700;color:var(--azul-prof)}
+  .arow.saldo b{font-size:20px;color:var(--azul)}
+  .anual-nota{margin:13px 0 0;font-size:13px;color:var(--gris);line-height:1.55}
 
   .descargo{margin-top:22px;background:#f7f9fe;border:1px solid var(--linea);border-radius:12px;padding:16px 20px;color:var(--gris);font-size:12.5px;line-height:1.6}
   .descargo p{margin:0 0 8px}.descargo p:last-child{margin-bottom:0}

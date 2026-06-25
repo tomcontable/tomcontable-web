@@ -292,24 +292,24 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
     });
   }
 
-  // Números de la barra de prueba social: cada uno cruza la pantalla desde
-  // un punto cardinal distinto (izquierda, arriba, abajo, derecha) y se juntan en la barra.
+  // Números de la barra de prueba social: entran con un fundido y un leve
+  // desplazamiento cuando la barra aparece en pantalla (contenido, sin invadir el hero).
   if (!reduce && 'IntersectionObserver' in window) {
     const enes = [...document.querySelectorAll('.proof .n')];
-    const rumbos = ['translate(-105vw,0)', 'translate(0,-80vh)', 'translate(0,80vh)', 'translate(105vw,0)'];
-    enes.forEach((n, i) => { n.style.transform = rumbos[i % rumbos.length]; n.style.opacity = '0.9'; });
+    const rumbos = ['translate(-30px,0)', 'translate(0,22px)', 'translate(0,22px)', 'translate(30px,0)'];
+    enes.forEach((n, i) => { n.style.transform = rumbos[i % rumbos.length]; n.style.opacity = '0'; });
     const vio = new IntersectionObserver((es) => {
       es.forEach((e) => {
         if (!e.isIntersecting) return;
         vio.disconnect();
         enes.forEach((n, i) => {
-          n.style.transition = `transform .95s cubic-bezier(.22,.8,.25,1.04) ${i * 120}ms, opacity .4s ${i * 120}ms`;
+          n.style.transition = `transform .6s cubic-bezier(.22,.8,.25,1.04) ${i * 90}ms, opacity .5s ${i * 90}ms`;
           n.style.transform = '';
           n.style.opacity = '';
-          setTimeout(() => { n.style.transition = ''; }, 1300 + i * 120);
+          setTimeout(() => { n.style.transition = ''; }, 900 + i * 90);
         });
       });
-    }, { threshold: 0.45 });
+    }, { threshold: 0.3 });
     const pg = document.querySelector('.proof-grid');
     if (pg) vio.observe(pg);
   }

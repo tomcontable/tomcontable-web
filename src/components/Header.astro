@@ -9,25 +9,19 @@ const servicios = [
   { href: '/proyeccion-tributaria', texto: 'Proyección tributaria' },
 ];
 
-// Herramientas gratis, agrupadas por categoría. Para sumar otra, agrégala al grupo que corresponde.
+// Calculadoras y herramientas gratis. Para sumar otra agrega un objeto aquí.
 const herramientas = [
-  { cat: 'Sueldos y trabajo', items: [
-    { href: '/calculadora-sueldo-liquido', texto: 'Sueldo líquido' },
-    { href: '/calculadora-finiquito', texto: 'Finiquito' },
-    { href: '/indicadores-previsionales', texto: 'Indicadores previsionales' },
-  ] },
-  { cat: 'Impuestos', items: [
-    { href: '/calculadora-iva', texto: 'IVA' },
-    { href: '/calculadora-boleta-honorarios', texto: 'Boleta de honorarios' },
-    { href: '/calculadora-iva-arriendo-amoblado', texto: 'IVA arriendo amoblado' },
-    { href: '/calculadora-multas-intereses-sii', texto: 'Multas e intereses SII' },
-  ] },
-  { cat: 'Indicadores y conversores', items: [
-    { href: '/calculadora-uf', texto: 'UF a pesos' },
-    { href: '/calculadora-utm', texto: 'UTM a pesos' },
-    { href: '/calculadora-dolar', texto: 'Dólar a pesos' },
-    { href: '/calculadora-ipc', texto: 'IPC (reajuste)' },
-  ] },
+  { href: '/indicadores-previsionales', texto: 'Indicadores previsionales' },
+  { href: '/calculadora-sueldo-liquido', texto: 'Calculadora de sueldo líquido' },
+  { href: '/calculadora-finiquito', texto: 'Calculadora de finiquito' },
+  { href: '/calculadora-iva', texto: 'Calculadora de IVA' },
+  { href: '/calculadora-boleta-honorarios', texto: 'Calculadora de boleta de honorarios' },
+  { href: '/calculadora-uf', texto: 'Calculadora UF a pesos' },
+  { href: '/calculadora-utm', texto: 'Calculadora UTM a pesos' },
+  { href: '/calculadora-dolar', texto: 'Calculadora dólar a pesos' },
+  { href: '/calculadora-ipc', texto: 'Calculadora IPC (reajuste)' },
+  { href: '/calculadora-iva-arriendo-amoblado', texto: 'IVA arriendo amoblado (Airbnb)' },
+  { href: '/calculadora-multas-intereses-sii', texto: 'Multas e intereses SII' },
 ];
 ---
 <header class="nav">
@@ -54,12 +48,7 @@ const herramientas = [
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
         </a>
         <div class="drop-menu">
-          {herramientas.map((g) => (
-            <div class="drop-grupo">
-              <span class="drop-label">{g.cat}</span>
-              {g.items.map((h) => <a href={h.href}>{h.texto}</a>)}
-            </div>
-          ))}
+          {herramientas.map((h) => <a href={h.href}>{h.texto}</a>)}
         </div>
       </div>
       <a href="/sobre-tomcontable/">Sobre nosotros</a>
@@ -78,12 +67,7 @@ const herramientas = [
     <a href="/blog/">Blog</a>
     <a href="/recursos/">Recursos</a>
     <a href="/herramientas/">Herramientas</a>
-    {herramientas.map((g) => (
-      <Fragment>
-        <span class="mm-label">{g.cat}</span>
-        {g.items.map((h) => <a class="mm-serv" href={h.href}>{h.texto}</a>)}
-      </Fragment>
-    ))}
+    {herramientas.map((h) => <a class="mm-serv" href={h.href}>{h.texto}</a>)}
     <a href="/sobre-tomcontable/">Sobre nosotros</a>
   </nav>
 </header>
@@ -120,10 +104,8 @@ const herramientas = [
   .dropdown:hover .drop-toggle svg,.dropdown.open .drop-toggle svg{transform:rotate(180deg)}
   .drop-menu{position:absolute;top:100%;left:50%;transform:translateX(-50%) translateY(8px);background:#fff;border-radius:14px;box-shadow:0 18px 44px -14px rgba(19,35,95,.45);padding:8px;min-width:248px;display:flex;flex-direction:column;opacity:0;visibility:hidden;transition:.16s}
   .dropdown:hover .drop-menu,.dropdown.open .drop-menu{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
-  .drop-menu a{color:var(--azul);font-family:'Montserrat';font-weight:600;font-size:14.5px;padding:8px 14px;border-radius:9px;white-space:nowrap}
+  .drop-menu a{color:var(--azul);font-family:'Montserrat';font-weight:600;font-size:14.5px;padding:11px 14px;border-radius:9px;white-space:nowrap}
   .drop-menu a:hover{background:#eef2fb}
-  .drop-grupo + .drop-grupo{margin-top:4px;border-top:1px solid #eef2fb;padding-top:4px}
-  .drop-label{display:block;font-family:'Montserrat';font-weight:700;font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--gris);padding:8px 14px 3px}
 
   .nav-acciones{display:flex;align-items:center;gap:12px}
   .nav :global(.nav-cta){padding:11px 18px;font-size:14px}
