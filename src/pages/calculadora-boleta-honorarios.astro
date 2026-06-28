@@ -5,17 +5,18 @@ import BannerServicios from '../components/BannerServicios.astro';
 
 const seo = {
   title: 'Calculadora de Boleta de Honorarios 2026 Chile | Retención 15,25% · TomContable',
-  description: 'Calcula tu boleta de honorarios 2026 en Chile: cuánto recibes líquido tras la retención del 15,25%, o por cuánto emitir para recibir un líquido objetivo. Gratis y al día.',
+  description: 'Pon el monto y mira al instante las dos simulaciones: cuánto recibes líquido si era el total, y por cuánto emitir si era tu líquido. Retención 15,25% (2026), en peso o UF. Gratis.',
   canonical: '/calculadora-boleta-honorarios',
 };
 
 const faqs = [
   { q: '¿Cuánto es la retención de la boleta de honorarios en 2026?', a: 'En 2026 la retención es 15,25% del monto bruto de la boleta. Sube de forma gradual cada año: fue 14,5% en 2025 y, según la ley, continúa subiendo a 16% en 2027 y 17% en 2028.' },
-  { q: '¿Cómo se calcula el líquido de una boleta de honorarios?', a: 'Al monto bruto se le descuenta la retención (15,25% en 2026) y lo que queda es el líquido que recibes. Esta calculadora también funciona al revés: le dices cuánto quieres recibir líquido y te dice por cuánto emitir la boleta.' },
+  { q: '¿Cuál es la diferencia entre el total, el bruto y el líquido?', a: 'El total y el bruto son lo mismo: el monto por el que emites la boleta, antes de la retención. El líquido es lo que te queda en el bolsillo después de descontar la retención. La gente suele confundir total y bruto, por eso esta calculadora te muestra los tres a la vez.' },
+  { q: '¿Cómo se calcula el líquido de una boleta de honorarios?', a: 'Al monto bruto (o total) se le descuenta la retención (15,25% en 2026) y lo que queda es el líquido que recibes. Por ejemplo, una boleta de $1.000.000 en 2026 tiene una retención de $152.500, así que recibes $847.500.' },
+  { q: '¿Por cuánto tengo que emitir para recibir un líquido determinado?', a: 'Divides el líquido que quieres recibir por uno menos la tasa de retención del año. En 2026, con retención de 15,25%, divides por 0,8475. La calculadora lo hace sola: si pones tu líquido objetivo, la segunda simulación te muestra el total a emitir.' },
+  { q: '¿Puedo calcular la boleta en UF?', a: 'Sí. Puedes ingresar el monto en pesos o en UF. Si eliges UF, indicas la fecha y la calculadora toma el valor oficial de la UF de ese día para convertirlo a pesos antes de aplicar la retención.' },
   { q: '¿La retención es un impuesto que pierdo?', a: 'No. La retención es un adelanto de tus impuestos. En la operación renta del año siguiente se descuenta de lo que te toca pagar, y si retuvieron de más, te lo devuelven. Por eso conviene tenerla ordenada y no gastarla.' },
   { q: '¿Quién paga la retención, quien emite o quien recibe la boleta?', a: 'Depende de a quién le emitas. Si emites a una empresa, por lo general ella retiene y entera ese monto al SII. Si emites a una persona natural, normalmente te toca a ti declararlo y pagarlo en tu propia declaración de renta.' },
-  { q: '¿Conviene guardar plata para la operación renta?', a: 'Sí. Si trabajas a honorarios, a veces la retención no alcanza a cubrir todo el impuesto final, sobre todo si tienes varios ingresos. Reservar un porcentaje cada mes ayuda a no llevarse sustos en abril. Si quieres saber con tiempo cómo vas a llegar, te ayudamos a proyectarlo.' },
-  { q: '¿Cuánto tengo que boletear para recibir un líquido determinado?', a: 'Divides el líquido que quieres recibir por uno menos la tasa de retención del año. En 2026, con retención de 15,25%, divides por 0,8475. La calculadora lo hace sola: ingresas el líquido objetivo y te muestra el bruto a emitir.' },
   { q: '¿Las boletas de honorarios pagan cotizaciones de AFP y salud?', a: 'Sí. Desde la reforma, los trabajadores a honorarios cotizan de forma obligatoria, y eso se financia con parte de la retención a través de la Operación Renta. Por eso la retención fue subiendo de forma gradual hasta llegar a 17% en 2028.' },
   { q: '¿Me conviene seguir a honorarios o crear una empresa?', a: 'Depende de cuánto facturas y de tus gastos. A medida que la retención sube y tus ingresos crecen, a varios independientes les empieza a convenir tener empresa propia. Conviene hacer el número antes de decidir; podemos revisar tu caso.' },
 ];
@@ -36,7 +37,7 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
     <div class="wrap">
       <p class="eyebrow">Herramienta gratis</p>
       <h1>Calculadora de boleta de honorarios 2026: retención y líquido</h1>
-      <p class="lead">Calcula cuánto recibes líquido después de la retención (15,25% en 2026), o por cuánto emitir tu boleta para recibir el líquido que necesitas.</p>
+      <p class="lead">Pon el monto una vez y mira las dos simulaciones a la vez: cuánto te queda líquido si ese monto era el total, y por cuánto emitir si era tu líquido al bolsillo. En peso o en UF.</p>
     </div>
     <svg class="hero-ill" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M32 10h56v98l-9.3-6-9.3 6-9.4-6-9.3 6-9.4-6z" stroke="#1E2F73" stroke-width="3.5" stroke-linejoin="round"/><g stroke="#1E2F73" stroke-width="3" stroke-linecap="round"><path d="M44 32h32M44 46h32"/></g><circle cx="60" cy="78" r="15" fill="#F6B11A" fill-opacity="0.25"/><path d="M60 70v18M55 74h7a3 3 0 0 1 0 6h-5a3 3 0 0 0 0 6h7" stroke="#1E2F73" stroke-width="2.6" stroke-linecap="round"/></svg>
   </section>
@@ -47,34 +48,55 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
       <div class="grid">
         <form class="panel form" id="bh-form" autocomplete="off">
           <h2>Datos de la boleta</h2>
-
+          <label class="f"><span id="monto-label">Monto</span>
+            <div class="inp"><i id="monto-pre">$</i><input type="text" inputmode="decimal" id="monto" placeholder="0" /></div>
+          </label>
           <div class="f2">
-            <label class="f"><span>Calcular a partir de</span>
-              <select id="modo">
-                <option value="bruto">El monto de la boleta (bruto)</option>
-                <option value="liquido">El líquido que quiero recibir</option>
+            <label class="f"><span>Moneda</span>
+              <select id="moneda">
+                <option value="peso">Peso</option>
+                <option value="uf">UF</option>
               </select>
             </label>
-            <label class="f"><span id="monto-label">Monto bruto</span><div class="inp"><i>$</i><input type="text" inputmode="numeric" id="monto" placeholder="0" /></div></label>
+            <label class="f"><span>Año de la boleta</span>
+              <select id="anio">
+                <option value="2025">2025 · retención 14,5%</option>
+                <option value="2026" selected>2026 · retención 15,25%</option>
+                <option value="2027">2027 · retención 16%</option>
+                <option value="2028">2028 · retención 17%</option>
+              </select>
+            </label>
           </div>
-
-          <label class="f"><span>Año de la boleta</span>
-            <select id="anio">
-              <option value="2025">2025 · 14,5%</option>
-              <option value="2026" selected>2026 · 15,25%</option>
-              <option value="2027">2027 · 16%</option>
-              <option value="2028">2028 · 17%</option>
-            </select>
+          <label class="f" id="wrap-fecha"><span>Fecha de la UF</span>
+            <input type="date" id="fecha" class="date" />
           </label>
+          <p class="hint" id="hint-uf"></p>
         </form>
 
-        <div class="panel result">
-          <div class="dual">
-            <div class="dual-box"><span>Recibes líquido</span><strong id="r-liquido">$0</strong></div>
-            <div class="dual-box alt"><span id="r-bruto-label">Emites boleta por</span><strong id="r-bruto">$0</strong></div>
+        <div class="result-col">
+          <div class="panel comp" id="result">
+            <div class="comp-head">
+              <div class="comp-marca"><strong>TomContable</strong><span>tomcontable.cl</span></div>
+              <span class="comp-tag">Boleta de honorarios</span>
+            </div>
+            <div class="comp-in"><span id="comp-in-label">Monto ingresado</span><b id="r-in">$0</b></div>
+            <div class="sims">
+              <div class="sim">
+                <span class="sim-q">Si ese monto es el total <em>(bruto)</em></span>
+                <span class="sim-k">Líquido al bolsillo</span>
+                <strong class="sim-v" id="r-a-liq">$0</strong>
+                <span class="sim-sub" id="r-a-ret">Retención 15,25%: $0</span>
+              </div>
+              <div class="sim">
+                <span class="sim-q">Si ese monto es tu líquido al bolsillo</span>
+                <span class="sim-k">Debes emitir por <em>(total / bruto)</em></span>
+                <strong class="sim-v" id="r-b-bruto">$0</strong>
+                <span class="sim-sub" id="r-b-ret">Retención 15,25%: $0</span>
+              </div>
+            </div>
+            <p class="comp-pie">Estimación referencial · retención <span id="r-pct">15,25%</span> (Ley 21.133) · tomcontable.cl</p>
           </div>
-          <div class="ret-line" id="ret-line"></div>
-          <p class="r-meta" id="r-meta"></p>
+
           <div class="r-cta"><BotonWhatsApp texto="Quiero ordenar mis honorarios" mensaje="Hola vengo desde la calculadora de boleta de honorarios y quiero ayuda con mis impuestos a honorarios" /></div>
           <div class="r-mail">
             <button type="button" class="mail-toggle" id="mail-toggle">Recibir este cálculo en PDF a mi correo</button>
@@ -91,7 +113,7 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
       </div>
 
       <div class="descargo">
-        <p>Cálculo referencial generado en tomcontable.cl con el monto ingresado. No constituye boleta oficial, comprobante ni asesoría tributaria. La retención depende del año de emisión y de tu situación; tu impuesto final se determina en la Operación Renta.</p>
+        <p>Cálculo referencial generado en tomcontable.cl con el monto ingresado. No constituye boleta oficial, comprobante ni asesoría tributaria. La retención depende del año de emisión y de tu situación; tu impuesto final se determina en la Operación Renta. Si calculas en UF, se usa el valor oficial de la UF de la fecha que elijas.</p>
         <p class="firma">TomContable.cl · Cálculo referencial</p>
       </div>
     </div>
@@ -102,18 +124,24 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
   <section class="sec-texto">
     <div class="wrap angosto">
       <div class="resp-rapida">
-        <p><strong>Respuesta rápida:</strong> la calculadora de boleta de honorarios estima cuánto recibes líquido después de la retención vigente en Chile (15,25% en 2026), o cuánto debes boletear para recibir un líquido determinado. Sirve para profesionales independientes que emiten boletas. El resultado es referencial.</p>
+        <p><strong>Respuesta rápida:</strong> esta calculadora de boleta de honorarios muestra, con un solo monto, las dos simulaciones que la gente confunde: cuánto recibes líquido si ese monto era el total o bruto, y por cuánto debes emitir si era tu líquido al bolsillo. Usa la retención vigente en Chile (15,25% en 2026) y permite calcular en peso o en UF. El resultado es referencial.</p>
         <p class="resp-fecha">Última actualización: {actualizado}. Fuente: tasa de retención vigente (Ley 21.133), 15,25% en 2026.</p>
       </div>
 
-      <h2>Qué es la boleta de honorarios y la retención</h2>
-      <p>La boleta de honorarios es el documento que emiten quienes prestan servicios de forma independiente, sin contrato de trabajo. Al emitirla se aplica una retención, que en 2026 es del 15,25% del monto bruto. Esa retención no es plata que pierdes: es un anticipo a cuenta de tus impuestos del año, que se ajusta en la Operación Renta de abril.</p>
+      <h2>Total, bruto y líquido: la confusión de siempre</h2>
+      <p>El total y el bruto de una boleta son lo mismo: el monto por el que emites, antes de descontar la retención. El líquido es lo que realmente te llega al bolsillo, ya con la retención descontada. Como casi todos mezclan estas palabras, esta calculadora no te obliga a elegir: pones un solo monto y te muestra las dos lecturas posibles a la vez, así no hay forma de equivocarse.</p>
+
+      <h2>Qué es la retención de la boleta de honorarios</h2>
+      <p>Al emitir una boleta de honorarios se aplica una retención, que en 2026 es del 15,25% del monto bruto. Esa retención no es plata que pierdes: es un anticipo a cuenta de tus impuestos del año, que se ajusta en la Operación Renta de abril. La tasa sube de forma gradual: fue 14,5% en 2025 y llega a 17% en 2028.</p>
 
       <h2>Cómo se calcula el líquido de una boleta</h2>
-      <p>Al monto bruto de la boleta se le descuenta la retención del año y lo que queda es el líquido que recibes. Por ejemplo, una boleta de $1.000.000 en 2026 tiene una retención de $152.500, así que recibes $847.500. La calculadora hace este cálculo al instante y para cualquiera de los años, porque la tasa sube de forma gradual.</p>
+      <p>Al monto bruto se le descuenta la retención del año y lo que queda es el líquido. Por ejemplo, una boleta de $1.000.000 en 2026 tiene una retención de $152.500, así que recibes $847.500. Esa es la primera simulación que ves: si el monto que pusiste era el total, ese es tu líquido al bolsillo.</p>
 
-      <h2>Cuánto boletear para recibir un líquido objetivo</h2>
-      <p>También funciona al revés. Si necesitas recibir un monto líquido específico, le dices a la calculadora cuánto quieres en el bolsillo y te dice por cuánto emitir la boleta para llegar ahí, ya considerando la retención. Es lo que necesitas cuando acuerdas un pago neto con un cliente.</p>
+      <h2>Por cuánto emitir para recibir un líquido objetivo</h2>
+      <p>La segunda simulación va al revés. Si lo que pusiste era el líquido que quieres recibir, te dice por cuánto emitir la boleta para llegar a esa cifra, ya considerando la retención. Es justo lo que necesitas cuando acuerdas un pago neto con un cliente: en 2026, para recibir $1.000.000 líquidos, debes emitir por $1.180.638.</p>
+
+      <h2>Calcular la boleta en UF</h2>
+      <p>Si tu servicio está pactado en UF, puedes ingresar el monto en UF y elegir la fecha. La calculadora toma el valor oficial de la UF de ese día, lo convierte a pesos y recién ahí aplica la retención, porque la boleta y la retención siempre se expresan en pesos. Así ves el equivalente exacto sin tener que hacer la conversión a mano.</p>
 
       <h2>Quién paga la retención: tú o la empresa</h2>
       <p>Depende de a quién le emitas. Si le emites a una empresa, por lo general ella retiene el porcentaje y lo entera al SII a tu nombre, y te paga el líquido. Si le emites a una persona natural, normalmente el pago te llega completo y la retención la declaras y pagas tú en tu propia renta. En el año, el total retenido es el mismo.</p>
@@ -141,9 +169,9 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
       <h2>Herramientas relacionadas</h2>
       <div class="relac-grid">
         <a href="/calculadora-iva/">Calculadora de IVA</a>
+        <a href="/calculadora-uf/">Calculadora UF a pesos</a>
         <a href="/constitucion-de-empresas/">Constituir una empresa</a>
         <a href="/proyeccion-tributaria/">Proyección tributaria</a>
-        <a href="/asesorias/">Asesorías</a>
       </div>
     </div>
   </section>
@@ -165,29 +193,92 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
   const RET = { 2025: 0.145, 2026: 0.1525, 2027: 0.16, 2028: 0.17 };
 
   const fmt0 = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
+  const fmtUF = (n) => n.toLocaleString('es-CL', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const $ = (id) => document.getElementById(id);
-  const num = (id) => { const v = $(id).value; if (!v) return 0; const n = parseFloat(String(v).replace(/\./g,'').replace(/,/g,'.').replace(/[^\d.]/g,'')); return isFinite(n) ? n : 0; };
-  const pctTxt = (r) => (r * 100).toFixed(2).replace('.', ',').replace(',00', '') + '%';
+  const num = (id) => { const v = $(id).value; if (!v) return 0; const n = parseFloat(String(v).replace(/\./g, '').replace(/,/g, '.').replace(/[^\d.]/g, '')); return isFinite(n) ? n : 0; };
+  const pctTxt = (r) => { let s = (r * 100).toFixed(2).replace(/0+$/, '').replace(/\.$/, ''); return s.replace('.', ',') + '%'; };
 
-  const calcular = () => {
-    const modo = $('modo').value;
-    const r = RET[$('anio').value] || 0.1525;
-    const monto = num('monto');
-    if (monto <= 0) { $('r-liquido').textContent = '$0'; $('r-bruto').textContent = '$0'; $('ret-line').innerHTML = ''; $('r-meta').textContent = ''; return; }
+  const monedaEl = $('moneda'), anioEl = $('anio'), fechaEl = $('fecha');
+  const ufCache = {};
 
-    let bruto, liquido, ret;
-    if (modo === 'liquido') { liquido = monto; bruto = liquido / (1 - r); ret = bruto - liquido; }
-    else { bruto = monto; ret = bruto * r; liquido = bruto - ret; }
+  const fmtLarga = (iso) => { const [y, m, d] = iso.split('-').map(Number); return new Date(y, m - 1, d).toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' }); };
 
-    $('r-liquido').textContent = fmt0.format(Math.round(liquido));
-    $('r-bruto').textContent = fmt0.format(Math.round(bruto));
-    $('ret-line').innerHTML = `<span class="ret-tag">Retención ${pctTxt(r)}, al SII</span><span class="ret-val">${fmt0.format(Math.round(ret))}</span>`;
-    $('r-meta').textContent = `Es un anticipo de tus impuestos: se ajusta en la Operación Renta del año siguiente.`;
+  // Valor oficial de la UF para una fecha (mindicador / Banco Central). Si no hay dato ese día, usa el vigente anterior.
+  const ufParaFecha = async (fechaStr) => {
+    let anio = parseInt(fechaStr.slice(0, 4), 10);
+    for (let intento = 0; intento < 2; intento++) {
+      if (!ufCache[anio]) {
+        try {
+          const data = await fetch(`https://mindicador.cl/api/uf/${anio}`).then((r) => r.json());
+          const map = {}, arr = [];
+          (data.serie || []).forEach((it) => { const f = it.fecha.slice(0, 10); map[f] = it.valor; arr.push({ fecha: f, valor: it.valor }); });
+          arr.sort((a, b) => (a.fecha < b.fecha ? 1 : -1));
+          ufCache[anio] = { map, arr };
+        } catch (e) { return null; }
+      }
+      const { map, arr } = ufCache[anio];
+      if (map[fechaStr]) return { valor: map[fechaStr], fecha: fechaStr };
+      const prev = arr.find((it) => it.fecha <= fechaStr);
+      if (prev) return { valor: prev.valor, fecha: prev.fecha };
+      anio -= 1; fechaStr = `${anio}-12-31`;
+    }
+    return null;
   };
 
-  $('modo').addEventListener('change', () => { $('monto-label').textContent = $('modo').value === 'liquido' ? 'Líquido a recibir' : 'Monto bruto'; $('r-bruto-label').textContent = 'Emites boleta por'; calcular(); });
+  const zero = () => { ['r-in', 'r-a-liq', 'r-b-bruto'].forEach((id) => $(id).textContent = '$0'); $('r-a-ret').textContent = ''; $('r-b-ret').textContent = ''; };
+
+  const calcular = async () => {
+    const moneda = monedaEl.value;
+    const r = RET[anioEl.value] || 0.1525;
+    const monto = num('monto');
+    $('r-pct').textContent = pctTxt(r);
+
+    let montoPesos = monto, detalleUF = '';
+    if (moneda === 'uf') {
+      if (monto > 0) {
+        const res = await ufParaFecha(fechaEl.value);
+        if (res) { montoPesos = Math.round(monto * res.valor); detalleUF = `${fmtUF(monto)} UF al ${fmtLarga(res.fecha)}`; }
+        else { $('hint-uf').textContent = 'No pudimos obtener la UF de esa fecha. Prueba con otra o usa pesos.'; zero(); return; }
+      } else { montoPesos = 0; }
+      $('hint-uf').textContent = 'Tomamos el valor oficial de la UF del día que elijas. Usa coma para los decimales, por ejemplo 2,5 UF.';
+    }
+
+    if (montoPesos <= 0) { zero(); $('comp-in-label').textContent = 'Monto ingresado'; $('r-in').textContent = '$0'; return; }
+
+    $('comp-in-label').textContent = detalleUF ? `Monto ingresado · ${detalleUF}` : 'Monto ingresado';
+    $('r-in').textContent = fmt0.format(montoPesos);
+
+    // A: el monto es el total (bruto) -> líquido al bolsillo
+    const liqA = Math.round(montoPesos * (1 - r));
+    const retA = montoPesos - liqA;
+    // B: el monto es el líquido -> total/bruto a emitir
+    const brutoB = Math.round(montoPesos / (1 - r));
+    const retB = brutoB - montoPesos;
+
+    $('r-a-liq').textContent = fmt0.format(liqA);
+    $('r-a-ret').textContent = `Retención ${pctTxt(r)}: ${fmt0.format(retA)}`;
+    $('r-b-bruto').textContent = fmt0.format(brutoB);
+    $('r-b-ret').textContent = `Retención ${pctTxt(r)}: ${fmt0.format(retB)}`;
+  };
+
+  const toggleMoneda = () => {
+    const esUF = monedaEl.value === 'uf';
+    $('wrap-fecha').style.display = esUF ? 'block' : 'none';
+    $('monto-pre').textContent = esUF ? 'UF' : '$';
+    $('monto-label').textContent = esUF ? 'Monto en UF' : 'Monto en pesos';
+    if (!esUF) $('hint-uf').textContent = '';
+  };
+
+  monedaEl.addEventListener('change', () => { toggleMoneda(); calcular(); });
   $('bh-form').addEventListener('input', calcular);
   $('bh-form').addEventListener('change', calcular);
+
+  // Fecha por defecto: hoy
+  const today = new Date();
+  const pad = (n) => String(n).padStart(2, '0');
+  fechaEl.value = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
+  toggleMoneda();
+  calcular();
 
   // PDF imprimible + envío por correo (captura de lead)
   let logoImg = null;
@@ -206,25 +297,27 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
     doc.text('Boleta de honorarios', M, 38);
     doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(139, 147, 179);
     doc.text('Generada el ' + new Date().toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' }), M, 44);
-    let y = 60;
-    const retTag = ($('ret-line').querySelector('.ret-tag') || {}).textContent || 'Retención';
-    const retVal = (($('ret-line').querySelector('.ret-val') || {}).textContent || '').replace(/−/g, '-');
-    const rows = [['Monto de la boleta (bruto)', $('r-bruto').textContent, false], [retTag, '-' + retVal, true]];
-    doc.setDrawColor(230, 232, 240);
-    rows.forEach((f) => {
-      doc.setFont('helvetica', 'normal'); doc.setFontSize(12); doc.setTextColor(51, 56, 74);
-      doc.text(f[0], M, y);
-      doc.setFont('helvetica', 'bold'); doc.setTextColor(f[2] ? 176 : 19, f[2] ? 54 : 35, f[2] ? 54 : 95);
-      doc.text(f[1], W - M, y, { align: 'right' });
-      y += 8.5; doc.line(M, y - 3, W - M, y - 3);
-    });
-    y += 4;
-    doc.setFillColor(30, 47, 115); doc.roundedRect(M, y, W - 2 * M, 15, 2, 2, 'F');
-    doc.setTextColor(207, 214, 234); doc.setFont('helvetica', 'normal'); doc.setFontSize(10);
-    doc.text('Líquido que recibes', M + 5, y + 9.5);
-    doc.setTextColor(246, 177, 26); doc.setFont('helvetica', 'bold'); doc.setFontSize(16);
-    doc.text($('r-liquido').textContent, W - M - 5, y + 10, { align: 'right' });
-    y += 24;
+
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(11); doc.setTextColor(51, 56, 74);
+    doc.text(($('comp-in-label').textContent || 'Monto ingresado') + ':', M, 56);
+    doc.setFont('helvetica', 'bold'); doc.setTextColor(19, 35, 95);
+    doc.text($('r-in').textContent, W - M, 56, { align: 'right' });
+
+    const box = (y, q, k, v, sub) => {
+      doc.setFillColor(30, 47, 115); doc.roundedRect(M, y, W - 2 * M, 26, 2, 2, 'F');
+      doc.setTextColor(207, 214, 234); doc.setFont('helvetica', 'normal'); doc.setFontSize(9.5);
+      doc.text(q, M + 5, y + 7);
+      doc.setTextColor(159, 176, 216); doc.setFontSize(8.5);
+      doc.text(k, M + 5, y + 13.5);
+      doc.setTextColor(246, 177, 26); doc.setFont('helvetica', 'bold'); doc.setFontSize(16);
+      doc.text(v, W - M - 5, y + 13, { align: 'right' });
+      doc.setTextColor(207, 214, 234); doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5);
+      doc.text(sub, M + 5, y + 21);
+    };
+    box(64, 'Si ese monto es el total (bruto)', 'Liquido al bolsillo', $('r-a-liq').textContent, ($('r-a-ret').textContent || '').replace(/−/g, '-'));
+    box(95, 'Si ese monto es tu liquido al bolsillo', 'Debes emitir por (total / bruto)', $('r-b-bruto').textContent, ($('r-b-ret').textContent || '').replace(/−/g, '-'));
+
+    let y = 132;
     const disc = 'Cálculo referencial generado en tomcontable.cl con el monto ingresado. No constituye boleta oficial, comprobante ni asesoría tributaria. La retención depende del año de emisión y de tu situación; tu impuesto final se determina en la Operación Renta.';
     doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(120, 120, 130);
     doc.text(doc.splitTextToSize(disc, W - 2 * M), M, y);
@@ -242,7 +335,7 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
     const consent = $('mail-consent').checked;
     const website = $('mail-website').value;
     msg.className = 'mail-msg';
-    if ($('r-liquido').textContent === '$0') { msg.textContent = 'Primero completa el cálculo arriba.'; return; }
+    if ($('r-a-liq').textContent === '$0') { msg.textContent = 'Primero completa el cálculo arriba.'; return; }
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { msg.textContent = 'Revisa tu correo, no parece válido.'; return; }
     if (!consent) { msg.textContent = 'Marca la casilla para poder enviarte el PDF.'; return; }
     btn.disabled = true; const btnTxt = btn.textContent; btn.textContent = 'Enviando…'; msg.textContent = 'Generando tu PDF y enviándolo…';
@@ -256,39 +349,45 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
     } catch (e) { msg.textContent = 'No pudimos enviarlo ahora. Inténtalo en un rato.'; }
     btn.disabled = false; btn.textContent = btnTxt;
   });
-
-  calcular();
 </script>
 
 <style>
   .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:56px 0 44px}
   .hero h1{font-size:34px;font-weight:800;letter-spacing:-.5px;max-width:22ch}
-  .hero .lead{font-size:18px;color:#444a63;margin:16px 0 0;max-width:60ch}
+  @media(min-width:901px){ .hero h1{max-width:calc(100% - 180px)} }
+  .hero .lead{font-size:18px;color:#444a63;margin:16px 0 0;max-width:62ch}
   .sec{padding:40px 0}
   .calc-wrap{max-width:920px}
-  .aviso-top{background:#fdf4dd;border:1px solid #f1d98a;border-radius:12px;padding:13px 18px;font-size:14px;color:#6b5b1f;margin-bottom:22px}
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
   .panel{background:#fff;border:1px solid var(--linea);border-radius:18px;padding:26px}
   .panel h2{font-size:16px;font-weight:800;color:var(--azul);margin:4px 0 14px}
   .f{display:block;margin-bottom:14px}.f>span{display:block;font-family:'Montserrat';font-weight:600;font-size:13.5px;color:var(--azul-prof);margin-bottom:6px}
-  .f input,.f select{width:100%;border:1px solid var(--linea);border-radius:10px;padding:11px 13px;font-family:inherit;font-size:15px;color:var(--azul-prof);background:#fff}
-  .f input:focus,.f select:focus{outline:none;border-color:var(--azul)}
+  .f select,.f .date{width:100%;border:1px solid var(--linea);border-radius:10px;padding:11px 13px;font-family:inherit;font-size:15px;color:var(--azul-prof);background:#fff}
+  .f select:focus,.f .date:focus{outline:none;border-color:var(--azul)}
   .f2{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:end}
   .inp{display:flex;align-items:center;border:1px solid var(--linea);border-radius:10px;padding:0 12px}
   .inp:focus-within{border-color:var(--azul)}
-  .inp i{font-family:'Montserrat';font-weight:700;color:var(--gris);font-size:14px;font-style:normal;margin-right:6px}
-  .inp input{border:none;padding:11px 0;width:100%}
+  .inp i{font-family:'Montserrat';font-weight:700;color:var(--gris);font-size:14px;font-style:normal;margin-right:6px;min-width:14px}
+  .inp input{border:none;outline:none;padding:11px 0;width:100%;font-size:16px;color:var(--azul-prof);background:transparent}
+  .hint{margin:2px 0 0;font-size:13px;color:var(--gris);line-height:1.5}
 
-  .result{background:linear-gradient(160deg,#fff,#f7f9fe)}
-  .dual{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
-  .dual-box{border-radius:13px;padding:14px 16px;background:var(--azul);color:#fff}
-  .dual-box.alt{background:var(--azul-prof)}
-  .dual-box span{display:block;font-family:'Montserrat';font-weight:600;font-size:12.5px;color:#cfd6ea}
-  .dual-box strong{display:block;font-family:'Montserrat';font-weight:800;font-size:22px;color:var(--amarillo);margin-top:4px;line-height:1.1}
-  .ret-line{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:12px 4px;border-top:1px solid #e6e8f0}
-  .ret-tag{font-size:14px;color:#33384a}
-  .ret-val{font-family:'Montserrat';font-weight:700;font-size:16px;color:#b03636;white-space:nowrap}
-  .r-meta{font-size:12.5px;color:var(--gris);margin-top:6px;line-height:1.5}
+  .result-col{display:flex;flex-direction:column}
+  .comp{background:linear-gradient(155deg,var(--azul),var(--azul-prof));color:#fff;border:none;box-shadow:0 18px 40px -20px rgba(19,35,95,.6)}
+  .comp-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.16)}
+  .comp-marca strong{display:block;font-family:'Montserrat';font-weight:800;font-size:19px;color:#fff;line-height:1}
+  .comp-marca span{display:block;font-family:'Montserrat';font-weight:700;font-size:12.5px;color:var(--amarillo);margin-top:3px}
+  .comp-tag{font-family:'Montserrat';font-weight:700;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:#cfd6ea;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:5px 9px;white-space:nowrap}
+  .comp-in{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:14px 0 2px;font-size:13px;color:#cfd6ea}
+  .comp-in b{font-family:'Montserrat';font-weight:700;color:#fff;font-size:16px;white-space:nowrap}
+  .sims{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+  .sim{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:13px;padding:14px 16px}
+  .sim-q{display:block;font-size:12.5px;color:#cfd6ea}
+  .sim-q em{font-style:normal;color:#fff;font-weight:600}
+  .sim-k{display:block;font-family:'Montserrat';font-weight:600;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#9fb0d8;margin-top:9px}
+  .sim-v{display:block;font-family:'Montserrat';font-weight:800;font-size:26px;color:var(--amarillo);line-height:1.1;margin-top:2px}
+  .sim-sub{display:block;font-size:12.5px;color:#cfd6ea;margin-top:5px}
+  .comp-pie{margin:14px 0 0;font-size:11px;color:#aeb7d4;line-height:1.4}
+
   .r-cta{margin-top:14px}.r-cta :global(.btn){width:100%}
   .r-mail{margin-top:14px;border-top:1px dashed var(--linea);padding-top:14px}
   .mail-toggle{background:none;border:none;color:var(--azul);font-family:'Montserrat';font-weight:700;font-size:13.5px;cursor:pointer;padding:2px 0;text-decoration:underline;text-underline-offset:3px}
@@ -302,10 +401,6 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
   .mail-check a{color:var(--azul);font-weight:600}
   .mail-msg{font-size:13px;color:var(--azul);font-weight:600;margin:0;min-height:1em}
   .mail-msg.ok{background:#fdf4dd;border:1px solid #f1d98a;border-radius:9px;padding:9px 12px;color:#6b5b1f}
-
-  .info{margin-top:26px;background:#fafbfe;border:1px solid var(--linea);border-radius:14px;padding:22px 24px}
-  .info h3{font-size:16px;font-weight:800;color:var(--azul-prof);margin:0 0 8px}
-  .info p{font-size:14.5px;color:#444a63;line-height:1.65;margin:0 0 10px}.info p:last-child{margin-bottom:0}
 
   .descargo{margin-top:22px;background:#f7f9fe;border:1px solid var(--linea);border-radius:12px;padding:16px 20px;color:var(--gris);font-size:12.5px;line-height:1.6}
   .descargo p{margin:0 0 8px}.descargo p:last-child{margin-bottom:0}
@@ -338,5 +433,5 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
   .cierre h2{color:#fff;font-size:24px;font-weight:800;max-width:28ch;margin:0 auto}
   .cierre p{color:#cfd6ea;font-size:17px;margin:14px auto 26px;max-width:54ch}
   @media(max-width:860px){ .hero h1{font-size:27px} .grid{grid-template-columns:1fr} }
-  @media(max-width:480px){ .f2,.dual{grid-template-columns:1fr} }
+  @media(max-width:480px){ .f2{grid-template-columns:1fr} }
 </style>
