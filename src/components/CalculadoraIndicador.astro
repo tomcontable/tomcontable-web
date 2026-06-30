@@ -48,6 +48,7 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
         <button class="fc-hoy" id="fc-hoy" type="button">Hoy</button>
       </div>
       <span class="vc-aviso" id="vc-aviso"></span>
+      <span class="vc-marca">tomcontable.cl</span>
     </div>
 
     <div class="calc">
@@ -357,6 +358,7 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
   .fc-hoy{border:none;border-radius:8px;background:var(--amarillo);color:var(--azul-prof);font-family:'Montserrat';font-weight:700;font-size:13.5px;padding:8px 14px;cursor:pointer;transition:.15s}
   .fc-hoy:hover{filter:brightness(1.05)}
   .vc-aviso{display:block;margin-top:12px;font-size:13.5px;color:#ffd9a0;max-width:46ch;margin-left:auto;margin-right:auto}
+  .vc-marca{display:block;margin-top:14px;font-family:'Montserrat';font-weight:700;font-size:12px;letter-spacing:.04em;color:rgba(255,255,255,.5)}
 
   .calc{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:18px;background:#fff;border:1px solid var(--linea);border-radius:18px;padding:28px}
   .campo label{display:block;font-family:'Montserrat';font-weight:600;font-size:14px;color:var(--azul);margin-bottom:8px}
@@ -411,9 +413,26 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
 
   @media(max-width:640px){
     .hero h1{font-size:30px}
-    .vc-monto{font-size:32px}
-    .fecha-ctrl{flex-wrap:wrap;justify-content:center}
-    .calc{grid-template-columns:1fr;gap:10px}
-    .swap{transform:rotate(90deg);padding:4px 0}
+    .sec{padding:28px 0}
+    .valor-card{padding:16px 16px 15px;margin-bottom:14px}
+    .vc-label{font-size:11.5px}
+    .vc-monto{font-size:30px;margin:4px 0 12px}
+    .fecha-ctrl{flex-wrap:wrap;justify-content:center;gap:6px;padding:6px 7px}
+    .fc-nav{width:30px;height:30px;font-size:18px}
+    .fecha-ctrl input[type=date]{padding:7px 8px;font-size:13.5px}
+    .fc-hoy{padding:7px 12px;font-size:13px}
+    .vc-aviso{margin-top:9px;font-size:12.5px}
+    .vc-marca{margin-top:11px}
+    .calc{display:flex;flex-direction:column;gap:6px;padding:16px}
+    .campo label{margin-bottom:4px;font-size:13px}
+    .input-wrap input{font-size:20px;padding:11px 0}
+    .swap{transform:rotate(90deg);padding:2px 0;font-size:20px}
+    .calc-nota{margin-top:10px;font-size:13px}
+    .iva-box{margin-top:12px;padding:12px 18px 13px}
+    .iva-row{padding:7px 0;font-size:14px}
+    .iva-row strong{font-size:15px}
+    .iva-total{padding-top:10px}
+    .iva-total strong{font-size:19px}
+    .otros{margin-top:24px}
   }
 </style>

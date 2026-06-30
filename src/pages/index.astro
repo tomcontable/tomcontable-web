@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import BotonWhatsApp from '../components/BotonWhatsApp.astro';
+import MuroTestimonios from '../components/MuroTestimonios.astro';
 
 const seo = {
   title: 'TomContable, Contador para emprendedores y pymes en Chile',
@@ -60,7 +61,7 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
           <img src="/img/foto-tom.jpg" alt="Tom, contador para pymes y emprendedores, fundador de TomContable" width="520" height="390" />
           <div class="photo-badge">
             <span class="stars">★★★★★</span>
-            <div><b>4,9</b><br><small>+150 reseñas</small></div>
+            <div><b>5,0</b><br><small>124 evaluaciones</small></div>
           </div>
           <div class="photo-chip"><span class="wa"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.82 11.82 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24z"/></svg></span>Respondemos por WhatsApp</div>
         </div>
@@ -71,7 +72,7 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
   <!-- PRUEBA SOCIAL -->
   <div class="proof">
     <div class="wrap proof-grid">
-      <div><span class="n" data-cifra="4.9" data-dec="1">4,9</span><span class="l">en Encuadrado, más de 150 reseñas</span></div>
+      <div><span class="n" data-cifra="5.0" data-dec="1">5,0</span><span class="l">en Encuadrado, 124 evaluaciones</span></div>
       <div><span class="n" data-cifra="300" data-pref="+">+300</span><span class="l">empresas constituidas</span></div>
       <div><span class="n" data-cifra="1000" data-pref="+" data-miles>+1.000</span><span class="l">emprendedores asesorados</span></div>
       <div><span class="n" data-cifra="96" data-suf="K">96K</span><span class="l">en Instagram</span></div>
@@ -218,17 +219,7 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
   </section>
 
   <!-- TESTIMONIOS -->
-  <section class="sec">
-    <div class="wrap">
-      <div class="sec-head"><p class="eyebrow">Testimonios</p><h2>Lo que dicen quienes ya trabajan con nosotros</h2></div>
-      <div class="cards-3">
-        <div class="tst"><span class="stars">★★★★★</span><p>"Muy claro, preciso, y lo principal es que al transmitir su conocimiento genera tranquilidad, que es justo lo que busco en un profesional que asesora en temas contables y tributarios. Totalmente recomendable."</p><span class="who">Andrea Díaz</span></div>
-        <div class="tst"><span class="stars">★★★★★</span><p>"Muy buen feedback, entendieron todas mis dudas y me dieron todas las opciones para resolver mis preocupaciones tributarias, demostrando amplio conocimiento en el ámbito contable. Asesorías que a veces cuesta conseguir. Gracias."</p><span class="who">Mónica Jiménez</span></div>
-        <div class="tst"><span class="stars">★★★★★</span><p>"Recomiendo totalmente los servicios de Tom y de su equipo. Explica de forma muy clara y amable todas las dudas y consultas de contabilidad."</p><span class="who">Daniel del Río</span></div>
-      </div>
-      <p class="tst-foot">Estas y más de 150 reseñas en <a href="https://encuadrado.com/p/tomcontable" target="_blank" rel="noopener">Encuadrado</a>, con 4,9 de 5.</p>
-    </div>
-  </section>
+  <MuroTestimonios />
 
   <!-- INSTAGRAM -->
   <section class="ig">

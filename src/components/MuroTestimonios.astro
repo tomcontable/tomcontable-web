@@ -1,0 +1,112 @@
+---
+// Muro de reseñas reales de clientes (Encuadrado), en movimiento continuo (marquee).
+// Dos filas que se desplazan en sentido contrario y se pausan al pasar el mouse.
+// Reseñas verbatim de Encuadrado, con limpieza mínima de acentos y puntuación.
+const encuadrado = 'https://encuadrado.com/p/tomcontable';
+
+const filaA = [
+  { n: 'Claudio Gómez', t: 'Nos ayudó a aclarar varias dudas y además nos dio recomendaciones. Como siempre, 10 de 10. Tom y su equipo nos dan la tranquilidad, como empresa, de tener nuestros números en orden.' },
+  { n: 'Gestión JPR', t: 'Tom es un 7 de verdad. Las pocas veces que hemos necesitado su apoyo, ha tenido la disposición para apoyarnos y recomendarnos las mejores opciones. 1000% recomendado.' },
+  { n: 'Luis Bravo Soto', t: 'Absolutamente conforme con la atención. Tom y Javiera súper claros y un 7 en la resolución de dudas.' },
+  { n: 'Andrea Díaz', t: 'Muy claro, preciso, y lo principal es que al transmitir su conocimiento genera tranquilidad, que es justo lo que busco en un profesional que asesora en temas contables y tributarios. Totalmente recomendable.' },
+  { n: 'Francisco Matus', t: 'Excelente contador, arregló dentro de lo posible un trabajo mal hecho.' },
+  { n: 'David S. Arellano', t: 'Excelente atención, directo y claro. Se nota el nivel de conocimientos y manejo, un top en su campo.' },
+  { n: 'Oscar Pradenas', e: 'Bros Kontrol SpA', t: 'Excelente reunión, todos los temas tratados fueron explicados con gran claridad. Totalmente recomendable.' },
+  { n: 'Mónica Jiménez', t: 'Entendieron todas mis dudas y me dieron todas las opciones para resolver mis preocupaciones tributarias, demostrando amplio conocimiento. Asesorías que a veces cuesta conseguir.' },
+];
+
+const filaB = [
+  { n: 'Jorge Antezana', t: 'Muy claro y rápido. Atendió todas las consultas que tenía. De verdad vale la pena. Me fui con claridad sobre lo que tenía que hacer.' },
+  { n: 'Gabriela Rojas Valdés', t: 'Encontré a alguien que me explica de manera simple y clara, para tomar la mejor decisión para mi empresa. Mil gracias.' },
+  { n: 'Elizabeth Arias Carmona', t: 'Excelente explicación de aspectos técnicos sobre honorarios, impuestos e imposiciones. Cien por ciento recomendable. Gracias, Tom.' },
+  { n: 'Richard Salazar', t: 'Quedé muy conforme con la consulta realizada. Recomiendo esta modalidad ampliamente.' },
+  { n: 'Daniel del Río', t: 'Recomiendo totalmente los servicios de Tom y de su equipo. Explica de forma muy clara y amable todas las dudas y consultas de contabilidad.' },
+  { n: 'Francisco Díez', t: 'Tomás es muy profesional y siempre está dispuesto a resolver los problemas de sus clientes. Lo recomiendo 100%.' },
+  { n: 'Bethania Chipre', t: 'Espectacular, todo muy claro y entendible. Tom es muy amable al responder todas las preguntas y tiene buen manejo del tema.' },
+  { n: 'Jacinta Pérez Cotapos', t: 'Muy claros y estratégicos. Me fui con todo resuelto.' },
+];
+---
+
+<section class="muro">
+  <div class="wrap muro-head">
+    <p class="eyebrow">Testimonios</p>
+    <h2>Lo que dicen quienes ya trabajan con nosotros</h2>
+    <p class="muro-sub">5,0 de 5 en 124 evaluaciones reales en <a href={encuadrado} target="_blank" rel="noopener">Encuadrado</a>. Estas son algunas, con nombre y apellido.</p>
+  </div>
+
+  <div class="marquee" aria-label="Reseñas de clientes de TomContable">
+    <div class="track">
+      {filaA.map((c) => (
+        <figure class="rev-card">
+          <div class="rev-stars" aria-hidden="true">★★★★★</div>
+          <blockquote>{c.t}</blockquote>
+          <figcaption><span class="rev-n">{c.n}</span>{c.e && <span class="rev-e">{c.e}</span>}</figcaption>
+        </figure>
+      ))}
+      <div class="dup" aria-hidden="true">
+        {filaA.map((c) => (
+          <figure class="rev-card">
+            <div class="rev-stars">★★★★★</div>
+            <blockquote>{c.t}</blockquote>
+            <figcaption><span class="rev-n">{c.n}</span>{c.e && <span class="rev-e">{c.e}</span>}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <div class="marquee rev" aria-label="Más reseñas de clientes de TomContable">
+    <div class="track">
+      {filaB.map((c) => (
+        <figure class="rev-card">
+          <div class="rev-stars" aria-hidden="true">★★★★★</div>
+          <blockquote>{c.t}</blockquote>
+          <figcaption><span class="rev-n">{c.n}</span>{c.e && <span class="rev-e">{c.e}</span>}</figcaption>
+        </figure>
+      ))}
+      <div class="dup" aria-hidden="true">
+        {filaB.map((c) => (
+          <figure class="rev-card">
+            <div class="rev-stars">★★★★★</div>
+            <blockquote>{c.t}</blockquote>
+            <figcaption><span class="rev-n">{c.n}</span>{c.e && <span class="rev-e">{c.e}</span>}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .muro{padding:64px 0 70px;background:#fff;overflow:hidden}
+  .muro-head{text-align:center;max-width:720px;margin:0 auto 34px;padding:0 24px}
+  .muro-head h2{font-size:32px;font-weight:800;letter-spacing:-.4px;margin:8px 0 0;color:var(--azul-prof)}
+  .muro-sub{font-size:16px;color:#566179;margin:14px 0 0}
+  .muro-sub a{color:var(--azul);font-weight:600}
+
+  .marquee{display:flex;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+  .marquee + .marquee{margin-top:18px}
+  .track{display:flex;gap:18px;width:max-content;animation:muro-scroll 70s linear infinite;will-change:transform}
+  .marquee.rev .track{animation-duration:78s;animation-direction:reverse}
+  .marquee:hover .track{animation-play-state:paused}
+  .dup{display:contents}
+
+  @keyframes muro-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  .rev-card{flex:0 0 340px;width:340px;background:#fff;border:1px solid var(--linea);border-radius:16px;padding:22px 24px;box-shadow:0 8px 22px -16px rgba(19,35,95,.42);display:flex;flex-direction:column}
+  .rev-stars{color:#F6B11A;font-size:13px;letter-spacing:3px;margin-bottom:11px}
+  .rev-card blockquote{margin:0;font-size:14.5px;line-height:1.6;color:#3c4358;flex:1}
+  .rev-card figcaption{margin-top:14px;display:flex;flex-direction:column}
+  .rev-n{font-family:'Montserrat';font-weight:700;font-size:14.5px;color:var(--azul-prof)}
+  .rev-e{font-size:12.5px;color:var(--gris);margin-top:2px}
+
+  @media(max-width:640px){
+    .muro{padding:48px 0 52px}
+    .muro-head h2{font-size:25px}
+    .rev-card{flex-basis:280px;width:280px;padding:18px 20px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .marquee{overflow-x:auto;-webkit-mask-image:none;mask-image:none}
+    .track{animation:none}
+  }
+</style>
