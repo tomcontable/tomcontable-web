@@ -21,7 +21,7 @@ const faqs = [
   { q: '¿Sirve para calcular desde el líquido que quiero pagar?', a: 'Sí. Puedes partir del sueldo base y ver el líquido, o ingresar el líquido que quieres que reciba el trabajador y la calculadora estima el bruto necesario para llegar a ese monto.' },
   { q: '¿Desde qué sueldo se paga impuesto único de segunda categoría?', a: 'El impuesto único es progresivo y se calcula en UTM. Las rentas mensuales bajo 13,5 UTM están exentas y, sobre ese tramo, la tasa sube por escalones. La calculadora lo aplica solo cuando la renta imponible del mes supera el límite exento.' },
   { q: '¿La calculadora está al día con los valores de 2026?', a: 'Sí. Usa el ingreso mínimo, los topes imponibles, la UF y la UTM vigentes, y los ajusta según el mes de cálculo que elijas desde enero de 2026. Los indicadores previsionales salen de Previred.' },
-  { q: '¿Sirve para jornada parcial o sueldos proporcionales?', a: 'Sí. Puedes ajustar la jornada semanal y los días trabajados en el mes, y el cálculo se hace proporcional. Es útil para contratos part-time, ingresos a mitad de mes o ausencias.' },
+  { q: '¿Sirve para jornada parcial o sueldos proporcionales?', a: 'Sí. Puedes ajustar la jornada semanal y los días trabajados en el mes. El ingreso mínimo se prorratea solo hasta 30 horas semanales, que es lo que la ley considera jornada parcial. Entre 30 y 42 horas (jornada intermedia) corresponde el ingreso mínimo completo, sin prorrateo, según la Dirección del Trabajo.' },
 ];
 
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
@@ -308,7 +308,10 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
     const afpKey = $('afp').value;
     const saludTipo = $('salud-tipo').value;
     const jornada = parseInt($('jornada').value, 10) || JORNADA_COMPLETA;
-    const jornadaParcial = jornada < JORNADA_COMPLETA;
+    // Jornada parcial legal (art. 40 bis CT): hasta 30 hrs/semana, admite mínimo proporcional.
+    // Entre 30 y 42 hrs es "jornada intermedia": corresponde el ingreso mínimo íntegro, sin prorratear (criterio DT).
+    const jornadaParcial = jornada > 0 && jornada <= 30;
+    const jornadaIntermedia = jornada > 30 && jornada < JORNADA_COMPLETA;
     const dias = Math.min(30, parseInt($('dias').value, 10) || 30);
     const bonoTipo = $('bono-tipo').value;
     const rawBono = num('bonos');
@@ -367,7 +370,9 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
       const btnMin = (modo === 'base' && jornadaParcial) ? ` <button type="button" class="prop-btn" data-prop="${Math.round(minProp)}">Usar el mínimo proporcional</button>` : '';
       avisoEl.innerHTML = jornadaParcial
         ? `Atención: el sueldo base está bajo el mínimo proporcional de esta jornada (${fmt0.format(Math.round(minProp))} para ${jornada} hrs). Revisa que cumpla el ingreso mínimo legal.${btnMin}`
-        : `Atención: el sueldo base está bajo el ingreso mínimo legal (${fmt0.format(Math.round(minProp))}).`;
+        : jornadaIntermedia
+          ? `Atención: con ${jornada} hrs semanales (jornada intermedia, sobre las 30 hrs de jornada parcial) corresponde el ingreso mínimo legal completo, sin prorratear: ${fmt0.format(Math.round(minProp))}.`
+          : `Atención: el sueldo base está bajo el ingreso mínimo legal (${fmt0.format(Math.round(minProp))}).`;
     } else {
       avisoEl.hidden = true;
     }
@@ -420,7 +425,7 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
       <li>Sueldo mínimo: <strong>${fmt0.format(D.sueldoMinimo)}</strong> · Tope imponible AFP/salud: <strong>${D.topeAFP_UF} UF</strong> · Tope cesantía: <strong>${D.topeAFC_UF} UF</strong></li>
       <li>AFP (cargo trabajador, incluye 10% + comisión): ${Object.keys(D.afps).map((k) => `${k} ${pct(D.afps[k])}%`).join(' · ')}</li>
       <li>Salud: Fonasa 7% o Isapre (si el plan en UF supera el 7%, el trabajador paga la diferencia, que no es deducible de impuesto)</li>
-      <li>Jornada completa legal: 42 hrs (Ley 40 horas, 2026). Jornada parcial = el ingreso mínimo y la hora se calculan proporcionales. Días del mes: tope legal 30</li>
+      <li>Jornada completa legal: 42 hrs (Ley 40 horas, 2026). El ingreso mínimo se prorratea solo hasta 30 hrs semanales (jornada parcial, art. 40 bis CT); entre 30 y 42 hrs (jornada intermedia) corresponde el mínimo completo, sin prorrateo, según la Dirección del Trabajo. Días del mes: tope legal 30</li>
       <li>Horas extra: recargo 50% sobre la hora ordinaria · Atrasos: hora ordinaria, rebajan la base imponible</li>
       <li>Bono líquido: se "embrutece" según las cotizaciones del trabajador y el impuesto marginal (aproximación, validar en bordes de tramo)</li>
       <li>Cesantía trabajador indefinido: ${pct(D.afcTrabajadorIndef)}% · Cesantía empleador: ${pct(D.afcEmpleadorIndef)}% indefinido / ${pct(D.afcEmpleadorPlazo)}% plazo fijo</li>

@@ -29,4 +29,36 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { blog };
+// Coleccion de fondos concursables. Cada fondo es un .md en src/content/fondos.
+// Son fichas cortas de solo trafico: no venden nada de TomContable, solo informan
+// fechas, requisitos minimos y el link oficial de postulacion.
+const fondos = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    seoTitle: z.string(),
+    description: z.string(),
+    keyword: z.string(),
+    // Nombre de la institucion que financia (Corfo, Sercotec, Sence, etc.)
+    institucion: z.string(),
+    // Respuesta directa: 2-3 frases que resumen que es, quien puede postular,
+    // cuanto entrega y hasta cuando. Pensada para citarse tal cual en buscadores e IA.
+    resumen: z.string(),
+    fechaInicio: z.date(),
+    fechaCierre: z.date(),
+    // Texto libre con el monto y condicion del beneficio
+    beneficio: z.string(),
+    // Requisitos minimos, uno por item, en lenguaje simple
+    requisitos: z.array(z.string()),
+    // Link oficial de postulacion (sitio de la institucion, no de TomContable)
+    link: z.string(),
+    fuenteTexto: z.string(),
+    fuenteHref: z.string(),
+    pubDate: z.date(),
+    updatedDate: z.date().optional(),
+    faqs: z.array(z.object({ q: z.string(), a: z.string() })).default([]),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { blog, fondos };

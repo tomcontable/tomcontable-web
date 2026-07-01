@@ -1,0 +1,204 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const fondos = await getCollection('fondos', ({ data }) => !data.draft);
+  return fondos.map((fondo) => ({
+    params: { slug: fondo.slug },
+    props: { fondo },
+  }));
+}
+
+const { fondo } = Astro.props;
+const { Content } = await fondo.render();
+const d = fondo.data;
+
+const url = `https://tomcontable.cl/fondos-concursables/${fondo.slug}`;
+const fmtFecha = (x) =>
+  x.toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' });
+
+const hoy = new Date();
+const abierto = hoy <= d.fechaCierre;
+
+const seo = {
+  title: d.seoTitle,
+  description: d.description,
+  canonical: `/fondos-concursables/${fondo.slug}`,
+};
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": d.title,
+  "description": d.description,
+  "datePublished": d.pubDate.toISOString(),
+  "dateModified": (d.updatedDate ?? d.pubDate).toISOString(),
+  "inLanguage": "es-CL",
+  "mainEntityOfPage": url,
+  "image": "https://tomcontable.cl/img/og-tomcontable.jpg",
+  "author": {
+    "@type": "Person",
+    "@id": "https://tomcontable.cl/#tomas",
+    "name": "Tomás Gómez Fuenzalida",
+    "jobTitle": "Contador Colegiado",
+    "url": "https://tomcontable.cl/sobre-tomcontable"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "TomContable",
+    "logo": { "@type": "ImageObject", "url": "https://tomcontable.cl/img/logo-tomcontable.png" }
+  }
+};
+
+const faqSchema = d.faqs.length ? {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": d.faqs.map((it) => ({
+    "@type": "Question",
+    "name": it.q,
+    "acceptedAnswer": { "@type": "Answer", "text": it.a }
+  }))
+} : null;
+
+const breadcrumb = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://tomcontable.cl/" },
+    { "@type": "ListItem", "position": 2, "name": "Fondos concursables", "item": "https://tomcontable.cl/fondos-concursables/" },
+    { "@type": "ListItem", "position": 3, "name": d.title, "item": url }
+  ]
+};
+
+const schema = [articleSchema, breadcrumb, ...(faqSchema ? [faqSchema] : [])];
+---
+<Base {...seo} type="article" schema={schema}>
+
+  <article>
+    <header class="cab">
+      <div class="wrap angosto">
+        <p class="ruta"><a href="/fondos-concursables/">Fondos concursables</a><span>/</span>{d.institucion}</p>
+        <div class="tags">
+          <span class="tag-inst">{d.institucion}</span>
+          <span class={`estado ${abierto ? 'abierto' : 'cerrado'}`}>{abierto ? 'Abierto' : 'Cerrado'}</span>
+        </div>
+        <h1>{d.title}</h1>
+        <p class="meta">Postulación: {fmtFecha(d.fechaInicio)} al {fmtFecha(d.fechaCierre)}</p>
+      </div>
+    </header>
+
+    <div class="cuerpo">
+      <div class="wrap angosto">
+        <div class="resumen">
+          <p class="resumen-label">En resumen</p>
+          <p>{d.resumen}</p>
+        </div>
+
+        <div class="prosa">
+          <Content />
+        </div>
+
+        <div class="datos-clave">
+          <div class="dato">
+            <p class="dato-label">Beneficio</p>
+            <p>{d.beneficio}</p>
+          </div>
+          <div class="dato">
+            <p class="dato-label">Requisitos mínimos</p>
+            <ul>
+              {d.requisitos.map((r) => <li>{r}</li>)}
+            </ul>
+          </div>
+        </div>
+
+        <a class="btn-postular" href={d.link} target="_blank" rel="noopener">Postular en el sitio de {d.institucion}</a>
+
+        <p class="fuente">Fuente: <a href={d.fuenteHref} target="_blank" rel="noopener">{d.fuenteTexto}</a>. Revisado el {fmtFecha(d.updatedDate ?? d.pubDate)}.</p>
+
+        {d.faqs.length > 0 && (
+          <section class="faqs">
+            <h2>Preguntas frecuentes</h2>
+            <div class="faq">
+              {d.faqs.map((it) => (
+                <details>
+                  <summary>{it.q}<span class="plus">+</span></summary>
+                  <div class="ans">{it.a}</div>
+                </details>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <aside class="paseo">
+          <p class="paseo-label">Sigue explorando</p>
+          <div class="paseo-links">
+            <a href="/fondos-concursables/">Ver todos los fondos abiertos</a>
+            <a href="/blog/como-constituir-una-empresa-en-chile-paso-a-paso/">Cómo constituir una empresa en Chile</a>
+            <a href="/herramientas/">Herramientas y calculadoras para tu pyme</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </article>
+
+</Base>
+
+<style>
+  .cab{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:54px 0 40px}
+  .angosto{max-width:760px}
+  .ruta{font-family:'Montserrat';font-weight:600;font-size:13px;color:var(--gris);margin-bottom:16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .ruta a{color:var(--azul)}
+  .ruta span{color:#c2c7d6}
+
+  .tags{display:flex;gap:10px;align-items:center;margin-bottom:14px}
+  .tag-inst{font-family:'Montserrat';font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul-prof);background:var(--fondo);border:1px solid var(--linea);border-radius:999px;padding:6px 14px}
+  .estado{font-family:'Montserrat';font-weight:700;font-size:12px;letter-spacing:.04em;border-radius:999px;padding:6px 14px;color:#fff}
+  .estado.abierto{background:var(--verde)}
+  .estado.cerrado{background:var(--gris)}
+
+  .cab h1{font-size:34px;font-weight:800;letter-spacing:-.5px;line-height:1.16}
+  .meta{font-size:14px;color:var(--gris);margin-top:14px}
+
+  .cuerpo{padding:44px 0 60px}
+
+  .resumen{background:#fdf4dd;border:1px solid #f1d98a;border-radius:16px;padding:22px 26px;margin-bottom:34px}
+  .resumen-label{font-family:'Montserrat';font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--azul-prof);margin-bottom:8px}
+  .resumen p:last-child{color:#33384a;font-size:16.5px;line-height:1.6;margin:0}
+
+  .prosa{font-size:17px;color:#33384a;line-height:1.75}
+  .prosa :global(h2){font-size:23px;font-weight:800;margin:32px 0 14px;letter-spacing:-.3px}
+  .prosa :global(p){margin-bottom:16px}
+  .prosa :global(ul){margin:0 0 16px 22px}
+  .prosa :global(li){margin-bottom:8px}
+  .prosa :global(strong){color:var(--azul)}
+
+  .datos-clave{background:#fff;border:1px solid var(--linea);border-radius:16px;padding:26px 28px;margin:34px 0;display:grid;gap:22px}
+  .dato-label{font-family:'Montserrat';font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gris);margin-bottom:8px}
+  .dato p{color:#33384a;font-size:15.5px;line-height:1.6}
+  .dato ul{margin:0 0 0 20px}
+  .dato li{margin-bottom:6px;color:#33384a;font-size:15.5px}
+
+  .btn-postular{display:inline-block;background:var(--amarillo);color:var(--azul-prof);font-family:'Montserrat';font-weight:700;font-size:16px;padding:16px 30px;border-radius:12px;text-decoration:none;margin-bottom:14px}
+  .btn-postular:hover{background:var(--amarillo-luz)}
+
+  .fuente{font-size:13.5px;color:var(--gris);margin-bottom:8px}
+  .fuente a{color:var(--azul);font-weight:600}
+
+  .faqs{margin-top:44px}
+  .faqs h2{font-size:23px;font-weight:800;margin-bottom:18px}
+  .faq{max-width:760px}
+  details{background:#fff;border:1px solid var(--linea);border-radius:14px;margin-bottom:12px;overflow:hidden}
+  summary{list-style:none;cursor:pointer;padding:18px 22px;font-family:'Montserrat';font-weight:600;font-size:16px;color:var(--azul);display:flex;justify-content:space-between;gap:14px}
+  summary::-webkit-details-marker{display:none}
+  .plus{font-size:22px;color:var(--azul);transition:.2s;flex-shrink:0}
+  details[open] .plus{transform:rotate(45deg)}
+  .ans{padding:0 22px 18px;color:#555;font-size:15.5px}
+
+  .paseo{margin-top:44px;border-top:1px solid var(--linea);padding-top:26px}
+  .paseo-label{font-family:'Montserrat';font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gris);margin-bottom:12px}
+  .paseo-links{display:flex;flex-direction:column;gap:10px}
+  .paseo-links a{font-family:'Montserrat';font-weight:600;font-size:15.5px;color:var(--azul);text-decoration:underline;text-underline-offset:3px}
+
+  @media(max-width:640px){ .cab h1{font-size:26px} .prosa{font-size:16px} }
+</style>

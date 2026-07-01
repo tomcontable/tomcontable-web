@@ -4,3 +4,7 @@
 /calculadora/*     /herramientas   301
 /calculadoras      /herramientas   301
 /herramienta       /herramientas   301
+
+# Fondos concursables paso de ser una subseccion del blog a seccion propia.
+/blog/fondos-concursables/        /fondos-concursables/          301
+/blog/fondos-concursables/*       /fondos-concursables/:splat    301

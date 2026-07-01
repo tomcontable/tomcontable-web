@@ -1,0 +1,109 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const seo = {
+  title: 'Fondos concursables para pymes en Chile 2026 · TomContable',
+  description: 'Fondos y subsidios abiertos para pymes y emprendedores en Chile: Corfo, Sercotec y más, con fechas, requisitos mínimos y el link oficial de postulación.',
+};
+
+const hoy = new Date();
+
+const fondos = (await getCollection('fondos', ({ data }) => !data.draft))
+  .map((f) => ({ ...f, abierto: hoy <= f.data.fechaCierre }))
+  .sort((a, b) => {
+    if (a.abierto !== b.abierto) return a.abierto ? -1 : 1;
+    return a.data.fechaCierre.getTime() - b.data.fechaCierre.getTime();
+  });
+
+const fmtFecha = (d) =>
+  d.toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' });
+
+const breadcrumb = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://tomcontable.cl/" },
+    { "@type": "ListItem", "position": 2, "name": "Fondos concursables", "item": "https://tomcontable.cl/fondos-concursables/" }
+  ]
+};
+
+const listSchema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Fondos concursables para pymes en Chile",
+  "url": "https://tomcontable.cl/fondos-concursables/",
+  "description": seo.description,
+  "hasPart": fondos.map((f) => ({
+    "@type": "Article",
+    "headline": f.data.title,
+    "url": `https://tomcontable.cl/fondos-concursables/${f.slug}`
+  }))
+};
+---
+<Base {...seo} schema={[listSchema, breadcrumb]}>
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Fondos concursables</p>
+      <h1>Fondos concursables para pymes en Chile</h1>
+      <p class="lead">Vamos sumando aquí los fondos y programas de fomento (Corfo, Sercotec, Sence y otros) a medida que abren, con fecha de inicio, fecha de cierre, requisitos mínimos y el link oficial para postular. TomContable no tramita estas postulaciones, esto es solo información para que tu pyme no se quede fuera de plazo.</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      {fondos.length === 0 ? (
+        <p class="vacio">Todavía no hay fondos publicados. Vuelve pronto.</p>
+      ) : (
+        <div class="grid">
+          {fondos.map((f) => (
+            <a class="card" href={`/fondos-concursables/${f.slug}`}>
+              <div class="card-top">
+                <span class="tag-inst">{f.data.institucion}</span>
+                <span class={`estado ${f.abierto ? 'abierto' : 'cerrado'}`}>{f.abierto ? 'Abierto' : 'Cerrado'}</span>
+              </div>
+              <h2>{f.data.title}</h2>
+              <p class="card-lead">{f.data.beneficio}</p>
+              <p class="card-meta">Cierra el {fmtFecha(f.data.fechaCierre)}<span class="leer">Ver ficha</span></p>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section class="paseo-final">
+    <div class="wrap">
+      <p>¿Buscas otro tema? <a href="/blog/">Revisa el blog</a> o las <a href="/herramientas/">herramientas y calculadoras</a> para tu pyme.</p>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:60px 0}
+  .hero h1{font-size:36px;font-weight:800;letter-spacing:-.5px}
+  .hero .lead{font-size:17px;color:#444a63;margin-top:16px;max-width:68ch}
+
+  .sec{padding:50px 0 20px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:24px}
+  .card{background:#fff;border:1px solid var(--linea);border-radius:16px;padding:26px;display:flex;flex-direction:column;transition:.18s;box-shadow:0 6px 18px -14px rgba(19,35,95,.4)}
+  .card:hover{transform:translateY(-3px);border-color:#c9cfe2;box-shadow:0 16px 30px -18px rgba(19,35,95,.5)}
+  .card-top{display:flex;gap:10px;align-items:center;margin-bottom:14px}
+  .tag-inst{font-family:'Montserrat';font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul-prof);background:var(--fondo);border:1px solid var(--linea);border-radius:999px;padding:5px 12px}
+  .estado{font-family:'Montserrat';font-weight:700;font-size:11px;letter-spacing:.04em;border-radius:999px;padding:5px 12px;color:#fff}
+  .estado.abierto{background:var(--verde)}
+  .estado.cerrado{background:var(--gris)}
+  .card h2{font-size:20px;font-weight:800;line-height:1.25;margin-bottom:10px}
+  .card-lead{color:#555;font-size:14.5px;flex-grow:1}
+  .card-meta{margin-top:18px;padding-top:16px;border-top:1px solid var(--linea);display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--gris)}
+  .leer{font-family:'Montserrat';font-weight:700;color:var(--azul);font-size:13px}
+  .vacio{color:var(--gris);font-size:17px}
+
+  .paseo-final{padding:20px 0 60px}
+  .paseo-final p{color:#555;font-size:15px}
+  .paseo-final a{color:var(--azul);font-weight:600;text-decoration:underline;text-underline-offset:2px}
+
+  @media(max-width:640px){ .hero h1{font-size:28px} }
+</style>

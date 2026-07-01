@@ -40,8 +40,6 @@ const herramientas = [
           {servicios.map((s) => <a href={s.href}>{s.texto}</a>)}
         </div>
       </div>
-      <a href="/blog/">Blog</a>
-      <a href="/recursos/">Recursos</a>
       <div class="dropdown">
         <a class="drop-toggle" href="/herramientas/" aria-haspopup="true">
           Herramientas
@@ -51,6 +49,9 @@ const herramientas = [
           {herramientas.map((h) => <a href={h.href}>{h.texto}</a>)}
         </div>
       </div>
+      <a href="/blog/">Blog</a>
+      <a href="/fondos-concursables/">Fondos concursables</a>
+      <a href="/recursos/">Recursos</a>
       <a href="/sobre-tomcontable/">Sobre nosotros</a>
     </nav>
     <div class="nav-acciones">
@@ -64,10 +65,11 @@ const herramientas = [
     <a href="/">Inicio</a>
     <a href="/servicios/">Servicios</a>
     {servicios.map((s) => <a class="mm-serv" href={s.href}>{s.texto}</a>)}
-    <a href="/blog/">Blog</a>
-    <a href="/recursos/">Recursos</a>
     <a href="/herramientas/">Herramientas</a>
     {herramientas.map((h) => <a class="mm-serv" href={h.href}>{h.texto}</a>)}
+    <a href="/blog/">Blog</a>
+    <a href="/fondos-concursables/">Fondos concursables</a>
+    <a href="/recursos/">Recursos</a>
     <a href="/sobre-tomcontable/">Sobre nosotros</a>
   </nav>
 </header>
