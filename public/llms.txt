@@ -1,0 +1,43 @@
+# TomContable
+
+> Servicio de contabilidad para pymes y emprendedores en Chile, liderado por Tomás Gómez Fuenzalida, Ingeniero Comercial y Contador Colegiado con más de 12 años de experiencia. Contabilidad mensual, constitución de empresas, regularización ante el SII y asesorías tributarias, con atención cercana por WhatsApp. Además publica herramientas gratuitas: calculadoras laborales y tributarias, indicadores previsionales al día y un directorio de fondos concursables (Corfo, Sercotec) actualizado.
+
+Sitio: https://tomcontable.cl · Idioma: español de Chile · Contacto: WhatsApp +56 9 3650 6297
+
+## Servicios
+
+- [Constitución de empresas](https://tomcontable.cl/constitucion-de-empresas/): creación de empresa en Chile lista para facturar, incluye inicio de actividades ante el SII.
+- [Contabilidad mensual](https://tomcontable.cl/contabilidad-mensual/): IVA, F29, remuneraciones y operación renta para pymes, con asesoría ilimitada por WhatsApp.
+- [Problemas con el SII](https://tomcontable.cl/problemas-con-el-sii/): regularización de cartas, IVA observado, bloqueos y deudas tributarias.
+- [Proyección tributaria](https://tomcontable.cl/proyeccion-tributaria/): estimación anticipada del impuesto anual para planificar antes de abril.
+- [Asesorías](https://tomcontable.cl/asesorias/): sesiones puntuales para resolver dudas tributarias, laborales o de formalización.
+
+## Fondos concursables para pymes en Chile
+
+- [Directorio de fondos concursables](https://tomcontable.cl/fondos-concursables/): fondos y subsidios de Corfo, Sercotec y otras instituciones, con montos, fechas de cierre, requisitos mínimos y link oficial de postulación. Se actualiza a medida que abren y cierran convocatorias. Incluye fichas de Capital Semilla Emprende, Capital Abeja Emprende, Capital Pioneras, Fondo Crece, Kit Digital, Digitaliza tu Almacén (Sercotec) y Semilla Inicia, Escalamiento, Gestión de la Innovación (Corfo).
+
+## Herramientas gratuitas (calculadoras)
+
+- [Hub de herramientas](https://tomcontable.cl/herramientas/): todas las calculadoras gratis.
+- [Calculadora de sueldo líquido](https://tomcontable.cl/calculadora-sueldo-liquido/): de bruto a líquido con AFP, salud y seguro de cesantía, valores 2026.
+- [Calculadora de finiquito](https://tomcontable.cl/calculadora-finiquito/): indemnizaciones, vacaciones proporcionales y aviso previo según causal.
+- [Calculadora de boleta de honorarios](https://tomcontable.cl/calculadora-boleta-honorarios/): retención vigente y monto líquido a recibir.
+- [Calculadora de IVA](https://tomcontable.cl/calculadora-iva/): agregar o quitar el 19% de IVA.
+- [Calculadora UF a pesos](https://tomcontable.cl/calculadora-uf/) · [UTM a pesos](https://tomcontable.cl/calculadora-utm/) · [Dólar a pesos](https://tomcontable.cl/calculadora-dolar/) · [Reajuste por IPC](https://tomcontable.cl/calculadora-ipc/)
+- [Multas e intereses del SII](https://tomcontable.cl/calculadora-multas-intereses-sii/): costo de declarar fuera de plazo.
+- [Indicadores previsionales](https://tomcontable.cl/indicadores-previsionales/): UF, UTM, topes imponibles, sueldo mínimo y tasas AFP del mes, actualizados.
+
+## Guías del blog
+
+- [Blog](https://tomcontable.cl/blog/): contabilidad e impuestos en simple para pymes chilenas.
+- [Cómo constituir una empresa en Chile paso a paso](https://tomcontable.cl/blog/como-constituir-una-empresa-en-chile-paso-a-paso/)
+- [Cuánto impuesto paga tu pyme en 2026](https://tomcontable.cl/blog/cuanto-impuesto-paga-tu-pyme-2026/)
+- [Cuánto cuesta un contador para una pyme](https://tomcontable.cl/blog/cuanto-cuesta-un-contador-para-pyme/)
+- [Qué hacer si el SII observa tu declaración](https://tomcontable.cl/blog/que-hacer-si-el-sii-observa-tu-declaracion/)
+- [Cómo se calcula el sueldo líquido en Chile 2026](https://tomcontable.cl/blog/como-se-calcula-el-sueldo-liquido-en-chile-2026/)
+
+## Sobre
+
+- [Sobre TomContable](https://tomcontable.cl/sobre-tomcontable/): quién es Tomás Gómez Fuenzalida y cómo trabaja el equipo.
+- [Preguntas frecuentes](https://tomcontable.cl/preguntas-frecuentes/): respuestas sobre contabilidad, SII y empresas en Chile.
+- [Contacto](https://tomcontable.cl/contacto/)

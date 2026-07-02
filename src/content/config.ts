@@ -41,6 +41,13 @@ const fondos = defineCollection({
     keyword: z.string(),
     // Nombre de la institucion que financia (Corfo, Sercotec, Sence, etc.)
     institucion: z.string(),
+    // Objetivo del fondo, para filtros y etiqueta de color en la tarjeta.
+    // Uno de: Emprender, Crecer, Innovar, Digitalizar, Mujeres.
+    categoria: z.string().default('Emprender'),
+    // Monto maximo (numero, sin puntos) para mostrar destacado y ordenar.
+    montoMax: z.number().optional(),
+    // Destaca este fondo con una tarjeta grande arriba del listado.
+    destacado: z.boolean().default(false),
     // Respuesta directa: 2-3 frases que resumen que es, quien puede postular,
     // cuanto entrega y hasta cuando. Pensada para citarse tal cual en buscadores e IA.
     resumen: z.string(),

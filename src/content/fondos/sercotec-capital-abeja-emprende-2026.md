@@ -4,6 +4,8 @@ seoTitle: "Capital Abeja Emprende Sercotec 2026 · TomContable"
 description: "Capital Abeja Emprende de Sercotec entrega $3.500.000 a mujeres emprendedoras para formalizar su negocio. Revisa requisitos, fechas y el link oficial."
 keyword: "capital abeja emprende 2026"
 institucion: "Sercotec"
+categoria: "Mujeres"
+montoMax: 3500000
 resumen: "Capital Abeja Emprende es el fondo de Sercotec para mujeres con una idea de negocio que aún no formalizan actividades ante el SII. Entrega un subsidio no reembolsable de $3.500.000. La convocatoria 2026 estuvo abierta entre el 14 y el 27 de mayo, y ya cerró; Sercotec repite este llamado durante el año."
 fechaInicio: 2026-05-14
 fechaCierre: 2026-05-27

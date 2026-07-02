@@ -4,6 +4,8 @@ seoTitle: "Capital Pioneras Sercotec 2026: requisitos · TomContable"
 description: "Capital Pioneras de Sercotec entrega $3.500.000 a mujeres que emprenden en rubros con poca presencia femenina. Revisa requisitos y fechas 2026."
 keyword: "capital pioneras sercotec 2026"
 institucion: "Sercotec"
+categoria: "Mujeres"
+montoMax: 3500000
 resumen: "Capital Pioneras es el fondo de Sercotec para mujeres que emprenden en rubros donde tradicionalmente hay poca participación femenina, como construcción, transporte o tecnología. Entrega $3.500.000 no reembolsables. La convocatoria 2026 está abierta desde el 1 de julio hasta el 15 de julio."
 fechaInicio: 2026-07-01
 fechaCierre: 2026-07-15

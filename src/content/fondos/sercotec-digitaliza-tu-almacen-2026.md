@@ -4,6 +4,8 @@ seoTitle: "Digitaliza tu Almacén Sercotec 2026 · TomContable"
 description: "Digitaliza tu Almacén de Sercotec entrega $3.000.000 a almacenes de barrio para modernizarse. Revisa requisitos, fechas y el link oficial."
 keyword: "digitaliza tu almacén sercotec 2026"
 institucion: "Sercotec"
+categoria: "Digitalizar"
+montoMax: 3000000
 resumen: "Digitaliza tu Almacén es el fondo de Sercotec para almacenes de barrio que quieren modernizarse e incorporar herramientas digitales. Entrega $3.000.000 no reembolsables. La convocatoria 2026 estuvo abierta entre el 30 de enero y el 10 de febrero, y ya cerró."
 fechaInicio: 2026-01-30
 fechaCierre: 2026-02-10

@@ -4,6 +4,8 @@ seoTitle: "Capital Semilla Emprende Sercotec 2026 · TomContable"
 description: "Capital Semilla Emprende de Sercotec entrega $3.500.000 para formalizar tu negocio. Revisa requisitos, fechas de la convocatoria y el link oficial."
 keyword: "capital semilla emprende sercotec 2026"
 institucion: "Sercotec"
+categoria: "Emprender"
+montoMax: 3500000
 resumen: "Capital Semilla Emprende es el fondo de Sercotec para personas con una idea de negocio que todavía no formalizan actividades ante el SII. Entrega un subsidio no reembolsable de $3.500.000 para partir. La convocatoria de la Región Metropolitana 2026 estuvo abierta entre el 29 de abril y el 13 de mayo, y ya cerró; Sercotec suele repetir este llamado por región durante el año."
 fechaInicio: 2026-04-29
 fechaCierre: 2026-05-13

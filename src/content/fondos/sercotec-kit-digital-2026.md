@@ -4,6 +4,8 @@ seoTitle: "Kit Digital Sercotec 2026: requisitos · TomContable"
 description: "Kit Digital de Sercotec entrega $1.200.000 para digitalizar tu pyme. Revisa requisitos, fechas de la convocatoria 2026 y el link oficial."
 keyword: "kit digital sercotec 2026"
 institucion: "Sercotec"
+categoria: "Digitalizar"
+montoMax: 1200000
 resumen: "Kit Digital es el fondo de Sercotec para pymes que ya completaron el programa gratuito Ruta Digital y quieren invertir en herramientas tecnológicas. Entrega $1.200.000 no reembolsables. La convocatoria 2026 estuvo abierta entre el 16 y el 26 de junio, y ya cerró."
 fechaInicio: 2026-06-16
 fechaCierre: 2026-06-26

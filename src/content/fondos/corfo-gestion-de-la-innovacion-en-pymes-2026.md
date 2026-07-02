@@ -4,6 +4,8 @@ seoTitle: "Corfo Gestión de la Innovación en Pymes 2026 · TomContable"
 description: "Corfo cofinancia hasta $72.000.000 para que grupos de pymes incorporen innovación en su gestión. Revisa requisitos, plazo y el link oficial."
 keyword: "corfo gestión de la innovación en pymes 2026"
 institucion: "Corfo"
+categoria: "Innovar"
+montoMax: 7200000
 resumen: "Gestión de la Innovación en Pymes es el cofinanciamiento de Corfo para que grupos de al menos 5 empresas (80% pymes) incorporen prácticas de innovación en su gestión. Corfo cubre hasta el 70% del proyecto, con tope de $7.200.000 por empresa y $72.000.000 por proyecto. La convocatoria 2026 está abierta hasta el 15 de julio."
 fechaInicio: 2026-05-20
 fechaCierre: 2026-07-15

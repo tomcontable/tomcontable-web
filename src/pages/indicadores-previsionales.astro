@@ -5,7 +5,7 @@ import BannerServicios from '../components/BannerServicios.astro';
 const periodo = 'Junio 2026';
 
 const seo = {
-  title: 'Indicadores previsionales ' + periodo + ' | UF, UTM, AFP, topes y mínimo · TomContable',
+  title: 'Indicadores Previsionales ' + periodo + ' · TomContable',
   description: 'Indicadores previsionales de ' + periodo + ' en Chile: UF, UTM, comisiones de cada AFP, topes imponibles, sueldo mínimo, asignación familiar, SIS, seguro social y APV. Claros y al día.',
   canonical: '/indicadores-previsionales',
 };
@@ -295,13 +295,13 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   details{background:#fff;border:1px solid var(--linea);border-radius:14px;margin-bottom:12px;overflow:hidden}
   summary{list-style:none;cursor:pointer;padding:18px 22px;font-family:'Montserrat';font-weight:600;font-size:16px;color:var(--azul);display:flex;justify-content:space-between;gap:14px}
   summary::-webkit-details-marker{display:none}
-  .plus{font-size:22px;color:var(--azul);transition:.2s;flex-shrink:0}
+  .plus{font-size:22px;color:var(--azul);transition:transform .2s;flex-shrink:0}
   details[open] .plus{transform:rotate(45deg)}
   .ans{padding:0 22px 18px;color:#555;font-size:15.5px;line-height:1.6}
 
   .relacionadas{padding-top:0}
   .relac-grid{display:flex;flex-wrap:wrap;gap:10px}
-  .relac-grid a{font-family:'Montserrat';font-weight:600;font-size:14px;color:var(--azul);background:#fff;border:1px solid var(--linea);border-radius:10px;padding:9px 14px;text-decoration:none;transition:.15s}
+  .relac-grid a{font-family:'Montserrat';font-weight:600;font-size:14px;color:var(--azul);background:#fff;border:1px solid var(--linea);border-radius:10px;padding:9px 14px;text-decoration:none;transition:border-color .15s}
   .relac-grid a:hover{border-color:var(--azul)}
 
   @media(max-width:640px){

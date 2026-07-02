@@ -568,7 +568,7 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
   .f{display:block;margin-bottom:14px}.f>span{display:block;font-family:'Montserrat';font-weight:600;font-size:13.5px;color:var(--azul-prof);margin-bottom:6px}
   .f>span em{color:var(--gris);font-weight:500;font-style:normal}
   .f input,.f select{width:100%;border:1px solid var(--linea);border-radius:10px;padding:11px 13px;font-family:inherit;font-size:15px;color:var(--azul-prof);background:#fff}
-  .f input:focus,.f select:focus{outline:none;border-color:var(--azul)}
+  .f input:focus,.f select:focus{outline:none;border-color:var(--azul);box-shadow:0 0 0 3px rgba(30,47,115,.14)}
   .f2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .inp{display:flex;align-items:center;border:1px solid var(--linea);border-radius:10px;padding:0 12px}
   .inp:focus-within{border-color:var(--azul)}
@@ -579,7 +579,7 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
   .more{margin-top:4px;border-top:1px solid var(--linea);padding-top:12px}
   .more summary{list-style:none;cursor:pointer;font-family:'Montserrat';font-weight:700;font-size:14px;color:var(--azul);display:flex;align-items:center;gap:8px}
   .more summary::-webkit-details-marker{display:none}
-  .more .plus{font-size:18px;transition:.2s}.more[open] .plus{transform:rotate(45deg)}
+  .more .plus{font-size:18px;transition:transform .2s}.more[open] .plus{transform:rotate(45deg)}
   .more-body{padding-top:16px}
   .bono-conv{margin:-4px 0 14px;background:#eef5ff;border:1px solid #cfe0f5;border-radius:9px;padding:9px 12px;font-size:12.5px;color:#33384a;line-height:1.45}
   .bono-conv strong{color:#13235F}
@@ -612,7 +612,7 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
   .mail-toggle{background:none;border:none;color:var(--azul);font-family:'Montserrat';font-weight:700;font-size:13.5px;cursor:pointer;padding:2px 0;text-decoration:underline;text-underline-offset:3px}
   .mail-box{margin-top:10px;display:flex;flex-direction:column;gap:10px}
   .mail-box .inp-solo{border:1px solid var(--linea);border-radius:10px;padding:11px 13px;font-family:inherit;font-size:15px;color:var(--azul-prof);width:100%}
-  .mail-box .inp-solo:focus{outline:none;border-color:var(--azul)}
+  .mail-box .inp-solo:focus{outline:none;border-color:var(--azul);box-shadow:0 0 0 3px rgba(30,47,115,.14)}
   .mail-box :global(.btn){width:100%}
   .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
   .mail-check{display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--gris);line-height:1.45;cursor:pointer}
@@ -624,7 +624,7 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
   .params{margin-top:24px;background:#fff;border:1px solid var(--linea);border-radius:14px;overflow:hidden}
   .params summary{list-style:none;cursor:pointer;padding:16px 20px;font-family:'Montserrat';font-weight:700;font-size:14.5px;color:var(--azul);display:flex;justify-content:space-between;gap:12px}
   .params summary::-webkit-details-marker{display:none}
-  .params .plus{font-size:20px;transition:.2s}.params[open] .plus{transform:rotate(45deg)}
+  .params .plus{font-size:20px;transition:transform .2s}.params[open] .plus{transform:rotate(45deg)}
   .params-body{padding:0 20px 18px}
   .params-body ul{margin:0 0 10px 18px;font-size:13.5px;color:#444a63;line-height:1.7}
   .params-nota{font-size:12.5px;color:var(--gris)}
@@ -642,7 +642,7 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
   .faq details{background:#fff;border:1px solid var(--linea);border-radius:14px;margin-bottom:12px;overflow:hidden}
   .faq summary{list-style:none;cursor:pointer;padding:18px 22px;font-family:'Montserrat';font-weight:600;font-size:16px;color:var(--azul);display:flex;justify-content:space-between;gap:14px}
   .faq summary::-webkit-details-marker{display:none}
-  .faq .plus{font-size:22px;color:var(--azul);transition:.2s;flex-shrink:0}
+  .faq .plus{font-size:22px;color:var(--azul);transition:transform .2s;flex-shrink:0}
   .faq details[open] .plus{transform:rotate(45deg)}
   .faq .ans{padding:0 22px 18px;color:#555;font-size:15.5px;line-height:1.6}
   .guia{padding:8px 0 6px}
@@ -658,7 +658,7 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
   .relac-in{max-width:760px;margin:0 auto;padding:0 24px}
   .relac h2{font-size:18px;font-weight:800;margin:0 0 12px;letter-spacing:-.3px}
   .relac-grid{display:flex;flex-wrap:wrap;gap:10px}
-  .relac-grid a{font-family:'Montserrat';font-weight:600;font-size:14px;color:var(--azul);background:#fff;border:1px solid var(--linea);border-radius:10px;padding:9px 14px;text-decoration:none;transition:.15s}
+  .relac-grid a{font-family:'Montserrat';font-weight:600;font-size:14px;color:var(--azul);background:#fff;border:1px solid var(--linea);border-radius:10px;padding:9px 14px;text-decoration:none;transition:border-color .15s}
   .relac-grid a:hover{border-color:var(--azul)}
   .cierre{background:linear-gradient(150deg,var(--azul),var(--azul-prof));color:#fff;text-align:center;padding:62px 24px}
   .cierre h2{color:#fff;font-size:24px;font-weight:800;max-width:28ch;margin:0 auto}

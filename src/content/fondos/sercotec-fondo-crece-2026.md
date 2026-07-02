@@ -4,6 +4,8 @@ seoTitle: "Fondo Crece Sercotec 2026: requisitos · TomContable"
 description: "Fondo Crece de Sercotec entrega hasta $5.000.000 para hacer crecer tu pyme. Revisa requisitos, fechas de la convocatoria 2026 y el link oficial."
 keyword: "fondo crece sercotec 2026"
 institucion: "Sercotec"
+categoria: "Crecer"
+montoMax: 5000000
 resumen: "Fondo Crece es el subsidio de Sercotec para pymes y cooperativas ya formalizadas que quieren invertir para crecer. Entrega hasta $5.000.000 no reembolsables. La convocatoria 2026 estuvo abierta entre el 2 y el 11 de junio, y ya cerró; Sercotec repite este llamado durante el año."
 fechaInicio: 2026-06-02
 fechaCierre: 2026-06-11

@@ -4,6 +4,8 @@ seoTitle: "Corfo Semilla Inicia 2026: requisitos · TomContable"
 description: "Corfo Semilla Inicia entrega hasta $17.000.000 a emprendimientos en etapa temprana. Revisa requisitos, fechas de la convocatoria 2026 y el link oficial."
 keyword: "corfo semilla inicia 2026"
 institucion: "Corfo"
+categoria: "Emprender"
+montoMax: 15000000
 resumen: "Semilla Inicia es el cofinanciamiento de Corfo para emprendimientos en etapa de idea, prototipo o solución ya desarrollada, pero sin ventas regulares. Entrega hasta $15.000.000 (75% del proyecto) y hasta $17.000.000 (85%) si el emprendimiento está liderado por una mujer. El cierre de la convocatoria 2026 fue el 15 de junio, a las 16:00 horas, y ya cerró."
 fechaInicio: 2026-04-30
 fechaCierre: 2026-06-15

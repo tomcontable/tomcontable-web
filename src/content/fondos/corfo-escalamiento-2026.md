@@ -4,6 +4,9 @@ seoTitle: "Corfo Escalamiento 2026: requisitos y postulación · TomContable"
 description: "Corfo Escalamiento 2026 recibe postulaciones hasta el 20 de julio. Revisa requisitos mínimos, cuánto cofinancia y el link oficial para postular."
 keyword: "corfo escalamiento 2026"
 institucion: "Corfo"
+categoria: "Crecer"
+montoMax: 60000000
+destacado: true
 resumen: "El programa Escalamiento de Corfo entrega hasta $60.000.000 de cofinanciamiento no reembolsable a empresas chilenas con ventas entre $80.000.000 y $800.000.000 en los últimos 12 meses y menos de 6 años desde el inicio de actividades. Las postulaciones están abiertas desde el 17 de junio hasta el 20 de julio de 2026 a las 16:00 horas, de forma improrrogable."
 fechaInicio: 2026-06-17
 fechaCierre: 2026-07-20

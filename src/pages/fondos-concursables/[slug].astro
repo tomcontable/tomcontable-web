@@ -1,25 +1,65 @@
 ---
 import Base from '../../layouts/Base.astro';
+import CtaFondos from '../../components/CtaFondos.astro';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
   const fondos = await getCollection('fondos', ({ data }) => !data.draft);
-  return fondos.map((fondo) => ({
-    params: { slug: fondo.slug },
-    props: { fondo },
-  }));
+  const ahora = new Date();
+  return fondos.map((fondo) => {
+    const relacionados = fondos
+      .filter((x) => x.slug !== fondo.slug)
+      .map((x) => ({
+        slug: x.slug,
+        title: x.data.title,
+        institucion: x.data.institucion,
+        categoria: x.data.categoria,
+        beneficio: x.data.beneficio,
+        montoMax: x.data.montoMax ?? null,
+        fechaCierre: x.data.fechaCierre,
+        abierto: ahora <= x.data.fechaCierre,
+      }))
+      .sort((a, b) => {
+        if (a.abierto !== b.abierto) return a.abierto ? -1 : 1;
+        const ca = a.categoria === fondo.data.categoria ? 0 : 1;
+        const cb = b.categoria === fondo.data.categoria ? 0 : 1;
+        if (ca !== cb) return ca - cb;
+        return a.fechaCierre.getTime() - b.fechaCierre.getTime();
+      })
+      .slice(0, 3);
+    return { params: { slug: fondo.slug }, props: { fondo, relacionados } };
+  });
 }
 
-const { fondo } = Astro.props;
+const { fondo, relacionados } = Astro.props;
 const { Content } = await fondo.render();
 const d = fondo.data;
 
 const url = `https://tomcontable.cl/fondos-concursables/${fondo.slug}`;
+const DIA = 86400000;
 const fmtFecha = (x) =>
   x.toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' });
 
+const fmtMonto = (m) => {
+  if (!m) return null;
+  if (m >= 1000000) {
+    const v = m / 1000000;
+    const s = Number.isInteger(v) ? String(v) : v.toLocaleString('es-CL', { maximumFractionDigits: 1 });
+    return `$${s}M`;
+  }
+  return `$${m.toLocaleString('es-CL')}`;
+};
+
 const hoy = new Date();
 const abierto = hoy <= d.fechaCierre;
+const dias = Math.ceil((d.fechaCierre.getTime() - hoy.getTime()) / DIA);
+const etiquetaPlazo = () => {
+  if (!abierto) return 'Convocatoria cerrada';
+  if (dias <= 0) return 'Cierra hoy';
+  if (dias === 1) return 'Cierra mañana';
+  return `Quedan ${dias} días`;
+};
+const urge = abierto && dias <= 7;
 
 const seo = {
   title: d.seoTitle,
@@ -81,12 +121,33 @@ const schema = [articleSchema, breadcrumb, ...(faqSchema ? [faqSchema] : [])];
         <p class="ruta"><a href="/fondos-concursables/">Fondos concursables</a><span>/</span>{d.institucion}</p>
         <div class="tags">
           <span class="tag-inst">{d.institucion}</span>
+          <span class={`cat cat-${d.categoria.toLowerCase()}`}>{d.categoria}</span>
           <span class={`estado ${abierto ? 'abierto' : 'cerrado'}`}>{abierto ? 'Abierto' : 'Cerrado'}</span>
         </div>
         <h1>{d.title}</h1>
         <p class="meta">Postulación: {fmtFecha(d.fechaInicio)} al {fmtFecha(d.fechaCierre)}</p>
       </div>
     </header>
+
+    <div class="wrap angosto">
+      <div class="ficha-rapida">
+        {fmtMonto(d.montoMax) && (
+          <div class="fr-item">
+            <span class="fr-lbl">Monto</span>
+            <span class="fr-val">Hasta {fmtMonto(d.montoMax)}</span>
+          </div>
+        )}
+        <div class="fr-item">
+          <span class="fr-lbl">Plazo</span>
+          <span class={`fr-val ${urge ? 'urge' : ''}`}>{etiquetaPlazo()}</span>
+        </div>
+        <div class="fr-item">
+          <span class="fr-lbl">Cierra</span>
+          <span class="fr-val">{fmtFecha(d.fechaCierre)}</span>
+        </div>
+        <a class="fr-cta" href={d.link} target="_blank" rel="noopener">Postular →</a>
+      </div>
+    </div>
 
     <div class="cuerpo">
       <div class="wrap angosto">
@@ -112,9 +173,17 @@ const schema = [articleSchema, breadcrumb, ...(faqSchema ? [faqSchema] : [])];
           </div>
         </div>
 
-        <a class="btn-postular" href={d.link} target="_blank" rel="noopener">Postular en el sitio de {d.institucion}</a>
+        <a class="btn-postular" href={d.link} target="_blank" rel="noopener" onclick={`window.posthog&&window.posthog.capture('fondo_postular_click',{fondo:document.title,institucion:${JSON.stringify(d.institucion)}})`}>Postular en el sitio de {d.institucion}</a>
 
         <p class="fuente">Fuente: <a href={d.fuenteHref} target="_blank" rel="noopener">{d.fuenteTexto}</a>. Revisado el {fmtFecha(d.updatedDate ?? d.pubDate)}.</p>
+
+        <div class="cta-wrap">
+          <CtaFondos
+            compacto={true}
+            titulo="¿Cumples los requisitos para postular?"
+            bajada="Este fondo lo postulas en el sitio oficial, pero antes tienes que cumplir la parte administrativa. Si te falta la empresa, la contabilidad al día o resolver algo con el SII, lo dejamos listo a tiempo."
+          />
+        </div>
 
         {d.faqs.length > 0 && (
           <section class="faqs">
@@ -130,14 +199,27 @@ const schema = [articleSchema, breadcrumb, ...(faqSchema ? [faqSchema] : [])];
           </section>
         )}
 
-        <aside class="paseo">
-          <p class="paseo-label">Sigue explorando</p>
-          <div class="paseo-links">
-            <a href="/fondos-concursables/">Ver todos los fondos abiertos</a>
-            <a href="/blog/como-constituir-una-empresa-en-chile-paso-a-paso/">Cómo constituir una empresa en Chile</a>
-            <a href="/herramientas/">Herramientas y calculadoras para tu pyme</a>
-          </div>
-        </aside>
+        {relacionados.length > 0 && (
+          <section class="relacionados">
+            <h2>Otros fondos que te pueden servir</h2>
+            <div class="rel-grid">
+              {relacionados.map((r) => (
+                <a class="rel-card" href={`/fondos-concursables/${r.slug}`}>
+                  <div class="rel-top">
+                    <span class="tag-inst">{r.institucion}</span>
+                    <span class={`estado ${r.abierto ? 'abierto' : 'cerrado'}`}>{r.abierto ? 'Abierto' : 'Cerrado'}</span>
+                  </div>
+                  <h3>{r.title}</h3>
+                  <p class="rel-meta">
+                    {fmtMonto(r.montoMax) && <span class="rel-monto">Hasta {fmtMonto(r.montoMax)}</span>}
+                    <span class="rel-fecha">Cierra el {fmtFecha(r.fechaCierre)}</span>
+                  </p>
+                </a>
+              ))}
+            </div>
+            <a class="rel-todos" href="/fondos-concursables/">Ver todos los fondos concursables →</a>
+          </section>
+        )}
       </div>
     </div>
   </article>
@@ -151,16 +233,32 @@ const schema = [articleSchema, breadcrumb, ...(faqSchema ? [faqSchema] : [])];
   .ruta a{color:var(--azul)}
   .ruta span{color:#c2c7d6}
 
-  .tags{display:flex;gap:10px;align-items:center;margin-bottom:14px}
+  .tags{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
   .tag-inst{font-family:'Montserrat';font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul-prof);background:var(--fondo);border:1px solid var(--linea);border-radius:999px;padding:6px 14px}
+  .cat{font-family:'Montserrat';font-weight:700;font-size:12px;letter-spacing:.03em;border-radius:999px;padding:6px 14px;color:#fff}
+  .cat-emprender{background:#7c3aed}
+  .cat-crecer{background:#1E9E57}
+  .cat-innovar{background:#2563eb}
+  .cat-digitalizar{background:#0891b2}
+  .cat-mujeres{background:#db2777}
   .estado{font-family:'Montserrat';font-weight:700;font-size:12px;letter-spacing:.04em;border-radius:999px;padding:6px 14px;color:#fff}
   .estado.abierto{background:var(--verde)}
   .estado.cerrado{background:var(--gris)}
 
-  .cab h1{font-size:34px;font-weight:800;letter-spacing:-.5px;line-height:1.16}
+  .cab h1{font-size:34px;font-weight:800;letter-spacing:-.5px;line-height:1.16;text-wrap:balance}
   .meta{font-size:14px;color:var(--gris);margin-top:14px}
 
-  .cuerpo{padding:44px 0 60px}
+  /* Ficha rapida */
+  .ficha-rapida{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--linea);border-radius:16px;padding:18px 22px;margin-top:-22px;position:relative;z-index:2;box-shadow:0 18px 40px -24px rgba(19,35,95,.5);flex-wrap:wrap}
+  .fr-item{display:flex;flex-direction:column;gap:3px;padding-right:14px;border-right:1px solid var(--linea)}
+  .fr-lbl{font-family:'Montserrat';font-weight:700;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+  .fr-val{font-family:'Montserrat';font-weight:800;font-size:16px;color:var(--azul);font-variant-numeric:tabular-nums}
+  .fr-val.urge{color:#d0342c}
+  .fr-cta{margin-left:auto;background:var(--amarillo);color:var(--azul-prof);font-family:'Montserrat';font-weight:700;font-size:14.5px;padding:12px 22px;border-radius:11px;white-space:nowrap;transition:filter .15s;touch-action:manipulation}
+  .fr-cta:hover{filter:brightness(.96)}
+  .fr-cta:focus-visible{outline:2px solid var(--azul);outline-offset:2px}
+
+  .cuerpo{padding:36px 0 60px}
 
   .resumen{background:#fdf4dd;border:1px solid #f1d98a;border-radius:16px;padding:22px 26px;margin-bottom:34px}
   .resumen-label{font-family:'Montserrat';font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--azul-prof);margin-bottom:8px}
@@ -181,9 +279,12 @@ const schema = [articleSchema, breadcrumb, ...(faqSchema ? [faqSchema] : [])];
 
   .btn-postular{display:inline-block;background:var(--amarillo);color:var(--azul-prof);font-family:'Montserrat';font-weight:700;font-size:16px;padding:16px 30px;border-radius:12px;text-decoration:none;margin-bottom:14px}
   .btn-postular:hover{background:var(--amarillo-luz)}
+  .btn-postular:focus-visible{outline:2px solid var(--azul);outline-offset:2px}
 
   .fuente{font-size:13.5px;color:var(--gris);margin-bottom:8px}
   .fuente a{color:var(--azul);font-weight:600}
+
+  .cta-wrap{margin:40px 0}
 
   .faqs{margin-top:44px}
   .faqs h2{font-size:23px;font-weight:800;margin-bottom:18px}
@@ -191,14 +292,27 @@ const schema = [articleSchema, breadcrumb, ...(faqSchema ? [faqSchema] : [])];
   details{background:#fff;border:1px solid var(--linea);border-radius:14px;margin-bottom:12px;overflow:hidden}
   summary{list-style:none;cursor:pointer;padding:18px 22px;font-family:'Montserrat';font-weight:600;font-size:16px;color:var(--azul);display:flex;justify-content:space-between;gap:14px}
   summary::-webkit-details-marker{display:none}
-  .plus{font-size:22px;color:var(--azul);transition:.2s;flex-shrink:0}
+  .plus{font-size:22px;color:var(--azul);transition:transform .2s;flex-shrink:0}
   details[open] .plus{transform:rotate(45deg)}
-  .ans{padding:0 22px 18px;color:#555;font-size:15.5px}
+  .ans{padding:0 22px 18px;color:#555;font-size:15.5px;line-height:1.65}
 
-  .paseo{margin-top:44px;border-top:1px solid var(--linea);padding-top:26px}
-  .paseo-label{font-family:'Montserrat';font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gris);margin-bottom:12px}
-  .paseo-links{display:flex;flex-direction:column;gap:10px}
-  .paseo-links a{font-family:'Montserrat';font-weight:600;font-size:15.5px;color:var(--azul);text-decoration:underline;text-underline-offset:3px}
+  .relacionados{margin-top:48px;border-top:1px solid var(--linea);padding-top:34px}
+  .relacionados h2{font-size:23px;font-weight:800;margin-bottom:20px}
+  .rel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+  .rel-card{background:#fff;border:1px solid var(--linea);border-radius:14px;padding:20px;display:flex;flex-direction:column;transition:transform .16s,border-color .16s,box-shadow .16s;box-shadow:0 6px 16px -14px rgba(19,35,95,.4);touch-action:manipulation}
+  .rel-card:hover{transform:translateY(-3px);border-color:#c9cfe2;box-shadow:0 14px 26px -18px rgba(19,35,95,.5)}
+  .rel-card:focus-visible{outline:2px solid var(--azul);outline-offset:3px}
+  .rel-top{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+  .rel-card h3{font-size:16px;font-weight:800;line-height:1.3;flex-grow:1}
+  .rel-meta{margin-top:14px;padding-top:12px;border-top:1px solid var(--linea);display:flex;flex-direction:column;gap:3px}
+  .rel-monto{font-family:'Montserrat';font-weight:800;font-size:14.5px;color:var(--azul)}
+  .rel-fecha{font-size:12.5px;color:var(--gris)}
+  .rel-todos{display:inline-block;margin-top:22px;font-family:'Montserrat';font-weight:700;font-size:15px;color:var(--azul);text-decoration:underline;text-underline-offset:3px}
 
-  @media(max-width:640px){ .cab h1{font-size:26px} .prosa{font-size:16px} }
+  @media(max-width:640px){
+    .cab h1{font-size:26px}
+    .prosa{font-size:16px}
+    .ficha-rapida{margin-top:-16px}
+    .fr-cta{margin-left:0;width:100%;text-align:center;order:5}
+  }
 </style>

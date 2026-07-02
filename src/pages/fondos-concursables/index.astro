@@ -1,23 +1,76 @@
 ---
 import Base from '../../layouts/Base.astro';
+import CtaFondos from '../../components/CtaFondos.astro';
+import BannerServicios from '../../components/BannerServicios.astro';
 import { getCollection } from 'astro:content';
 
 const seo = {
-  title: 'Fondos concursables para pymes en Chile 2026 · TomContable',
-  description: 'Fondos y subsidios abiertos para pymes y emprendedores en Chile: Corfo, Sercotec y más, con fechas, requisitos mínimos y el link oficial de postulación.',
+  title: 'Fondos concursables para pymes Chile 2026 · TomContable',
+  description: 'Buscador de fondos y subsidios abiertos para pymes y emprendedores en Chile 2026: Corfo, Sercotec y más, con montos, fechas de cierre, requisitos y el link oficial de postulación.',
 };
 
 const hoy = new Date();
+const DIA = 86400000;
 
 const fondos = (await getCollection('fondos', ({ data }) => !data.draft))
-  .map((f) => ({ ...f, abierto: hoy <= f.data.fechaCierre }))
+  .map((f) => {
+    const abierto = hoy <= f.data.fechaCierre;
+    const dias = Math.ceil((f.data.fechaCierre.getTime() - hoy.getTime()) / DIA);
+    return { ...f, abierto, dias };
+  })
   .sort((a, b) => {
     if (a.abierto !== b.abierto) return a.abierto ? -1 : 1;
-    return a.data.fechaCierre.getTime() - b.data.fechaCierre.getTime();
+    if (a.abierto) return a.data.fechaCierre.getTime() - b.data.fechaCierre.getTime();
+    return b.data.fechaCierre.getTime() - a.data.fechaCierre.getTime();
   });
+
+// Datos para los contadores del hero
+const totalFondos = fondos.length;
+const abiertosCount = fondos.filter((f) => f.abierto).length;
+const montoTotalAbierto = fondos
+  .filter((f) => f.abierto)
+  .reduce((s, f) => s + (f.data.montoMax ?? 0), 0);
+
+// Categorias presentes, para los chips de filtro (respeta un orden logico)
+const ordenCat = ['Emprender', 'Crecer', 'Innovar', 'Digitalizar', 'Mujeres'];
+const categorias = ordenCat.filter((c) => fondos.some((f) => f.data.categoria === c));
+
+// Fondo destacado (grande) si hay uno marcado y abierto
+const destacado = fondos.find((f) => f.data.destacado && f.abierto) ?? fondos.find((f) => f.abierto);
+const resto = fondos.filter((f) => f !== destacado);
 
 const fmtFecha = (d) =>
   d.toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' });
+
+const fmtMonto = (m) => {
+  if (!m) return null;
+  if (m >= 1000000) {
+    const v = m / 1000000;
+    const s = Number.isInteger(v) ? String(v) : v.toLocaleString('es-CL', { maximumFractionDigits: 1 });
+    return `$${s}M`;
+  }
+  return `$${m.toLocaleString('es-CL')}`;
+};
+
+const etiquetaPlazo = (f) => {
+  if (!f.abierto) return `Cerró el ${fmtFecha(f.data.fechaCierre)}`;
+  if (f.dias <= 0) return 'Cierra hoy';
+  if (f.dias === 1) return 'Cierra mañana';
+  return `Quedan ${f.dias} días`;
+};
+
+const textoBusqueda = (f) =>
+  `${f.data.title} ${f.data.institucion} ${f.data.categoria} ${f.data.beneficio} ${f.data.resumen}`
+    .toLowerCase();
+
+const faqs = [
+  { q: '¿Qué es un fondo concursable?', a: 'Es un aporte de dinero, en general no reembolsable, que el Estado (Corfo, Sercotec, Sence y otros) entrega a emprendedores y pymes que postulan y son seleccionados. Al ser concursable, hay un plazo, requisitos y una evaluación: no todos los que postulan lo reciben, así que conviene preparar bien la postulación y no dejarla para el último día.' },
+  { q: '¿Los fondos concursables hay que devolverlos?', a: 'La mayoría de los fondos de Corfo y Sercotec son subsidios no reembolsables: no se devuelven si usas la plata para lo comprometido y rindes correctamente. Aun así, siempre revisa las bases de cada convocatoria, porque algunos instrumentos tienen condiciones especiales.' },
+  { q: '¿Necesito tener empresa para postular?', a: 'Depende del fondo. Los de etapa temprana (Capital Semilla, Capital Abeja, Semilla Inicia) suelen ser para quienes aún no formalizan actividades. Los de crecimiento (Fondo Crece, Kit Digital, Escalamiento) exigen inicio de actividades en primera categoría y, muchas veces, cierta antigüedad y nivel de ventas. En TomContable te ayudamos a iniciar actividades o constituir tu empresa para que cumplas el requisito.' },
+  { q: '¿Puedo postular si tengo deudas o problemas con el SII?', a: 'Casi todos los fondos exigen estar sin deudas laborales, previsionales ni tributarias, y sin observaciones en el SII. Una carta, un IVA observado o un bloqueo pueden dejarte fuera. Si es tu caso, lo mejor es regularizar antes de que cierre la convocatoria; nosotros revisamos y ordenamos tu situación.' },
+  { q: '¿TomContable postula por mí a estos fondos?', a: 'No tramitamos las postulaciones: esta sección es información para que tu pyme no se quede fuera de plazo. Lo que sí hacemos es dejarte listo para postular: empresa formalizada, contabilidad al día y situación tributaria sin observaciones, que es donde se cae la mayoría.' },
+  { q: '¿Cada cuánto se abren nuevos fondos?', a: 'Corfo y Sercotec abren convocatorias durante todo el año, muchas veces por región y por rubro. Un fondo que hoy está cerrado suele repetirse más adelante. Por eso vale la pena revisar esta página seguido y tener la parte administrativa resuelta con anticipación.' },
+];
 
 const breadcrumb = {
   "@context": "https://schema.org",
@@ -30,46 +83,176 @@ const breadcrumb = {
 
 const listSchema = {
   "@context": "https://schema.org",
-  "@type": "CollectionPage",
-  "name": "Fondos concursables para pymes en Chile",
-  "url": "https://tomcontable.cl/fondos-concursables/",
+  "@type": "ItemList",
+  "name": "Fondos concursables para pymes en Chile 2026",
   "description": seo.description,
-  "hasPart": fondos.map((f) => ({
-    "@type": "Article",
-    "headline": f.data.title,
+  "numberOfItems": fondos.length,
+  "itemListElement": fondos.map((f, i) => ({
+    "@type": "ListItem",
+    "position": i + 1,
+    "name": f.data.title,
     "url": `https://tomcontable.cl/fondos-concursables/${f.slug}`
   }))
 };
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map((it) => ({
+    "@type": "Question",
+    "name": it.q,
+    "acceptedAnswer": { "@type": "Answer", "text": it.a }
+  }))
+};
 ---
-<Base {...seo} schema={[listSchema, breadcrumb]}>
+<Base {...seo} schema={[listSchema, breadcrumb, faqSchema]}>
 
   <section class="hero">
     <div class="wrap">
-      <p class="eyebrow">Fondos concursables</p>
+      <p class="eyebrow">Fondos concursables · Chile 2026</p>
       <h1>Fondos concursables para pymes en Chile</h1>
-      <p class="lead">Vamos sumando aquí los fondos y programas de fomento (Corfo, Sercotec, Sence y otros) a medida que abren, con fecha de inicio, fecha de cierre, requisitos mínimos y el link oficial para postular. TomContable no tramita estas postulaciones, esto es solo información para que tu pyme no se quede fuera de plazo.</p>
+      <p class="lead">El mapa, siempre al día, de los fondos y subsidios de Corfo, Sercotec y otras instituciones para emprender, crecer, innovar o digitalizar tu pyme. Con monto, fecha de cierre, requisitos mínimos y el link oficial para postular. Para que el que te sirve no se te pase por no enterarte a tiempo.</p>
+
+      <div class="stats">
+        <div class="stat">
+          <span class="stat-num" data-cifra={abiertosCount}>{abiertosCount}</span>
+          <span class="stat-lbl">abiertos ahora</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num" data-cifra={totalFondos}>{totalFondos}</span>
+          <span class="stat-lbl">fondos monitoreados</span>
+        </div>
+        {montoTotalAbierto > 0 && (
+          <div class="stat">
+            <span class="stat-num" data-cifra={Math.round(montoTotalAbierto / 1000000)} data-pref="$" data-suf="M">${Math.round(montoTotalAbierto / 1000000)}M</span>
+            <span class="stat-lbl">en juego hoy</span>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  {destacado && (
+    <section class="sec-dest">
+      <div class="wrap">
+        <a class="dest" href={`/fondos-concursables/${destacado.slug}`}>
+          <div class="dest-info">
+            <div class="dest-top">
+              <span class="badge-dest">★ Destacado abierto</span>
+              <span class="tag-inst">{destacado.data.institucion}</span>
+              <span class={`cat cat-${destacado.data.categoria.toLowerCase()}`}>{destacado.data.categoria}</span>
+            </div>
+            <h2>{destacado.data.title}</h2>
+            <p class="dest-lead">{destacado.data.resumen}</p>
+            <span class="dest-cta">Ver requisitos y postular<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+          <div class="dest-aside">
+            {fmtMonto(destacado.data.montoMax) && <span class="dest-monto">Hasta {fmtMonto(destacado.data.montoMax)}</span>}
+            <span class={`plazo ${destacado.dias <= 7 ? 'urge' : ''}`}>{etiquetaPlazo(destacado)}</span>
+            <span class="dest-fecha">Cierra el {fmtFecha(destacado.data.fechaCierre)}</span>
+          </div>
+        </a>
+      </div>
+    </section>
+  )}
+
+  <section class="sec-filtros">
+    <div class="wrap">
+      <div class="filtros" role="group" aria-label="Filtrar fondos">
+        <div class="chips" id="chips">
+          <button class="chip on" data-cat="Todos" type="button">Todos</button>
+          {categorias.map((c) => <button class="chip" data-cat={c} type="button">{c}</button>)}
+        </div>
+        <div class="controles">
+          <label class="buscador">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input id="q" type="search" placeholder="Buscar por nombre, Corfo, Sercotec…" aria-label="Buscar fondos" autocomplete="off" />
+          </label>
+          <label class="toggle">
+            <input id="soloAbiertos" type="checkbox" />
+            <span class="toggle-track"><span class="toggle-dot"></span></span>
+            <span class="toggle-lbl">Solo abiertos</span>
+          </label>
+        </div>
+      </div>
+      <p class="conteo" id="conteo" aria-live="polite"></p>
     </div>
   </section>
 
   <section class="sec">
     <div class="wrap">
-      {fondos.length === 0 ? (
-        <p class="vacio">Todavía no hay fondos publicados. Vuelve pronto.</p>
-      ) : (
-        <div class="grid">
-          {fondos.map((f) => (
-            <a class="card" href={`/fondos-concursables/${f.slug}`}>
-              <div class="card-top">
-                <span class="tag-inst">{f.data.institucion}</span>
-                <span class={`estado ${f.abierto ? 'abierto' : 'cerrado'}`}>{f.abierto ? 'Abierto' : 'Cerrado'}</span>
-              </div>
-              <h2>{f.data.title}</h2>
-              <p class="card-lead">{f.data.beneficio}</p>
-              <p class="card-meta">Cierra el {fmtFecha(f.data.fechaCierre)}<span class="leer">Ver ficha</span></p>
-            </a>
-          ))}
-        </div>
-      )}
+      <div class="grid" id="grid">
+        {resto.map((f) => (
+          <a
+            class="card"
+            href={`/fondos-concursables/${f.slug}`}
+            data-cat={f.data.categoria}
+            data-abierto={f.abierto ? '1' : '0'}
+            data-texto={textoBusqueda(f)}
+          >
+            <div class="card-top">
+              <span class="tag-inst">{f.data.institucion}</span>
+              <span class={`cat cat-${f.data.categoria.toLowerCase()}`}>{f.data.categoria}</span>
+              <span class={`estado ${f.abierto ? 'abierto' : 'cerrado'}`}>{f.abierto ? 'Abierto' : 'Cerrado'}</span>
+            </div>
+            <h2>{f.data.title}</h2>
+            <p class="card-lead">{f.data.beneficio}</p>
+            <div class="card-meta">
+              {fmtMonto(f.data.montoMax) && <span class="monto">Hasta {fmtMonto(f.data.montoMax)}</span>}
+              <span class={`plazo ${f.abierto && f.dias <= 7 ? 'urge' : ''} ${!f.abierto ? 'off' : ''}`}>{etiquetaPlazo(f)}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+      <p class="vacio" id="vacio" hidden>No hay fondos que calcen con ese filtro. Prueba con “Todos” o quita el buscador.</p>
+    </div>
+  </section>
+
+  <section class="sec-cta">
+    <div class="wrap">
+      <CtaFondos />
+    </div>
+  </section>
+
+  <section class="sec-seo">
+    <div class="wrap angosto">
+      <h2>Cómo aprovechar los fondos concursables para tu pyme</h2>
+      <p>Cada año, Corfo, Sercotec, Sence y otras instituciones reparten miles de millones de pesos en <strong>fondos concursables y subsidios</strong> para que los emprendedores y las pymes de Chile puedan partir, formalizarse, comprar máquinas, digitalizarse o dar el salto a otro tamaño. La mayoría son aportes <strong>no reembolsables</strong>: plata que no se devuelve si la usas en lo comprometido y rindes bien.</p>
+      <p>El problema casi nunca es la falta de fondos, sino enterarse a tiempo y <strong>llegar al cierre cumpliendo los requisitos</strong>. Por eso armamos esta página: para que veas de un vistazo qué está abierto, cuánto entrega, hasta cuándo puedes postular y qué te van a pedir.</p>
+
+      <h3>Los requisitos que se repiten (y donde se cae la mayoría)</h3>
+      <p>Cambian de un fondo a otro, pero casi todos revisan lo mismo:</p>
+      <ul>
+        <li><strong>Formalización:</strong> según la etapa, te piden <em>no</em> tener inicio de actividades (fondos para emprender) o justamente <em>sí</em> tenerlo, con cierta antigüedad (fondos para crecer).</li>
+        <li><strong>Situación tributaria al día:</strong> sin deudas con el SII, sin IVA observado y sin cartas ni bloqueos pendientes.</li>
+        <li><strong>Sin deudas laborales ni previsionales:</strong> cotizaciones e impuestos de tus trabajadores pagados.</li>
+        <li><strong>Nivel de ventas:</strong> varios exigen un rango de ventas anuales (en UF) para calzar con el instrumento.</li>
+        <li><strong>Un buen proyecto:</strong> qué problema resuelves, en qué gastarás la plata y qué resultado esperas.</li>
+      </ul>
+      <p>Los tres primeros son administrativos y se resuelven con anticipación. Es exactamente donde entra TomContable: te dejamos con la <a href="/constitucion-de-empresas/">empresa formalizada</a>, la <a href="/contabilidad-mensual/">contabilidad al día</a> y, si hace falta, tu <a href="/problemas-con-el-sii/">situación con el SII regularizada</a>, para que la postulación no se caiga por un papel.</p>
+
+      <h3>Cómo elegir el fondo correcto</h3>
+      <p>Parte por tu momento: si todavía no facturas, mira los de <strong>emprender</strong> (Capital Semilla, Capital Abeja, Semilla Inicia). Si ya tienes empresa y quieres invertir, revisa los de <strong>crecer</strong> o <strong>digitalizar</strong> (Fondo Crece, Kit Digital, Escalamiento). Usa los filtros de arriba por objetivo e institución, y ordena tu postulación con tiempo: los buenos proyectos se preparan semanas antes del cierre, no el último día.</p>
+    </div>
+  </section>
+
+  <section class="sec-faq">
+    <div class="wrap angosto">
+      <h2>Preguntas frecuentes sobre fondos concursables</h2>
+      <div class="faq">
+        {faqs.map((it) => (
+          <details>
+            <summary>{it.q}<span class="plus">+</span></summary>
+            <div class="ans">{it.a}</div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="sec-banner">
+    <div class="wrap">
+      <BannerServicios orden={['constitucion', 'contabilidad', 'sii', 'proyeccion', 'asesorias']} />
     </div>
   </section>
 
@@ -81,29 +264,186 @@ const listSchema = {
 
 </Base>
 
-<style>
-  .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:60px 0}
-  .hero h1{font-size:36px;font-weight:800;letter-spacing:-.5px}
-  .hero .lead{font-size:17px;color:#444a63;margin-top:16px;max-width:68ch}
+<script>
+  const grid = document.getElementById('grid');
+  if (grid) {
+    const cards = [...grid.querySelectorAll('.card')];
+    const chips = [...document.querySelectorAll('#chips .chip')];
+    const q = document.getElementById('q');
+    const soloAbiertos = document.getElementById('soloAbiertos');
+    const conteo = document.getElementById('conteo');
+    const vacio = document.getElementById('vacio');
+    let cat = 'Todos';
 
-  .sec{padding:50px 0 20px}
+    const norm = (s) => (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+
+    // La URL refleja el estado de los filtros (?cat=&q=&abiertos=1), para
+    // poder compartir el link filtrado y volver atrás sin perder la vista.
+    const sincronizarUrl = () => {
+      const p = new URLSearchParams();
+      if (cat !== 'Todos') p.set('cat', cat);
+      if (q.value.trim()) p.set('q', q.value.trim());
+      if (soloAbiertos.checked) p.set('abiertos', '1');
+      const qs = p.toString();
+      history.replaceState(null, '', qs ? `?${qs}` : location.pathname);
+    };
+
+    const aplicar = () => {
+      const texto = norm(q.value.trim());
+      const soloAb = soloAbiertos.checked;
+      let visibles = 0;
+      cards.forEach((c) => {
+        const okCat = cat === 'Todos' || c.dataset.cat === cat;
+        const okAb = !soloAb || c.dataset.abierto === '1';
+        const okTxt = texto === '' || norm(c.dataset.texto).includes(texto);
+        const show = okCat && okAb && okTxt;
+        c.style.display = show ? '' : 'none';
+        if (show) visibles++;
+      });
+      conteo.textContent = visibles === 1 ? 'Mostrando 1 fondo' : `Mostrando ${visibles} fondos`;
+      vacio.hidden = visibles !== 0;
+      sincronizarUrl();
+    };
+
+    chips.forEach((ch) => ch.addEventListener('click', () => {
+      chips.forEach((x) => x.classList.remove('on'));
+      ch.classList.add('on');
+      cat = ch.dataset.cat;
+      if (window.posthog) window.posthog.capture('fondos_filtro', { categoria: cat });
+      aplicar();
+    }));
+    q.addEventListener('input', aplicar);
+    soloAbiertos.addEventListener('change', aplicar);
+
+    // Estado inicial desde la URL
+    const inicial = new URLSearchParams(location.search);
+    const catUrl = inicial.get('cat');
+    const chipUrl = chips.find((x) => x.dataset.cat === catUrl);
+    if (chipUrl) {
+      chips.forEach((x) => x.classList.remove('on'));
+      chipUrl.classList.add('on');
+      cat = catUrl;
+    }
+    if (inicial.get('q')) q.value = inicial.get('q');
+    if (inicial.get('abiertos') === '1') soloAbiertos.checked = true;
+    aplicar();
+  }
+</script>
+
+<style>
+  .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:64px 0 54px}
+  .hero h1{font-size:38px;font-weight:800;letter-spacing:-.6px;text-wrap:balance}
+  .hero .lead{font-size:17px;color:#444a63;margin-top:16px;max-width:70ch;line-height:1.6}
+  .stats{display:flex;gap:40px;margin-top:34px;flex-wrap:wrap}
+  .stat{display:flex;flex-direction:column}
+  .stat-num{font-family:'Montserrat';font-weight:800;font-size:38px;color:var(--azul);line-height:1;font-variant-numeric:tabular-nums}
+  .stat-lbl{font-size:13.5px;color:var(--gris);margin-top:6px;font-weight:500}
+
+  /* Destacado */
+  .sec-dest{padding:34px 0 0}
+  .dest{display:grid;grid-template-columns:1fr 260px;gap:0;background:#fff;border:1px solid var(--linea);border-radius:20px;overflow:hidden;box-shadow:0 20px 44px -26px rgba(19,35,95,.5);transition:transform .18s,border-color .18s,box-shadow .18s;touch-action:manipulation}
+  .dest:hover{transform:translateY(-3px);box-shadow:0 26px 52px -26px rgba(19,35,95,.6);border-color:#c9cfe2}
+  .dest:focus-visible{outline:2px solid var(--azul);outline-offset:3px}
+  .dest-info{padding:32px 34px}
+  .dest-top{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+  .badge-dest{font-family:'Montserrat';font-weight:700;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--azul-prof);background:var(--amarillo);border-radius:999px;padding:5px 12px}
+  .dest-info h2{font-size:26px;font-weight:800;line-height:1.2;letter-spacing:-.3px}
+  .dest-lead{color:#555;font-size:15px;line-height:1.6;margin-top:12px;max-width:62ch}
+  .dest-cta{display:inline-flex;align-items:center;gap:8px;margin-top:20px;font-family:'Montserrat';font-weight:700;font-size:15px;color:var(--azul)}
+  .dest-cta svg{width:17px;height:17px;transition:transform .18s}
+  .dest:hover .dest-cta svg{transform:translateX(4px)}
+  .dest-aside{background:linear-gradient(160deg,var(--azul) 0%, var(--azul-prof) 100%);color:#fff;padding:32px 28px;display:flex;flex-direction:column;justify-content:center;gap:10px;text-align:center}
+  .dest-monto{font-family:'Montserrat';font-weight:800;font-size:30px;color:#fff;line-height:1;font-variant-numeric:tabular-nums}
+  .dest-aside .plazo{font-family:'Montserrat';font-weight:700;font-size:14px;color:var(--amarillo)}
+  .dest-fecha{font-size:13px;color:#c7cfe8}
+
+  /* Filtros */
+  .sec-filtros{padding:40px 0 0}
+  .filtros{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+  .chips{display:flex;gap:9px;flex-wrap:wrap}
+  .chip{font-family:'Montserrat';font-weight:700;font-size:13.5px;border:1.5px solid var(--linea);background:#fff;color:var(--azul);border-radius:999px;padding:9px 17px;cursor:pointer;transition:border-color .15s,background .15s,color .15s;touch-action:manipulation}
+  .chip:hover{border-color:#c2c9de}
+  .chip:focus-visible{outline:2px solid var(--azul);outline-offset:2px}
+  .chip.on{background:var(--azul);border-color:var(--azul);color:#fff}
+  .controles{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .buscador{display:flex;align-items:center;gap:9px;background:#fff;border:1.5px solid var(--linea);border-radius:11px;padding:9px 14px;min-width:270px;transition:border-color .15s}
+  .buscador:focus-within{border-color:var(--azul)}
+  .buscador svg{width:17px;height:17px;color:var(--gris);flex-shrink:0}
+  .buscador input{border:none;outline:none;font-family:'Inter';font-size:14.5px;width:100%;background:transparent;color:var(--texto)} /* el foco visible lo entrega .buscador:focus-within con borde azul */
+  .toggle{display:inline-flex;align-items:center;gap:9px;cursor:pointer;user-select:none}
+  .toggle input{position:absolute;opacity:0;width:0;height:0}
+  .toggle-track{width:40px;height:23px;border-radius:999px;background:#cfd5e6;position:relative;transition:background .18s;flex-shrink:0}
+  .toggle-dot{position:absolute;top:2.5px;left:2.5px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .18s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+  .toggle input:checked + .toggle-track{background:var(--verde)}
+  .toggle input:checked + .toggle-track .toggle-dot{transform:translateX(17px)}
+  .toggle input:focus-visible + .toggle-track{outline:2px solid var(--azul);outline-offset:2px}
+  .toggle-lbl{font-family:'Montserrat';font-weight:600;font-size:13.5px;color:var(--azul)}
+  .conteo{margin-top:18px;font-size:13.5px;color:var(--gris);font-weight:500}
+
+  /* Grilla */
+  .sec{padding:16px 0 20px}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:24px}
-  .card{background:#fff;border:1px solid var(--linea);border-radius:16px;padding:26px;display:flex;flex-direction:column;transition:.18s;box-shadow:0 6px 18px -14px rgba(19,35,95,.4)}
+  .card{background:#fff;border:1px solid var(--linea);border-radius:16px;padding:26px;display:flex;flex-direction:column;transition:transform .18s,border-color .18s,box-shadow .18s;box-shadow:0 6px 18px -14px rgba(19,35,95,.4);touch-action:manipulation}
   .card:hover{transform:translateY(-3px);border-color:#c9cfe2;box-shadow:0 16px 30px -18px rgba(19,35,95,.5)}
-  .card-top{display:flex;gap:10px;align-items:center;margin-bottom:14px}
-  .tag-inst{font-family:'Montserrat';font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul-prof);background:var(--fondo);border:1px solid var(--linea);border-radius:999px;padding:5px 12px}
-  .estado{font-family:'Montserrat';font-weight:700;font-size:11px;letter-spacing:.04em;border-radius:999px;padding:5px 12px;color:#fff}
+  .card:focus-visible{outline:2px solid var(--azul);outline-offset:3px}
+  .card-top{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+  .tag-inst{font-family:'Montserrat';font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul-prof);background:var(--fondo);border:1px solid var(--linea);border-radius:999px;padding:5px 11px}
+  .cat{font-family:'Montserrat';font-weight:700;font-size:11px;letter-spacing:.03em;border-radius:999px;padding:5px 11px;color:#fff}
+  .cat-emprender{background:#7c3aed}
+  .cat-crecer{background:#1E9E57}
+  .cat-innovar{background:#2563eb}
+  .cat-digitalizar{background:#0891b2}
+  .cat-mujeres{background:#db2777}
+  .estado{font-family:'Montserrat';font-weight:700;font-size:11px;letter-spacing:.04em;border-radius:999px;padding:5px 11px;color:#fff;margin-left:auto}
   .estado.abierto{background:var(--verde)}
   .estado.cerrado{background:var(--gris)}
-  .card h2{font-size:20px;font-weight:800;line-height:1.25;margin-bottom:10px}
-  .card-lead{color:#555;font-size:14.5px;flex-grow:1}
-  .card-meta{margin-top:18px;padding-top:16px;border-top:1px solid var(--linea);display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--gris)}
-  .leer{font-family:'Montserrat';font-weight:700;color:var(--azul);font-size:13px}
-  .vacio{color:var(--gris);font-size:17px}
+  .card h2{font-size:19px;font-weight:800;line-height:1.25;margin-bottom:10px}
+  .card-lead{color:#555;font-size:14px;line-height:1.55;flex-grow:1}
+  .card-meta{margin-top:18px;padding-top:16px;border-top:1px solid var(--linea);display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .monto{font-family:'Montserrat';font-weight:800;font-size:16px;color:var(--azul);font-variant-numeric:tabular-nums}
+  .plazo{font-family:'Montserrat';font-weight:700;font-size:12.5px;color:var(--gris);font-variant-numeric:tabular-nums}
+  .plazo.urge{color:#d0342c}
+  .plazo.off{font-weight:600}
+  .vacio{color:var(--gris);font-size:16px;padding:20px 0}
 
-  .paseo-final{padding:20px 0 60px}
+  .sec-cta{padding:40px 0}
+  .sec-seo{padding:20px 0 10px}
+  .angosto{max-width:760px}
+  .sec-seo h2{font-size:28px;font-weight:800;letter-spacing:-.3px;margin-bottom:16px;text-wrap:balance}
+  .sec-seo h3{font-size:20px;font-weight:800;margin:30px 0 12px}
+  .sec-seo p{font-size:16.5px;color:#33384a;line-height:1.7;margin-bottom:14px}
+  .sec-seo ul{margin:0 0 16px 22px}
+  .sec-seo li{font-size:16px;color:#33384a;line-height:1.6;margin-bottom:9px}
+  .sec-seo strong{color:var(--azul)}
+  .sec-seo a{color:var(--azul);font-weight:600;text-decoration:underline;text-underline-offset:2px}
+
+  .sec-faq{padding:30px 0 10px}
+  .sec-faq h2{font-size:28px;font-weight:800;margin-bottom:20px;letter-spacing:-.3px}
+  .faq{max-width:760px}
+  details{background:#fff;border:1px solid var(--linea);border-radius:14px;margin-bottom:12px;overflow:hidden}
+  summary{list-style:none;cursor:pointer;padding:18px 22px;font-family:'Montserrat';font-weight:600;font-size:16px;color:var(--azul);display:flex;justify-content:space-between;gap:14px}
+  summary::-webkit-details-marker{display:none}
+  .plus{font-size:22px;color:var(--azul);transition:transform .2s;flex-shrink:0}
+  details[open] .plus{transform:rotate(45deg)}
+  .ans{padding:0 22px 18px;color:#555;font-size:15.5px;line-height:1.65}
+
+  .sec-banner{padding:44px 0}
+  .paseo-final{padding:10px 0 64px}
   .paseo-final p{color:#555;font-size:15px}
   .paseo-final a{color:var(--azul);font-weight:600;text-decoration:underline;text-underline-offset:2px}
 
-  @media(max-width:640px){ .hero h1{font-size:28px} }
+  @media(max-width:860px){
+    .dest{grid-template-columns:1fr}
+    .dest-aside{flex-direction:row;justify-content:space-between;align-items:center;text-align:left;padding:20px 28px}
+  }
+  @media(max-width:640px){
+    .hero h1{font-size:29px}
+    .stats{gap:26px}
+    .stat-num{font-size:31px}
+    .filtros{flex-direction:column;align-items:stretch}
+    .buscador{min-width:0}
+    .controles{justify-content:space-between}
+    .dest-info h2{font-size:22px}
+    .dest-aside{flex-direction:column;align-items:flex-start;gap:6px}
+  }
 </style>
