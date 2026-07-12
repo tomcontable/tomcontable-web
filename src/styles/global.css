@@ -52,6 +52,7 @@ img{max-width:100%;display:block}
 
 /* Botones */
 .btn{font-family:'Montserrat';font-weight:700;font-size:15.5px;border:none;border-radius:12px;padding:15px 26px;cursor:pointer;display:inline-flex;gap:10px;align-items:center;justify-content:center;transition:.18s;white-space:nowrap}
+.btn:active{transform:scale(.97)}
 .btn svg{width:19px;height:19px}
 .btn-wa{background:var(--verde);color:#fff}
 .btn-wa:hover{background:var(--verde-h)}

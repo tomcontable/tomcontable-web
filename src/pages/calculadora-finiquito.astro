@@ -5,8 +5,8 @@ import BannerServicios from '../components/BannerServicios.astro';
 import BotonWhatsAppFlotante from '../components/BotonWhatsAppFlotante.astro';
 
 const seo = {
-  title: 'Calculadora de Finiquito Chile 2026 | Cuánto te corresponde · TomContable',
-  description: 'Calcula tu finiquito en Chile 2026: vacaciones proporcionales, indemnización por años de servicio y mes de aviso, según tu causal de término. Gratis, simple y con la UF al día.',
+  title: 'Calculadora de Finiquito Chile 2026 | Cuánto debes pagar · TomContable',
+  description: 'Calcula cuánto debes pagar de finiquito en Chile 2026: vacaciones proporcionales, indemnización por años de servicio y mes de aviso. Gratis, simple y con la UF al día.',
   canonical: '/calculadora-finiquito',
 };
 
@@ -14,17 +14,17 @@ const parrotfy = 'https://tomcontable.parrotfy.com/e/revision-de-finiquito';
 
 const faqs = [
   { q: '¿Qué incluye el finiquito que calcula esta herramienta?', a: 'Calcula los conceptos más comunes: vacaciones pendientes o proporcionales, indemnización por años de servicio (cuando corresponde por necesidades de la empresa), indemnización sustitutiva del aviso previo y la remuneración pendiente. Además puedes sumar otros haberes y restar descuentos a mano. Es una estimación referencial.' },
-  { q: '¿Es un cálculo oficial o certificado?', a: 'No. Es una herramienta de apoyo para tener una estimación rápida. Cada finiquito tiene detalles y casos especiales que deben revisarse. Para tu finiquito definitivo, escríbenos y lo revisamos contigo.' },
+  { q: '¿Es un cálculo oficial o certificado?', a: 'No. Es una herramienta de apoyo para tener una estimación rápida. Cada finiquito tiene detalles y casos especiales que deben revisarse. Para el finiquito definitivo, escríbenos y lo revisamos contigo.' },
   { q: '¿Por qué la indemnización por años de servicio a veces sale cero?', a: 'Porque esa indemnización aplica principalmente cuando el término es por necesidades de la empresa y existe al menos un año de servicio. En causales como renuncia o mutuo acuerdo, no corresponde. Las vacaciones, en cambio, siempre se pagan.' },
   { q: '¿Qué es el tope de 11 años y el de 90 UF?', a: 'La indemnización por años de servicio se paga por cada año trabajado (y fracción superior a seis meses), con un tope legal de 11 años. Además, la base de cálculo tiene un tope de 90 UF. La calculadora aplica ambos topes.' },
   { q: '¿Cómo cuento los días inhábiles de las vacaciones?', a: 'Con un calendario a la vista, cuenta desde el día del finiquito hacia adelante los días hábiles pendientes y suma los sábados, domingos y festivos que caen dentro de ese período. Ese número va en el campo de días inhábiles.' },
-  { q: '¿Las vacaciones se pagan aunque renuncie?', a: 'Sí. Las vacaciones pendientes o proporcionales se pagan siempre, cualquiera sea la causal de término, incluida la renuncia. Lo que cambia según la causal es la indemnización por años de servicio.' },
+  { q: '¿Las vacaciones se pagan aunque el trabajador renuncie?', a: 'Sí. Las vacaciones pendientes o proporcionales se pagan siempre, cualquiera sea la causal de término, incluida la renuncia. Lo que cambia según la causal es la indemnización por años de servicio.' },
   { q: '¿Cuánto es la indemnización por años de servicio?', a: 'Un mes de remuneración por cada año trabajado y por la fracción superior a seis meses, con tope de 11 años y una base limitada a 90 UF. Aplica cuando el término es por necesidades de la empresa.' },
-  { q: '¿Me tienen que avisar antes de despedirme?', a: 'En el despido por necesidades de la empresa, el empleador debe avisar con 30 días de anticipación. Si no avisa, paga un mes de remuneración como indemnización sustitutiva del aviso previo.' },
+  { q: '¿Tengo que avisar con anticipación antes de despedir a un trabajador?', a: 'Sí. En el despido por necesidades de la empresa debes avisar con 30 días de anticipación. Si no avisas, pagas un mes de remuneración como indemnización sustitutiva del aviso previo.' },
 ];
 
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
-const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication', name: 'Calculadora de Finiquito', applicationCategory: 'FinanceApplication', operatingSystem: 'Web', inLanguage: 'es-CL', url: 'https://tomcontable.cl/calculadora-finiquito', offers: { '@type': 'Offer', price: '0', priceCurrency: 'CLP' }, publisher: { '@type': 'Organization', name: 'TomContable' } };
+const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication', name: 'Calculadora de Finiquito', applicationCategory: 'FinanceApplication', operatingSystem: 'Web', inLanguage: 'es-CL', url: 'https://tomcontable.cl/calculadora-finiquito', offers: { '@type': 'Offer', price: '0', priceCurrency: 'CLP' }, author: { '@type': 'Person', '@id': 'https://tomcontable.cl/#tomas', name: 'Tomás Gómez Fuenzalida', jobTitle: 'Contador Colegiado', url: 'https://tomcontable.cl/sobre-tomcontable' }, publisher: { '@type': 'Organization', name: 'TomContable' } };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
   { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://tomcontable.cl/' },
   { '@type': 'ListItem', position: 2, name: 'Herramientas', item: 'https://tomcontable.cl/herramientas' },
@@ -39,7 +39,7 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
     <div class="wrap">
       <p class="eyebrow">Herramienta gratis</p>
       <h1>Calculadora de finiquito en Chile 2026</h1>
-      <p class="lead">Estima el finiquito en Chile en un minuto: vacaciones, indemnización por años de servicio y mes de aviso, con el valor de la UF al día.</p>
+      <p class="lead">Estima el finiquito que debes pagarle a tu trabajador al término del contrato: vacaciones, indemnización por años de servicio y mes de aviso, con el valor de la UF al día.</p>
     </div>
     <svg class="hero-ill" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M30 10h40l22 22v74a4 4 0 0 1-4 4H30a4 4 0 0 1-4-4V14a4 4 0 0 1 4-4z" stroke="#1E2F73" stroke-width="3.5"/><path d="M70 10v22h22" stroke="#1E2F73" stroke-width="3.5" stroke-linejoin="round"/><g stroke="#1E2F73" stroke-width="3" stroke-linecap="round"><path d="M40 52h40M40 66h40"/></g><circle cx="78" cy="88" r="17" fill="#F6B11A" fill-opacity="0.25" stroke="#F6B11A" stroke-width="3"/><path d="M70 88l6 6 10-11" stroke="#1E2F73" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </section>
@@ -49,11 +49,15 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
 
       <div class="aviso-top" role="region" aria-label="Información importante">
         <p style="margin: 0 0 12px 0;"><strong>Esta es una estimación referencial</strong>, no un cálculo certificado.</p>
-        <p style="margin: 0 0 12px 0;">Hay casos especiales (bonos, comisiones, licencias, etc.) que conviene revisar con un contador antes de firmar.</p>
-        <p style="margin: 0;"><strong>¿Quieres que validemos tu finiquito antes de firmarlo?</strong> Usa esta calculadora para tener números de referencia, y si el resultado no calza con lo que te ofrecen, escríbenos.</p>
-        <div style="margin-top: 14px;">
-          <BotonWhatsApp texto="Revisar mi finiquito" mensaje="Hola vengo desde la calculadora de finiquito y quiero que revisen mi caso" />
+        <p style="margin: 0;">Hay casos especiales (bonos, comisiones, licencias, etc.) que conviene revisar con un contador antes de firmar.</p>
+      </div>
+
+      <div class="aviso-cert" role="region" aria-label="Finiquito certificado">
+        <div class="aviso-cert-txt">
+          <h2>¿Lo quieres como documento formal y certificado?</h2>
+          <p>Con los datos que ingreses aquí te emitimos el cálculo en un <strong>documento formal, certificado por TomContable</strong>, listo para entregar a tu trabajador o respaldar ante cualquier revisión. No es una reunión ni una asesoría: es el cálculo, hecho y certificado por nuestros contadores, de forma rápida. <strong>$44.900, IVA incluido, en 3 cuotas sin interés.</strong></p>
         </div>
+        <a class="btn btn-amber" href={parrotfy} target="_blank" rel="noopener" onclick="window.posthog&&window.posthog.capture('compra_click',{producto:'Revisión de finiquito',precio:44900,ubicacion:location.pathname})">Quiero certificar este finiquito · $44.900</a>
       </div>
 
       <div class="grid">
@@ -130,7 +134,7 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
           </div>
           <p class="r-meta" id="r-meta"></p>
           <div class="r-cta">
-            <BotonWhatsApp texto="Quiero que revisen mi finiquito" mensaje="Hola vengo desde la calculadora de finiquito y quiero que revisen mi caso" />
+            <a class="btn btn-amber" href={parrotfy} target="_blank" rel="noopener" onclick="window.posthog&&window.posthog.capture('compra_click',{producto:'Revisión de finiquito',precio:44900,ubicacion:location.pathname})">Certificar este cálculo · $44.900</a>
           </div>
           <div class="r-mail">
             <button type="button" class="mail-toggle" id="mail-toggle">Recibir esta estimación en PDF a mi correo</button>
@@ -149,49 +153,37 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
     </div>
   </section>
 
-  <section class="sec-cert">
-    <div class="wrap angosto">
-      <div class="cert">
-        <div class="cert-txt">
-          <h2>¿Lo quieres como documento formal y certificado?</h2>
-          <p>Con los datos que nos entregues, te emitimos el cálculo de tu finiquito en un <strong>documento formal, certificado por TomContable</strong>, listo para presentar o respaldar. No es una reunión ni una asesoría: es tu cálculo, hecho y certificado por nuestros contadores, de forma rápida. <strong>Solo $44.900, IVA incluido.</strong></p>
-        </div>
-        <a class="btn btn-amber" href={parrotfy} target="_blank" rel="noopener" onclick="window.posthog&&window.posthog.capture('compra_click',{producto:'Revisión de finiquito',precio:44900,ubicacion:location.pathname})">Quiero mi finiquito certificado · $44.900</a>
-      </div>
-    </div>
-  </section>
-
   <section class="sec-legal">
     <div class="wrap angosto">
       <p class="legal-fin">Este cálculo es solo una estimación referencial generada con los datos ingresados por el usuario. No constituye finiquito oficial, asesoría laboral ni validación de TomContable. El monto final debe ser revisado según contrato, antecedentes laborales, remuneraciones, vacaciones, causales aplicables y normativa vigente.</p>
     </div>
   </section>
 
-  <div style="margin:10px auto 42px;padding:0 20px"><BannerServicios orden={['finiquito-trabajador', 'finiquito-empleador', 'proyeccion']} lateral={true} /></div>
+  <div style="margin:10px auto 42px;padding:0 20px"><BannerServicios orden={['finiquito-empleador', 'finiquito-trabajador', 'proyeccion']} lateral={true} /></div>
 
   <BotonWhatsAppFlotante mensaje="Hola vengo desde la calculadora de finiquito" />
 
   <section class="sec sec-texto">
     <div class="wrap angosto">
       <div class="resp-rapida">
-        <p><strong>Respuesta rápida:</strong> esta calculadora estima un finiquito en Chile considerando la causal de término, las fechas del contrato, el sueldo, las vacaciones pendientes, la indemnización por años de servicio y el aviso previo. El resultado es referencial y no reemplaza un finiquito oficial.</p>
-        <p class="resp-fecha">Última actualización: {actualizado}. Fuente: normativa laboral vigente (Código del Trabajo) y valor de la UF del Banco Central.</p>
+        <p><strong>Respuesta rápida:</strong> esta calculadora estima cuánto debes pagar de finiquito en Chile, considerando la causal de término, las fechas del contrato, el sueldo, las vacaciones pendientes, la indemnización por años de servicio y el aviso previo. El resultado es referencial y no reemplaza un finiquito oficial.</p>
+        <p class="resp-fecha">Última actualización: {actualizado}. Fuente: Código del Trabajo (artículos 73, 161, 162 y 163) y valor de la UF del Banco Central.</p>
       </div>
 
       <h2>Cómo funciona</h2>
       <p>Completa los datos del contrato y la calculadora estima el finiquito con las reglas generales: las vacaciones se pagan siempre (proporcionales a los meses trabajados), la indemnización por años de servicio aplica cuando el término es por necesidades de la empresa, y el mes de aviso se paga cuando no hubo aviso con 30 días de anticipación. Usamos el valor de la UF del día para el tope legal de la base de cálculo.</p>
-      <p>Es una estimación de apoyo. Cada caso real puede tener detalles (bonos, comisiones, semanas corridas, licencias, anticipos, descuentos) que conviene revisar. Si quieres tu finiquito bien calculado y respaldado, lo vemos contigo.</p>
+      <p>Es una estimación de apoyo. Cada caso real puede tener detalles (bonos, comisiones, semanas corridas, licencias, anticipos, descuentos) que conviene revisar. Si quieres el finiquito bien calculado y respaldado, lo vemos contigo.</p>
 
       <h2>Cómo se calculan las vacaciones proporcionales</h2>
-      <p>Las vacaciones se pagan siempre, sin importar la causal. Si no alcanzaste a tomarlas, se pagan los días pendientes, y si llevas menos de un año, se pagan proporcionales a los meses trabajados. En Chile corresponden 15 días hábiles al año, así que cada mes trabajado suma alrededor de 1,25 días hábiles. Al contarlas hay que sumar los días inhábiles (sábados, domingos y festivos) que caen dentro del período.</p>
+      <p>Las vacaciones se pagan siempre, sin importar la causal. Es la indemnización por feriado que fija el artículo 73 del Código del Trabajo: si el trabajador no alcanzó a tomarlas, se pagan los días pendientes, y si lleva menos de un año en la empresa, se pagan proporcionales a los meses trabajados. En Chile corresponden 15 días hábiles al año, así que cada mes trabajado suma alrededor de 1,25 días hábiles. Al contarlas hay que sumar los días inhábiles (sábados, domingos y festivos) que caen dentro del período.</p>
 
       <h2>Cuándo corresponde la indemnización por años de servicio</h2>
-      <p>La indemnización por años de servicio aplica principalmente cuando el contrato termina por necesidades de la empresa y hay al menos un año de antigüedad. Se paga un mes de remuneración por cada año trabajado y por la fracción superior a seis meses, con un tope de 11 años, y la base de cálculo tiene un tope de 90 UF. En causales como renuncia voluntaria o mutuo acuerdo, no corresponde.</p>
+      <p>La indemnización por años de servicio, regulada en el artículo 163 del Código del Trabajo, aplica principalmente cuando el contrato termina por necesidades de la empresa (artículo 161) y hay al menos un año de antigüedad. Se paga un mes de remuneración por cada año trabajado y por la fracción superior a seis meses, con un tope de 11 años (330 días), y la base de cálculo tiene un tope de 90 UF. En causales como renuncia voluntaria o mutuo acuerdo, no corresponde.</p>
 
-      <h2>Qué pasa si no hubo aviso con 30 días</h2>
-      <p>Cuando el término es por necesidades de la empresa, el empleador debe avisar con 30 días de anticipación. Si no lo hace, paga la indemnización sustitutiva del aviso previo, que equivale a un mes de remuneración. La calculadora la suma cuando indicas que no hubo aviso, así ves el efecto en el total.</p>
+      <h2>Qué pasa si no avisas con 30 días</h2>
+      <p>El artículo 162 del Código del Trabajo exige que, si el término es por necesidades de la empresa, avises con 30 días de anticipación. Si no lo haces, pagas la indemnización sustitutiva del aviso previo, que equivale a un mes de remuneración completo (no se puede prorratear por los días que faltaron). La calculadora la suma cuando indicas que no hubo aviso, así ves el efecto en el total.</p>
 
-      <p>Esta herramienta sirve como referencia tanto para trabajadores que quieren revisar un finiquito que les ofrecieron como para empleadores que necesitan estimar el costo de terminar un contrato antes de preparar el documento formal.</p>
+      <p>Esta herramienta sirve como referencia tanto para empleadores que necesitan estimar el costo de terminar un contrato y preparar el documento formal, como para trabajadores que quieren revisar un finiquito que les ofrecieron.</p>
 
       <p>¿Quieres entender el cálculo paso a paso, con ejemplos y los errores más comunes? Lee nuestra guía <a href="/blog/como-calcular-finiquito-en-chile-2026">cómo calcular un finiquito en Chile en 2026</a>.</p>
 
@@ -504,8 +496,14 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
 
   .sec{padding:42px 0}
   .calc-wrap{max-width:980px}
-  .aviso-top{background:#fdf4dd;border:1px solid #f1d98a;border-radius:12px;padding:14px 18px;font-size:14.5px;color:#6b5b1f;margin-bottom:24px}
+  .aviso-top{background:#fdf4dd;border:1px solid #f1d98a;border-radius:12px;padding:14px 18px;font-size:14.5px;color:#6b5b1f;margin-bottom:16px}
   .aviso-top a{color:var(--azul);font-weight:700}
+
+  .aviso-cert{display:flex;align-items:center;justify-content:space-between;gap:22px;flex-wrap:wrap;background:#fff;border:2px solid var(--amarillo);border-radius:18px;padding:24px 28px;margin-bottom:28px}
+  .aviso-cert-txt{flex:1;min-width:240px}
+  .aviso-cert-txt h2{font-size:20px;font-weight:800;color:var(--azul);margin:0 0 6px}
+  .aviso-cert-txt p{font-size:15px;color:#444a63;line-height:1.55;margin:0}
+  .aviso-cert :global(.btn){flex-shrink:0}
 
   .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:start}
   .panel{background:#fff;border:1px solid var(--linea);border-radius:18px;padding:26px}
@@ -561,12 +559,6 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
   .mail-msg{font-size:13px;color:var(--azul);font-weight:600;margin:0;min-height:1em}
   .mail-msg.ok{background:#fdf4dd;border:1px solid #f1d98a;border-radius:9px;padding:9px 12px;color:#6b5b1f}
 
-  .sec-cert{padding:30px 0 6px}
-  .cert{display:flex;align-items:center;justify-content:space-between;gap:22px;flex-wrap:wrap;background:#fdf4dd;border:1px solid #f1d98a;border-radius:18px;padding:24px 28px}
-  .cert-txt{flex:1;min-width:240px}
-  .cert-txt h2{font-size:20px;font-weight:800;color:var(--azul);margin:0 0 6px}
-  .cert-txt p{font-size:15px;color:#6b5b1f;line-height:1.55;margin:0}
-  .cert :global(.btn){flex-shrink:0}
   .sec-legal{padding:18px 0 0}
   .legal-fin{max-width:760px;margin:0 auto;font-size:12.5px;line-height:1.6;color:var(--gris);border:1px solid var(--linea);background:#fafbfe;border-radius:12px;padding:14px 18px}
   .sec-texto{padding-top:24px}

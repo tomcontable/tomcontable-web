@@ -23,6 +23,12 @@ const fmtFecha = (x) =>
 const palabras = post.body.trim().split(/\s+/).length;
 const minutos = Math.max(1, Math.round(palabras / 200));
 
+// Artículos relacionados: los 3 más recientes, sin contar este mismo.
+const relacionados = (await getCollection('blog', ({ data }) => !data.draft))
+  .filter((p) => p.slug !== post.slug)
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .slice(0, 3);
+
 const seo = {
   title: d.seoTitle,
   description: d.description,
@@ -83,7 +89,7 @@ const schema = [articleSchema, breadcrumb, ...(faqSchema ? [faqSchema] : [])];
         <p class="ruta"><a href="/blog/">Blog</a><span>/</span>{d.keyword}</p>
         <h1>{d.title}</h1>
         <p class="lead">{d.lead}</p>
-        <p class="meta">Por Tom · {fmtFecha(d.pubDate)} · {minutos} min de lectura</p>
+        <p class="meta">Por Tom · {fmtFecha(d.pubDate)}{d.updatedDate && d.updatedDate.getTime() !== d.pubDate.getTime() && ` · actualizado el ${fmtFecha(d.updatedDate)}`} · {minutos} min de lectura</p>
       </div>
     </header>
 
@@ -119,6 +125,25 @@ const schema = [articleSchema, breadcrumb, ...(faqSchema ? [faqSchema] : [])];
       </div>
     </div>
   </article>
+
+  {relacionados.length > 0 && (
+    <section class="mas">
+      <div class="wrap">
+        <p class="eyebrow">Sigue leyendo</p>
+        <h2>Otras guías que te pueden servir</h2>
+        <div class="grid">
+          {relacionados.map((rp) => (
+            <a class="card" href={`/blog/${rp.slug}`}>
+              <p class="card-tag">{rp.data.keyword}</p>
+              <h3>{rp.data.title}</h3>
+              <p class="card-lead">{rp.data.lead}</p>
+              <p class="card-meta">{fmtFecha(rp.data.pubDate)}<span class="leer">Leer guía</span></p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 
   <section class="cierre">
     <div class="wrap">
@@ -170,6 +195,20 @@ const schema = [articleSchema, breadcrumb, ...(faqSchema ? [faqSchema] : [])];
   .rel-label{font-family:'Montserrat';font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gris);margin-bottom:8px}
   .rel-link{font-family:'Montserrat';font-weight:700;font-size:19px;color:var(--azul);text-decoration:underline;text-underline-offset:3px}
   .rel-link:hover{color:var(--azul)}
+
+  /* Sigue leyendo */
+  .mas{padding:20px 0 76px}
+  .mas .eyebrow{margin-bottom:10px}
+  .mas h2{font-size:26px;font-weight:800;letter-spacing:-.3px;margin-bottom:28px}
+  .mas .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px}
+  .mas .card{background:#fff;border:1px solid var(--linea);border-radius:16px;padding:24px;display:flex;flex-direction:column;transition:transform .18s,border-color .18s,box-shadow .18s;box-shadow:0 6px 18px -14px rgba(19,35,95,.4)}
+  .mas .card:hover{transform:translateY(-3px);border-color:#c9cfe2;box-shadow:0 16px 30px -18px rgba(19,35,95,.5)}
+  .mas .card:active{transform:translateY(-3px) scale(.98)}
+  .mas .card-tag{font-family:'Montserrat';font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--azul);margin-bottom:10px}
+  .mas .card h3{font-size:18px;font-weight:800;line-height:1.3;margin-bottom:8px}
+  .mas .card-lead{color:#555;font-size:14px;flex-grow:1;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .mas .card-meta{margin-top:16px;padding-top:14px;border-top:1px solid var(--linea);display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--gris)}
+  .mas .leer{font-family:'Montserrat';font-weight:700;color:var(--azul);font-size:13px}
 
   .cta-row{display:flex;gap:14px;flex-wrap:wrap}
   .cta-row.center{justify-content:center}
