@@ -60,4 +60,6 @@ Por eso, cuando contratas a alguien, el costo real es bastante mayor que el líq
 
 Para no hacer estas cuentas a mano, tenemos una [calculadora de sueldo líquido](/calculadora-sueldo-liquido/) gratis y al día con los valores de Previred. Puedes partir del sueldo base y ver el líquido, o al revés, poner el líquido que quieres pagar y ver el bruto necesario para llegar a ese monto. Y también te muestra el costo total para la empresa, no solo lo que recibe el trabajador. Es gratis y sin registro.
 
-Si tu pyme ya tiene trabajadores o
+Si tu pyme ya tiene trabajadores o estás por contratar al primero, vale la pena tener esto claro desde el principio, para ofrecer sueldos con el número correcto y no descuadrar la caja después.
+
+En TomContable llevamos las remuneraciones como parte de la [contabilidad mensual](/contabilidad-mensual/), así que las liquidaciones de tu equipo quedan al día sin que tengas que estar calculando cada mes.

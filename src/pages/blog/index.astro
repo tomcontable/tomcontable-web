@@ -9,7 +9,8 @@ const seo = {
 };
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
-  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .map((post) => ({ post, minutos: Math.max(1, Math.round(post.body.trim().split(/\s+/).length / 200)) }));
 
 const fmtFecha = (d) =>
   d.toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -30,7 +31,7 @@ const blogSchema = {
   "url": "https://tomcontable.cl/blog/",
   "description": "Guías claras sobre contabilidad, impuestos y el SII para emprendedores y pymes en Chile.",
   "publisher": { "@id": "https://tomcontable.cl/#organizacion" },
-  "blogPost": posts.map((post) => ({
+  "blogPost": posts.map(({ post }) => ({
     "@type": "BlogPosting",
     "headline": post.data.title,
     "url": `https://tomcontable.cl/blog/${post.slug}`,
@@ -42,11 +43,17 @@ const blogSchema = {
 <Base {...seo} schema={[blogSchema, breadcrumb]}>
 
   <section class="hero">
-    <div class="wrap">
-      <p class="eyebrow">Blog</p>
-      <h1>Impuestos y contabilidad, explicados en simple.</h1>
-      <p class="lead">Guías directas para emprendedores y pymes en Chile. Sin letra chica ni palabras difíciles. Si después de leer te queda una duda, escríbenos por WhatsApp.</p>
-      <div class="cta-row"><BotonWhatsApp texto="Hablar por WhatsApp" mensaje="Hola vengo desde el blog" /></div>
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Blog</p>
+        <h1>Impuestos y contabilidad, explicados en simple.</h1>
+        <p class="lead">Guías directas para emprendedores y pymes en Chile. Sin letra chica ni palabras difíciles. Si después de leer te queda una duda, escríbenos por WhatsApp.</p>
+        <div class="cta-row"><BotonWhatsApp texto="Hablar por WhatsApp" mensaje="Hola vengo desde el blog" /></div>
+      </div>
+      <div class="autor-chip">
+        <img src="/img/foto-tom.jpg" alt="Tom, Contador Colegiado y fundador de TomContable" width="52" height="52" />
+        <div><b>Escritas y revisadas por Tom</b><span>Ingeniero Comercial y Contador Colegiado</span></div>
+      </div>
     </div>
   </section>
 
@@ -56,12 +63,15 @@ const blogSchema = {
         <p class="vacio">Pronto vamos a publicar las primeras guías aquí.</p>
       ) : (
         <div class="grid">
-          {posts.map((post) => (
-            <a class="card" href={`/blog/${post.slug}`}>
+          {posts.map(({ post, minutos }, i) => (
+            <a class={`card ${i === 0 ? 'card-nueva' : ''}`} href={`/blog/${post.slug}`}>
               <p class="card-tag">{post.data.keyword}</p>
               <h2>{post.data.title}</h2>
               <p class="card-lead">{post.data.lead}</p>
-              <p class="card-meta">{fmtFecha(post.data.pubDate)}<span class="leer">Leer guía</span></p>
+              <p class="card-meta">
+                <span class="card-fecha"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>{fmtFecha(post.data.pubDate)} · {minutos} min</span>
+                <span class="leer">Leer guía<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              </p>
             </a>
           ))}
         </div>
@@ -71,6 +81,7 @@ const blogSchema = {
 
   <section class="cierre">
     <div class="wrap">
+      <p class="cierre-eyebrow">El siguiente paso es un mensaje</p>
       <h2>¿Tienes una duda que no está acá?</h2>
       <p>Cuéntanos qué está pasando con tu empresa y te orientamos en simple.</p>
       <div class="cta-row center"><BotonWhatsApp texto="Hablar por WhatsApp" mensaje="Hola vengo desde el blog" /></div>
@@ -80,23 +91,39 @@ const blogSchema = {
 </Base>
 
 <style>
-  .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:60px 0}
+  .hero{position:relative;background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:64px 0;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(30,47,115,.055) 1px,transparent 1px);background-size:26px 26px;pointer-events:none;mask-image:radial-gradient(65% 65% at 18% 20%,#000 10%,transparent 72%)}
+  .hero::after{content:"";position:absolute;right:-150px;top:-150px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(246,177,26,.16),transparent 68%);pointer-events:none}
+  .hero-grid{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap}
   .hero h1{font-size:38px;font-weight:800;letter-spacing:-.5px}
   .hero .lead{font-size:17.5px;color:#444a63;margin:16px 0 24px;max-width:60ch}
+  .autor-chip{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--linea);border-radius:16px;padding:12px 18px 12px 12px;box-shadow:0 14px 30px -16px rgba(19,35,95,.4);flex-shrink:0}
+  .autor-chip img{width:52px;height:52px;border-radius:50%;object-fit:cover;flex-shrink:0}
+  .autor-chip b{display:block;font-family:'Montserrat';font-weight:700;font-size:14px;color:var(--azul)}
+  .autor-chip span{display:block;font-size:12.5px;color:var(--gris);margin-top:2px}
   .cta-row{display:flex;gap:14px;flex-wrap:wrap}
   .cta-row.center{justify-content:center}
   .sec{padding:56px 0}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:24px}
-  .card{background:#fff;border:1px solid var(--linea);border-radius:16px;padding:28px;display:flex;flex-direction:column;transition:.18s;box-shadow:0 6px 18px -14px rgba(19,35,95,.4)}
-  .card:hover{transform:translateY(-3px);border-color:#c9cfe2;box-shadow:0 16px 30px -18px rgba(19,35,95,.5)}
-  .card-tag{font-family:'Montserrat';font-weight:700;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--azul);margin-bottom:12px}
+  .card{position:relative;background:#fff;border:1px solid var(--linea);border-radius:16px;padding:28px;display:flex;flex-direction:column;transition:transform .18s,border-color .18s,box-shadow .18s;box-shadow:0 6px 18px -14px rgba(19,35,95,.4)}
+  .card:hover{transform:translateY(-3px);border-color:rgba(246,177,26,.65);box-shadow:0 22px 42px -20px rgba(19,35,95,.42)}
+  .card:active{transform:translateY(-3px) scale(.98)}
+  .card-nueva{border-top:3px solid var(--amarillo)}
+  .card-nueva::before{content:"Recién publicada";position:absolute;top:-12px;left:22px;font-family:'Montserrat';font-weight:700;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;background:var(--amarillo);color:var(--azul-prof);border-radius:7px;padding:4px 10px;box-shadow:0 6px 14px -6px rgba(246,177,26,.6)}
+  .card-tag{display:inline-block;font-family:'Montserrat';font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul-prof);background:#fdf0d2;border-radius:20px;padding:5px 12px;margin-bottom:14px}
   .card h2{font-size:21px;font-weight:800;line-height:1.25;margin-bottom:10px}
-  .card-lead{color:#555;font-size:15px;flex-grow:1}
-  .card-meta{margin-top:18px;padding-top:16px;border-top:1px solid var(--linea);display:flex;justify-content:space-between;align-items:center;font-size:13.5px;color:var(--gris)}
-  .leer{font-family:'Montserrat';font-weight:700;color:var(--azul);font-size:13.5px}
+  .card-lead{color:#555;font-size:15px;flex-grow:1;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .card-meta{margin-top:18px;padding-top:16px;border-top:1px solid var(--linea);display:flex;justify-content:space-between;align-items:center;font-size:13.5px;color:var(--gris);gap:10px}
+  .card-fecha{display:inline-flex;align-items:center;gap:6px}
+  .card-fecha svg{width:14px;height:14px;flex-shrink:0;color:#98a0b8}
+  .leer{font-family:'Montserrat';font-weight:700;color:var(--azul);font-size:13.5px;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+  .leer svg{width:14px;height:14px;transition:transform .18s cubic-bezier(.23,1,.32,1)}
+  .card:hover .leer svg{transform:translateX(4px)}
   .vacio{color:var(--gris);font-size:17px}
-  .cierre{background:linear-gradient(150deg,var(--azul),var(--azul-prof));color:#fff;text-align:center;padding:66px 24px}
-  .cierre h2{color:#fff;font-size:28px;font-weight:800}
-  .cierre p{color:#cfd6ea;font-size:17px;margin:14px auto 26px;max-width:52ch}
-  @media(max-width:640px){ .hero h1{font-size:30px} }
+  .cierre{position:relative;background:linear-gradient(150deg,var(--azul),var(--azul-prof));color:#fff;text-align:center;padding:72px 24px;overflow:hidden}
+  .cierre::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);background-size:26px 26px;pointer-events:none}
+  .cierre-eyebrow{position:relative;font-family:'Montserrat';font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--amarillo);margin-bottom:14px}
+  .cierre h2{position:relative;color:#fff;font-size:28px;font-weight:800}
+  .cierre p{position:relative;color:#cfd6ea;font-size:17px;margin:14px auto 26px;max-width:52ch}
+  @media(max-width:640px){ .hero h1{font-size:30px} .hero-grid{align-items:flex-start} .autor-chip{width:100%} }
 </style>

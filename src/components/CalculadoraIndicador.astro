@@ -53,7 +53,7 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
 
     <div class="calc">
       <div class="campo">
-        <label for="in-unidad">{unidadLabel}</label>
+        <label for="in-unidad">{iva ? `${unidadLabel} sin IVA` : unidadLabel}</label>
         <div class="input-wrap">
           <span class="prefijo" id="pref-unidad">·</span>
           <input id="in-unidad" inputmode="decimal" autocomplete="off" placeholder="0" />
@@ -73,8 +73,15 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
 
     {iva && (
       <div class="iva-box" id="iva-box">
-        <p class="iva-cap">Tu monto con IVA incluido</p>
-        <div class="iva-row"><span>Neto</span><strong id="iva-neto">—</strong></div>
+        <p class="iva-cap">¿Tienes el monto con IVA? Ingrésalo aquí</p>
+        <div class="campo iva-campo">
+          <label for="in-uf-iva">{unidadLabel} con IVA</label>
+          <div class="input-wrap">
+            <span class="prefijo">{unidadLabel}</span>
+            <input id="in-uf-iva" inputmode="decimal" autocomplete="off" placeholder="0" />
+          </div>
+        </div>
+        <div class="iva-row"><span>Neto (sin IVA)</span><strong id="iva-neto">—</strong></div>
         <div class="iva-row"><span>IVA (19%)</span><strong id="iva-iva">—</strong></div>
         <div class="iva-row iva-total"><span>Total con IVA</span><strong id="iva-total">—</strong></div>
       </div>
@@ -144,6 +151,7 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
   const $ = (id) => document.getElementById(id);
   const inUnidad = $('in-unidad');
   const inPesos = $('in-pesos');
+  const inUfIva = $('in-uf-iva'); // solo existe cuando iva=true (calculadora UF)
   const inFecha = $('fc-input');
 
   let valor = meta.fallback;
@@ -202,21 +210,60 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
       : '';
   };
 
+  // Solo coma para decimales: bloquea el punto al escribir o pegar, para que
+  // nadie confunda el separador de miles con el decimal y multiplique por mil de más.
+  const bloquearPunto = (el) => {
+    if (!el) return;
+    el.addEventListener('beforeinput', (e) => {
+      if (e.data && e.data.indexOf('.') !== -1) e.preventDefault();
+    });
+    el.addEventListener('input', () => {
+      if (el.value.indexOf('.') === -1) return;
+      const desdeFin = el.value.length - (el.selectionStart ?? el.value.length);
+      el.value = el.value.replace(/\./g, '');
+      const pos = el.value.length - desdeFin;
+      el.setSelectionRange(pos, pos);
+    });
+  };
+  [inUnidad, inPesos, inUfIva].forEach(bloquearPunto);
+
   let bloqueo = false;
+
+  // Recalcula pesos, IVA y el campo "con IVA" a partir de una cantidad de unidad SIN IVA.
+  const sincronizarDesdeNeto = (u) => {
+    const netoOk = isFinite(u) && u > 0;
+    inPesos.value = netoOk ? fmtMiles2.format(u * valor) : '';
+    if (inUfIva) inUfIva.value = netoOk ? fmtUnidad.format(u * 1.19) : '';
+    actualizarIva(netoOk ? u * valor : 0);
+  };
+
   inUnidad.addEventListener('input', () => {
     if (bloqueo) return; bloqueo = true;
-    const u = parseCL(inUnidad.value);
-    inPesos.value = isFinite(u) && u > 0 ? fmtMiles2.format(u * valor) : '';
-    actualizarIva(isFinite(u) && u > 0 ? u * valor : 0);
+    sincronizarDesdeNeto(parseCL(inUnidad.value));
     bloqueo = false;
   });
   inPesos.addEventListener('input', () => {
     if (bloqueo) return; bloqueo = true;
     const p = parseCL(inPesos.value);
-    inUnidad.value = isFinite(p) && p > 0 ? fmtUnidad.format(p / valor) : '';
-    actualizarIva(isFinite(p) && p > 0 ? p : 0);
+    const pOk = isFinite(p) && p > 0;
+    const u = pOk ? p / valor : NaN;
+    inUnidad.value = pOk ? fmtUnidad.format(u) : '';
+    if (inUfIva) inUfIva.value = pOk ? fmtUnidad.format(u * 1.19) : '';
+    actualizarIva(pOk ? p : 0);
     bloqueo = false;
   });
+  if (inUfIva) {
+    inUfIva.addEventListener('input', () => {
+      if (bloqueo) return; bloqueo = true;
+      const uConIva = parseCL(inUfIva.value);
+      const u = isFinite(uConIva) && uConIva > 0 ? uConIva / 1.19 : NaN;
+      const uOk = isFinite(u) && u > 0;
+      inUnidad.value = uOk ? fmtUnidad.format(u) : '';
+      inPesos.value = uOk ? fmtMiles2.format(u * valor) : '';
+      actualizarIva(uOk ? u * valor : 0);
+      bloqueo = false;
+    });
+  }
   const recalcular = () => {
     if (inUnidad.value) inUnidad.dispatchEvent(new Event('input'));
     else if (inPesos.value) inPesos.dispatchEvent(new Event('input'));
@@ -369,8 +416,11 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
   .swap{align-self:center;color:var(--amarillo);font-size:24px;font-weight:800;padding-bottom:10px}
   .calc-nota{margin-top:16px;color:var(--gris);font-size:14.5px;text-align:center}
 
-  .iva-box{margin-top:18px;background:#fff;border:1px solid var(--linea);border-radius:16px;padding:14px 24px 16px;max-width:430px;margin-left:auto;margin-right:auto}
-  .iva-cap{font-family:'Montserrat';font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--gris);margin:0 0 8px;text-align:center}
+  .iva-box{margin-top:18px;background:#fff;border:1px solid var(--linea);border-radius:16px;padding:18px 24px 16px;max-width:430px;margin-left:auto;margin-right:auto}
+  .iva-cap{font-family:'Montserrat';font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--gris);margin:0 0 12px;text-align:center}
+  .iva-campo{margin-bottom:16px;padding-bottom:16px;border-bottom:1px dashed var(--linea)}
+  .iva-campo label{text-align:center}
+  .iva-campo .input-wrap{justify-content:center}
   .iva-row{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;font-size:15px;color:#444a63}
   .iva-row strong{font-family:'Montserrat';font-weight:700;color:var(--azul-prof);font-size:16px}
   .iva-total{border-top:2px solid #eef1f8;margin-top:4px;padding-top:12px}

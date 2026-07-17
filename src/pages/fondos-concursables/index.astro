@@ -108,7 +108,8 @@ const faqSchema = {
 <Base {...seo} schema={[listSchema, breadcrumb, faqSchema]}>
 
   <section class="hero">
-    <div class="wrap">
+    <div class="wrap hero-grid">
+      <div class="hero-txt">
       <p class="eyebrow">Fondos concursables · Chile 2026</p>
       <h1>Fondos concursables para pymes en Chile</h1>
       <p class="lead">El mapa, siempre al día, de los fondos y subsidios de Corfo, Sercotec y otras instituciones para emprender, crecer, innovar o digitalizar tu pyme. Con monto, fecha de cierre, requisitos mínimos y el link oficial para postular. Para que el que te sirve no se te pase por no enterarte a tiempo.</p>
@@ -128,6 +129,11 @@ const faqSchema = {
             <span class="stat-lbl">en juego hoy</span>
           </div>
         )}
+      </div>
+      </div>
+      <div class="autor-chip">
+        <img src="/img/foto-tom.jpg" alt="Tom, Contador Colegiado y fundador de TomContable" width="52" height="52" />
+        <div><b>Revisado por Tom</b><span>Ingeniero Comercial y Contador Colegiado</span></div>
       </div>
     </div>
   </section>
@@ -331,18 +337,27 @@ const faqSchema = {
 </script>
 
 <style>
-  .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:64px 0 54px}
+  .hero{position:relative;background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:64px 0 54px;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(30,47,115,.055) 1px,transparent 1px);background-size:26px 26px;pointer-events:none;mask-image:radial-gradient(65% 65% at 18% 15%,#000 10%,transparent 72%)}
+  .hero::after{content:"";position:absolute;right:-150px;top:-150px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(246,177,26,.16),transparent 68%);pointer-events:none}
+  .hero-grid{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap}
+  .hero-txt{flex:1;min-width:280px}
   .hero h1{font-size:38px;font-weight:800;letter-spacing:-.6px;text-wrap:balance}
   .hero .lead{font-size:17px;color:#444a63;margin-top:16px;max-width:70ch;line-height:1.6}
   .stats{display:flex;gap:40px;margin-top:34px;flex-wrap:wrap}
   .stat{display:flex;flex-direction:column}
   .stat-num{font-family:'Montserrat';font-weight:800;font-size:38px;color:var(--azul);line-height:1;font-variant-numeric:tabular-nums}
   .stat-lbl{font-size:13.5px;color:var(--gris);margin-top:6px;font-weight:500}
+  .autor-chip{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--linea);border-radius:16px;padding:12px 18px 12px 12px;box-shadow:0 14px 30px -16px rgba(19,35,95,.4);flex-shrink:0}
+  .autor-chip img{width:52px;height:52px;border-radius:50%;object-fit:cover;flex-shrink:0}
+  .autor-chip b{display:block;font-family:'Montserrat';font-weight:700;font-size:14px;color:var(--azul)}
+  .autor-chip span{display:block;font-size:12.5px;color:var(--gris);margin-top:2px}
 
   /* Destacado */
   .sec-dest{padding:34px 0 0}
   .dest{display:grid;grid-template-columns:1fr 260px;gap:0;background:#fff;border:1px solid var(--linea);border-radius:20px;overflow:hidden;box-shadow:0 20px 44px -26px rgba(19,35,95,.5);transition:transform .18s,border-color .18s,box-shadow .18s;touch-action:manipulation}
-  .dest:hover{transform:translateY(-3px);box-shadow:0 26px 52px -26px rgba(19,35,95,.6);border-color:#c9cfe2}
+  .dest:hover{transform:translateY(-3px);box-shadow:0 26px 52px -22px rgba(19,35,95,.5);border-color:rgba(246,177,26,.65)}
+  .dest:active{transform:translateY(-3px) scale(.99)}
   .dest:focus-visible{outline:2px solid var(--azul);outline-offset:3px}
   .dest-info{padding:32px 34px}
   .dest-top{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
@@ -361,8 +376,9 @@ const faqSchema = {
   .sec-filtros{padding:40px 0 0}
   .filtros{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
   .chips{display:flex;gap:9px;flex-wrap:wrap}
-  .chip{font-family:'Montserrat';font-weight:700;font-size:13.5px;border:1.5px solid var(--linea);background:#fff;color:var(--azul);border-radius:999px;padding:9px 17px;cursor:pointer;transition:border-color .15s,background .15s,color .15s;touch-action:manipulation}
+  .chip{font-family:'Montserrat';font-weight:700;font-size:13.5px;border:1.5px solid var(--linea);background:#fff;color:var(--azul);border-radius:999px;padding:9px 17px;cursor:pointer;transition:border-color .15s,background .15s,color .15s,transform .16s cubic-bezier(.23,1,.32,1);touch-action:manipulation}
   .chip:hover{border-color:#c2c9de}
+  .chip:active{transform:scale(.95)}
   .chip:focus-visible{outline:2px solid var(--azul);outline-offset:2px}
   .chip.on{background:var(--azul);border-color:var(--azul);color:#fff}
   .controles{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
@@ -384,7 +400,8 @@ const faqSchema = {
   .sec{padding:16px 0 20px}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:24px}
   .card{background:#fff;border:1px solid var(--linea);border-radius:16px;padding:26px;display:flex;flex-direction:column;transition:transform .18s,border-color .18s,box-shadow .18s;box-shadow:0 6px 18px -14px rgba(19,35,95,.4);touch-action:manipulation}
-  .card:hover{transform:translateY(-3px);border-color:#c9cfe2;box-shadow:0 16px 30px -18px rgba(19,35,95,.5)}
+  .card:hover{transform:translateY(-3px);border-color:rgba(246,177,26,.65);box-shadow:0 22px 42px -20px rgba(19,35,95,.42)}
+  .card:active{transform:translateY(-3px) scale(.98)}
   .card:focus-visible{outline:2px solid var(--azul);outline-offset:3px}
   .card-top{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
   .tag-inst{font-family:'Montserrat';font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul-prof);background:var(--fondo);border:1px solid var(--linea);border-radius:999px;padding:5px 11px}
@@ -421,7 +438,9 @@ const faqSchema = {
   .sec-faq h2{font-size:28px;font-weight:800;margin-bottom:20px;letter-spacing:-.3px}
   .faq{max-width:760px}
   details{background:#fff;border:1px solid var(--linea);border-radius:14px;margin-bottom:12px;overflow:hidden}
-  summary{list-style:none;cursor:pointer;padding:18px 22px;font-family:'Montserrat';font-weight:600;font-size:16px;color:var(--azul);display:flex;justify-content:space-between;gap:14px}
+  summary{list-style:none;cursor:pointer;padding:18px 22px;font-family:'Montserrat';font-weight:600;font-size:16px;color:var(--azul);display:flex;justify-content:space-between;gap:14px;transition:transform .16s cubic-bezier(.23,1,.32,1),background .16s}
+  summary:hover{background:#fafbfe}
+  summary:active{transform:scale(.99)}
   summary::-webkit-details-marker{display:none}
   .plus{font-size:22px;color:var(--azul);transition:transform .2s;flex-shrink:0}
   details[open] .plus{transform:rotate(45deg)}
@@ -438,6 +457,8 @@ const faqSchema = {
   }
   @media(max-width:640px){
     .hero h1{font-size:29px}
+    .hero-grid{align-items:flex-start}
+    .autor-chip{width:100%}
     .stats{gap:26px}
     .stat-num{font-size:31px}
     .filtros{flex-direction:column;align-items:stretch}
