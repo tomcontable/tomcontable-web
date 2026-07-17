@@ -72,4 +72,4 @@ Por último, muchos olvidan que la fracción superior a seis meses cuenta como u
 
 Para no hacer las cuentas a mano, tenemos una [calculadora de finiquito](/calculadora-finiquito/) gratis y al día con el valor de la UF. Pones el sueldo, el tiempo trabajado, la causal y los días de vacaciones pendientes, y te entrega una estimación al instante. Es gratis y no necesitas registrarte.
 
-Eso sí, una calculadora te da el número de referencia, no reemplaza una revisión. Si hay bonos, comisiones, licencias de por medio, o simplemente quieres asegurarte de que el cálculo está bien antes de firmarlo, conviene que alguien lo revise contigo.
+Eso sí, una calculadora te da el número de referencia, no reemplaza una revisión. Si hay bonos, comisiones, licencias de por medio, o simplemente quieres as

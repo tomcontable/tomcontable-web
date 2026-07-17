@@ -90,7 +90,7 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
         <p class="h2-kicker">Contabilidad para pymes y emprendedores en Chile</p>
         <h1>Tus impuestos en orden.<br />Tu cabeza, <span class="h2-marca">en tu negocio</span>.</h1>
         <p class="h2-lead">Somos el equipo contable detrás de la cuenta que ya sigues. Llevamos tu empresa mes a mes: declaraciones a tiempo, respuestas el mismo día y alguien mirando el detalle antes de que se vuelva multa.</p>
-        <p class="h2-lema"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2 14.5 9.5 22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5z"/></svg>Más que contabilidad, tranquilidad.</p>
+        <p class="h2-lema">Más que contabilidad, tranquilidad.</p>
         <div class="h2-cta-row">
           <BotonWhatsApp texto="Conversemos tu caso" mensaje="Hola Tom, vengo de Instagram y quiero ordenar la contabilidad de mi negocio" />
           <a class="btn btn-ghost" href="#h2-servicios">Ver servicios y precios</a>
@@ -479,13 +479,12 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
 
   .h2-hero-txt h1{font-size:44px;font-weight:800;letter-spacing:-1px;line-height:1.1;text-wrap:balance}
   .h2-marca{position:relative;white-space:nowrap}
-  .h2-marca::after{content:"";position:absolute;left:-2px;right:-2px;bottom:2px;height:16px;background:var(--amarillo);z-index:-1;border-radius:3px;clip-path:inset(0 100% 0 0);animation:h2marker .8s cubic-bezier(.23,1,.32,1) 1s forwards}
-  @keyframes h2marker{to{clip-path:inset(0 0 0 0)}}
-  @media(prefers-reduced-motion:reduce){.h2-marca::after{animation:none;clip-path:inset(0 0 0 0)}}
+  .h2-marca::after{content:"";position:absolute;left:-3px;right:-3px;bottom:3px;height:14px;background:var(--amarillo);opacity:0;z-index:-1;border-radius:3px;transform:scaleX(0);transform-origin:left;animation:h2marker .7s cubic-bezier(.25,.8,.3,1) 1s forwards}
+  @keyframes h2marker{to{opacity:.5;transform:scaleX(1)}}
+  @media(prefers-reduced-motion:reduce){.h2-marca::after{animation:none;opacity:.5;transform:none}}
 
   .h2-lead{font-size:18.5px;color:#444a63;margin:22px 0 12px;max-width:44ch;line-height:1.62}
-  .h2-lema{font-family:'Montserrat';font-weight:700;color:var(--azul);font-size:16px;margin-bottom:28px;display:flex;align-items:center;gap:9px}
-  .h2-lema svg{width:17px;height:17px;color:var(--amarillo);flex-shrink:0}
+  .h2-lema{font-family:'Montserrat';font-weight:700;color:var(--azul);font-size:16px;margin-bottom:28px}
   .h2-cta-row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
   .h2-micro{list-style:none;margin-top:22px;display:flex;gap:20px;flex-wrap:wrap;font-size:13.5px;color:var(--gris)}
   .h2-micro li{position:relative;padding-left:20px}
