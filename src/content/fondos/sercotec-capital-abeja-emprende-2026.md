@@ -19,6 +19,7 @@ link: "https://www.sercotec.cl/capital-abeja-emprende/"
 fuenteTexto: "Sercotec, ficha del programa Capital Abeja Emprende"
 fuenteHref: "https://www.sercotec.cl/programas/capital-abeja-emprende/"
 pubDate: 2026-07-01
+updatedDate: 2026-08-06
 faqs:
   - q: "¿Para quién es Capital Abeja Emprende?"
     a: "Para mujeres mayores de edad con una idea de negocio o un emprendimiento informal, que todavía no hacen inicio de actividades en primera categoría ante el SII."

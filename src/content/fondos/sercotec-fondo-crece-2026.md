@@ -18,6 +18,7 @@ link: "https://www.sercotec.cl/crece/"
 fuenteTexto: "Sercotec, ficha del programa Crece"
 fuenteHref: "https://www.sercotec.cl/programas/crece/"
 pubDate: 2026-07-01
+updatedDate: 2026-08-06
 faqs:
   - q: "¿Para quién es el Fondo Crece?"
     a: "Para micro y pequeñas empresas y cooperativas ya formalizadas, con ventas netas anuales entre 200 y 25.000 UF, que quieren invertir para crecer."

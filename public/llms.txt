@@ -22,6 +22,7 @@ Sitio: https://tomcontable.cl · Idioma: español de Chile · Contacto: WhatsApp
 - [Calculadora de sueldo líquido](https://tomcontable.cl/calculadora-sueldo-liquido/): de bruto a líquido con AFP, salud y seguro de cesantía, valores 2026.
 - [Calculadora de finiquito](https://tomcontable.cl/calculadora-finiquito/): indemnizaciones, vacaciones proporcionales y aviso previo según causal.
 - [Calculadora de boleta de honorarios](https://tomcontable.cl/calculadora-boleta-honorarios/): retención vigente y monto líquido a recibir.
+- [Calculadora de cotizaciones de honorarios](https://tomcontable.cl/calculadora-cotizaciones-honorarios/): cotizaciones previsionales del trabajador independiente (salud, pensión, SIS, accidentes), comparando cobertura total y parcial, con selector de AFP.
 - [Calculadora de IVA](https://tomcontable.cl/calculadora-iva/): agregar o quitar el 19% de IVA.
 - [Calculadora UF a pesos](https://tomcontable.cl/calculadora-uf/) · [UTM a pesos](https://tomcontable.cl/calculadora-utm/) · [Dólar a pesos](https://tomcontable.cl/calculadora-dolar/) · [Reajuste por IPC](https://tomcontable.cl/calculadora-ipc/)
 - [Multas e intereses del SII](https://tomcontable.cl/calculadora-multas-intereses-sii/): costo de declarar fuera de plazo.
@@ -35,6 +36,7 @@ Sitio: https://tomcontable.cl · Idioma: español de Chile · Contacto: WhatsApp
 - [Cuánto cuesta un contador para una pyme](https://tomcontable.cl/blog/cuanto-cuesta-un-contador-para-pyme/)
 - [Qué hacer si el SII observa tu declaración](https://tomcontable.cl/blog/que-hacer-si-el-sii-observa-tu-declaracion/)
 - [Cómo se calcula el sueldo líquido en Chile 2026](https://tomcontable.cl/blog/como-se-calcula-el-sueldo-liquido-en-chile-2026/)
+- [Cobertura total o parcial en tus boletas de honorarios](https://tomcontable.cl/blog/cotizaciones-boleta-honorarios-cobertura-total-o-parcial/)
 
 ## Sobre
 

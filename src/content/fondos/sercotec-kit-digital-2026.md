@@ -19,6 +19,7 @@ link: "https://www.sercotec.cl/ruta-digital/"
 fuenteTexto: "Ministerio de Economía, Fomento y Turismo"
 fuenteHref: "https://www.economia.gob.cl/2026/06/18/sercotec-lanza-fondo-kit-digital-al-cual-podran-postular-cerca-de-4-mil-pymes.htm"
 pubDate: 2026-07-01
+updatedDate: 2026-08-06
 faqs:
   - q: "¿Para quién es Kit Digital?"
     a: "Para pymes con inicio de actividades en primera categoría y ventas netas anuales de hasta 25.000 UF, que ya completaron el programa gratuito Ruta Digital."

@@ -19,6 +19,7 @@ link: "https://www.sercotec.cl/capital-pioneras/"
 fuenteTexto: "Sercotec, ficha del programa Capital Pioneras"
 fuenteHref: "https://www.sercotec.cl/programas/capital-pioneras/"
 pubDate: 2026-07-01
+updatedDate: 2026-08-06
 faqs:
   - q: "¿Qué diferencia a Capital Pioneras de Capital Abeja Emprende?"
     a: "Ambos son para mujeres, pero Capital Pioneras exige que el proyecto sea en un rubro con tradicionalmente menor participación femenina, como construcción, transporte, tecnología o industria."

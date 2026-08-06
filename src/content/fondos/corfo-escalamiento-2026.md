@@ -21,6 +21,7 @@ link: "https://www.corfo.cl/sites/cpp/inf/escalamiento"
 fuenteTexto: "Corfo, sitio oficial del programa Escalamiento"
 fuenteHref: "https://www.corfo.cl/sites/cpp/inf/escalamiento"
 pubDate: 2026-07-01
+updatedDate: 2026-08-06
 faqs:
   - q: "¿Quién puede postular a Corfo Escalamiento 2026?"
     a: "Empresas constituidas en Chile con fines de lucro, con menos de 6 años desde el inicio de actividades ante el SII, ventas netas entre $80.000.000 y $800.000.000 en los últimos 12 meses, y un modelo de negocio con ventas ya demostrables."

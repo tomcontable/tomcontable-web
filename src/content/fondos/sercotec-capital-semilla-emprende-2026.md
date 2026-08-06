@@ -19,6 +19,7 @@ link: "https://www.sercotec.cl/capital-semilla-emprende/"
 fuenteTexto: "Sercotec, bases de convocatoria Región Metropolitana 2026"
 fuenteHref: "https://www.sercotec.cl/convocatoria/capital-semilla-emprende-region-metropolitana-de-santiago-2026/"
 pubDate: 2026-07-01
+updatedDate: 2026-08-06
 faqs:
   - q: "¿Para quién es Capital Semilla Emprende?"
     a: "Para personas que tienen una idea de negocio o un emprendimiento informal y todavía no hacen inicio de actividades en primera categoría ante el SII."

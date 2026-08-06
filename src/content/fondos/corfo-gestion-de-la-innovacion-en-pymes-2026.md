@@ -18,6 +18,7 @@ link: "https://www.corfo.gob.cl/sites/cpp/programasyconvocatorias/"
 fuenteTexto: "Ministerio de Economía, Fomento y Turismo"
 fuenteHref: "https://www.economia.gob.cl/2026/05/22/corfo-abre-convocatorias-para-que-pymes-impulsen-sus-capacidades-de-innovacion-y-lideren-proyectos-id.htm"
 pubDate: 2026-07-01
+updatedDate: 2026-08-06
 faqs:
   - q: "¿Para quién es este programa?"
     a: "Para grupos de al menos 5 empresas, donde un mínimo de 80% deben ser pymes, que quieren incorporar la innovación como práctica de gestión, no para una empresa que postula sola."

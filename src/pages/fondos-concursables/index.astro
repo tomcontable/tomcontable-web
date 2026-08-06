@@ -6,7 +6,7 @@ import { getCollection } from 'astro:content';
 
 const seo = {
   title: 'Fondos concursables para pymes Chile 2026 · TomContable',
-  description: 'Buscador de fondos y subsidios abiertos para pymes y emprendedores en Chile 2026: Corfo, Sercotec y más, con montos, fechas de cierre, requisitos y el link oficial de postulación.',
+  description: 'Fondos y subsidios para pymes y emprendedores en Chile 2026: Corfo, Sercotec y más. Cuáles están abiertos, en qué mes abre cada uno, montos, requisitos y el link oficial.',
 };
 
 const hoy = new Date();
@@ -38,6 +38,23 @@ const categorias = ordenCat.filter((c) => fondos.some((f) => f.data.categoria ==
 // Fondo destacado (grande) si hay uno marcado y abierto
 const destacado = fondos.find((f) => f.data.destacado && f.abierto) ?? fondos.find((f) => f.abierto);
 const resto = fondos.filter((f) => f !== destacado);
+
+// Calendario de aperturas. Corfo y Sercotec repiten sus llamados en fechas parecidas cada
+// año, así que la ventana real en que abrió cada fondo este año es la mejor referencia de
+// cuándo volver a mirar. Se ordena por mes de apertura, no por cierre, y se muestra sobre
+// todo cuando no hay ninguna convocatoria abierta, que es cuando el visitante necesita
+// saber cuándo volver en vez de irse con las manos vacías.
+const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+const calendario = [...fondos]
+  .sort((a, b) => a.data.fechaInicio.getMonth() - b.data.fechaInicio.getMonth())
+  .map((f) => ({
+    slug: f.slug,
+    nombre: f.data.seoTitle.replace(/ · TomContable$/, ''),
+    institucion: f.data.institucion,
+    mes: MESES[f.data.fechaInicio.getMonth()],
+    dia: f.data.fechaInicio.getDate(),
+    monto: f.data.montoMax,
+  }));
 
 const fmtFecha = (d) =>
   d.toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -114,6 +131,12 @@ const faqSchema = {
       <h1>Fondos concursables para pymes en Chile</h1>
       <p class="lead">El mapa, siempre al día, de los fondos y subsidios de Corfo, Sercotec y otras instituciones para emprender, crecer, innovar o digitalizar tu pyme. Con monto, fecha de cierre, requisitos mínimos y el link oficial para postular. Para que el que te sirve no se te pase por no enterarte a tiempo.</p>
 
+      {abiertosCount === 0 && (
+        <p class="aviso-cerrado">
+          <strong>Hoy no hay convocatorias abiertas.</strong> No es un descuido nuestro: Corfo y Sercotec concentran sus llamados en el primer semestre, y en la segunda mitad del año quedan en pausa hasta la próxima temporada. Más abajo tienes en qué mes abrió cada fondo este año, que es la mejor señal de cuándo conviene volver a mirar.
+        </p>
+      )}
+
       <div class="stats">
         <div class="stat">
           <span class="stat-num" data-cifra={abiertosCount}>{abiertosCount}</span>
@@ -161,6 +184,24 @@ const faqSchema = {
       </div>
     </section>
   )}
+
+  <section class="sec-cal">
+    <div class="wrap">
+      <h2 class="cal-titulo">En qué mes abre cada fondo</h2>
+      <p class="cal-bajada">Estas son las fechas en que se abrió cada convocatoria durante 2026. Las instituciones suelen repetir sus llamados en fechas parecidas, así que sirven para calcular cuándo volver a revisar y, sobre todo, para llegar con los papeles listos antes de que abra.</p>
+      <ol class="cal-lista">
+        {calendario.map((c) => (
+          <li>
+            <span class="cal-mes">{c.mes}</span>
+            <a class="cal-nombre" href={`/fondos-concursables/${c.slug}`}>{c.nombre}</a>
+            <span class="cal-inst">{c.institucion}</span>
+            {fmtMonto(c.monto) && <span class="cal-monto">Hasta {fmtMonto(c.monto)}</span>}
+          </li>
+        ))}
+      </ol>
+      <p class="cal-nota">Fechas de las convocatorias 2026. Las de 2027 no están publicadas todavía, así que estas son referenciales: confirma siempre en el sitio oficial de la institución antes de contar con un plazo.</p>
+    </div>
+  </section>
 
   <section class="sec-filtros">
     <div class="wrap">
@@ -344,6 +385,30 @@ const faqSchema = {
   .hero-txt{flex:1;min-width:280px}
   .hero h1{font-size:38px;font-weight:800;letter-spacing:-.6px;text-wrap:balance}
   .hero .lead{font-size:17px;color:#444a63;margin-top:16px;max-width:70ch;line-height:1.6}
+  .aviso-cerrado{margin-top:18px;max-width:70ch;background:#fdf4dd;border:1px solid #f1d98a;border-left-width:3px;border-radius:0 12px 12px 0;padding:13px 17px;font-size:15px;line-height:1.6;color:#5f5320}
+  .aviso-cerrado strong{color:var(--azul-prof)}
+
+  /* Calendario de aperturas: sirve todo el año, pero es lo que salva la página en los meses
+     sin convocatorias, cuando lo único que hay para mostrar son fondos cerrados. */
+  .sec-cal{padding:34px 0 6px}
+  .cal-titulo{font-size:24px;font-weight:800;letter-spacing:-.3px;margin:0 0 8px}
+  .cal-bajada{font-size:15.5px;color:#444a63;line-height:1.6;margin:0 0 18px;max-width:72ch}
+  .cal-lista{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+  .cal-lista li{display:grid;grid-template-columns:96px 1fr auto auto;align-items:center;gap:14px;background:#fff;border:1px solid var(--linea);border-radius:12px;padding:11px 16px}
+  .cal-mes{font-family:'Montserrat';font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--amarillo-osc,#9a7415)}
+  .cal-nombre{font-family:'Montserrat';font-weight:600;font-size:14.5px;color:var(--azul);text-decoration:none;line-height:1.35}
+  .cal-nombre:hover{text-decoration:underline;text-underline-offset:3px}
+  .cal-inst{font-size:12.5px;color:var(--gris);white-space:nowrap}
+  .cal-monto{font-family:'Montserrat';font-weight:700;font-size:13px;color:var(--azul-prof);white-space:nowrap}
+  .cal-nota{margin:14px 0 0;font-size:13px;color:var(--gris);line-height:1.55;max-width:72ch}
+  @media(max-width:720px){
+    .cal-lista li{grid-template-columns:1fr auto;row-gap:4px;padding:12px 14px}
+    .cal-mes{grid-column:1/-1}
+    .cal-nombre{grid-column:1/-1}
+    .cal-inst{grid-column:1}
+    .cal-monto{grid-column:2;text-align:right}
+  }
+
   .stats{display:flex;gap:40px;margin-top:34px;flex-wrap:wrap}
   .stat{display:flex;flex-direction:column}
   .stat-num{font-family:'Montserrat';font-weight:800;font-size:38px;color:var(--azul);line-height:1;font-variant-numeric:tabular-nums}

@@ -19,6 +19,7 @@ link: "https://www.corfo.cl/sites/cpp/inf/semilla-inicia"
 fuenteTexto: "Ministerio de Economía, Fomento y Turismo"
 fuenteHref: "https://www.economia.gob.cl/2026/05/13/nuevos-llamados-de-corfo-buscan-potenciar-emprendimientos-innovadores-liderados-por-mujeres.htm"
 pubDate: 2026-07-01
+updatedDate: 2026-08-06
 faqs:
   - q: "¿Para quién es Semilla Inicia?"
     a: "Para emprendimientos que todavía están en etapa de idea, prototipo o con la solución desarrollada pero sin ventas regulares en los últimos 12 meses."

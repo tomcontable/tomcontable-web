@@ -19,6 +19,7 @@ link: "https://www.sercotec.cl/digitaliza-tu-almacen/"
 fuenteTexto: "Sercotec, ficha del programa Digitaliza tu Almacén"
 fuenteHref: "https://www.sercotec.cl/digitaliza-tu-almacen/"
 pubDate: 2026-07-01
+updatedDate: 2026-08-06
 faqs:
   - q: "¿Para quién es Digitaliza tu Almacén?"
     a: "Para almaceneros y almaceneras con local físico, más de 12 meses de actividad e inicio de actividades en primera categoría ante el SII."
