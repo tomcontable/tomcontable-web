@@ -35,6 +35,12 @@ const tools = [
     ico: '<path d="M6 2h9l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z"/><path d="M14 2v5h5"/><path d="M9 13h6M9 17h4"/>',
   },
   {
+    t: 'Calculadora de cotizaciones a honorarios',
+    d: 'Calcula las cotizaciones previsionales de tus boletas (salud, pensión, SIS y accidentes) y si la retención del año alcanza a cubrirlas.',
+    href: '/calculadora-cotizaciones-honorarios',
+    ico: '<path d="M12 2l8 3v6c0 5.2-3.4 8.9-8 11-4.6-2.1-8-5.8-8-11V5z"/><path d="M12 8v7M9.5 10.5h3.2a2 2 0 0 1 0 4h-2.4"/>',
+  },
+  {
     t: 'Calculadora UF a pesos',
     d: 'Convierte UF a pesos y pesos a UF con el valor de hoy o de cualquier fecha. Ideal para arriendos, créditos y montos tributarios.',
     href: '/calculadora-uf',
@@ -108,7 +114,7 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
 // Agrupación visual de las herramientas. Para sumar una nueva, agrégala a tools y a la categoría que corresponda.
 const cats = [
   { titulo: 'Sueldos y trabajo', hrefs: ['/calculadora-sueldo-liquido', '/calculadora-finiquito', '/indicadores-previsionales'] },
-  { titulo: 'Impuestos', hrefs: ['/calculadora-iva', '/calculadora-boleta-honorarios', '/calculadora-iva-arriendo-amoblado', '/calculadora-multas-intereses-sii'] },
+  { titulo: 'Impuestos', hrefs: ['/calculadora-iva', '/calculadora-boleta-honorarios', '/calculadora-cotizaciones-honorarios', '/calculadora-iva-arriendo-amoblado', '/calculadora-multas-intereses-sii'] },
   { titulo: 'Indicadores y conversores', hrefs: ['/calculadora-uf', '/calculadora-utm', '/calculadora-dolar', '/calculadora-ipc'] },
 ];
 ---

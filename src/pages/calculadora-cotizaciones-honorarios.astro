@@ -1,0 +1,481 @@
+---
+import Base from '../layouts/Base.astro';
+import BotonWhatsApp from '../components/BotonWhatsApp.astro';
+import BannerServicios from '../components/BannerServicios.astro';
+
+const seo = {
+  title: 'Calculadora de Cotizaciones Previsionales a Honorarios 2026 · TomContable',
+  description: 'Calcula las cotizaciones previsionales de tus boletas de honorarios: salud, pensión, SIS y accidentes. Mira si la retención alcanza a cubrirlas y qué te queda. Gratis.',
+  canonical: '/calculadora-cotizaciones-honorarios',
+};
+
+const faqs = [
+  { q: '¿Quién está obligado a cotizar por sus boletas de honorarios?', a: 'Los trabajadores independientes que emiten boletas de honorarios y cuyas rentas anuales superan el mínimo legal deben cotizar de forma obligatoria, según la Ley 21.133. Las cotizaciones no se pagan mes a mes: se determinan y se pagan una vez al año, en la Operación Renta de abril, usando la retención que te fueron descontando durante el año.' },
+  { q: '¿Sobre qué monto se calculan las cotizaciones?', a: 'La base es la renta imponible anual, que corresponde al 80% del total de tus honorarios brutos del año, con un tope. El tope imponible mensual es de 90 UF en 2026 (era 87,8 UF en 2025), que multiplicado por 12 da el máximo anual sobre el que se cotiza. Si tus honorarios superan ese tope, cotizas solo hasta ahí.' },
+  { q: '¿Qué diferencia hay entre cobertura total y cobertura parcial?', a: 'Con cobertura total cotizas sobre el 100% de tu renta imponible y quedas cubierto en todo el sistema previsional. Se usa toda tu retención, así que no hay devolución por este concepto. Con cobertura parcial cotizas salud y pensión sobre un porcentaje menor, que sube cada año: 80% en la Operación Renta 2026 y 90% en la de 2027. Te sobra retención, pero acumulas menos pensión y tus licencias se pagan sobre una base más baja.' },
+  { q: '¿La cobertura parcial va a seguir existiendo?', a: 'No. El porcentaje de cobertura parcial sube cada año hasta llegar al 100%, y desde la Operación Renta 2028 desaparece la opción de elegir: todos los independientes cotizarán sobre el 100% de su renta imponible.' },
+  { q: '¿Qué cotizaciones se descuentan y en qué orden?', a: 'Se pagan en un orden fijo que define la ley: primero el seguro de accidentes del trabajo (Ley 16.744), después el seguro SANNA de acompañamiento a niños con enfermedades graves, luego el SIS (invalidez y sobrevivencia), después el 7% de salud, y la cotización de pensión queda al final. Por eso, cuando la retención no alcanza para todo, lo primero que se resiente es tu ahorro previsional.' },
+  { q: '¿Por qué la retención de mis boletas sube todos los años?', a: 'Porque fue diseñada justamente para financiar estas cotizaciones. La Ley 21.133 la hace subir de forma gradual: 14,5% en 2025, 15,25% en 2026, 16% en 2027 y 17% desde 2028. A medida que sube el porcentaje de cobertura obligatoria, sube también la retención que lo financia.' },
+  { q: 'Si la retención no alcanza para pagar las cotizaciones, ¿qué pasa?', a: 'Depende de la cobertura que elegiste, y la diferencia es grande. Con cobertura total, la cotización de pensión se lleva solo lo que quede de la retención: se achica para caber. Durante el período transitorio de la Ley 21.133, esa diferencia no constituye un saldo pendiente de pago para ti. Con cobertura parcial, en cambio, la cotización de pensión es un monto fijo, así que lo que la retención no cubra queda como un saldo que debes pagar directamente a tu AFP, con plazo hasta el 10 de junio.' },
+  { q: '¿Por qué mi AFP me está cobrando cotizaciones por mis boletas?', a: 'Lo más común no es el tipo de cobertura, sino que no haya habido retención que imputar. Si emitiste boletas a personas naturales, nadie te retuvo: ahí te corresponde pagar PPM mensual, y si no lo hiciste, llega abril sin fondos y el SII determina un saldo por cotizar. También se arrastran los saldos insolutos de años anteriores, que van al final del orden de pago. El SII informa ese saldo, tu AFP debe avisarte dentro de 5 días hábiles y tienes plazo hasta el 10 de junio para pagarlo directamente.' },
+  { q: '¿Lo que sobra de la retención me lo devuelven completo?', a: 'No siempre. Lo que queda después de pagar las cotizaciones se destina primero a tu Impuesto Global Complementario, si es que te corresponde pagarlo. Solo si tus rentas quedan en el tramo exento recuperas todo el saldo. Por eso esta calculadora te muestra el saldo de la retención después de cotizaciones, no la devolución final.' },
+  { q: '¿Cotizar a honorarios me sirve para algo o es solo un descuento?', a: 'Sirve, y es la razón de fondo de la ley. Cotizando quedas cubierto por el seguro de accidentes del trabajo, tienes derecho a licencias médicas y a la ley SANNA, cuentas con el seguro de invalidez y sobrevivencia, y acumulas fondos para tu pensión. Antes de la reforma, un independiente que se accidentaba o enfermaba simplemente dejaba de recibir ingresos.' },
+];
+
+const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
+const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication', name: 'Calculadora de Cotizaciones Previsionales a Honorarios', applicationCategory: 'FinanceApplication', operatingSystem: 'Web', inLanguage: 'es-CL', url: 'https://tomcontable.cl/calculadora-cotizaciones-honorarios', offers: { '@type': 'Offer', price: '0', priceCurrency: 'CLP' }, publisher: { '@type': 'Organization', name: 'TomContable' }, author: { '@type': 'Person', name: 'Tomás Gómez', jobTitle: 'Contador Colegiado' } };
+const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+  { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://tomcontable.cl/' },
+  { '@type': 'ListItem', position: 2, name: 'Herramientas', item: 'https://tomcontable.cl/herramientas' },
+  { '@type': 'ListItem', position: 3, name: 'Calculadora de cotizaciones previsionales a honorarios', item: 'https://tomcontable.cl/calculadora-cotizaciones-honorarios' }
+] };
+
+const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year: 'numeric' });
+---
+<Base {...seo} schema={[appSchema, faqSchema, breadcrumb]} sugerencia="calculadora-cotizaciones-honorarios">
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Herramienta gratis</p>
+      <h1>Calculadora de cotizaciones previsionales para boletas de honorarios</h1>
+      <p class="lead">Pon el total que boleteaste en el año y mira el desglose completo de tus cotizaciones previsionales: salud, pensión, SIS y accidentes del trabajo. Y lo más importante: si la retención alcanza a cubrirlas o vas a tener que poner de tu bolsillo.</p>
+    </div>
+    <svg class="hero-ill" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M60 12l36 14v28c0 24-15.5 40-36 54C39.5 94 24 78 24 54V26z" stroke="#1E2F73" stroke-width="3.5" stroke-linejoin="round"/><path d="M60 30v46M46 46h20a7 7 0 0 1 0 14H54a7 7 0 0 0 0 14h20" stroke="#F6B11A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </section>
+
+  <section class="sec">
+    <div class="wrap calc-wrap">
+
+      <div class="grid">
+        <form class="panel form" id="ch-form" autocomplete="off">
+          <h2>Tus honorarios del año</h2>
+
+          <label class="f"><span>Total boleteado en el año (bruto)</span>
+            <div class="inp"><i>$</i><input type="text" inputmode="numeric" id="brutos" placeholder="0" /></div>
+          </label>
+
+          <label class="f"><span>Año de las boletas</span>
+            <select id="anio">
+              <option value="2025">2025 · se declara en abril 2026</option>
+              <option value="2026" selected>2026 · se declara en abril 2027</option>
+            </select>
+          </label>
+
+          <label class="f"><span>Tu AFP</span>
+            <select id="afp">
+              <option value="0.0046">Uno · comisión 0,46%</option>
+              <option value="0.0058">Modelo · comisión 0,58%</option>
+              <option value="0.0116">PlanVital · comisión 1,16%</option>
+              <option value="0.0127" selected>Habitat · comisión 1,27%</option>
+              <option value="0.0144">Capital · comisión 1,44%</option>
+              <option value="0.0144">Cuprum · comisión 1,44%</option>
+              <option value="0.0145">Provida · comisión 1,45%</option>
+            </select>
+          </label>
+          <p class="hint">La cotización de pensión es 10% más la comisión de tu AFP, así que la que elijas cambia el resultado.</p>
+
+          <fieldset class="cob">
+            <legend>Tipo de cobertura</legend>
+            <label class="op"><input type="radio" name="cobertura" value="parcial" checked />
+              <span><b>Parcial</b><em id="op-parcial-desc">Cotizas salud y pensión sobre una parte de tu renta imponible. Menos descuento ahora, menos pensión y menores licencias.</em></span>
+            </label>
+            <label class="op"><input type="radio" name="cobertura" value="total" />
+              <span><b>Total</b><em>Cotizas sobre el 100%. Cobertura previsional completa, pero es probable que la retención no alcance.</em></span>
+            </label>
+          </fieldset>
+          <p class="hint" id="hint-tope"></p>
+        </form>
+
+        <div class="result-col">
+          <div class="panel comp" id="result">
+            <div class="comp-head">
+              <div class="comp-marca"><strong>TomContable</strong><span>tomcontable.cl</span></div>
+              <span class="comp-tag">Cotizaciones honorarios</span>
+            </div>
+
+            <div class="comp-in"><span>Renta imponible <em id="r-base-nota">(80% de tus honorarios)</em></span><b id="r-base">$0</b></div>
+
+            <div class="lineas">
+              <div class="lin"><span>Accidentes del trabajo <em>0,90%</em></span><b id="r-atep">$0</b></div>
+              <div class="lin"><span>Ley SANNA <em>0,03%</em></span><b id="r-sanna">$0</b></div>
+              <div class="lin"><span>SIS <em id="r-sis-pct">1,62%</em></span><b id="r-sis">$0</b></div>
+              <div class="lin"><span>Salud <em>7%</em></span><b id="r-salud">$0</b></div>
+              <div class="lin"><span>Pensión <em id="r-pension-pct">11,27%</em></span><b id="r-pension">$0</b></div>
+              <div class="lin lin-tot"><span>Total cotizaciones</span><b id="r-total">$0</b></div>
+            </div>
+            <p class="nota-pension" id="r-pension-nota" hidden></p>
+
+            <div class="saldo">
+              <div class="lin lin-ret"><span>Retención acumulada <em id="r-ret-pct">15,25%</em></span><b id="r-ret">$0</b></div>
+              <span class="saldo-k" id="r-saldo-k">Saldo de la retención</span>
+              <strong class="saldo-v" id="r-saldo">$0</strong>
+              <span class="saldo-sub" id="r-saldo-sub">De este saldo sale primero tu Impuesto Global Complementario, si te corresponde pagarlo.</span>
+            </div>
+
+            <p class="comp-pie">Estimación referencial · Ley 21.133 · tomcontable.cl</p>
+          </div>
+
+          <div class="r-cta"><BotonWhatsApp texto="Quiero ordenar mis honorarios" mensaje="Hola vengo desde la calculadora de cotizaciones de honorarios y quiero ayuda con mi situación" /></div>
+        </div>
+      </div>
+
+      <div class="descargo">
+        <p>Cálculo referencial generado en tomcontable.cl con el monto ingresado. No constituye asesoría previsional ni tributaria, ni reemplaza la determinación oficial que hace el SII en tu Operación Renta. Usa la tasa base del seguro de accidentes del trabajo (0,90%), que puede ser mayor según la actividad y la mutual en que estés, y la comisión vigente de la AFP que selecciones. Asume que toda tu retención fue efectivamente enterada: si emitiste boletas a personas naturales sin pagar PPM, o arrastras saldos insolutos de años anteriores, tu resultado real será distinto. El saldo que se muestra es el remanente de la retención después de las cotizaciones, no tu devolución final: de ahí sale además el Impuesto Global Complementario si corresponde.</p>
+        <p class="firma">TomContable.cl · Cálculo referencial</p>
+      </div>
+    </div>
+  </section>
+
+  <div style="margin:10px auto 56px;padding:0 20px"><BannerServicios orden={['proyeccion', 'asesorias', 'contabilidad', 'constitucion']} lateral={true} /></div>
+
+  <section class="sec-texto">
+    <div class="wrap angosto">
+      <div class="resp-rapida">
+        <p><strong>Respuesta rápida:</strong> las cotizaciones previsionales de un trabajador a honorarios en Chile se calculan sobre el 80% de sus honorarios brutos anuales, con tope de 90 UF mensuales en 2026, y se pagan una vez al año en la Operación Renta con cargo a la retención de las boletas. Cubren accidentes del trabajo, SANNA, SIS, salud y pensión.</p>
+        <p class="resp-fecha">Última actualización: {actualizado}. Fuentes: Ley 21.133, Superintendencia de Pensiones (tope imponible 2026) y Subsecretaría de Previsión Social.</p>
+      </div>
+
+      <h2>Cómo se calculan las cotizaciones de un trabajador a honorarios</h2>
+      <p>El punto de partida es la renta imponible: el 80% del total de tus honorarios brutos del año. Sobre esa base se aplican las cotizaciones, con una particularidad que sorprende a mucha gente: no todas se calculan sobre el mismo monto. El seguro de accidentes del trabajo, la ley SANNA y el SIS se calculan siempre sobre el 100% de tu renta imponible, elijas la cobertura que elijas. Solo salud y pensión cambian según si optas por cobertura total o parcial.</p>
+
+      <h2>El tope imponible: hasta dónde se cotiza</h2>
+      <p>La renta imponible tiene un techo. La Superintendencia de Pensiones fija cada año el tope imponible mensual, que en 2026 es de 90 UF (en 2025 fue 87,8 UF). El máximo anual sobre el que se cotiza es ese tope multiplicado por doce. Si tu 80% supera esa cifra, cotizas solo hasta el tope y el exceso no paga cotizaciones. Esta calculadora aplica el tope del año que elijas, convertido a pesos con el valor real de la UF.</p>
+
+      <h2>Cobertura total o parcial: la decisión que tomas en abril</h2>
+      <p>Al declarar la renta eliges entre cobertura total y parcial, y esa decisión define cuánto se descuenta y cuánta protección tienes. Con cobertura total cotizas sobre el 100% de tu renta imponible y quedas cubierto en todo. Con cobertura parcial la base de salud y pensión baja a un porcentaje que sube cada año, 80% en la Operación Renta 2026 y 90% en la de 2027, así que el descuento es menor y te sobra parte de la retención.</p>
+      <p>Es un intercambio real, no un truco: cotizar menos hoy significa menos fondos en tu cuenta de AFP y licencias médicas calculadas sobre una base más baja el día que las necesites. De hecho, el Consejo Consultivo Previsional advirtió que la mayoría elige parcial sin dimensionar que sus licencias quedan muy por debajo de lo que esperaban. Y es una decisión con fecha de vencimiento, porque desde la Operación Renta 2028 la cobertura parcial deja de existir y todos cotizan sobre el 100%.</p>
+
+      <h2>El orden en que se pagan tus cotizaciones</h2>
+      <p>La ley define una prelación estricta de seis niveles: primero el SIS, después el seguro de accidentes del trabajo de la Ley 16.744, luego el seguro SANNA, en cuarto lugar el 7% de salud, en quinto la cotización de pensión con la comisión de tu AFP, y al final los saldos insolutos de pensiones de años anteriores. Que la pensión vaya casi al final no es un detalle administrativo: es lo que define qué pasa cuando la retención no alcanza.</p>
+
+      <h2>Qué pasa realmente si la retención no alcanza</h2>
+      <p>Acá está la diferencia que casi nadie explica bien, y que cambia por completo el resultado según la cobertura que elegiste.</p>
+      <p>Con <strong>cobertura total</strong>, la cotización de pensión no es un monto fijo: se lleva lo que quede de la retención después de pagar los seguros y la salud. La propia Superintendencia de Pensiones la describe como "el resto del monto de la retención". Si tu obligación nominal era 11,27% y la retención solo da para 7,8%, cotizas 7,8% y ahí queda. La Subsecretaría de Previsión Social es explícita: durante el período transitorio de la Ley 21.133, esa diferencia no constituye un saldo pendiente de pago para ti. Por eso, con cobertura total, la devolución por este concepto queda en cero, pero tampoco terminas debiendo.</p>
+      <p>Con <strong>cobertura parcial</strong> no existe esa válvula. La cotización de pensión es un monto fijo calculado sobre la base reducida, así que si los fondos no alcanzan, la diferencia sí queda como un saldo que debes pagar directamente a tu AFP, con plazo hasta el 10 de junio. Por eso esta calculadora te pide tu AFP: con una comisión de 0,46% el resultado puede dejarte devolución, y con una de 1,45% el mismo ingreso puede dejarte con un saldo por pagar.</p>
+
+      <h2>Por qué a veces la AFP cobra aunque hayas hecho todo bien</h2>
+      <p>Si tu AFP te notificó cotizaciones pendientes, lo más probable no es el tipo de cobertura, sino que no haya existido retención que imputar. El caso más frecuente son las boletas emitidas a personas naturales: ahí nadie te retiene, te corresponde pagar PPM mes a mes, y si no lo hiciste, en abril el SII determina las cotizaciones sin fondos con qué pagarlas. También pesan los saldos insolutos de años anteriores, que van últimos en el orden de pago y se arrastran. El SII informa ese saldo, tu AFP tiene 5 días hábiles para avisarte, y el plazo para pagarlo directo vence el 10 de junio.</p>
+
+      <h2>Por qué la retención sube cada año</h2>
+      <p>La retención de tus boletas y estas cotizaciones son dos caras de lo mismo. La Ley 21.133 subió la cobertura obligatoria de manera gradual y, en paralelo, hizo subir la retención para financiarla: 14,5% en 2025, 15,25% en 2026, 16% en 2027 y 17% desde 2028. Si quieres ver el efecto en cada boleta que emites, usa la <a href="/calculadora-boleta-honorarios/">calculadora de boleta de honorarios</a>.</p>
+
+      <h2>El saldo no es tu devolución</h2>
+      <p>Esta es la confusión más cara. Lo que sobra de la retención después de pagar las cotizaciones no es lo que te van a depositar: primero tiene que cubrir tu Impuesto Global Complementario, si tus rentas superan el tramo exento. Solo quien queda bajo ese tramo recupera todo el saldo. Por eso aquí te mostramos el remanente de la retención después de cotizaciones, que es un número exacto, y no una devolución final que dependería de tu situación tributaria completa.</p>
+
+      <p>Si quieres el detalle completo de esta decisión, con el orden de pago, los plazos y el costo escondido de la cobertura parcial, lo desarrollamos en la guía <a href="/blog/cotizaciones-boleta-honorarios-cobertura-total-o-parcial/">cobertura total o parcial en tus boletas de honorarios</a>.</p>
+
+      <h2>Cuándo conviene revisar tu caso con un contador</h2>
+      <p>Si el resultado te muestra que la retención no alcanza, o si estás dudando entre cobertura total y parcial con montos importantes en juego, vale la pena hacer el número completo antes de abril y no descubrirlo cuando ya no se puede corregir. Eso es exactamente lo que hace nuestra <a href="/proyeccion-tributaria/">proyección tributaria</a>: te decimos con anticipación cuánto vas a pagar o recibir, y qué puedes hacer desde ya para que el resultado sea mejor.</p>
+
+      <h2 id="faq">Preguntas frecuentes</h2>
+      <div class="faq">
+        {faqs.map((it) => (
+          <details>
+            <summary>{it.q}<span class="plus">+</span></summary>
+            <div class="ans">{it.a}</div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="relac">
+    <div class="relac-in">
+      <h2>Herramientas relacionadas</h2>
+      <div class="relac-grid">
+        <a href="/calculadora-boleta-honorarios/">Calculadora de boleta de honorarios</a>
+        <a href="/calculadora-sueldo-liquido/">Calculadora de sueldo líquido</a>
+        <a href="/calculadora-uf/">Calculadora UF a pesos</a>
+        <a href="/proyeccion-tributaria/">Proyección tributaria</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="cierre">
+    <div class="wrap">
+      <h2>¿Trabajas a honorarios y no quieres sustos en abril?</h2>
+      <p>Te proyectamos cuánto vas a pagar o recibir, y te ayudamos a elegir la cobertura que más te conviene. Conversemos por WhatsApp.</p>
+      <div class="cta-row center"><BotonWhatsApp texto="Hablar por WhatsApp" mensaje="Hola vengo desde la calculadora de cotizaciones previsionales a honorarios" /></div>
+    </div>
+  </section>
+
+</Base>
+
+<script>
+  // ---------------------------------------------------------------------------
+  // Matemática pura, separada de la presentación y parametrizada por año, para
+  // poder actualizar tasas y topes cada año sin tocar el resto de la página.
+  //
+  // Tablas verificadas contra fuente oficial (ago-2026):
+  //  - Retención por año de la boleta: Ley 21.133 (sube gradual hasta 17% en 2028).
+  //  - % de cobertura parcial: se define por año tributario (el año en que se
+  //    declara), no por el año de la boleta. Boletas 2025 -> OR 2026 -> 80%.
+  //  - Tope imponible mensual: lo fija la Superintendencia de Pensiones cada año.
+  //    Va en UF a propósito, no en pesos, para que no quede desfasado.
+  // ---------------------------------------------------------------------------
+  // El SIS va por año porque su prima se licita: la Superintendencia fija 1,49% para
+  // los independientes que cotizan vía retención en el AT2026, y la tasa vigente desde
+  // abril de 2026 es 1,62%.
+  const ANIOS = {
+    2025: { retencion: 0.145,  parcial: 0.80, topeUFmes: 87.8, sis: 0.0149, declaraEn: 2026 },
+    2026: { retencion: 0.1525, parcial: 0.90, topeUFmes: 90,   sis: 0.0162, declaraEn: 2027 },
+  };
+
+  // El 0,90% de accidentes es la tasa base de la Ley 16.744, sin el adicional por riesgo
+  // de la actividad. La pensión es 10% legal más la comisión de la AFP que elija la persona.
+  const TASAS = { atep: 0.0090, sanna: 0.0003, salud: 0.07, pensionLegal: 0.10 };
+
+  const FACTOR_IMPONIBLE = 0.80;   // renta imponible = 80% de los honorarios brutos
+
+  // Devuelve el desglose completo. topeAnual en pesos (0 = sin tope conocido).
+  //
+  // La diferencia central entre coberturas no es solo la base, es qué pasa cuando la
+  // retención no alcanza (verificado contra la Nota Ciudadana N°4 de la Superintendencia
+  // de Pensiones, que trae el ejemplo numérico lado a lado):
+  //  - TOTAL: la pensión se lleva "el resto del monto de la retención". Se encoge hasta
+  //    caber, así que la devolución queda en cero y NO se genera deuda de pensión.
+  //  - PARCIAL: la pensión es un monto fijo sobre la base reducida. Si la retención no
+  //    alcanza, la diferencia sí queda como saldo por pagar directo a la AFP.
+  const calcularCotizaciones = ({ brutos, anio, cobertura, comisionAFP, topeAnual }) => {
+    const cfg = ANIOS[anio];
+    let base = brutos * FACTOR_IMPONIBLE;
+    const topeAplicado = topeAnual > 0 && base > topeAnual;
+    if (topeAplicado) base = topeAnual;
+
+    // Accidentes, SANNA y SIS van siempre sobre el 100% de la renta imponible, aunque se
+    // elija cobertura parcial. Solo salud y pensión usan la base reducida.
+    const esTotal = cobertura === 'total';
+    const baseSaludPension = esTotal ? base : base * cfg.parcial;
+
+    const atep = base * TASAS.atep;
+    const sanna = base * TASAS.sanna;
+    const sis = base * cfg.sis;
+    const salud = baseSaludPension * TASAS.salud;
+
+    const retencion = brutos * cfg.retencion;
+    const tasaPension = TASAS.pensionLegal + comisionAFP;
+    const pensionNominal = baseSaludPension * tasaPension;
+
+    // Se restan TODOS los componentes anteriores. Omitir uno (el clásico: olvidar SANNA)
+    // deja que el total cotizado se pase de la retención sin que nada lo delate.
+    const previas = atep + sanna + sis + salud;
+    const disponibleParaPension = retencion - previas;
+
+    let pension, pensionRecortada = false, deuda = 0;
+    if (esTotal) {
+      pension = Math.max(0, Math.min(pensionNominal, disponibleParaPension));
+      pensionRecortada = pensionNominal > disponibleParaPension;
+    } else {
+      pension = pensionNominal;
+      const faltante = previas + pension - retencion;
+      if (faltante > 0) deuda = faltante;
+    }
+
+    const total = previas + pension;
+    const tasaEfectivaPension = baseSaludPension > 0 ? pension / baseSaludPension : 0;
+
+    return {
+      base, baseSaludPension, topeAplicado, atep, sanna, sis, salud, pension,
+      pensionNominal, pensionRecortada, tasaPension, tasaEfectivaPension,
+      total, retencion, deuda, saldo: retencion - total,
+    };
+  };
+
+  // ---------------------------------------------------------------------------
+  // Presentación
+  // ---------------------------------------------------------------------------
+  const fmt0 = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
+  const $ = (id) => document.getElementById(id);
+  const num = (id) => { const v = $(id).value; if (!v) return 0; const n = parseFloat(String(v).replace(/\./g, '').replace(/,/g, '.').replace(/[^\d.]/g, '')); return isFinite(n) ? n : 0; };
+  const pctTxt = (r) => (r * 100).toFixed(2).replace(/0+$/, '').replace(/\.$/, '').replace('.', ',') + '%';
+
+  const brutosEl = $('brutos'), anioEl = $('anio'), afpEl = $('afp');
+  const cobertura = () => document.querySelector('input[name="cobertura"]:checked').value;
+
+  // Tope imponible: se guarda en UF, así que hay que traer el valor de la UF para
+  // pasarlo a pesos. Se usa la UF al cierre del año de las boletas; si el año aún
+  // no termina, la más reciente publicada.
+  const topeCache = {};
+  const topeAnualPesos = async (anio) => {
+    if (topeCache[anio] !== undefined) return topeCache[anio];
+    const cfg = ANIOS[anio];
+    try {
+      const data = await fetch(`https://mindicador.cl/api/uf/${anio}`).then((r) => r.json());
+      const serie = (data.serie || []).slice().sort((a, b) => (a.fecha < b.fecha ? 1 : -1));
+      if (!serie.length) throw new Error('sin serie');
+      topeCache[anio] = cfg.topeUFmes * 12 * serie[0].valor;
+    } catch (e) {
+      topeCache[anio] = 0;   // sin UF no aplicamos tope: preferible no toparlo a toparlo mal
+    }
+    return topeCache[anio];
+  };
+
+  const enCero = () => {
+    ['r-base', 'r-atep', 'r-sanna', 'r-sis', 'r-salud', 'r-pension', 'r-total', 'r-ret', 'r-saldo'].forEach((id) => { $(id).textContent = '$0'; });
+    $('r-saldo-k').textContent = 'Saldo de la retención';
+    $('r-saldo').className = 'saldo-v';
+    $('r-pension-nota').hidden = true;
+  };
+
+  // Traer el tope es asíncrono, así que dos cambios seguidos pueden resolverse fuera de
+  // orden y dejar la tarjeta con las etiquetas de un cálculo y los montos de otro. El
+  // contador descarta cualquier render que llegue tarde.
+  let secuencia = 0;
+
+  const pintar = async () => {
+    const miTurno = ++secuencia;
+    const anio = anioEl.value;
+    const cfg = ANIOS[anio];
+    const cob = cobertura();
+    const comisionAFP = parseFloat(afpEl.value);
+
+    // Etiquetas que dependen del año y de la AFP elegidos
+    $('r-ret-pct').textContent = pctTxt(cfg.retencion);
+    $('r-sis-pct').textContent = pctTxt(cfg.sis);
+    $('r-pension-pct').textContent = pctTxt(TASAS.pensionLegal + comisionAFP);
+    $('op-parcial-desc').textContent = `Cotizas salud y pensión sobre el ${pctTxt(cfg.parcial)} de tu renta imponible. Menos descuento ahora, menos pensión y menores licencias.`;
+
+    const brutos = num('brutos');
+    if (brutos <= 0) { enCero(); $('hint-tope').textContent = ''; return; }
+
+    const topeAnual = await topeAnualPesos(anio);
+    if (miTurno !== secuencia) return;   // ya hay un cálculo más nuevo pintándose
+
+    const r = calcularCotizaciones({ brutos, anio, cobertura: cob, comisionAFP, topeAnual });
+
+    $('r-base').textContent = fmt0.format(Math.round(r.base));
+    $('r-base-nota').textContent = r.topeAplicado ? '(topeada al máximo imponible)' : '(80% de tus honorarios)';
+    $('r-atep').textContent = fmt0.format(Math.round(r.atep));
+    $('r-sanna').textContent = fmt0.format(Math.round(r.sanna));
+    $('r-sis').textContent = fmt0.format(Math.round(r.sis));
+    $('r-salud').textContent = fmt0.format(Math.round(r.salud));
+    $('r-pension').textContent = fmt0.format(Math.round(r.pension));
+    $('r-total').textContent = fmt0.format(Math.round(r.total));
+    $('r-ret').textContent = fmt0.format(Math.round(r.retencion));
+
+    // Cuando la pensión se recorta, la tasa que se muestra deja de ser la nominal.
+    const nota = $('r-pension-nota');
+    if (r.pensionRecortada) {
+      $('r-pension-pct').textContent = pctTxt(r.tasaEfectivaPension);
+      nota.hidden = false;
+      nota.textContent = `La retención no da para el ${pctTxt(r.tasaPension)} completo de pensión, así que se entera el resto disponible: cotizas ${pctTxt(r.tasaEfectivaPension)}. Durante el período transitorio de la Ley 21.133 esa diferencia no queda como deuda tuya.`;
+    } else {
+      nota.hidden = true;
+      nota.textContent = '';
+    }
+
+    if (r.deuda > 0) {
+      $('r-saldo-k').textContent = 'Deberás pagar directo a tu AFP';
+      $('r-saldo').textContent = fmt0.format(Math.round(r.deuda));
+      $('r-saldo').className = 'saldo-v saldo-falta';
+      $('r-saldo-sub').textContent = 'Con cobertura parcial la cotización de pensión es un monto fijo, así que lo que la retención no cubre queda como saldo por pagar a tu AFP, con plazo hasta el 10 de junio.';
+    } else {
+      const saldo = Math.max(0, Math.round(r.saldo));
+      $('r-saldo-k').textContent = saldo > 0 ? 'Te sobra de la retención' : 'No te sobra ni te falta';
+      $('r-saldo').textContent = fmt0.format(saldo);
+      $('r-saldo').className = 'saldo-v';
+      $('r-saldo-sub').textContent = saldo > 0
+        ? 'De este saldo sale primero tu Impuesto Global Complementario, si te corresponde pagarlo. Lo que quede es tu devolución.'
+        : 'La retención se usa completa en cotizaciones, así que no hay devolución por este concepto, pero tampoco quedas debiendo.';
+    }
+
+    $('hint-tope').textContent = r.topeAplicado
+      ? `Tus honorarios superan el máximo imponible del año (${cfg.topeUFmes} UF mensuales), así que se cotiza solo hasta ese tope.`
+      : `Se declara en abril de ${cfg.declaraEn}. La cobertura parcial de ese año es ${pctTxt(cfg.parcial)}.`;
+  };
+
+  $('ch-form').addEventListener('input', pintar);
+  $('ch-form').addEventListener('change', pintar);
+  pintar();
+</script>
+
+<style>
+  .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:56px 0 44px}
+  .hero h1{font-size:34px;font-weight:800;letter-spacing:-.5px;max-width:22ch}
+  @media(min-width:901px){ .hero h1{max-width:calc(100% - 180px)} }
+  .hero .lead{font-size:18px;color:#444a63;margin:16px 0 0;max-width:62ch}
+  .sec{padding:40px 0}
+  .calc-wrap{max-width:920px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:18px;padding:26px}
+  .panel h2{font-size:16px;font-weight:800;color:var(--azul);margin:4px 0 14px}
+  .f{display:block;margin-bottom:14px}.f>span{display:block;font-family:'Montserrat';font-weight:600;font-size:13.5px;color:var(--azul-prof);margin-bottom:6px}
+  .f select{width:100%;border:1px solid var(--linea);border-radius:10px;padding:11px 13px;font-family:inherit;font-size:15px;color:var(--azul-prof);background:#fff}
+  .f select:focus{outline:none;border-color:var(--azul);box-shadow:0 0 0 3px rgba(30,47,115,.14)}
+  .inp{display:flex;align-items:center;border:1px solid var(--linea);border-radius:10px;padding:0 12px}
+  .inp:focus-within{border-color:var(--azul)}
+  .inp i{font-family:'Montserrat';font-weight:700;color:var(--gris);font-size:14px;font-style:normal;margin-right:6px;min-width:14px}
+  .inp input{border:none;outline:none;padding:11px 0;width:100%;font-size:18px;font-family:'Montserrat';font-weight:700;color:var(--azul-prof);background:transparent}
+  .hint{margin:2px 0 0;font-size:13px;color:var(--gris);line-height:1.5}
+
+  .cob{border:none;padding:0;margin:0 0 12px}
+  .cob legend{font-family:'Montserrat';font-weight:600;font-size:13.5px;color:var(--azul-prof);margin-bottom:6px;padding:0}
+  .op{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--linea);border-radius:11px;padding:12px 14px;margin-bottom:9px;cursor:pointer;transition:border-color .15s,background .15s}
+  .op:hover{border-color:var(--azul)}
+  .op:has(input:checked){border-color:var(--azul);background:#eef5ff}
+  .op input{margin-top:3px;flex-shrink:0}
+  .op b{display:block;font-family:'Montserrat';font-size:14.5px;color:var(--azul-prof)}
+  .op em{display:block;font-style:normal;font-size:12.5px;color:var(--gris);line-height:1.45;margin-top:2px}
+
+  .result-col{display:flex;flex-direction:column}
+  .comp{background:linear-gradient(155deg,var(--azul),var(--azul-prof));color:#fff;border:none;box-shadow:0 18px 40px -20px rgba(19,35,95,.6)}
+  .comp-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.16)}
+  .comp-marca strong{display:block;font-family:'Montserrat';font-weight:800;font-size:19px;color:#fff;line-height:1}
+  .comp-marca span{display:block;font-family:'Montserrat';font-weight:700;font-size:12.5px;color:var(--amarillo);margin-top:3px}
+  .comp-tag{font-family:'Montserrat';font-weight:700;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:#cfd6ea;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:5px 9px;white-space:nowrap}
+  .comp-in{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:14px 0 4px;font-size:13px;color:#cfd6ea}
+  .comp-in em{font-style:normal;color:#9fb0d8;font-size:12px}
+  .comp-in b{font-family:'Montserrat';font-weight:700;color:#fff;font-size:17px;white-space:nowrap}
+
+  .lineas{margin-top:10px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:13px;padding:6px 14px}
+  .lin{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:8px 0;font-size:13.5px;color:#cfd6ea}
+  .lin+.lin{border-top:1px solid rgba(255,255,255,.10)}
+  .lin em{font-style:normal;color:#9fb0d8;font-size:12px;margin-left:5px}
+  .lin b{font-family:'Montserrat';font-weight:700;color:#fff;white-space:nowrap}
+  .lin-tot{border-top:1px solid rgba(255,255,255,.28)!important;margin-top:2px}
+  .lin-tot span{font-family:'Montserrat';font-weight:700;color:#fff}
+  .lin-tot b{color:var(--amarillo);font-size:16px}
+  .nota-pension{margin:10px 0 0;font-size:12px;line-height:1.5;color:#cfd6ea;background:rgba(255,255,255,.07);border-left:2px solid var(--amarillo);border-radius:0 8px 8px 0;padding:9px 12px}
+
+  .saldo{margin-top:14px}
+  .lin-ret{padding:0 0 12px;border-bottom:1px dashed rgba(255,255,255,.22);margin-bottom:12px}
+  .saldo-k{display:block;font-family:'Montserrat';font-weight:600;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#9fb0d8}
+  .saldo-v{display:block;font-family:'Montserrat';font-weight:800;font-size:30px;color:var(--amarillo);line-height:1.1;margin-top:3px}
+  .saldo-v.saldo-falta{color:#ffb4a8}
+  .saldo-sub{display:block;font-size:12.5px;color:#cfd6ea;margin-top:7px;line-height:1.5}
+  .comp-pie{margin:14px 0 0;font-size:11px;color:#aeb7d4;line-height:1.4}
+
+  .r-cta{margin-top:14px}.r-cta :global(.btn){width:100%}
+
+  .descargo{margin-top:22px;background:#f7f9fe;border:1px solid var(--linea);border-radius:12px;padding:16px 20px;color:var(--gris);font-size:12.5px;line-height:1.6}
+  .descargo p{margin:0 0 8px}.descargo p:last-child{margin-bottom:0}
+  .descargo .firma{font-family:'Montserrat';font-weight:700;color:var(--azul);font-size:12px}
+
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap}.cta-row.center{justify-content:center}
+  .sec-texto{padding:8px 0 44px}
+  .angosto{max-width:760px;margin:0 auto}
+  .sec-texto h2{font-size:24px;font-weight:800;margin:28px 0 12px;letter-spacing:-.3px}
+  .sec-texto p{font-size:16px;color:#444a63;line-height:1.7;margin-bottom:14px}
+  .sec-texto p a{color:var(--azul);font-weight:600}
+  .resp-rapida{background:#eef5ff;border:1px solid #cfe0f5;border-radius:14px;padding:16px 20px;margin:6px 0 8px}
+  .resp-rapida p{margin:0;font-size:15.5px;line-height:1.6;color:#33384a}
+  .resp-rapida strong{color:var(--azul-prof)}
+  .resp-rapida .resp-fecha{margin-top:8px;font-size:12.5px;color:var(--gris)}
+  .relac{padding:0 0 8px}
+  .relac-in{max-width:760px;margin:0 auto;padding:0 24px}
+  .relac h2{font-size:18px;font-weight:800;margin:0 0 12px;letter-spacing:-.3px}
+  .relac-grid{display:flex;flex-wrap:wrap;gap:10px}
+  .relac-grid a{font-family:'Montserrat';font-weight:600;font-size:14px;color:var(--azul);background:#fff;border:1px solid var(--linea);border-radius:10px;padding:9px 14px;text-decoration:none;transition:border-color .15s}
+  .relac-grid a:hover{border-color:var(--azul)}
+  .faq{margin-top:6px}
+  details{background:#fff;border:1px solid var(--linea);border-radius:14px;margin-bottom:12px;overflow:hidden}
+  summary{list-style:none;cursor:pointer;padding:18px 22px;font-family:'Montserrat';font-weight:600;font-size:16px;color:var(--azul);display:flex;justify-content:space-between;gap:14px}
+  summary::-webkit-details-marker{display:none}
+  .plus{font-size:22px;color:var(--azul);transition:transform .2s;flex-shrink:0}
+  details[open] .plus{transform:rotate(45deg)}
+  .ans{padding:0 22px 18px;color:#555;font-size:15.5px;line-height:1.6}
+  .cierre{background:linear-gradient(150deg,var(--azul),var(--azul-prof));color:#fff;text-align:center;padding:62px 24px}
+  .cierre h2{color:#fff;font-size:24px;font-weight:800;max-width:28ch;margin:0 auto}
+  .cierre p{color:#cfd6ea;font-size:17px;margin:14px auto 26px;max-width:54ch}
+  @media(max-width:860px){ .hero h1{font-size:27px} .grid{grid-template-columns:1fr} }
+</style>

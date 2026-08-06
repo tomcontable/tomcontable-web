@@ -51,43 +51,69 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
       <span class="vc-marca">tomcontable.cl</span>
     </div>
 
-    <div class="calc">
-      <div class="campo">
-        <label for="in-unidad">{iva ? `${unidadLabel} sin IVA` : unidadLabel}</label>
-        <div class="input-wrap">
-          <span class="prefijo" id="pref-unidad">·</span>
-          <input id="in-unidad" inputmode="decimal" autocomplete="off" placeholder="0" />
+    {iva ? (
+      <div class="tabla-iva">
+        <div class="ti-head">
+          <span>Monto</span>
+          <span>{unidadLabel}</span>
+          <span>Pesos (CLP)</span>
         </div>
-      </div>
 
-      <div class="swap" aria-hidden="true">⇅</div>
-
-      <div class="campo">
-        <label for="in-pesos">Pesos (CLP)</label>
-        <div class="input-wrap">
-          <span class="prefijo">$</span>
-          <input id="in-pesos" inputmode="numeric" autocomplete="off" placeholder="0" />
-        </div>
-      </div>
-    </div>
-
-    {iva && (
-      <div class="iva-box" id="iva-box">
-        <p class="iva-cap">¿Tienes el monto con IVA? Ingrésalo aquí</p>
-        <div class="campo iva-campo">
-          <label for="in-uf-iva">{unidadLabel} con IVA</label>
-          <div class="input-wrap">
-            <span class="prefijo">{unidadLabel}</span>
-            <input id="in-uf-iva" inputmode="decimal" autocomplete="off" placeholder="0" />
+        <div class="ti-row">
+          <span class="ti-lab">Neto<small>sin IVA</small></span>
+          <div class="ti-in">
+            <span class="ti-pre" id="pref-unidad">·</span>
+            <input id="in-unidad" inputmode="decimal" autocomplete="off" placeholder="0" aria-label={`Neto sin IVA en ${unidadLabel}`} />
+          </div>
+          <div class="ti-in">
+            <span class="ti-pre">$</span>
+            <input id="in-pesos" inputmode="numeric" autocomplete="off" placeholder="0" aria-label="Neto sin IVA en pesos" />
           </div>
         </div>
-        <div class="iva-row"><span>Neto (sin IVA)</span><strong id="iva-neto">—</strong></div>
-        <div class="iva-row"><span>IVA (19%)</span><strong id="iva-iva">—</strong></div>
-        <div class="iva-row iva-total"><span>Total con IVA</span><strong id="iva-total">—</strong></div>
+
+        <div class="ti-row ti-iva" aria-live="polite">
+          <span class="ti-lab">IVA 19%</span>
+          <span id="out-iva-unidad">—</span>
+          <span id="out-iva-pesos">—</span>
+        </div>
+
+        <div class="ti-row ti-total">
+          <span class="ti-lab">Total<small>con IVA</small></span>
+          <div class="ti-in">
+            <span class="ti-pre">{unidadLabel}</span>
+            <input id="in-total-unidad" inputmode="decimal" autocomplete="off" placeholder="0" aria-label={`Total con IVA en ${unidadLabel}`} />
+          </div>
+          <div class="ti-in">
+            <span class="ti-pre">$</span>
+            <input id="in-total-pesos" inputmode="numeric" autocomplete="off" placeholder="0" aria-label="Total con IVA en pesos" />
+          </div>
+        </div>
+      </div>
+    ) : (
+      <div class="calc">
+        <div class="campo">
+          <label for="in-unidad">{unidadLabel}</label>
+          <div class="input-wrap">
+            <span class="prefijo" id="pref-unidad">·</span>
+            <input id="in-unidad" inputmode="decimal" autocomplete="off" placeholder="0" />
+          </div>
+        </div>
+
+        <div class="swap" aria-hidden="true">⇅</div>
+
+        <div class="campo">
+          <label for="in-pesos">Pesos (CLP)</label>
+          <div class="input-wrap">
+            <span class="prefijo">$</span>
+            <input id="in-pesos" inputmode="numeric" autocomplete="off" placeholder="0" />
+          </div>
+        </div>
       </div>
     )}
 
-    <p class="calc-nota">Escribe un monto en cualquiera de los dos campos y se convierte solo, con el valor de la fecha elegida.</p>
+    <p class="calc-nota">{iva
+      ? 'Escribe en cualquiera de las cuatro casillas: las otras tres se calculan solas con el valor de la fecha elegida.'
+      : 'Escribe en cualquiera de los dos campos: la conversión se actualiza sola con el valor de la fecha elegida.'}</p>
 
     <div class="otros" id="otros"></div>
   </div>
@@ -145,13 +171,14 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
 
   const fmtCLP0 = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
   const fmtCLP2 = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const fmtMiles2 = new Intl.NumberFormat('es-CL', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const fmtMiles0 = new Intl.NumberFormat('es-CL', { maximumFractionDigits: 0 });
   const fmtUnidad = new Intl.NumberFormat('es-CL', { minimumFractionDigits: 2, maximumFractionDigits: meta.dec });
 
   const $ = (id) => document.getElementById(id);
   const inUnidad = $('in-unidad');
   const inPesos = $('in-pesos');
-  const inUfIva = $('in-uf-iva'); // solo existe cuando iva=true (calculadora UF)
+  const inTotalUnidad = $('in-total-unidad');
+  const inTotalPesos = $('in-total-pesos');
   const inFecha = $('fc-input');
 
   let valor = meta.fallback;
@@ -165,19 +192,9 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
 
   $('pref-unidad').textContent = meta.prefijo;
 
-  // Desglose de IVA (solo existe el cuadro si la página lo pidió con iva={true}, ej. UF).
-  const ivaBox = $('iva-box');
-  const actualizarIva = (neto) => {
-    if (!ivaBox) return;
-    if (!isFinite(neto) || neto <= 0) {
-      $('iva-neto').textContent = '—'; $('iva-iva').textContent = '—'; $('iva-total').textContent = '—'; return;
-    }
-    const netoR = Math.round(neto);
-    const totalR = Math.round(neto * 1.19);
-    $('iva-neto').textContent = fmtCLP0.format(netoR);
-    $('iva-iva').textContent = fmtCLP0.format(totalR - netoR);
-    $('iva-total').textContent = fmtCLP0.format(totalR);
-  };
+  // Las cuatro casillas del IVA solo existen si la página usa iva={true} (calculadora UF).
+  const conIVA = !!(inTotalUnidad && inTotalPesos);
+  const TASA = 0.19;
 
   const parseCL = (txt) => {
     if (!txt) return NaN;
@@ -225,48 +242,81 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
       el.setSelectionRange(pos, pos);
     });
   };
-  [inUnidad, inPesos, inUfIva].forEach(bloquearPunto);
+  [inUnidad, inPesos, inTotalUnidad, inTotalPesos].forEach(bloquearPunto);
 
-  let bloqueo = false;
+  // Una sola fuente de verdad: el monto neto expresado en la unidad (UF). Los otros tres
+  // números se derivan siempre de él, así ninguno se calcula desde un vecino ya redondeado.
+  let netoUnidad = NaN;
+  let ultimoCampo = 'in-unidad';   // el que escribió la persona: se respeta al cambiar la fecha
 
-  // Recalcula pesos, IVA y el campo "con IVA" a partir de una cantidad de unidad SIN IVA.
-  const sincronizarDesdeNeto = (u) => {
-    const netoOk = isFinite(u) && u > 0;
-    inPesos.value = netoOk ? fmtMiles2.format(u * valor) : '';
-    if (inUfIva) inUfIva.value = netoOk ? fmtUnidad.format(u * 1.19) : '';
-    actualizarIva(netoOk ? u * valor : 0);
+  const campos = [inUnidad, inPesos, inTotalUnidad, inTotalPesos].filter(Boolean);
+
+  // Un monto grande (una propiedad en UF, por ejemplo) no cabe a tamaño completo en la columna
+  // del celular. Se achica la tipografía lo justo para que el número quepa entero: un número
+  // cortado a la mitad en un pantallazo induce a error.
+  const ajustarTexto = (el) => {
+    el.style.fontSize = '';
+    const base = parseFloat(getComputedStyle(el).fontSize);
+    let px = base;
+    while (el.scrollWidth > el.clientWidth && px > base * 0.6) {
+      px -= 0.5;
+      el.style.fontSize = px + 'px';
+    }
   };
 
-  inUnidad.addEventListener('input', () => {
-    if (bloqueo) return; bloqueo = true;
-    sincronizarDesdeNeto(parseCL(inUnidad.value));
-    bloqueo = false;
-  });
-  inPesos.addEventListener('input', () => {
-    if (bloqueo) return; bloqueo = true;
-    const p = parseCL(inPesos.value);
-    const pOk = isFinite(p) && p > 0;
-    const u = pOk ? p / valor : NaN;
-    inUnidad.value = pOk ? fmtUnidad.format(u) : '';
-    if (inUfIva) inUfIva.value = pOk ? fmtUnidad.format(u * 1.19) : '';
-    actualizarIva(pOk ? p : 0);
-    bloqueo = false;
-  });
-  if (inUfIva) {
-    inUfIva.addEventListener('input', () => {
-      if (bloqueo) return; bloqueo = true;
-      const uConIva = parseCL(inUfIva.value);
-      const u = isFinite(uConIva) && uConIva > 0 ? uConIva / 1.19 : NaN;
-      const uOk = isFinite(u) && u > 0;
-      inUnidad.value = uOk ? fmtUnidad.format(u) : '';
-      inPesos.value = uOk ? fmtMiles2.format(u * valor) : '';
-      actualizarIva(uOk ? u * valor : 0);
-      bloqueo = false;
+  const limpiarSalvo = (excepto) => {
+    if (excepto !== 'in-unidad') inUnidad.value = '';
+    if (excepto !== 'in-pesos') inPesos.value = '';
+    campos.forEach(ajustarTexto);
+    if (!conIVA) return;
+    if (excepto !== 'in-total-unidad') inTotalUnidad.value = '';
+    if (excepto !== 'in-total-pesos') inTotalPesos.value = '';
+    $('out-iva-unidad').textContent = '—';
+    $('out-iva-pesos').textContent = '—';
+  };
+
+  const pintarMontos = (excepto) => {
+    if (!isFinite(netoUnidad) || netoUnidad <= 0) { limpiarSalvo(excepto); return; }
+
+    const netoPesos = netoUnidad * valor;
+    if (excepto !== 'in-unidad') inUnidad.value = fmtUnidad.format(netoUnidad);
+    if (excepto !== 'in-pesos') inPesos.value = fmtMiles0.format(Math.round(netoPesos));
+
+    if (conIVA) {
+      const totalUnidad = netoUnidad * (1 + TASA);
+      if (excepto !== 'in-total-unidad') inTotalUnidad.value = fmtUnidad.format(totalUnidad);
+      // El IVA en pesos se saca restando total menos neto ya redondeados, para que las tres
+      // cifras de la columna sumen exacto: es un número que se muestra a un cliente.
+      const netoRedondo = Math.round(netoPesos);
+      const totalRedondo = Math.round(netoPesos * (1 + TASA));
+      if (excepto !== 'in-total-pesos') inTotalPesos.value = fmtMiles0.format(totalRedondo);
+      $('out-iva-unidad').textContent = fmtUnidad.format(totalUnidad - netoUnidad);
+      $('out-iva-pesos').textContent = fmtCLP0.format(totalRedondo - netoRedondo);
+    }
+
+    campos.forEach(ajustarTexto);
+  };
+
+  // Cada casilla convierte lo que se escribe a neto en la unidad; de ahí se pinta el resto.
+  const enlazar = (el, id, aNetoUnidad) => {
+    if (!el) return;
+    el.addEventListener('input', () => {
+      ultimoCampo = id;
+      const v = parseCL(el.value);
+      netoUnidad = (isFinite(v) && v > 0) ? aNetoUnidad(v) : NaN;
+      pintarMontos(id);
     });
-  }
+  };
+  enlazar(inUnidad, 'in-unidad', (v) => v);
+  enlazar(inPesos, 'in-pesos', (v) => v / valor);
+  enlazar(inTotalUnidad, 'in-total-unidad', (v) => v / (1 + TASA));
+  enlazar(inTotalPesos, 'in-total-pesos', (v) => v / (valor * (1 + TASA)));
+
+  // Al cambiar la fecha se respeta el monto que escribió la persona y se recalculan los otros:
+  // si fijó $500.000, sigue siendo $500.000 y lo que cambia es la UF.
   const recalcular = () => {
-    if (inUnidad.value) inUnidad.dispatchEvent(new Event('input'));
-    else if (inPesos.value) inPesos.dispatchEvent(new Event('input'));
+    const el = $(ultimoCampo);
+    if (el && el.value) el.dispatchEvent(new Event('input'));
   };
 
   const cargarAnio = async (anio) => {
@@ -392,7 +442,7 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
   @media(min-width:901px){ .hero h1{max-width:calc(100% - 180px)} }
 
   .sec{padding:46px 0}
-  .calc-wrap{max-width:760px}
+  .calc-wrap{max-width:860px}
 
   .valor-card{background:linear-gradient(150deg,var(--azul),var(--azul-prof));color:#fff;border-radius:18px;padding:26px 26px 24px;text-align:center;margin-bottom:24px}
   .vc-label{display:block;font-family:'Montserrat';font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#cfd6ea}
@@ -416,16 +466,24 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
   .swap{align-self:center;color:var(--amarillo);font-size:24px;font-weight:800;padding-bottom:10px}
   .calc-nota{margin-top:16px;color:var(--gris);font-size:14.5px;text-align:center}
 
-  .iva-box{margin-top:18px;background:#fff;border:1px solid var(--linea);border-radius:16px;padding:18px 24px 16px;max-width:430px;margin-left:auto;margin-right:auto}
-  .iva-cap{font-family:'Montserrat';font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--gris);margin:0 0 12px;text-align:center}
-  .iva-campo{margin-bottom:16px;padding-bottom:16px;border-bottom:1px dashed var(--linea)}
-  .iva-campo label{text-align:center}
-  .iva-campo .input-wrap{justify-content:center}
-  .iva-row{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;font-size:15px;color:#444a63}
-  .iva-row strong{font-family:'Montserrat';font-weight:700;color:var(--azul-prof);font-size:16px}
-  .iva-total{border-top:2px solid #eef1f8;margin-top:4px;padding-top:12px}
-  .iva-total span{font-family:'Montserrat';font-weight:700;color:var(--azul)}
-  .iva-total strong{font-size:22px;color:var(--azul-prof)}
+  /* Grilla neto/IVA/total en UF y pesos. Compacta a propósito: tiene que caber junto con la
+     tarjeta del valor en un solo pantallazo, también en el celular. */
+  .tabla-iva{background:#fff;border:1px solid var(--linea);border-radius:18px;padding:16px 20px 18px}
+  .ti-head,.ti-row{display:grid;grid-template-columns:minmax(66px,92px) 1fr 1fr;gap:10px;align-items:center}
+  .ti-head{padding-bottom:9px;border-bottom:1px solid var(--linea)}
+  .ti-head span{font-family:'Montserrat';font-weight:700;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--gris);text-align:center}
+  .ti-head span:first-child{text-align:left}
+  .ti-row{padding:9px 0}
+  .ti-lab{font-family:'Montserrat';font-weight:700;font-size:14px;color:var(--azul);line-height:1.15}
+  .ti-lab small{display:block;font-weight:600;font-size:11px;color:var(--gris)}
+  .ti-in{display:flex;align-items:center;border:1px solid var(--linea);border-radius:11px;padding:0 11px;transition:.15s;background:#fff}
+  .ti-in:focus-within{border-color:var(--azul);box-shadow:0 0 0 3px rgba(30,47,115,.09)}
+  .ti-pre{font-family:'Montserrat';font-weight:700;font-size:13px;color:var(--gris);margin-right:7px;white-space:nowrap}
+  .ti-in input{border:none;outline:none;width:100%;min-width:0;background:transparent;font-family:'Montserrat';font-weight:800;font-size:20px;color:var(--azul-prof);padding:11px 0}
+  .ti-iva{border-top:1px dashed var(--linea);border-bottom:1px dashed var(--linea);padding:7px 0}
+  .ti-iva .ti-lab{font-size:12.5px;font-weight:600;color:var(--gris)}
+  .ti-iva span:not(.ti-lab){font-family:'Montserrat';font-weight:700;font-size:15px;color:#5b6280;text-align:right;padding-right:11px}
+  .ti-total .ti-in{background:#eef5ff;border-color:#cfe0f5}
 
   .otros{margin-top:34px}
   :global(.otros-titulo){text-align:center;font-family:'Montserrat';font-weight:700;font-size:12.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--gris);margin-bottom:16px}
@@ -478,11 +536,19 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
     .input-wrap input{font-size:20px;padding:11px 0}
     .swap{transform:rotate(90deg);padding:2px 0;font-size:20px}
     .calc-nota{margin-top:10px;font-size:13px}
-    .iva-box{margin-top:12px;padding:12px 18px 13px}
-    .iva-row{padding:7px 0;font-size:14px}
-    .iva-row strong{font-size:15px}
-    .iva-total{padding-top:10px}
-    .iva-total strong{font-size:19px}
+    .tabla-iva{padding:12px 13px 14px;border-radius:15px}
+    .ti-head,.ti-row{grid-template-columns:minmax(52px,64px) 1fr 1fr;gap:7px}
+    .ti-head{padding-bottom:7px}
+    .ti-head span{font-size:10.5px;letter-spacing:.04em}
+    .ti-row{padding:7px 0}
+    .ti-lab{font-size:12.5px}
+    .ti-lab small{font-size:10px}
+    .ti-in{padding:0 8px;border-radius:9px}
+    .ti-pre{font-size:11.5px;margin-right:4px}
+    .ti-in input{font-size:16.5px;padding:12px 0}
+    .ti-iva{padding:6px 0}
+    .ti-iva .ti-lab{font-size:11px}
+    .ti-iva span:not(.ti-lab){font-size:13px;padding-right:8px}
     .otros{margin-top:24px}
   }
 </style>

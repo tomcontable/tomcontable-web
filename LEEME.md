@@ -5,10 +5,11 @@ Sitio estatico construido con Astro. Rapido, seguro y sin base de datos.
 ## Como se trabaja (flujo simple)
 1. Tu pides un cambio.
 2. La IA edita los archivos de `src/`.
-3. Se publica una version nueva (Cloudflare Pages la construye sola).
-4. Si algo sale mal, se vuelve a la version anterior con un clic.
+3. Tom arrastra la carpeta `sitio` completa (no solo su contenido) al repo `tomcontable/tomcontable-web` desde la web de GitHub.
+4. Cloudflare Pages construye y publica solo.
+5. Despues de cada publicacion, purgar la cache en Cloudflare (Caching, Configuration, Purge Everything): la zona cachea HTML.
 
-No necesitas instalar nada para pedir cambios. Lo de abajo es solo para construir o publicar.
+No necesitas instalar nada para pedir cambios. Lo de abajo es solo para construir en local.
 
 ## Estructura
 - `src/pages/` una pagina por archivo. El nombre define la URL.
@@ -17,25 +18,16 @@ No necesitas instalar nada para pedir cambios. Lo de abajo es solo para construi
 - `src/styles/global.css` colores y tipografia de la marca. Cambiar aqui afecta todo.
 - `public/img/` imagenes (logos, foto, favicon).
 
-## Imagenes que faltan colocar en `public/img/`
-Pendiente copiar y optimizar (las fuentes estan en la carpeta del proyecto):
-- `logo-tomcontable.png` (desde "Logo Tomcontable Largo.png")
-- `logo-tomcontable-blanco.png` (version del logo en blanco para el footer)
-- `favicon.png` (desde "Logo Tomcontable Corto.png")
-- `foto-tom.png` (desde "Foto perfil Tom.png", comprimida para web)
-- `og-tomcontable.jpg` (imagen para compartir en redes, 1200x630)
-
 ## Construir en local (opcional)
 ```
 npm install
-npm run dev      # vista previa local en http://localhost:4321
-npm run build    # genera la version final en /dist
+npm run dev                              # vista previa local en http://localhost:4321
+npx astro build --outDir ../dist-local   # compilacion de prueba; NUNCA usar dist/ ni cambiar outDir
 ```
+`node_modules` vive un nivel arriba de esta carpeta, nunca adentro. Al terminar, borrar `dist-local`, `.astro` y `node_modules/.vite`.
 
-## Publicar (Cloudflare Pages)
-1. Subir esta carpeta a un repositorio de GitHub.
-2. En Cloudflare Pages, conectar el repositorio.
-3. Comando de build: `npm run build`. Carpeta de salida: `dist`.
-4. Apuntar el dominio tomcontable.cl (DNS) a Cloudflare Pages.
-
-Cada cambio que se suba al repositorio se publica solo, con vista previa y reversion.
+## Publicar
+1. Verificar que esta carpeta contiene solo: `src/`, `public/`, `functions/`, `astro.config.mjs`, `package.json`, `package-lock.json`, `tsconfig.json`, `LEEME.md`, `.gitignore`. Todo lo que este aqui viaja a produccion.
+2. Arrastrar la carpeta `sitio` completa al repo `tomcontable/tomcontable-web` en la web de GitHub.
+3. Cloudflare Pages construye y publica automaticamente.
+4. Purgar la cache de Cloudflare (Purge Everything).
