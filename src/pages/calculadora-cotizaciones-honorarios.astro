@@ -94,6 +94,7 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
             </div>
 
             <div class="comp-in"><span>Renta imponible <em id="r-base-nota">(80% de tus honorarios)</em></span><b id="r-base">$0</b></div>
+            <div class="comp-in comp-sub"><span>Base de salud y pensión <em id="r-base2-nota"></em></span><b id="r-base2">$0</b></div>
 
             <div class="lineas">
               <div class="lin"><span>Accidentes del trabajo <em>0,90%</em></span><b id="r-atep">$0</b></div>
@@ -311,7 +312,7 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
   };
 
   const enCero = () => {
-    ['r-base', 'r-atep', 'r-sanna', 'r-sis', 'r-salud', 'r-pension', 'r-total', 'r-ret', 'r-saldo'].forEach((id) => { $(id).textContent = '$0'; });
+    ['r-base', 'r-base2', 'r-atep', 'r-sanna', 'r-sis', 'r-salud', 'r-pension', 'r-total', 'r-ret', 'r-saldo'].forEach((id) => { $(id).textContent = '$0'; });
     $('r-saldo-k').textContent = 'Saldo de la retención';
     $('r-saldo').className = 'saldo-v';
     $('r-pension-nota').hidden = true;
@@ -338,13 +339,27 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
     const brutos = num('brutos');
     if (brutos <= 0) { enCero(); $('hint-tope').textContent = ''; return; }
 
+    // Si el tope de ese año todavía no está en caché hay que salir a buscar la UF, y en ese
+    // segundo las cifras de abajo seguirían siendo las del año anterior mientras las etiquetas
+    // ya cambiaron. Se atenúan para que nadie lea un monto viejo bajo una etiqueta nueva.
+    const tarjeta = $('result');
+    const hayQueEsperar = topeCache[anio] === undefined;
+    if (hayQueEsperar) tarjeta.classList.add('recalculando');
+
     const topeAnual = await topeAnualPesos(anio);
     if (miTurno !== secuencia) return;   // ya hay un cálculo más nuevo pintándose
+    tarjeta.classList.remove('recalculando');
 
     const r = calcularCotizaciones({ brutos, anio, cobertura: cob, comisionAFP, topeAnual });
 
     $('r-base').textContent = fmt0.format(Math.round(r.base));
     $('r-base-nota').textContent = r.topeAplicado ? '(topeada al máximo imponible)' : '(80% de tus honorarios)';
+    // Esta es la cifra que realmente mueve la elección de cobertura, así que se muestra
+    // aparte: si no, el 80% legal de la renta imponible se confunde con el % de cobertura.
+    $('r-base2').textContent = fmt0.format(Math.round(r.baseSaludPension));
+    $('r-base2-nota').textContent = cob === 'total'
+      ? '(100% de la renta imponible)'
+      : `(${pctTxt(cfg.parcial)} de la renta imponible)`;
     $('r-atep').textContent = fmt0.format(Math.round(r.atep));
     $('r-sanna').textContent = fmt0.format(Math.round(r.sanna));
     $('r-sis').textContent = fmt0.format(Math.round(r.sis));
@@ -426,6 +441,12 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
   .comp-in{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:14px 0 4px;font-size:13px;color:#cfd6ea}
   .comp-in em{font-style:normal;color:#9fb0d8;font-size:12px}
   .comp-in b{font-family:'Montserrat';font-weight:700;color:#fff;font-size:17px;white-space:nowrap}
+  .comp-sub{margin:2px 0 0;font-size:12.5px;color:#aeb7d4}
+  .comp-sub b{font-size:15px;color:var(--amarillo)}
+  /* Mientras se busca la UF del año recién elegido, las cifras de abajo todavía son las
+     del año anterior: se atenúan para no leerlas como si fueran las nuevas. */
+  .comp .lineas,.comp .saldo,.comp .comp-in b{transition:opacity .14s}
+  .comp.recalculando .lineas,.comp.recalculando .saldo,.comp.recalculando .comp-in b{opacity:.32}
 
   .lineas{margin-top:10px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:13px;padding:6px 14px}
   .lin{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:8px 0;font-size:13.5px;color:#cfd6ea}
@@ -478,4 +499,13 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
   .cierre h2{color:#fff;font-size:24px;font-weight:800;max-width:28ch;margin:0 auto}
   .cierre p{color:#cfd6ea;font-size:17px;margin:14px auto 26px;max-width:54ch}
   @media(max-width:860px){ .hero h1{font-size:27px} .grid{grid-template-columns:1fr} }
+  /* En pantallas de 390px (iPhone 12 a 14) la etiqueta con nowrap forzaba el panel a 396px
+     y desbordaba la página. Se deja envolver y encoger en vez de empujar el ancho. */
+  @media(max-width:440px){
+    .comp-head{flex-wrap:wrap;gap:8px}
+    .comp-tag{white-space:normal;font-size:10px;line-height:1.3}
+    .comp-in{gap:8px}
+    .comp-in b{font-size:16px}
+    .comp-sub b{font-size:14px}
+  }
 </style>

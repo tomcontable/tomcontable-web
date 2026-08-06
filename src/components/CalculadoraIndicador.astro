@@ -227,22 +227,8 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
       : '';
   };
 
-  // Solo coma para decimales: bloquea el punto al escribir o pegar, para que
-  // nadie confunda el separador de miles con el decimal y multiplique por mil de más.
-  const bloquearPunto = (el) => {
-    if (!el) return;
-    el.addEventListener('beforeinput', (e) => {
-      if (e.data && e.data.indexOf('.') !== -1) e.preventDefault();
-    });
-    el.addEventListener('input', () => {
-      if (el.value.indexOf('.') === -1) return;
-      const desdeFin = el.value.length - (el.selectionStart ?? el.value.length);
-      el.value = el.value.replace(/\./g, '');
-      const pos = el.value.length - desdeFin;
-      el.setSelectionRange(pos, pos);
-    });
-  };
-  [inUnidad, inPesos, inTotalUnidad, inTotalPesos].forEach(bloquearPunto);
+  // El punto y la coma se unifican en una coma decimal desde el layout (coma-decimal.js),
+  // que engancha todos los campos numéricos del sitio. Antes se bloqueaba el punto aquí.
 
   // Una sola fuente de verdad: el monto neto expresado en la unidad (UF). Los otros tres
   // números se derivan siempre de él, así ninguno se calcula desde un vecino ya redondeado.
