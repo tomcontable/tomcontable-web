@@ -14,7 +14,7 @@ Sitio: https://tomcontable.cl · Idioma: español de Chile · Contacto: WhatsApp
 
 ## Fondos concursables para pymes en Chile
 
-- [Directorio de fondos concursables](https://tomcontable.cl/fondos-concursables/): fondos y subsidios de Corfo, Sercotec y otras instituciones, con montos, fechas de cierre, requisitos mínimos y link oficial de postulación. Se actualiza a medida que abren y cierran convocatorias. Incluye fichas de Capital Semilla Emprende, Capital Abeja Emprende, Capital Pioneras, Fondo Crece, Kit Digital, Digitaliza tu Almacén (Sercotec) y Semilla Inicia, Escalamiento, Gestión de la Innovación (Corfo).
+- [Directorio de fondos concursables](https://tomcontable.cl/fondos-concursables/): fondos y subsidios de Corfo, Sercotec y otras instituciones, con montos, fechas de cierre, requisitos mínimos y link oficial de postulación. Se actualiza a medida que abren y cierran convocatorias. Incluye fichas de Capital Semilla Emprende, Capital Abeja Emprende, Capital Pioneras, Capital Semilla Modo Empleo, Fondo Crece, Kit Digital, Digitaliza tu Almacén (Sercotec), Semilla Inicia, Escalamiento, Gestión de la Innovación (Corfo) y el Subsidio a la Contratación (Sence).
 
 ## Herramientas gratuitas (calculadoras)
 
@@ -37,6 +37,9 @@ Sitio: https://tomcontable.cl · Idioma: español de Chile · Contacto: WhatsApp
 - [Qué hacer si el SII observa tu declaración](https://tomcontable.cl/blog/que-hacer-si-el-sii-observa-tu-declaracion/)
 - [Cómo se calcula el sueldo líquido en Chile 2026](https://tomcontable.cl/blog/como-se-calcula-el-sueldo-liquido-en-chile-2026/)
 - [Cobertura total o parcial en tus boletas de honorarios](https://tomcontable.cl/blog/cotizaciones-boleta-honorarios-cobertura-total-o-parcial/)
+- [Qué es el término de giro de oficio del SII](https://tomcontable.cl/blog/termino-de-giro-de-oficio-sii-empresas-inactivas/)
+- [Franquicia tributaria Sence: capacitar y descontar](https://tomcontable.cl/blog/franquicia-tributaria-sence-capacitar-y-descontar-impuesto/)
+- [Ley de protección de datos: qué debe hacer tu pyme](https://tomcontable.cl/blog/ley-proteccion-datos-personales-pymes-diciembre-2026/)
 
 ## Sobre
 

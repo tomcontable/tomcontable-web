@@ -215,7 +215,7 @@ const schema = [articleSchema, breadcrumb, ...(faqSchema ? [faqSchema] : [])];
                   <h3>{r.title}</h3>
                   <p class="rel-meta">
                     {fmtMonto(r.montoMax) && <span class="rel-monto">Hasta {fmtMonto(r.montoMax)}</span>}
-                    <span class="rel-fecha">Cierra el {fmtFecha(r.fechaCierre)}</span>
+                    <span class="rel-fecha">{r.abierto ? 'Cierra' : 'Cerró'} el {fmtFecha(r.fechaCierre)}</span>
                   </p>
                 </a>
               ))}

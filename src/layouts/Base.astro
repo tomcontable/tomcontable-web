@@ -64,6 +64,11 @@ const { title, description, canonical, image, noindex, type = 'website', schema 
   import { activarComaDecimal } from '../scripts/coma-decimal.js';
   activarComaDecimal();
 
+  // El campo de fecha nativo se ve en el formato del navegador (mm/dd si está en inglés),
+  // así que debajo se escribe la fecha elegida en palabras y se acaba la ambigüedad.
+  import { activarFechaEnPalabras } from '../scripts/fecha-en-palabras.js';
+  activarFechaEnPalabras();
+
   // ===== Microinteracciones globales del sitio =====
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const punteroFino = window.matchMedia('(pointer: fine)').matches;

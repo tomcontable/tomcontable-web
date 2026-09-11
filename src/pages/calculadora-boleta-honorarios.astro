@@ -432,6 +432,13 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
   .cierre{background:linear-gradient(150deg,var(--azul),var(--azul-prof));color:#fff;text-align:center;padding:62px 24px}
   .cierre h2{color:#fff;font-size:24px;font-weight:800;max-width:28ch;margin:0 auto}
   .cierre p{color:#cfd6ea;font-size:17px;margin:14px auto 26px;max-width:54ch}
-  @media(max-width:860px){ .hero h1{font-size:27px} .grid{grid-template-columns:1fr} }
+  /* minmax(0,1fr) y no 1fr: con 1fr la columna toma el ancho mínimo de su contenido, y la
+     etiqueta con nowrap del comprobante la estiraba más allá de la pantalla en celulares
+     de 390px, dejando la página con scroll horizontal. */
+  @media(max-width:860px){ .hero h1{font-size:27px} .grid{grid-template-columns:minmax(0,1fr)} }
+  @media(max-width:440px){
+    .comp-head{flex-wrap:wrap;gap:8px}
+    .comp-tag{white-space:normal;line-height:1.3}
+  }
   @media(max-width:480px){ .f2{grid-template-columns:1fr} }
 </style>

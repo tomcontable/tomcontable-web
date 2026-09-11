@@ -69,3 +69,36 @@ img{max-width:100%;display:block}
   .sec{padding:56px 0}
   .sec-head h2{font-size:27px}
 }
+
+/* Fecha elegida escrita en palabras bajo cada campo de fecha. El input nativo se muestra
+   en el formato del navegador (mm/dd si está en inglés), así que esta línea es la que
+   deja claro de qué día se trata. La inyecta scripts/fecha-en-palabras.js, por eso vive
+   acá y no en los estilos con alcance de cada página. */
+.fecha-larga{
+  display:block;
+  margin-top:5px;
+  font-size:12.5px;
+  line-height:1.35;
+  color:var(--gris);
+  font-family:'Montserrat',system-ui,sans-serif;
+  font-weight:600;
+}
+.fecha-larga:empty{display:none}
+
+/* Un <select> aporta como ancho mínimo el de su opción más larga, y una columna de grilla
+   declarada como 1fr respeta ese mínimo: por eso varias calculadoras se desbordaban en
+   celulares de 390px. Con min-width:0 el select puede encogerse dentro de su columna. */
+select{min-width:0;max-width:100%}
+
+/* En celulares angostos un CTA largo con nowrap (por ejemplo "Quiero certificar este
+   finiquito · $44.900") se salía de la pantalla y dejaba la página con scroll horizontal.
+   Bajo 440px se deja envolver en dos líneas, que es preferible a que sobresalga. */
+@media(max-width:440px){
+  .btn{white-space:normal;padding-left:18px;padding-right:18px;text-align:center;max-width:100%}
+}
+
+/* La animación de aparición parte con los elementos desplazados 30px a la derecha, y los
+   que están pegados al borde generaban unos pixeles de scroll horizontal mientras no se
+   revelaban. Se recorta ese sobrante con clip y no con hidden: hidden crearía un contenedor
+   de scroll y rompería los position:sticky del header y de los paneles de resultado. */
+body{overflow-x:clip}
