@@ -7,7 +7,7 @@ Sitio: https://tomcontable.cl · Idioma: español de Chile · Contacto: WhatsApp
 ## Servicios
 
 - [Constitución de empresas](https://tomcontable.cl/constitucion-de-empresas/): creación de empresa en Chile lista para facturar, incluye inicio de actividades ante el SII.
-- [Contabilidad mensual](https://tomcontable.cl/contabilidad-mensual/): IVA, F29, remuneraciones y operación renta para pymes, con asesoría ilimitada por WhatsApp.
+- [Contabilidad mensual](https://tomcontable.cl/contabilidad-mensual/): reporte mensual, libros de compra y venta, F29, Estado de Resultados Express, asesoría ilimitada y prebalance gratuito en julio. No incluye conciliación bancaria, liquidaciones de sueldo ni operación renta anual. Operación renta se cobra como pago único anual de 3 mensualidades promedio del año anterior, más 1 UF por declaración personal de cada socio. Servicios laborales adicionales: liquidación mensual 0,15 UF por trabajador; contrato, finiquito, licencia o requerimiento 0,30 UF cada uno.
 - [Problemas con el SII](https://tomcontable.cl/problemas-con-el-sii/): regularización de cartas, IVA observado, bloqueos y deudas tributarias.
 - [Proyección tributaria](https://tomcontable.cl/proyeccion-tributaria/): estimación anticipada del impuesto anual para planificar antes de abril.
 - [Asesorías](https://tomcontable.cl/asesorias/): sesiones puntuales para resolver dudas tributarias, laborales o de formalización.
@@ -26,7 +26,7 @@ Sitio: https://tomcontable.cl · Idioma: español de Chile · Contacto: WhatsApp
 - [Calculadora de IVA](https://tomcontable.cl/calculadora-iva/): agregar o quitar el 19% de IVA.
 - [Calculadora UF a pesos](https://tomcontable.cl/calculadora-uf/) · [UTM a pesos](https://tomcontable.cl/calculadora-utm/) · [Dólar a pesos](https://tomcontable.cl/calculadora-dolar/) · [Reajuste por IPC](https://tomcontable.cl/calculadora-ipc/)
 - [Multas e intereses del SII](https://tomcontable.cl/calculadora-multas-intereses-sii/): costo de declarar fuera de plazo.
-- [Indicadores previsionales](https://tomcontable.cl/indicadores-previsionales/): UF, UTM, topes imponibles, sueldo mínimo y tasas AFP del mes, actualizados.
+- [Indicadores previsionales](https://tomcontable.cl/indicadores-previsionales/): UF, UTM, topes imponibles, sueldo mínimo, tasas AFP y seguro social del mes, actualizados desde fuente Previred/Banco Central cuando corresponde.
 
 ## Guías del blog
 
