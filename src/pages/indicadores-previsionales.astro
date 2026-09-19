@@ -2,15 +2,15 @@
 import Base from '../layouts/Base.astro';
 import BannerServicios from '../components/BannerServicios.astro';
 
-const periodo = 'Junio 2026';
+const periodo = 'Septiembre 2026';
 
 const seo = {
   title: 'Indicadores Previsionales ' + periodo + ' · TomContable',
-  description: 'Indicadores previsionales de ' + periodo + ' en Chile: UF, UTM, comisiones de cada AFP, topes imponibles, sueldo mínimo, asignación familiar, SIS, seguro social y APV. Claros y al día.',
+  description: 'Indicadores previsionales de ' + periodo + ' en Chile: UF, UTM, comisiones de cada AFP, topes imponibles, sueldo mínimo, asignación familiar, SIS, seguro social y APV. Valores referenciales actualizados.',
   canonical: '/indicadores-previsionales',
 };
 
-const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year: 'numeric' });
+const actualizado = 'septiembre de 2026';
 
 const afps = [
   { n: 'Uno', t: 10.46 },
@@ -30,13 +30,13 @@ const asigFam = [
 ];
 
 const faqs = [
-  { q: '¿Qué son los indicadores previsionales?', a: 'Son los valores y tasas que se usan cada mes para calcular sueldos y cotizaciones en Chile: UF, UTM, comisiones de AFP, topes imponibles, sueldo mínimo, asignación familiar, salud, seguro de cesantía y el seguro social. Los publica Previred mensualmente.' },
+  { q: '¿Qué son los indicadores previsionales?', a: 'Son los valores y tasas que se usan cada mes para calcular sueldos y cotizaciones en Chile: UF, UTM, comisiones de AFP, topes imponibles, sueldo mínimo, asignación familiar, salud, seguro de cesantía y seguro social. Los publica Previred mensualmente.' },
   { q: '¿Cuál es el sueldo mínimo en Chile en 2026?', a: 'El ingreso mínimo mensual es de $553.553 para trabajadores de 18 a 65 años, vigente desde las remuneraciones de mayo de 2026. Para menores de 18 o mayores de 65 es $412.938, y para fines no remuneracionales $356.815.' },
   { q: '¿Cuánto cobra cada AFP de comisión?', a: 'La cotización del trabajador es 10% más la comisión de cada AFP. Hoy la más barata es Uno (10,46% en total) y la más cara Provida (11,45%). En el medio están Modelo, PlanVital, Habitat, Capital y Cuprum. La diferencia es solo la comisión; el 10% es igual en todas.' },
-  { q: '¿Cuál es el tope imponible?', a: 'Para AFP y salud el tope es 90 UF (unos $3.673.828); para el seguro de cesantía es 135,2 UF (unos $5.518.906). Sobre esos montos no se cotiza.' },
-  { q: '¿Qué es el seguro social de la reforma?', a: 'Es la cotización adicional de cargo del empleador que introdujo la reforma de pensiones, que entra de forma gradual. Hoy es un 1% del empleador: 0,1% a la cuenta individual del trabajador y 0,9% al seguro social (expectativa de vida).' },
-  { q: '¿Cada cuánto se actualizan estos valores?', a: 'La UF, la UTM y el dólar cambian a diario o mensualmente y aquí se muestran en vivo. El resto (topes, comisiones, mínimo, asignación familiar) cambia una vez al mes o al año, y lo actualizamos según lo que publica Previred.' },
-  { q: '¿De dónde salen estos datos?', a: 'La UF, la UTM y el dólar vienen del Banco Central. El resto de los indicadores los publica Previred cada mes. Son valores referenciales para orientarte; el cálculo oficial de una liquidación se hace con todos los antecedentes del trabajador.' },
+  { q: '¿Cuál es el tope imponible?', a: 'Para septiembre de 2026, AFP y salud tienen tope de 90 UF ($3.695.148); para seguro de cesantía el tope es 135,2 UF ($5.550.933). Sobre esos montos no se cotiza.' },
+  { q: '¿Qué es el seguro social de la reforma?', a: 'Es la cotización adicional de cargo del empleador asociada a la reforma previsional. Para remuneraciones de septiembre de 2026, Previred informa rentabilidad protegida 0,90%, expectativa de vida 0,72% y SIS 1,78%.' },
+  { q: '¿Cada cuánto se actualizan estos valores?', a: 'La UF y el dólar pueden cambiar diariamente; la UTM es mensual. El resto (topes, comisiones, mínimo, asignación familiar, SIS y seguro social) se actualiza según las publicaciones de Previred y las normas vigentes.' },
+  { q: '¿De dónde salen estos datos?', a: 'La UF, la UTM y el dólar vienen del Banco Central o fuentes oficiales de indicadores. El resto de los indicadores los publica Previred cada mes. Son valores referenciales para orientarte; el cálculo oficial de una liquidación se hace con todos los antecedentes del trabajador.' },
 ];
 
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
@@ -52,7 +52,7 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
     <div class="wrap">
       <p class="eyebrow">Herramienta gratis</p>
       <h1>Indicadores previsionales en Chile</h1>
-      <p class="lead">UF, UTM, comisiones de cada AFP, topes imponibles, sueldo mínimo, asignación familiar y más, claros y al día. Lo que necesitas para calcular sueldos, sin entrar a Previred.</p>
+      <p class="lead">UF, UTM, comisiones de cada AFP, topes imponibles, sueldo mínimo, asignación familiar y más, actualizados desde fuente previsional y Banco Central. Lo que necesitas para calcular sueldos, sin entrar a Previred.</p>
       <span class="periodo">{periodo} · vigente</span>
     </div>
     <svg class="hero-ill" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="16" y="20" width="88" height="84" rx="11" stroke="#1E2F73" stroke-width="3.5"/><path d="M16 40h88" stroke="#1E2F73" stroke-width="3.5"/><path d="M30 58h26M30 72h26M30 86h16" stroke="#1E2F73" stroke-width="3" stroke-linecap="round"/><rect x="68" y="56" width="22" height="34" rx="4" fill="#F6B11A" fill-opacity="0.3" stroke="#1E2F73" stroke-width="2.5"/><path d="M73 80l5 5 9-11" stroke="#1E2F73" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -61,7 +61,7 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   <section class="sec-texto">
     <div class="wrap angosto">
       <div class="resp-rapida">
-        <p><strong>Respuesta rápida:</strong> en {periodo}, el sueldo mínimo es $553.553, la AFP más barata es Uno (10,46% en total) y el tope imponible para AFP y salud es 90 UF. Abajo tienes todos los indicadores del mes, con la UF, la UTM y el dólar en vivo del Banco Central.</p>
+        <p><strong>Respuesta rápida:</strong> en {periodo}, el sueldo mínimo es $553.553, la AFP más barata por cargo del trabajador es Uno (10,46%) y el tope imponible para AFP y salud es 90 UF ($3.695.148). Abajo tienes los indicadores del mes, con UF, UTM y dólar actualizables desde fuente externa cuando el navegador puede cargarlos.</p>
         <p class="resp-fecha">Última actualización: {actualizado}. Fuente: Previred y Banco Central de Chile.</p>
       </div>
     </div>
@@ -71,16 +71,16 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
     <div class="wrap ancho">
 
       <h2 class="bloque">Valores del mes</h2>
-      <p class="bloque-n">UF, UTM y dólar en vivo del Banco Central. La UTA es 12 UTM.</p>
+      <p class="bloque-n">UF, UTM y dólar con valores base de septiembre 2026; UF y dólar se intentan refrescar en vivo. La UTA es 12 UTM.</p>
       <div class="grid g4">
-        <div class="m"><p class="m-l">UF</p><p class="m-v" id="v-uf">$40.820</p><div class="spark" id="sp-uf"></div><p class="m-n">al día</p></div>
-        <div class="m"><p class="m-l">UTM</p><p class="m-v" id="v-utm">$71.506</p><div class="spark" id="sp-utm"></div><p class="m-n">{periodo}</p></div>
-        <div class="m"><p class="m-l">UTA</p><p class="m-v" id="v-uta">$858.072</p><div class="spark" id="sp-uta"></div><p class="m-n">12 UTM</p></div>
+        <div class="m"><p class="m-l">UF</p><p class="m-v" id="v-uf">$41.057</p><div class="spark" id="sp-uf"></div><p class="m-n">al día</p></div>
+        <div class="m"><p class="m-l">UTM</p><p class="m-v" id="v-utm">$71.721</p><div class="spark" id="sp-utm"></div><p class="m-n">{periodo}</p></div>
+        <div class="m"><p class="m-l">UTA</p><p class="m-v" id="v-uta">$860.652</p><div class="spark" id="sp-uta"></div><p class="m-n">12 UTM</p></div>
         <div class="m"><p class="m-l">Dólar observado</p><p class="m-v" id="v-dolar">$945</p><div class="spark" id="sp-dolar"></div><p class="m-n">al día</p></div>
       </div>
 
       <h2 class="bloque">Comisión por AFP</h2>
-      <p class="bloque-n">Cotización del trabajador: 10% obligatorio más la comisión de cada AFP. La más barata, destacada.</p>
+      <p class="bloque-n">Cotización AFP de cargo del trabajador: 10% obligatorio más comisión de cada AFP. La más barata por cargo del trabajador, destacada.</p>
       <div class="afp-box">
         {afps.map((a, i) => (
           <div class="bar">
@@ -89,14 +89,15 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
             <span class="bpc">{a.t.toFixed(2).replace('.', ',')}%</span>
           </div>
         ))}
-        <p class="afp-nota">Más el SIS de 1,62%, de cargo del empleador. El 10% es igual en todas; lo que cambia es la comisión.</p>
+        <p class="afp-nota">Según Previred septiembre 2026, además existen cargos de empleador asociados a seguro social y SIS. El 10% obligatorio del trabajador es igual en todas; lo que cambia es la comisión de AFP.</p>
       </div>
 
       <h2 class="bloque">Cargas del empleador y seguro social</h2>
       <div class="grid g4">
         <div class="m"><p class="m-l">Seguro de cesantía</p><p class="m-v">2,4%</p><p class="m-n">indefinido · trabajador 0,6%</p></div>
-        <div class="m"><p class="m-l">SIS</p><p class="m-v">1,62%</p><p class="m-n">invalidez y sobrevivencia</p></div>
-        <div class="m"><p class="m-l">Seguro social <span class="chip">reforma</span></p><p class="m-v">1,0%</p><p class="m-n">0,1% cuenta + 0,9% exp. de vida</p></div>
+        <div class="m"><p class="m-l">SIS</p><p class="m-v">1,78%</p><p class="m-n">invalidez y sobrevivencia</p></div>
+        <div class="m"><p class="m-l">Rentabilidad protegida</p><p class="m-v">0,90%</p><p class="m-n">seguro social</p></div>
+        <div class="m"><p class="m-l">Expectativa de vida</p><p class="m-v">0,72%</p><p class="m-n">seguro social</p></div>
         <div class="m"><p class="m-l">Cesantía plazo fijo</p><p class="m-v">3,0%</p><p class="m-n">empleador</p></div>
       </div>
 
@@ -109,10 +110,10 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
 
       <h2 class="bloque">Topes imponibles, APV y depósitos convenidos</h2>
       <div class="grid g4">
-        <div class="m"><p class="m-l">Tope AFP y salud</p><p class="m-v">90 <small>UF</small></p><p class="m-n">$3.673.828</p></div>
-        <div class="m"><p class="m-l">Tope cesantía</p><p class="m-v">135,2 <small>UF</small></p><p class="m-n">$5.518.906</p></div>
-        <div class="m"><p class="m-l">APV</p><p class="m-v">50 <small>UF/mes</small></p><p class="m-n">600 UF al año · $24.492.186</p></div>
-        <div class="m"><p class="m-l">Depósitos convenidos</p><p class="m-v">900 <small>UF</small></p><p class="m-n">tope anual · $36.738.279</p></div>
+        <div class="m"><p class="m-l">Tope AFP y salud</p><p class="m-v">90 <small>UF</small></p><p class="m-n">$3.695.148</p></div>
+        <div class="m"><p class="m-l">Tope cesantía</p><p class="m-v">135,2 <small>UF</small></p><p class="m-n">$5.550.933</p></div>
+        <div class="m"><p class="m-l">APV</p><p class="m-v">50 <small>UF/mes</small></p><p class="m-n">600 UF al año · $24.634.320</p></div>
+        <div class="m"><p class="m-l">Depósitos convenidos</p><p class="m-v">900 <small>UF</small></p><p class="m-n">tope anual · $36.951.480</p></div>
       </div>
 
       <h2 class="bloque">Asignación familiar</h2>
@@ -130,7 +131,7 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
       </div>
 
       <div class="descargo">
-        <p>Valores referenciales del período {periodo}, según Previred y el Banco Central de Chile. La UF, la UTM y el dólar se cargan en vivo; el resto se actualiza cada mes. No constituye asesoría laboral ni previsional. El cálculo oficial de una liquidación o cotización se hace con todos los antecedentes del trabajador.</p>
+        <p>Valores referenciales del período {periodo}, según Previred y fuentes oficiales de indicadores. La UF, la UTM y el dólar tienen valores base del período y pueden refrescarse en vivo si la fuente externa responde; el resto se actualiza según publicación mensual. No constituye asesoría laboral ni previsional. El cálculo oficial de una liquidación o cotización se hace con todos los antecedentes del trabajador.</p>
         <p class="firma">TomContable.cl · Indicadores referenciales</p>
       </div>
 
@@ -148,7 +149,7 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
       <p>Desde las remuneraciones de mayo de 2026, el ingreso mínimo mensual subió a $553.553 para trabajadores de 18 a 65 años. Ese valor también es la renta mínima imponible y la base del tope de la gratificación legal. Si calculas un sueldo, asegúrate de usar el mínimo vigente.</p>
 
       <h2>Qué AFP conviene por comisión</h2>
-      <p>Todas las AFP descuentan el 10% obligatorio; lo que cambia entre una y otra es la comisión. Hoy la más barata es Uno y la más cara Provida, con una diferencia de casi un punto porcentual sobre el sueldo imponible. Es un dato simple que, mes a mes, hace diferencia en el bolsillo.</p>
+      <p>Todas las AFP descuentan el 10% obligatorio; lo que cambia entre una y otra es la comisión. Para septiembre de 2026, la más barata por cargo del trabajador es Uno y la más alta es Provida, con una diferencia de casi un punto porcentual sobre el sueldo imponible. Es un dato simple que, mes a mes, hace diferencia en el bolsillo.</p>
 
       <h2>Calcula el sueldo completo</h2>
       <p>Si además de mirar los indicadores quieres el cálculo completo, con líquido del trabajador y costo para la empresa, usa la <a href="/calculadora-sueldo-liquido/">calculadora de sueldo líquido</a>, que toma estos mismos valores y los aplica a tu caso.</p>

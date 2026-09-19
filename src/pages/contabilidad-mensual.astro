@@ -16,7 +16,7 @@ const servicio = {
   "serviceType": "Contabilidad mensual para pymes y emprendedores",
   "provider": { "@type": "Organization", "name": "TomContable" },
   "areaServed": { "@type": "Country", "name": "Chile" },
-  "description": "Llevamos tu contabilidad mes a mes: F29, libros electrónicos, reportes, asesoría ilimitada y acompañamiento. El valor se ajusta a las ventas de tu empresa."
+  "description": "Llevamos tu contabilidad mes a mes: reporte mensual, libros electrónicos, F29, Estado de Resultados Express, asesoría ilimitada y prebalance gratuito en julio. Conciliación bancaria, liquidaciones de sueldo y operación renta anual se cotizan y cobran por separado según tu empresa."
 };
 
 // FAQ visible espejada para FAQPage (mantener en sync con el accordion de la página).
@@ -25,8 +25,8 @@ const faqs = [
   { q: '¿Tengo que mandarles mis documentos?', a: 'No. Revisamos todo directamente en el SII. No tienes que escanear ni enviar boletas.' },
   { q: '¿Ustedes pagan mis impuestos?', a: 'No tocamos tu dinero. Te enviamos el link y el pago lo haces tú, para que todo quede bajo tu control.' },
   { q: '¿Y si cometen un error?', a: 'Lo asumimos nosotros. Si una multa o interés se genera por un error o atraso nuestro, lo pagamos nosotros.' },
-  { q: '¿Incluye la operación renta?', a: 'La operación renta de tu empresa es parte del acompañamiento anual del plan. Se cobra una vez al año, pero no es un servicio aparte que tengas que buscar por tu cuenta: nosotros te avisamos y la preparamos a tiempo.' },
-  { q: '¿Incluye conciliación bancaria o liquidaciones de sueldo?', a: 'Esas van por separado. Te explicamos cómo funcionan si las necesitas.' },
+  { q: '¿Incluye la operación renta?', a: 'No. La operación renta anual no está incluida en el precio mensual base. Se cobra una vez al año como pago único de 3 mensualidades promedio del año anterior, más 1 UF por cada declaración personal de socio.' },
+  { q: '¿Incluye conciliación bancaria o remuneraciones?', a: 'No están incluidas en el plan mensual base. La conciliación bancaria se cotiza aparte. Las liquidaciones de sueldo de socios o trabajadores son adicionales: liquidación mensual 0,15 UF por trabajador; contratos, finiquitos, licencias y requerimientos 0,30 UF cada uno.' },
 ];
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
@@ -74,10 +74,10 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
         <li>Declaración mensual de tu Formulario 29.</li>
         <li>Nuestro informe Estado de Resultados Express para proyectar tu impuesto a la renta.</li>
         <li>Asesoría contable y tributaria ilimitada.</li>
-        <li>Pre balance gratuito en julio, para llegar a la renta sin sorpresas.</li>
+        <li>Prebalance gratuito en julio, para llegar a la renta con más claridad.</li>
         <li>Acceso gratis a nuestra comunidad de emprendedores.</li>
       </ul>
-      <p class="nota">La conciliación bancaria y las liquidaciones de sueldo van aparte. Si las necesitas, las sumamos sin problema.</p>
+      <p class="nota">La conciliación bancaria, las liquidaciones de sueldo y la operación renta anual no están incluidas en el precio mensual base. Se pueden sumar como servicios adicionales: operación renta anual como pago único de 3 mensualidades promedio del año anterior, más 1 UF por declaración personal de cada socio; liquidaciones mensuales a 0,15 UF por trabajador; contratos, finiquitos, licencias y requerimientos a 0,30 UF cada uno.</p>
     </div>
   </section>
 
@@ -126,8 +126,8 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
         <details><summary>¿Tengo que mandarles mis documentos?<span class="plus">+</span></summary><div class="ans">No. Revisamos todo directamente en el SII. No tienes que escanear ni enviar boletas.</div></details>
         <details><summary>¿Ustedes pagan mis impuestos?<span class="plus">+</span></summary><div class="ans">No tocamos tu dinero. Te enviamos el link y el pago lo haces tú, para que todo quede bajo tu control.</div></details>
         <details><summary>¿Y si cometen un error?<span class="plus">+</span></summary><div class="ans">Lo asumimos nosotros. Si una multa o interés se genera por un error o atraso nuestro, lo pagamos nosotros.</div></details>
-        <details><summary>¿Incluye la operación renta?<span class="plus">+</span></summary><div class="ans">La operación renta de tu empresa es parte del acompañamiento anual del plan. Se cobra una vez al año, pero no es un servicio aparte que tengas que buscar por tu cuenta: nosotros te avisamos y la preparamos a tiempo.</div></details>
-        <details><summary>¿Incluye conciliación bancaria o liquidaciones de sueldo?<span class="plus">+</span></summary><div class="ans">Esas van por separado. Te explicamos cómo funcionan si las necesitas.</div></details>
+        <details><summary>¿Incluye la operación renta?<span class="plus">+</span></summary><div class="ans">No. La operación renta anual no está incluida en el precio mensual base. Se cobra una vez al año como pago único de 3 mensualidades promedio del año anterior, más 1 UF por cada declaración personal de socio.</div></details>
+        <details><summary>¿Incluye conciliación bancaria o remuneraciones?<span class="plus">+</span></summary><div class="ans">No están incluidas en el plan mensual base. La conciliación bancaria se cotiza aparte. Las liquidaciones de sueldo de socios o trabajadores son adicionales: liquidación mensual 0,15 UF por trabajador; contratos, finiquitos, licencias y requerimientos 0,30 UF cada uno.</div></details>
       </div>
     </div>
   </section>
