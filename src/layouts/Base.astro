@@ -33,12 +33,66 @@ const { title, description, canonical, image, noindex, type = 'website', schema 
     if (location.search.indexOf('soyTom') > -1) {
       if (location.search.indexOf('yaNoSoyTom') > -1) {
         posthog.opt_in_capturing();
-        alert('Este navegador vuelve a contar en las estadísticas.');
+        alert('Este navegador vuelve a contar en las estadísticas de TomContable.');
       } else {
         posthog.opt_out_capturing();
         alert('Listo: este navegador quedó fuera de las estadísticas de TomContable.');
       }
     }
+
+    // Atribución simple para entender de dónde llega la visita.
+    // Google no entrega la búsqueda exacta por privacidad, pero sí podemos distinguir
+    // búsqueda orgánica Google vs Instagram/Meta, UTMs, referido y directo/oscuro.
+    (function(){
+      var params = new URLSearchParams(location.search);
+      var ref = document.referrer || '';
+      var refHost = '';
+      try { refHost = ref ? new URL(ref).hostname.replace(/^www\./, '') : ''; } catch(e) {}
+      var utmSource = params.get('utm_source') || '';
+      var utmMedium = params.get('utm_medium') || '';
+      var utmCampaign = params.get('utm_campaign') || '';
+      var sourceText = (utmSource + ' ' + utmMedium + ' ' + refHost).toLowerCase();
+      var searchEngines = ['google.', 'bing.', 'duckduckgo.', 'yahoo.', 'ecosia.', 'brave.'];
+      var isSearch = searchEngines.some(function(d){ return refHost.indexOf(d) > -1; });
+      var isInstagram = sourceText.indexOf('instagram') > -1 || sourceText.indexOf('l.instagram') > -1;
+      var isMeta = isInstagram || sourceText.indexOf('facebook') > -1 || sourceText.indexOf('fb.') > -1 || sourceText.indexOf('meta') > -1;
+      var isOwn = refHost === 'tomcontable.cl';
+      var channel = 'directo_o_app_sin_referer';
+      if (utmSource || utmMedium || utmCampaign) channel = 'campania_utm';
+      else if (isSearch) channel = 'busqueda_organica';
+      else if (isMeta) channel = isInstagram ? 'instagram_meta' : 'meta_social';
+      else if (refHost && !isOwn) channel = 'referido_externo';
+      else if (isOwn) channel = 'navegacion_interna';
+
+      var attribution = {
+        canal_entrada: channel,
+        referrer_host: refHost || '(sin referer)',
+        referrer_url: ref || '(sin referer)',
+        utm_source: utmSource || '(sin utm)',
+        utm_medium: utmMedium || '(sin utm)',
+        utm_campaign: utmCampaign || '(sin utm)',
+        landing_path: location.pathname,
+        landing_url: location.href,
+        probable_instagram: !!isInstagram,
+        probable_busqueda_organica: !!isSearch,
+      };
+
+      try {
+        posthog.register(attribution);
+        posthog.register_once({
+          primer_canal_entrada: attribution.canal_entrada,
+          primer_referrer_host: attribution.referrer_host,
+          primera_landing_path: attribution.landing_path,
+          primera_utm_source: attribution.utm_source,
+          primera_utm_medium: attribution.utm_medium,
+          primera_utm_campaign: attribution.utm_campaign,
+        });
+        if (!sessionStorage.getItem('tc_attribution_sent')) {
+          posthog.capture('site_attribution', attribution);
+          sessionStorage.setItem('tc_attribution_sent', '1');
+        }
+      } catch(e) {}
+    })();
   </script>
 </head>
 <body>

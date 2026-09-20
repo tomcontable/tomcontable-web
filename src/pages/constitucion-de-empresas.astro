@@ -4,7 +4,7 @@ import BotonWhatsApp from '../components/BotonWhatsApp.astro';
 
 const seo = {
   title: 'Constituir empresa en Chile, lista para facturar · TomContable',
-  description: 'No solo creamos tu empresa: la dejamos iniciada ante el SII y lista para facturar. $159.900 + IVA en 3 cuotas sin interés.',
+  description: 'Constituye tu empresa e iníciala ante el SII. Lista para facturar cuando corresponde, con acreditación incluida si tomas contabilidad mensual. $159.900 + IVA en 3 cuotas sin interés.',
 };
 
 const parrotfy = 'https://tomcontable.parrotfy.com/e/constitucion-empresa-lista-para-facturar';
@@ -17,19 +17,19 @@ const servicio = {
   "serviceType": "Constitución de empresas en Chile",
   "provider": { "@type": "Organization", "name": "TomContable" },
   "areaServed": { "@type": "Country", "name": "Chile" },
-  "description": "Constitución de la sociedad, inicio de actividades ante el SII, acreditación del giro, definición del régimen tributario y habilitación de facturación electrónica.",
+  "description": "Constitución de la sociedad, inicio de actividades ante el SII, orientación tributaria y habilitación de facturación electrónica. La acreditación del giro o actividad económica se incluye para clientes de contabilidad mensual; sin plan mensual es adicional.",
   "offers": {
     "@type": "Offer",
     "price": "159900",
     "priceCurrency": "CLP",
-    "description": "Constitución completa, $159.900 + IVA, en 3 cuotas sin interés."
+    "description": "Constitución de empresa, $159.900 + IVA, en 3 cuotas sin interés. Acreditación del giro o actividad económica incluida con contabilidad mensual; sin plan mensual, adicional."
   }
 };
 
 const incluye = [
   ['Redacción de estatutos, registro y obtención del RUT de la empresa', '$39.990'],
   ['Inicio de actividades ante el SII', '$40.000'],
-  ['Acreditación del giro o actividad económica', '$60.000'],
+  ['Acreditación del giro o actividad económica', '$79.000 + IVA', 'Incluida con contabilidad mensual. Si no, adicional'],
   ['Habilitación de facturación electrónica', '$15.000'],
   ['Orientación sobre el régimen tributario más conveniente', '$40.000'],
   ['Resolución de dudas durante todo el proceso', '$40.000'],
@@ -40,10 +40,11 @@ const incluye = [
 
 // FAQ visible espejada para FAQPage (mantener en sync con el accordion de la página).
 const faqs = [
-  { q: '¿Por qué cuesta más que una oferta de menor precio?', a: 'Las ofertas baratas suelen cubrir solo la escritura. Nuestro servicio deja la empresa iniciada ante el SII, con giro, régimen tributario y facturación electrónica habilitada: lista para operar. Pagas el proceso completo, no un trámite a medias.' },
+  { q: '¿Por qué cuesta más que una oferta de menor precio?', a: 'Las ofertas más baratas suelen cubrir solo la escritura. Nuestro servicio incluye constitución, inicio de actividades, orientación tributaria y acompañamiento inicial. Además, si contratas contabilidad mensual con nosotros, incluimos la acreditación del giro o actividad económica cuando corresponde.' },
   { q: '¿Puedo pagar en cuotas?', a: 'Sí, con tarjeta en 3 cuotas sin interés, al precio contado.' },
   { q: '¿Qué tipo de sociedad conviene?', a: 'Constituimos SpA, EIRL y Limitada. Lo más común para emprendedores es una SpA, pero depende de tu caso: lo definimos contigo antes de constituir.' },
   { q: '¿Incluye el inicio de actividades?', a: 'Sí. Sin inicio de actividades la empresa no puede facturar, por eso es parte central del servicio.' },
+  { q: '¿Incluye acreditación de actividad?', a: 'La acreditación del giro o actividad económica está incluida para quienes contratan contabilidad mensual con TomContable. Si solo quieres constituir la empresa y no tomar el plan mensual, podemos hacerla como servicio adicional por $79.000 + IVA. En simple: acreditar actividad es demostrarle al SII que la empresa realmente opera en el giro declarado. Normalmente aplica cuando la empresa necesita emitir facturas afectas a IVA; si tu actividad es exenta o no requiere acreditación, te lo diremos al revisar tu caso.' },
   { q: '¿Cuánto se demora?', a: 'La constitución y el inicio de actividades quedan listos de un día para otro. La habilitación de la facturación electrónica depende de la autorización del SII, así que puede tomar algo más; te avisamos apenas esté lista.' },
   { q: '¿Y si ya tengo la sociedad creada pero a medias?', a: 'Te ayudamos a completar lo que falta: inicio, giro, facturación. Escríbenos por WhatsApp y revisamos tu caso.' },
 ];
@@ -61,8 +62,9 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
     <div class="wrap hero-grid">
       <div class="hero-text">
         <p class="eyebrow">Constitución de empresas</p>
-        <h1>Tu empresa constituida, iniciada ante el SII y lista para facturar.</h1>
-        <p class="lead">Crear la sociedad es solo el primer paso. Nos hacemos cargo del proceso completo para que termines con una empresa que de verdad puede operar: con inicio de actividades, giro acreditado, régimen tributario elegido con criterio y facturación electrónica habilitada.</p>
+        <h1>Tu empresa constituida, iniciada ante el SII y lista para facturar*.</h1>
+        <p class="lead">Crear la sociedad es solo el primer paso. Nos hacemos cargo de la constitución, el inicio de actividades y la orientación inicial para que partas ordenado.</p>
+        <p class="asterisco">*Para poder emitir facturas afectas a IVA, el SII puede pedir acreditar la actividad, es decir, demostrar que la empresa realmente opera en el giro declarado. Si contratas contabilidad mensual con nosotros, esa acreditación va incluida. Si solo quieres constituir la empresa, puedes sumarla como servicio adicional por $79.000 + IVA.</p>
         <p class="precio">Desde <b>$159.900 + IVA</b> · 3 cuotas sin interés</p>
         <div class="cta-row">
           <a class="btn btn-amber" href={parrotfy} target="_blank" rel="noopener">Quiero constituir mi empresa</a>
@@ -80,8 +82,8 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   <section class="sec">
     <div class="wrap sec-head">
       <h2>Crear la sociedad es fácil. Dejarla lista para funcionar es otra cosa.</h2>
-      <p>Hay muchas ofertas baratas para crear tu empresa en un día. El problema aparece después: la sociedad existe en el papel, pero todavía no puede facturar. Falta iniciar actividades, acreditar el giro, definir qué régimen tributario te conviene y habilitar la facturación electrónica. Ahí es donde muchos emprendedores descubren que lo barato no era tan barato.</p>
-      <blockquote>No compares solo el precio de la escritura. Compara el proceso completo. Crear una sociedad barata es fácil; dejarla bien configurada para vender, facturar y cumplir ante el SII es lo que realmente importa.</blockquote>
+      <p>Hay muchas ofertas baratas para crear tu empresa en un día. El problema aparece después: la sociedad existe en el papel, pero todavía no puede operar bien. Falta iniciar actividades, definir qué régimen tributario te conviene, habilitar la facturación electrónica y, en algunos casos, acreditar el giro o actividad económica ante el SII. Ahí es donde muchos emprendedores descubren que lo barato no era tan barato.</p>
+      <blockquote>No compares solo el precio de la escritura. Compara el proceso completo. Crear una sociedad barata es fácil; dejarla bien configurada para operar, facturar cuando corresponde y cumplir ante el SII es lo que realmente importa.</blockquote>
       <p>Con más de 12 años en esto y más de 300 empresas constituidas, sabemos qué suele fallar cuando alguien parte sin guía. Por eso dejamos cada etapa ordenada desde el comienzo.</p>
     </div>
   </section>
@@ -96,12 +98,12 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
           <thead><tr><th>Qué necesitas para partir bien</th><th>La competencia</th><th>Con TomContable</th></tr></thead>
           <tbody>
             {incluye.map(([item, precio]) => (
-              <tr><td>{item}</td><td class="comp">{precio}</td><td class="ok">Sí</td></tr>
+              <tr><td>{item}</td><td class="comp">{precio}</td><td class={item === 'Acreditación del giro o actividad económica' ? 'cond' : 'ok'}>{item === 'Acreditación del giro o actividad económica' ? 'Incluida con contabilidad mensual. Si no, adicional' : 'Sí'}</td></tr>
             ))}
           </tbody>
         </table>
       </div>
-      <p class="ancla">Armado por partes supera los <b>$284.990</b>, y eso sin la comunidad, que no existe en la competencia. Con TomContable queda todo resuelto por <b>$159.900 + IVA</b>, de una sola vez y con un equipo que te responde.</p>
+      <p class="ancla">El servicio base de constitución cuesta <b>$159.900 + IVA</b> e incluye la creación de la empresa, inicio de actividades, orientación tributaria y acompañamiento inicial. La acreditación del giro o actividad económica, cuando corresponde, se incluye para quienes contratan contabilidad mensual con TomContable. Si prefieres solo constituir la empresa, puedes sumarla como adicional por <b>$79.000 + IVA</b>.</p>
       <p class="tabla-nota">Precios de la competencia referenciales, según ofertas publicadas en el mercado a junio de 2026 para cada trámite por separado.</p>
     </div>
   </section>
@@ -110,8 +112,8 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   <section class="sec" id="precio">
     <div class="wrap sec-head">
       <h2>Cuánto cuesta</h2>
-      <p class="precio-grande">Constitución completa: <b>$159.900 + IVA</b> <span>(total $190.281)</span></p>
-      <p>Paga con tarjeta en 3 cuotas sin interés, al precio contado. Incluye todo lo de la tabla anterior, sin trámites sueltos ni costos escondidos.</p>
+      <p class="precio-grande">Constitución de empresa: <b>$159.900 + IVA</b> <span>(total $190.281)</span></p>
+      <p>Paga con tarjeta en 3 cuotas sin interés, al precio contado. Incluye constitución, inicio de actividades, orientación tributaria y acompañamiento inicial. La acreditación del giro o actividad económica, cuando corresponde, se incluye al contratar contabilidad mensual; sin plan mensual, se cobra como adicional de $79.000 + IVA.</p>
       <div class="cta-row">
         <a class="btn btn-amber" href={parrotfy} target="_blank" rel="noopener">Quiero constituir mi empresa</a>
         <BotonWhatsApp texto="Prefiero consultar primero" mensaje={waMsg} clase="btn-ghost" />
@@ -127,9 +129,9 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
         <div class="step"><div class="step-head"><span class="num">1</span><h3>Contratas y pagas en línea</h3></div><p>Con tarjeta, en 3 cuotas sin interés. Seguro y rápido.</p></div>
         <div class="step"><div class="step-head"><span class="num">2</span><h3>Te contactamos para empezar</h3></div><p>Después del pago te escribimos por WhatsApp y te llega un correo con los datos que necesitamos.</p></div>
         <div class="step"><div class="step-head"><span class="num">3</span><h3>Constituimos e iniciamos</h3></div><p>Creamos la sociedad, hacemos el inicio de actividades y definimos giro y régimen tributario contigo.</p></div>
-        <div class="step"><div class="step-head"><span class="num">4</span><h3>Te dejamos listo para facturar</h3></div><p>Habilitamos tu facturación electrónica y te explicamos cómo emitir tu primera factura.</p></div>
+        <div class="step"><div class="step-head"><span class="num">4</span><h3>Te guiamos para facturar</h3></div><p>Habilitamos la facturación electrónica cuando corresponde y te explicamos el siguiente paso. Si el SII pide acreditar actividad, la incluimos con contabilidad mensual o la sumamos como adicional.</p></div>
       </div>
-      <p class="plazo">La constitución y el inicio de actividades quedan listos de un día para otro. La facturación electrónica queda habilitada apenas el SII la autoriza, y te avisamos en cuanto está lista.</p>
+      <p class="plazo">La constitución y el inicio de actividades quedan listos de un día para otro. La facturación electrónica queda habilitada cuando el SII la autoriza; si exige acreditación del giro o actividad económica, te avisamos y vemos si corresponde incluirla por contabilidad mensual o cotizarla como adicional.</p>
     </div>
   </section>
 
@@ -138,10 +140,11 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
     <div class="wrap">
       <div class="sec-head center"><h2>Preguntas frecuentes</h2></div>
       <div class="faq">
-        <details open><summary>¿Por qué cuesta más que una oferta de menor precio?<span class="plus">+</span></summary><div class="ans">Las ofertas baratas suelen cubrir solo la escritura. Nuestro servicio deja la empresa iniciada ante el SII, con giro, régimen tributario y facturación electrónica habilitada: lista para operar. Pagas el proceso completo, no un trámite a medias.</div></details>
+        <details open><summary>¿Por qué cuesta más que una oferta de menor precio?<span class="plus">+</span></summary><div class="ans">Las ofertas más baratas suelen cubrir solo la escritura. Nuestro servicio incluye constitución, inicio de actividades, orientación tributaria y acompañamiento inicial. Además, si contratas contabilidad mensual con nosotros, incluimos la acreditación del giro o actividad económica cuando corresponde.</div></details>
         <details><summary>¿Puedo pagar en cuotas?<span class="plus">+</span></summary><div class="ans">Sí, con tarjeta en 3 cuotas sin interés, al precio contado.</div></details>
         <details><summary>¿Qué tipo de sociedad conviene?<span class="plus">+</span></summary><div class="ans">Constituimos SpA, EIRL y Limitada. Lo más común para emprendedores es una SpA, pero depende de tu caso: lo definimos contigo antes de constituir.</div></details>
         <details><summary>¿Incluye el inicio de actividades?<span class="plus">+</span></summary><div class="ans">Sí. Sin inicio de actividades la empresa no puede facturar, por eso es parte central del servicio.</div></details>
+        <details><summary>¿Incluye acreditación de actividad?<span class="plus">+</span></summary><div class="ans">La acreditación del giro o actividad económica está incluida para quienes contratan contabilidad mensual con TomContable. Si solo quieres constituir la empresa y no tomar el plan mensual, podemos hacerla como servicio adicional por $79.000 + IVA. En simple: acreditar actividad es demostrarle al SII que la empresa realmente opera en el giro declarado. Normalmente aplica cuando la empresa necesita emitir facturas afectas a IVA; si tu actividad es exenta o no requiere acreditación, te lo diremos al revisar tu caso.</div></details>
         <details><summary>¿Cuánto se demora?<span class="plus">+</span></summary><div class="ans">La constitución y el inicio de actividades quedan listos de un día para otro. La habilitación de la facturación electrónica depende de la autorización del SII, así que puede tomar algo más; te avisamos apenas esté lista.</div></details>
         <details><summary>¿Y si ya tengo la sociedad creada pero a medias?<span class="plus">+</span></summary><div class="ans">Te ayudamos a completar lo que falta: inicio, giro, facturación. Escríbenos por WhatsApp y revisamos tu caso.</div></details>
       </div>
@@ -166,7 +169,8 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   .hero{background:linear-gradient(150deg,#fbfcfe 0%, #eef1f8 100%);padding:64px 0}
   .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
   .hero h1{font-size:42px;font-weight:800;max-width:18ch;letter-spacing:-.5px}
-  .hero .lead{font-size:18px;color:#444a63;margin:20px 0 18px;max-width:60ch}
+  .hero .lead{font-size:18px;color:#444a63;margin:20px 0 12px;max-width:60ch}
+  .asterisco{font-size:14.5px;color:#555;margin:0 0 18px;max-width:66ch}
   .hero-media img{width:100%;height:auto;border-radius:18px;box-shadow:0 26px 60px -26px rgba(19,35,95,.45)}
   @media(max-width:900px){ .hero-grid{grid-template-columns:1fr;gap:30px} .hero-media{max-width:440px;margin:2px auto 0} }
   .precio{font-size:18px;margin-bottom:24px}
@@ -182,6 +186,7 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   .tabla td{padding:13px 14px;border-top:1px solid var(--linea)}
   .tabla .comp{color:#b03b3b;font-weight:600}
   .tabla .ok{color:var(--azul);font-weight:700}
+  .tabla .cond{color:var(--azul);font-weight:700;white-space:normal;text-align:left;min-width:190px}
   .ancla{margin-top:22px;background:#fdf4dd;border:1px solid #f1d98a;border-radius:12px;padding:18px 22px;font-size:16px}
   .tabla-nota{margin-top:10px;font-size:13px;color:var(--gris)}
   .precio-grande{font-size:22px;margin:8px 0 6px}
