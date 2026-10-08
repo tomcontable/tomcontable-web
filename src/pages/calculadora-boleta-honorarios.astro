@@ -16,7 +16,7 @@ const faqs = [
   { q: '¿Por cuánto tengo que emitir para recibir un líquido determinado?', a: 'Divides el líquido que quieres recibir por uno menos la tasa de retención del año. En 2026, con retención de 15,25%, divides por 0,8475. La calculadora lo hace sola: si pones tu líquido objetivo, la segunda simulación te muestra el total a emitir.' },
   { q: '¿Puedo calcular la boleta en UF?', a: 'Sí. Puedes ingresar el monto en pesos o en UF. Si eliges UF, indicas la fecha y la calculadora toma el valor oficial de la UF de ese día para convertirlo a pesos antes de aplicar la retención.' },
   { q: '¿La retención es un impuesto que pierdo?', a: 'No. La retención es un adelanto de tus impuestos. En la operación renta del año siguiente se descuenta de lo que te toca pagar, y si retuvieron de más, te lo devuelven. Por eso conviene tenerla ordenada y no gastarla.' },
-  { q: '¿Quién paga la retención, quien emite o quien recibe la boleta?', a: 'Depende de a quién le emitas. Si emites a una empresa, por lo general ella retiene y entera ese monto al SII. Si emites a una persona natural, normalmente te toca a ti declararlo y pagarlo en tu propia declaración de renta.' },
+  { q: '¿Quién paga la retención, quien emite o quien recibe la boleta?', a: 'Si el receptor está obligado a retener, retiene y entera ese monto al SII. Si el receptor no retiene, puede corresponder que el emisor declare y pague el PPM mensual mediante F29. La declaración anual de renta es un proceso distinto y puede regularizar diferencias según corresponda.' },
   { q: '¿Las boletas de honorarios pagan cotizaciones de AFP y salud?', a: 'Sí. Desde la reforma, los trabajadores a honorarios cotizan de forma obligatoria, y eso se financia con parte de la retención a través de la Operación Renta. Por eso la retención fue subiendo de forma gradual hasta llegar a 17% en 2028.' },
   { q: '¿Me conviene seguir a honorarios o crear una empresa?', a: 'Depende de cuánto facturas y de tus gastos. A medida que la retención sube y tus ingresos crecen, a varios independientes les empieza a convenir tener empresa propia. Conviene hacer el número antes de decidir; podemos revisar tu caso.' },
 ];
@@ -125,11 +125,11 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
     <div class="wrap angosto">
       <div class="resp-rapida">
         <p><strong>Respuesta rápida:</strong> esta calculadora de boleta de honorarios muestra, con un solo monto, las dos simulaciones que la gente confunde: cuánto recibes líquido si ese monto era el total o bruto, y por cuánto debes emitir si era tu líquido al bolsillo. Usa la retención vigente en Chile (15,25% en 2026) y permite calcular en peso o en UF. El resultado es referencial.</p>
-        <p class="resp-fecha">Última actualización: {actualizado}. Fuente: tasa de retención vigente (Ley 21.133), 15,25% en 2026.</p>
+        <p class="resp-fecha">Página generada en {actualizado}; esta fecha no acredita revisión normativa. Fuente: tasa de retención vigente (Ley 21.133), 15,25% en 2026.</p>
       </div>
 
       <h2>Total, bruto y líquido: la confusión de siempre</h2>
-      <p>El total y el bruto de una boleta son lo mismo: el monto por el que emites, antes de descontar la retención. El líquido es lo que realmente te llega al bolsillo, ya con la retención descontada. Como casi todos mezclan estas palabras, esta calculadora no te obliga a elegir: pones un solo monto y te muestra las dos lecturas posibles a la vez, así no hay forma de equivocarse.</p>
+      <p>El total y el bruto de una boleta son lo mismo: el monto por el que emites, antes de descontar la retención. El líquido es lo que realmente te llega al bolsillo, ya con la retención descontada. Como casi todos mezclan estas palabras, esta calculadora no te obliga a elegir: pones un solo monto y te muestra las dos lecturas posibles a la vez, para facilitar la comparación de ambas simulaciones.</p>
 
       <h2>Qué es la retención de la boleta de honorarios</h2>
       <p>Al emitir una boleta de honorarios se aplica una retención, que en 2026 es del 15,25% del monto bruto. Esa retención no es plata que pierdes: es un anticipo a cuenta de tus impuestos del año, que se ajusta en la Operación Renta de abril. La tasa sube de forma gradual: fue 14,5% en 2025 y llega a 17% en 2028.</p>
@@ -141,16 +141,16 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
       <p>La segunda simulación va al revés. Si lo que pusiste era el líquido que quieres recibir, te dice por cuánto emitir la boleta para llegar a esa cifra, ya considerando la retención. Es justo lo que necesitas cuando acuerdas un pago neto con un cliente: en 2026, para recibir $1.000.000 líquidos, debes emitir por $1.180.638.</p>
 
       <h2>Calcular la boleta en UF</h2>
-      <p>Si tu servicio está pactado en UF, puedes ingresar el monto en UF y elegir la fecha. La calculadora toma el valor oficial de la UF de ese día, lo convierte a pesos y recién ahí aplica la retención, porque la boleta y la retención siempre se expresan en pesos. Así ves el equivalente exacto sin tener que hacer la conversión a mano.</p>
+      <p>Si tu servicio está pactado en UF, puedes ingresar el monto en UF y elegir la fecha. La calculadora toma el valor oficial de la UF de ese día, lo convierte a pesos y recién ahí aplica la retención, porque la boleta y la retención siempre se expresan en pesos. Así obtienes una conversión referencial sin tener que hacerla a mano.</p>
 
       <h2>Quién paga la retención: tú o la empresa</h2>
-      <p>Depende de a quién le emitas. Si le emites a una empresa, por lo general ella retiene el porcentaje y lo entera al SII a tu nombre, y te paga el líquido. Si le emites a una persona natural, normalmente el pago te llega completo y la retención la declaras y pagas tú en tu propia renta. En el año, el total retenido es el mismo.</p>
+      <p>Si el receptor está obligado a retener, retiene y entera ese monto al SII. Si el receptor no retiene, puede corresponder que el emisor declare y pague el PPM mensual mediante F29. La declaración anual de renta es un proceso distinto y puede regularizar diferencias según corresponda.</p>
 
       <h2>La retención y la Operación Renta</h2>
       <p>En abril, en la Operación Renta, se suma todo lo que boleteaste en el año y se calcula tu impuesto real. La retención que te hicieron se descuenta de ahí. Si retuvieron de más, te devuelven; si tus ingresos fueron altos y la retención no alcanzó, te puede tocar pagar. Además, una parte de la retención financia tus cotizaciones obligatorias como trabajador independiente. Por eso conviene proyectar con tiempo y no gastarse la retención.</p>
 
       <h2>¿Te conviene seguir a honorarios o crear una empresa?</h2>
-      <p>Mientras la retención sigue subiendo año a año, a muchos independientes con ingresos que crecen les empieza a convenir facturar con empresa propia en vez de a honorarios. No es para todos, pero vale la pena hacer el número. Si quieres ver tu caso lo conversamos, y si decides dar el paso te dejamos la <a href="/constitucion-de-empresas/">empresa constituida y lista para facturar</a>.</p>
+      <p>Mientras la retención sigue subiendo año a año, a muchos independientes con ingresos que crecen les empieza a convenir facturar con empresa propia en vez de a honorarios. No es para todos, pero vale la pena hacer el número. Si quieres ver tu caso lo conversamos, y si decides dar el paso te ayudamos con la <a href="/constitucion-de-empresas/">constitución de tu empresa</a>. La acreditación está incluida al contratar contabilidad mensual; sin mensualidad cuesta $79.000 + IVA. La autorización para facturar depende del SII.</p>
 
       <h2 id="faq">Preguntas frecuentes</h2>
       <div class="faq">

@@ -17,30 +17,30 @@ const servicio = {
   "serviceType": "Constitución de empresas en Chile",
   "provider": { "@type": "Organization", "name": "TomContable" },
   "areaServed": { "@type": "Country", "name": "Chile" },
-  "description": "Constitución de la sociedad, inicio de actividades ante el SII, orientación tributaria y habilitación de facturación electrónica. La acreditación del giro o actividad económica se incluye para clientes de contabilidad mensual; sin plan mensual es adicional.",
+  "description": "Constitución de la sociedad, inicio de actividades ante el SII, orientación tributaria y habilitación de facturación electrónica sujeta a autorización del SII. La acreditación del giro o actividad económica se incluye para clientes de contabilidad mensual; sin mensualidad cuesta $79.000 + IVA adicionales.",
   "offers": {
     "@type": "Offer",
     "price": "159900",
     "priceCurrency": "CLP",
-    "description": "Constitución de empresa, $159.900 + IVA, en 3 cuotas sin interés. Acreditación del giro o actividad económica incluida con contabilidad mensual; sin plan mensual, adicional."
+    "description": "Constitución de empresa, $159.900 + IVA, en 3 cuotas sin interés. Acreditación del giro o actividad económica incluida con contabilidad mensual; sin mensualidad, $79.000 + IVA adicionales."
   }
 };
 
 const incluye = [
-  ['Redacción de estatutos, registro y obtención del RUT de la empresa', '$39.990'],
-  ['Inicio de actividades ante el SII', '$40.000'],
-  ['Acreditación del giro o actividad económica', '$79.000 + IVA', 'Incluida con contabilidad mensual. Si no, adicional'],
-  ['Habilitación de facturación electrónica', '$15.000'],
-  ['Orientación sobre el régimen tributario más conveniente', '$40.000'],
-  ['Resolución de dudas durante todo el proceso', '$40.000'],
-  ['Preparación y presentación del primer F29', '$25.000'],
-  ['Guías y materiales para operar desde el día uno', '$25.000'],
-  ['Acceso de por vida a la comunidad de emprendedores', 'No existe'],
+  ['Redacción de estatutos, registro y obtención del RUT de la empresa', 'Incluido'],
+  ['Inicio de actividades ante el SII', 'Incluido'],
+  ['Acreditación del giro o actividad económica', 'Incluida con contabilidad mensual; sin mensualidad, $79.000 + IVA adicionales'],
+  ['Habilitación de facturación electrónica', 'Gestión sujeta a autorización del SII'],
+  ['Orientación sobre el régimen tributario más conveniente', 'Incluida'],
+  ['Resolución de dudas durante el proceso', 'Incluida'],
+  ['Preparación y presentación del primer F29', 'Incluida'],
+  ['Guías y materiales para operar desde el día uno', 'Incluidos'],
+  ['Acceso a la comunidad de emprendedores', 'Incluido'],
 ];
 
 // FAQ visible espejada para FAQPage (mantener en sync con el accordion de la página).
 const faqs = [
-  { q: '¿Por qué cuesta más que una oferta de menor precio?', a: 'Las ofertas más baratas suelen cubrir solo la escritura. Nuestro servicio incluye constitución, inicio de actividades, orientación tributaria y acompañamiento inicial. Además, si contratas contabilidad mensual con nosotros, incluimos la acreditación del giro o actividad económica cuando corresponde.' },
+  { q: '¿Por qué cuesta más que una oferta de menor precio?', a: 'Compara qué incluye cada cotización y qué servicios se cobran aparte. Nuestro servicio incluye constitución, inicio de actividades, orientación tributaria y acompañamiento inicial. Además, si contratas contabilidad mensual con nosotros, incluimos la acreditación del giro o actividad económica cuando corresponde.' },
   { q: '¿Puedo pagar en cuotas?', a: 'Sí, con tarjeta en 3 cuotas sin interés, al precio contado.' },
   { q: '¿Qué tipo de sociedad conviene?', a: 'Constituimos SpA, EIRL y Limitada. Lo más común para emprendedores es una SpA, pero depende de tu caso: lo definimos contigo antes de constituir.' },
   { q: '¿Incluye el inicio de actividades?', a: 'Sí. Sin inicio de actividades la empresa no puede facturar, por eso es parte central del servicio.' },
@@ -73,7 +73,8 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
         <p class="micro">Precio claro, sin sorpresas · +300 empresas constituidas · Contador Colegiado</p>
       </div>
       <div class="hero-media">
-        <img src="/img/constitucion-lista.jpg" alt="Resumen visual de una empresa constituida, iniciada ante el SII y lista para facturar" width="1100" height="825" />
+        <img src="/img/constitucion-lista.jpg" alt="Resumen visual de una empresa constituida, iniciada ante el SII y con pasos para habilitar la facturación cuando corresponde" width="1100" height="825" />
+        <p class="media-note">La facturación electrónica queda sujeta a autorización del SII y, cuando corresponde, a la acreditación del giro o actividad económica.</p>
       </div>
     </div>
   </section>
@@ -92,19 +93,19 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   <section class="sec alt">
     <div class="wrap">
       <div class="sec-head"><h2>Qué necesitas realmente para partir bien</h2>
-      <p>Armados por separado, estos pasos cuestan más y te dejan coordinando proveedores distintos. Con nosotros va todo junto, ordenado y por un solo equipo.</p></div>
+      <p>Compara el alcance de cada cotización, no solo el precio inicial. Estos son los servicios y condiciones de TomContable; la acreditación sin mensualidad tiene un costo adicional.</p></div>
       <div class="tabla-scroll">
         <table class="tabla">
-          <thead><tr><th>Qué necesitas para partir bien</th><th>La competencia</th><th>Con TomContable</th></tr></thead>
+          <thead><tr><th>Qué necesitas para partir bien</th><th>Con TomContable</th></tr></thead>
           <tbody>
-            {incluye.map(([item, precio]) => (
-              <tr><td>{item}</td><td class="comp">{precio}</td><td class={item === 'Acreditación del giro o actividad económica' ? 'cond' : 'ok'}>{item === 'Acreditación del giro o actividad económica' ? 'Incluida con contabilidad mensual. Si no, adicional' : 'Sí'}</td></tr>
+            {incluye.map(([item, alcance]) => (
+              <tr><td>{item}</td><td class="cond">{alcance}</td></tr>
             ))}
           </tbody>
         </table>
       </div>
       <p class="ancla">El servicio base de constitución cuesta <b>$159.900 + IVA</b> e incluye la creación de la empresa, inicio de actividades, orientación tributaria y acompañamiento inicial. La acreditación del giro o actividad económica, cuando corresponde, se incluye para quienes contratan contabilidad mensual con TomContable. Si prefieres solo constituir la empresa, puedes sumarla como adicional por <b>$79.000 + IVA</b>.</p>
-      <p class="tabla-nota">Precios de la competencia referenciales, según ofertas publicadas en el mercado a junio de 2026 para cada trámite por separado.</p>
+      <p class="tabla-nota">El precio de constitución es distinto de la mensualidad contable. Revisa los servicios incluidos y adicionales antes de contratar.</p>
     </div>
   </section>
 
@@ -140,7 +141,7 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
     <div class="wrap">
       <div class="sec-head center"><h2>Preguntas frecuentes</h2></div>
       <div class="faq">
-        <details open><summary>¿Por qué cuesta más que una oferta de menor precio?<span class="plus">+</span></summary><div class="ans">Las ofertas más baratas suelen cubrir solo la escritura. Nuestro servicio incluye constitución, inicio de actividades, orientación tributaria y acompañamiento inicial. Además, si contratas contabilidad mensual con nosotros, incluimos la acreditación del giro o actividad económica cuando corresponde.</div></details>
+        <details open><summary>¿Por qué cuesta más que una oferta de menor precio?<span class="plus">+</span></summary><div class="ans">Compara qué incluye cada cotización y qué servicios se cobran aparte. Nuestro servicio incluye constitución, inicio de actividades, orientación tributaria y acompañamiento inicial. Además, si contratas contabilidad mensual con nosotros, incluimos la acreditación del giro o actividad económica cuando corresponde.</div></details>
         <details><summary>¿Puedo pagar en cuotas?<span class="plus">+</span></summary><div class="ans">Sí, con tarjeta en 3 cuotas sin interés, al precio contado.</div></details>
         <details><summary>¿Qué tipo de sociedad conviene?<span class="plus">+</span></summary><div class="ans">Constituimos SpA, EIRL y Limitada. Lo más común para emprendedores es una SpA, pero depende de tu caso: lo definimos contigo antes de constituir.</div></details>
         <details><summary>¿Incluye el inicio de actividades?<span class="plus">+</span></summary><div class="ans">Sí. Sin inicio de actividades la empresa no puede facturar, por eso es parte central del servicio.</div></details>
@@ -172,6 +173,7 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   .hero .lead{font-size:18px;color:#444a63;margin:20px 0 12px;max-width:60ch}
   .asterisco{font-size:14.5px;color:#555;margin:0 0 18px;max-width:66ch}
   .hero-media img{width:100%;height:auto;border-radius:18px;box-shadow:0 26px 60px -26px rgba(19,35,95,.45)}
+  .media-note{font-size:13px;color:#60677a;margin:10px 4px 0;line-height:1.45}
   @media(max-width:900px){ .hero-grid{grid-template-columns:1fr;gap:30px} .hero-media{max-width:440px;margin:2px auto 0} }
   .precio{font-size:18px;margin-bottom:24px}
   .precio b{color:var(--azul)}

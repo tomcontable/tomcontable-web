@@ -51,13 +51,6 @@ const organizacion = {
     "https://encuadrado.com/p/tomcontable",
     "https://maps.app.goo.gl/Nrhj9j1CUm3mL71b7"
   ],
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "5.0",
-    "reviewCount": "124",
-    "bestRating": "5",
-    "worstRating": "1"
-  },
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
     "name": "Servicios de TomContable",
@@ -71,7 +64,34 @@ const organizacion = {
   }
 };
 
-const all = [organizacion, ...blocks];
+// Normalización semántica: sin reescribir respuestas, títulos ni precios visibles.
+const pageURL = new URL(Astro.url.pathname.endsWith('/') ? Astro.url.pathname : Astro.url.pathname + '/', 'https://tomcontable.cl').href;
+const canonicalSchemaURL = (value) => {
+  if (typeof value !== 'string' || !value.startsWith('https://tomcontable.cl')) return value;
+  const u = new URL(value);
+  if (u.origin === 'https://tomcontable.cl' && !u.pathname.endsWith('/') && !u.pathname.split('/').pop().includes('.')) u.pathname += '/';
+  return u.href;
+};
+const normalize = (value, key = '') => {
+  if (Array.isArray(value)) return value.map((item) => normalize(item, key));
+  if (!value || typeof value !== 'object') return ['url', '@id', 'item', 'mainEntityOfPage'].includes(key) ? canonicalSchemaURL(value) : value;
+  const result = Object.fromEntries(Object.entries(value).map(([k, v]) => [k, normalize(v, k)]));
+  const types = [result['@type']].flat();
+  if (result.name === 'TomContable' && types.some((t) => ['Organization', 'ProfessionalService', 'AccountingService'].includes(t))) result['@id'] = 'https://tomcontable.cl/#organizacion';
+  if (types.includes('Person') && ['Tomás Gómez', 'Tomás Gómez Fuenzalida'].includes(result.name)) result['@id'] = 'https://tomcontable.cl/#tomas';
+  // Los importes + IVA son netos; no se convierte UF a pesos ni se cambia el precio.
+  if (types.includes('Offer') && result.priceCurrency === 'CLP' && result.price && result.description?.includes('+ IVA')) {
+    result.priceSpecification = { '@type': 'PriceSpecification', price: result.price, priceCurrency: 'CLP', valueAddedTaxIncluded: false };
+  }
+  return result;
+};
+const fragments = { Service: 'servicio', Article: 'articulo', WebApplication: 'herramienta', FAQPage: 'faq', BreadcrumbList: 'breadcrumb', ContactPage: 'contacto', CollectionPage: 'coleccion', WebPage: 'pagina' };
+const all = [organizacion, ...blocks].map((block) => {
+  const result = normalize(block);
+  const fragment = fragments[result['@type']];
+  if (fragment && !result['@id']) result['@id'] = pageURL + '#' + fragment;
+  return result;
+});
 ---
 {all.map((b) => (
   <script type="application/ld+json" set:html={JSON.stringify(b)} />

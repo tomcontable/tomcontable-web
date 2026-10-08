@@ -6,7 +6,7 @@ keyword: "corfo semilla inicia 2026"
 institucion: "Corfo"
 categoria: "Emprender"
 montoMax: 15000000
-resumen: "Semilla Inicia es el cofinanciamiento de Corfo para emprendimientos en etapa de idea, prototipo o solución ya desarrollada, pero sin ventas regulares. Entrega hasta $15.000.000 (75% del proyecto) y hasta $17.000.000 (85%) si el emprendimiento está liderado por una mujer. El cierre de la convocatoria 2026 fue el 15 de junio, a las 16:00 horas, y ya cerró."
+resumen: "Semilla Inicia es el cofinanciamiento de Corfo para emprendimientos en etapa de idea, prototipo o solución ya desarrollada, pero sin ventas regulares. Entrega hasta $15.000.000 (75% del proyecto) y hasta $17.000.000 (85%) si el emprendimiento está liderado por una mujer. El cierre registrado en esta ficha es el 15 de junio de 2026 a las 16:00, fecha ya transcurrida. Consulta la fuente oficial: esta ficha no acredita disponibilidad actual ni nuevas convocatorias."
 fechaInicio: 2026-04-30
 fechaCierre: 2026-06-15
 beneficio: "Cofinanciamiento no reembolsable de hasta el 75% del proyecto (tope $15.000.000). Para emprendimientos liderados por una mujer, sube a 85% (tope $17.000.000)."
@@ -19,14 +19,14 @@ link: "https://www.corfo.cl/sites/cpp/inf/semilla-inicia"
 fuenteTexto: "Ministerio de Economía, Fomento y Turismo"
 fuenteHref: "https://www.economia.gob.cl/2026/05/13/nuevos-llamados-de-corfo-buscan-potenciar-emprendimientos-innovadores-liderados-por-mujeres.htm"
 pubDate: 2026-07-01
-updatedDate: 2026-08-06
+updatedDate: 2026-10-07
 faqs:
   - q: "¿Para quién es Semilla Inicia?"
     a: "Para emprendimientos que todavía están en etapa de idea, prototipo o con la solución desarrollada pero sin ventas regulares en los últimos 12 meses."
   - q: "¿Cuánto entrega Corfo?"
     a: "Hasta $15.000.000 (75% del proyecto), o hasta $17.000.000 (85%) si el emprendimiento está liderado por una mujer."
   - q: "¿Sigue abierta la convocatoria 2026?"
-    a: "Cerró el 15 de junio de 2026 a las 16:00 horas. Corfo suele repetir Semilla Inicia más adelante en el año; las fechas exactas pueden variar según la región o el segmento, así que conviene revisar las bases vigentes en corfo.cl."
+    a: "El cierre registrado en esta ficha es el 15 de junio de 2026 a las 16:00, fecha ya transcurrida. No se acredita disponibilidad actual ni una nueva apertura. Consulta las bases, región y segmento en la fuente oficial de Corfo."
 draft: false
 ---
 

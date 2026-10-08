@@ -1,8 +1,9 @@
 ---
 title: Cómo calcular el reajuste por IPC en Chile en 2026
 seoTitle: "Cómo calcular el reajuste por IPC en Chile 2026 · TomContable"
-description: "Reajuste por IPC en Chile 2026: qué es, la fórmula para calcularlo, cómo se aplica a arriendos, deudas y contratos, y una calculadora gratis con datos del INE."
+description: "Reajuste por IPC en Chile: conceptos, ejemplos y una calculadora orientativa. Revisa el período, la fuente del índice y las condiciones del contrato antes de pagar."
 pubDate: 2026-06-20
+updatedDate: 2026-10-07
 lead: Si tienes un arriendo, una deuda o un contrato con cláusula de reajuste, el IPC define cuánto suben esos montos. Te explicamos cómo se calcula y cómo no pagar ni cobrar de más.
 keyword: cómo calcular el reajuste por IPC
 servicioHref: /calculadora-ipc
@@ -22,6 +23,7 @@ faqs:
     a: Están relacionados pero no son lo mismo. El reajuste por IPC actualiza un monto puntual entre dos fechas. La corrección monetaria tributaria es un ajuste contable anual que actualiza el capital y ciertos activos de la empresa por inflación para la declaración de renta. Eso lo vemos dentro de la contabilidad mensual.
 ---
 
+Ajuste editorial del 7 de octubre de 2026: se aclaran el alcance y los límites de esta guía. No constituye una revisión profesional integral ni acredita vigencia normativa.
 Cuando tienes un negocio aparecen montos que no son fijos: el arriendo del local que sube cada año, una deuda pactada con reajuste, un contrato con un proveedor o un cliente que se ajusta por inflación. En casi todos esos casos, lo que define cuánto sube es el IPC. Saber calcularlo te evita pagar de más cuando te reajustan a ti, y cobrar de menos cuando el reajuste corre a tu favor. Te lo explicamos en simple.
 
 ## Qué es el IPC y por qué reajusta tus montos
@@ -48,8 +50,8 @@ También aplica a deudas y contratos pactados en pesos con cláusula de reajuste
 
 Hay un primo de esto que vale la pena distinguir. La corrección monetaria tributaria es un ajuste contable que se hace una vez al año para actualizar el capital y ciertos activos de la empresa por efecto de la inflación, y entra en la declaración de renta. No es lo mismo que reajustar un arriendo: ese es un cálculo puntual entre dos fechas, esta otra es parte de la contabilidad anual de tu empresa. Si tienes empresa, esa corrección la maneja tu contador, y nosotros la vemos dentro de la contabilidad mensual.
 
-## Calcúlalo sin equivocarte con las fechas
+## Estima el reajuste y comprueba el período
 
-Para no andar buscando los índices a mano, tenemos una [calculadora de reajuste por IPC](/calculadora-ipc/) gratis que usa la serie oficial del INE. Eliges el mes de inicio y el de término, pones el monto, y te entrega el valor reajustado al instante, con el mismo cálculo que usa el propio INE. Sirve para arriendos, deudas, contratos y cualquier monto reajustable. Es gratis y sin registro.
+La [calculadora de reajuste por IPC](/calculadora-ipc/) ofrece una estimación según el mes inicial, el mes final, la serie disponible y los supuestos indicados en la herramienta. Comprueba la fuente y la cobertura del período; que el INE publique el IPC no implica que esta herramienta consulte directamente al organismo ni que estén cargados todos los meses. Antes de cobrar, pagar o presupuestar, confirma el índice aplicable y las condiciones del contrato. Es gratis y sin registro.
 
 Si tienes un negocio y quieres que tus contratos, reajustes y la corrección monetaria de tu empresa queden bien hechos y al día, escríbenos por WhatsApp y lo vemos.

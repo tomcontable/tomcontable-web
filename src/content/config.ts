@@ -51,8 +51,10 @@ const fondos = defineCollection({
     // Respuesta directa: 2-3 frases que resumen que es, quien puede postular,
     // cuanto entrega y hasta cuando. Pensada para citarse tal cual en buscadores e IA.
     resumen: z.string(),
-    fechaInicio: z.date(),
-    fechaCierre: z.date(),
+    fechaInicio: z.date().optional(),
+    fechaCierre: z.date().optional(),
+    // No inferir disponibilidad actual de fechas históricas.
+    estadoVerificado: z.enum(['cerrado', 'no-verificado']).default('no-verificado'),
     // Texto libre con el monto y condicion del beneficio
     beneficio: z.string(),
     // Requisitos minimos, uno por item, en lenguaje simple

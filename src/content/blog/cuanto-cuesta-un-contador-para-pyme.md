@@ -1,9 +1,9 @@
 ---
 title: Cuánto cuesta un contador para una pyme en Chile
 seoTitle: "Cuánto cuesta un contador para una pyme en Chile · TomContable"
-description: Lo que pagas por un contador para tu pyme depende de tu nivel de ventas, tu tipo de empresa y qué tan complejo es tu mes. Te lo explicamos en simple.
+description: Contabilidad mensual en TomContable desde 1 UF + IVA. Revisa qué incluye la base y qué se cobra aparte para comparar el costo anual completo de tu pyme.
 pubDate: 2026-06-07
-lead: Si llegaste buscando una cifra exacta, la respuesta honesta es que no hay una sola. Te explicamos en simple qué hay detrás del precio para que sepas qué estás pagando.
+lead: En TomContable, la contabilidad mensual para pymes parte desde 1 UF + IVA. El valor final depende de tu empresa y los servicios adicionales que necesites. Te explicamos qué incluye y qué se cobra aparte.
 keyword: cuánto cuesta un contador para pyme
 servicioHref: /contabilidad-mensual
 servicioTexto: Contabilidad mensual para pymes
@@ -17,12 +17,21 @@ faqs:
   - q: ¿Qué pasa si estoy atrasado con varios meses?
     a: Se puede poner al día. Primero revisamos cuánto falta y desde cuándo, te explicamos la situación y vemos cómo regularizar antes de empezar el servicio mensual normal. El costo de ponerse al día se cotiza aparte.
   - q: ¿Incluye las liquidaciones de sueldo de mis trabajadores?
-    a: La parte de remuneraciones se suma según cuántos trabajadores tengas. Cuéntanos tu caso y lo incluimos en la cotización.
+    a: No están incluidas en la mensualidad base. Las remuneraciones se contratan aparte desde 0,15 UF por trabajador. Cuéntanos tu caso y las cotizamos por separado.
 ---
 
 El valor mensual de un contador para una pyme en Chile no es un número fijo, es un rango que se mueve según cuánto factura tu empresa, qué tipo de sociedad tienes, si tienes trabajadores y qué tan ordenado llega tu mes. Un emprendedor que recién parte y emite pocas boletas no paga lo mismo que una empresa con varios trabajadores, inventario y decenas de facturas al mes. Y está bien que así sea, porque el trabajo detrás es distinto.
 
-Lo que sí podemos hacer es explicarte en simple qué hay detrás de ese precio, para que cuando pidas una cotización sepas qué estás pagando y puedas comparar peras con peras.
+En TomContable, la **contabilidad mensual parte desde 1 UF + IVA** y cubre la operación tributaria mensual estándar: reporte mensual, libros de compra y venta, F29, Estado de Resultados Express, asesoría ilimitada y prebalance gratuito en julio.
+
+Para comparar el **costo anual completo**, considera también los servicios que no están en la base:
+
+- Remuneraciones: desde **0,15 UF por trabajador**, como servicio adicional.
+- Renta anual de la empresa y declaraciones personales de los socios: se pagan aparte.
+- Conciliación bancaria especial: se cotiza aparte.
+- Acreditación de actividad, cuando corresponde: incluida al contratar contabilidad mensual; **$79.000 + IVA sin mensualidad**.
+
+El valor final depende del volumen de movimientos, ventas, régimen tributario, trabajadores, conciliaciones, declaraciones anuales, socios y trámites adicionales. No basta con comparar solo la mensualidad.
 
 ## Por qué no existe un precio único
 
@@ -56,6 +65,6 @@ No te decimos esto para asustarte ni para vender caro. Te lo decimos porque lo h
 
 ## Entonces, cuánto vas a pagar tú
 
-Depende de tu caso, y lo justo es decírtelo de frente en vez de tirarte una cifra al aire que después no se cumple. La forma más rápida de saberlo es contarnos cuánto facturas más o menos al mes, qué tipo de empresa tienes y si tienes trabajadores. Con eso te damos una cotización clara, sin sorpresas y sin letra chica.
+La base parte desde 1 UF + IVA al mes. Para conocer tu valor final, cuéntanos cuánto facturas, tu volumen de movimientos, régimen tributario, si tienes trabajadores y qué servicios adicionales necesitas. Con eso te damos una cotización que separa la mensualidad de remuneraciones, renta anual de empresa y socios, conciliaciones especiales y otros trámites.
 
 Si quieres, escríbenos por WhatsApp y lo vemos en simple. La idea es que pagues por tu tranquilidad, no por un formulario.

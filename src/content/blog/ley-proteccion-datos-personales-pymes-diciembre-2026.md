@@ -22,7 +22,7 @@ faqs:
     a: Debes notificar a la Agencia de Protección de Datos Personales por el medio más expedito posible y sin dilaciones indebidas cuando exista un riesgo razonable para los titulares. Si la brecha afecta datos sensibles, de menores de 14 años, o datos económicos y financieros, también tienes que avisar directamente a las personas afectadas.
 ---
 
-Si tienes una pyme en Chile y manejas datos de clientes, trabajadores o proveedores, esto te toca aunque tengas dos personas contratadas o ninguna. La Ley 21.719 de protección de datos personales entra en vigencia el 1 de diciembre de 2026, reemplaza a la ley que teníamos desde los noventa y no deja fuera a nadie por el tamaño del negocio. Quedan unos 80 días y conviene entender qué cambia de verdad, no solo el titular de la noticia.
+Si tienes una pyme en Chile y manejas datos de clientes, trabajadores o proveedores, esto te toca aunque tengas dos personas contratadas o ninguna. La Ley 21.719 de protección de datos personales entra en vigencia el 1 de diciembre de 2026, reemplaza a la ley que teníamos desde los noventa y no deja fuera a nadie por el tamaño del negocio. Conviene preparar ese cambio antes del 1 de diciembre de 2026 y entender qué cambia de verdad, no solo el titular de la noticia.
 
 ## Qué cambia respecto a la ley que tenías hasta ahora
 

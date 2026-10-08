@@ -3,6 +3,7 @@ title: Cómo se calcula el sueldo líquido en Chile en 2026
 seoTitle: "Cómo se calcula el sueldo líquido en Chile 2026 · TomContable"
 description: "Del sueldo bruto al líquido en Chile 2026: qué descuentos se aplican (AFP, salud, cesantía, impuesto), cuánto le cuesta a la empresa y una calculadora gratis."
 pubDate: 2026-06-20
+updatedDate: 2026-10-07
 lead: Cuando pagas sueldos o estás por contratar, conviene saber qué se descuenta, cuánto recibe líquido el trabajador y, sobre todo, cuánto te cuesta a ti de verdad. Te lo explicamos en simple.
 keyword: cómo se calcula el sueldo líquido en Chile
 servicioHref: /calculadora-sueldo-liquido
@@ -22,6 +23,7 @@ faqs:
     a: Sí. La parte de AFP varía un poco según la comisión de cada administradora, y la de salud depende de si la persona está en Fonasa con el 7% o en una isapre con un plan que puede costar más. Por eso dos trabajadores con el mismo bruto pueden recibir líquidos distintos.
 ---
 
+Ajuste editorial del 7 de octubre de 2026: se aclaran el alcance y los límites de esta guía. No constituye una revisión profesional integral ni acredita vigencia normativa.
 Cuando ofreces un sueldo, casi siempre se habla del monto bruto. Pero lo que efectivamente le llega al trabajador a la cuenta es el líquido, que es bastante menos, y lo que a ti te cuesta es bastante más. Entender cómo se pasa de un número a otro es clave para ofrecer sueldos sin equivocarte y para saber cuánto te cuesta de verdad sumar a alguien al equipo. Te lo explicamos en simple.
 
 ## Bruto, imponible y líquido
@@ -58,8 +60,8 @@ Por eso, cuando contratas a alguien, el costo real es bastante mayor que el líq
 
 ## Calcúlalo tú mismo
 
-Para no hacer estas cuentas a mano, tenemos una [calculadora de sueldo líquido](/calculadora-sueldo-liquido/) gratis y al día con los valores de Previred. Puedes partir del sueldo base y ver el líquido, o al revés, poner el líquido que quieres pagar y ver el bruto necesario para llegar a ese monto. Y también te muestra el costo total para la empresa, no solo lo que recibe el trabajador. Es gratis y sin registro.
+La [calculadora de sueldo líquido](/calculadora-sueldo-liquido/) entrega estimaciones según el mes elegido, los parámetros disponibles y los supuestos indicados en la herramienta. Puedes estimar el líquido desde el sueldo base o el bruto desde un líquido objetivo, junto con un costo de referencia para la empresa. Comprueba el período y la fuente de los indicadores y confirma tasas, topes y condiciones del trabajador antes de liquidar remuneraciones o presupuestar una contratación. Es gratis y sin registro.
 
 Si tu pyme ya tiene trabajadores o estás por contratar al primero, vale la pena tener esto claro desde el principio, para ofrecer sueldos con el número correcto y no descuadrar la caja después.
 
-En TomContable llevamos las remuneraciones como parte de la [contabilidad mensual](/contabilidad-mensual/), así que las liquidaciones de tu equipo quedan al día sin que tengas que estar calculando cada mes.
+En TomContable puedes sumar remuneraciones como servicio adicional a la [contabilidad mensual](/contabilidad-mensual/), desde 0,15 UF por trabajador, fuera de la mensualidad base, para preparar las liquidaciones de tu equipo cada mes.

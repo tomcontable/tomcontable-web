@@ -1,12 +1,12 @@
 ---
 import Base from '../../layouts/Base.astro';
 import CtaFondos from '../../components/CtaFondos.astro';
-import BannerServicios from '../../components/BannerServicios.astro';
+
 import { getCollection } from 'astro:content';
 
 const seo = {
   title: 'Fondos concursables para pymes Chile 2026 · TomContable',
-  description: 'Fondos y subsidios para pymes y emprendedores en Chile 2026: Corfo, Sercotec y más. Cuáles están abiertos, en qué mes abre cada uno, montos, requisitos y el link oficial.',
+  description: 'Fondos y subsidios para pymes y emprendedores en Chile 2026: montos, requisitos y plazos registrados. Confirma vigencia y bases en las fuentes oficiales.',
 };
 
 const hoy = new Date();
@@ -14,14 +14,13 @@ const DIA = 86400000;
 
 const fondos = (await getCollection('fondos', ({ data }) => !data.draft))
   .map((f) => {
-    const abierto = hoy <= f.data.fechaCierre;
-    const dias = Math.ceil((f.data.fechaCierre.getTime() - hoy.getTime()) / DIA);
+    const abierto = false;
+    const dias = 0;
     return { ...f, abierto, dias };
   })
   .sort((a, b) => {
     if (a.abierto !== b.abierto) return a.abierto ? -1 : 1;
-    if (a.abierto) return a.data.fechaCierre.getTime() - b.data.fechaCierre.getTime();
-    return b.data.fechaCierre.getTime() - a.data.fechaCierre.getTime();
+    return (b.data.fechaCierre?.getTime() ?? 0) - (a.data.fechaCierre?.getTime() ?? 0);
   });
 
 // Datos para los contadores del hero
@@ -45,7 +44,7 @@ const resto = fondos.filter((f) => f !== destacado);
 // todo cuando no hay ninguna convocatoria abierta, que es cuando el visitante necesita
 // saber cuándo volver en vez de irse con las manos vacías.
 const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
-const calendario = [...fondos]
+const calendario = fondos.filter((f) => f.data.fechaInicio)
   .sort((a, b) => a.data.fechaInicio.getMonth() - b.data.fechaInicio.getMonth())
   .map((f) => ({
     slug: f.slug,
@@ -57,7 +56,7 @@ const calendario = [...fondos]
   }));
 
 const fmtFecha = (d) =>
-  d.toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' });
+  d ? d.toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }) : 'No acreditado en esta ficha';
 
 const fmtMonto = (m) => {
   if (!m) return null;
@@ -70,10 +69,7 @@ const fmtMonto = (m) => {
 };
 
 const etiquetaPlazo = (f) => {
-  if (!f.abierto) return `Cerró el ${fmtFecha(f.data.fechaCierre)}`;
-  if (f.dias <= 0) return 'Cierra hoy';
-  if (f.dias === 1) return 'Cierra mañana';
-  return `Quedan ${f.dias} días`;
+  return f.data.fechaCierre ? `Cierre registrado: ${fmtFecha(f.data.fechaCierre)}` : 'Consulta el calendario oficial';
 };
 
 const textoBusqueda = (f) =>
@@ -83,10 +79,10 @@ const textoBusqueda = (f) =>
 const faqs = [
   { q: '¿Qué es un fondo concursable?', a: 'Es un aporte de dinero, en general no reembolsable, que el Estado (Corfo, Sercotec, Sence y otros) entrega a emprendedores y pymes que postulan y son seleccionados. Al ser concursable, hay un plazo, requisitos y una evaluación: no todos los que postulan lo reciben, así que conviene preparar bien la postulación y no dejarla para el último día.' },
   { q: '¿Los fondos concursables hay que devolverlos?', a: 'La mayoría de los fondos de Corfo y Sercotec son subsidios no reembolsables: no se devuelven si usas la plata para lo comprometido y rindes correctamente. Aun así, siempre revisa las bases de cada convocatoria, porque algunos instrumentos tienen condiciones especiales.' },
-  { q: '¿Necesito tener empresa para postular?', a: 'Depende del fondo. Los de etapa temprana (Capital Semilla, Capital Abeja, Semilla Inicia) suelen ser para quienes aún no formalizan actividades. Los de crecimiento (Fondo Crece, Kit Digital, Escalamiento) exigen inicio de actividades en primera categoría y, muchas veces, cierta antigüedad y nivel de ventas. En TomContable te ayudamos a iniciar actividades o constituir tu empresa para que cumplas el requisito.' },
-  { q: '¿Puedo postular si tengo deudas o problemas con el SII?', a: 'Casi todos los fondos exigen estar sin deudas laborales, previsionales ni tributarias, y sin observaciones en el SII. Una carta, un IVA observado o un bloqueo pueden dejarte fuera. Si es tu caso, lo mejor es regularizar antes de que cierre la convocatoria; nosotros revisamos y ordenamos tu situación.' },
-  { q: '¿TomContable postula por mí a estos fondos?', a: 'No tramitamos las postulaciones: esta sección es información para que tu pyme no se quede fuera de plazo. Lo que sí hacemos es dejarte listo para postular: empresa formalizada, contabilidad al día y situación tributaria sin observaciones, que es donde se cae la mayoría.' },
-  { q: '¿Cada cuánto se abren nuevos fondos?', a: 'Corfo y Sercotec abren convocatorias durante todo el año, muchas veces por región y por rubro. Un fondo que hoy está cerrado suele repetirse más adelante. Por eso vale la pena revisar esta página seguido y tener la parte administrativa resuelta con anticipación.' },
+  { q: '¿Necesito tener empresa para postular?', a: 'Depende de las bases, la región y la etapa del fondo. Hay convocatorias para personas sin inicio de actividades en primera categoría y otras para empresas que ya operan. Antes de iniciar actividades o constituir una empresa, verifica qué exige tu convocatoria. Constituir una sociedad e iniciar actividades son trámites distintos; contratar un servicio no garantiza elegibilidad.' },
+  { q: '¿Puedo postular si tengo deudas o problemas con el SII?', a: 'Depende de las bases de cada convocatoria. Revisa las restricciones sobre deudas laborales, previsionales y tributarias y los antecedentes exigidos. Una observación del SII no permite concluir por sí sola si eres elegible; confirma tu caso en las bases oficiales antes de contratar servicios.' },
+  { q: '¿TomContable postula por mí a estos fondos?', a: 'No tramitamos las postulaciones. Esta sección ofrece información y enlaces a las convocatorias oficiales. Si necesitas un servicio contable o de constitución, revisa primero las bases y después el alcance y las condiciones del servicio. Contratarlo no garantiza elegibilidad ni adjudicación.' },
+  { q: '¿Cada cuánto se abren nuevos fondos?', a: 'Las fechas dependen de cada institución, región y programa. Una convocatoria cerrada no garantiza una nueva apertura. Consulta las fuentes oficiales y prepara antecedentes, pero revisa las bases antes de constituir una empresa o iniciar actividades.' },
 ];
 
 const breadcrumb = {
@@ -129,34 +125,34 @@ const faqSchema = {
       <div class="hero-txt">
       <p class="eyebrow">Fondos concursables · Chile 2026</p>
       <h1>Fondos concursables para pymes en Chile</h1>
-      <p class="lead">El mapa, siempre al día, de los fondos y subsidios de Corfo, Sercotec y otras instituciones para emprender, crecer, innovar o digitalizar tu pyme. Con monto, fecha de cierre, requisitos mínimos y el link oficial para postular. Para que el que te sirve no se te pase por no enterarte a tiempo.</p>
+      <p class="lead">Una selección de fondos y subsidios de Corfo, Sercotec y otras instituciones para emprender, crecer, innovar o digitalizar tu pyme. Incluye montos, requisitos y fechas históricas registradas, con enlaces oficiales. No inferimos disponibilidad actual a partir de esas fechas: confirma la vigencia, tu región y las bases antes de postular o formalizar.</p>
 
       {abiertosCount === 0 && (
         <p class="aviso-cerrado">
-          <strong>Hoy no hay convocatorias abiertas.</strong> No es un descuido nuestro: Corfo y Sercotec concentran sus llamados en el primer semestre, y en la segunda mitad del año quedan en pausa hasta la próxima temporada. Más abajo tienes en qué mes abrió cada fondo este año, que es la mejor señal de cuándo conviene volver a mirar.
+          <strong>Esta selección no acredita convocatorias abiertas actualmente.</strong> Esto no significa que no existan convocatorias disponibles. Consulta las fuentes oficiales para confirmar aperturas, extensiones y disponibilidad por región.
         </p>
       )}
 
       <div class="stats">
         <div class="stat">
           <span class="stat-num" data-cifra={abiertosCount}>{abiertosCount}</span>
-          <span class="stat-lbl">abiertos ahora</span>
+          <span class="stat-lbl">aperturas actuales acreditadas en esta selección</span>
         </div>
         <div class="stat">
           <span class="stat-num" data-cifra={totalFondos}>{totalFondos}</span>
-          <span class="stat-lbl">fondos monitoreados</span>
+          <span class="stat-lbl">fichas informativas</span>
         </div>
         {montoTotalAbierto > 0 && (
           <div class="stat">
             <span class="stat-num" data-cifra={Math.round(montoTotalAbierto / 1000000)} data-pref="$" data-suf="M">${Math.round(montoTotalAbierto / 1000000)}M</span>
-            <span class="stat-lbl">en juego hoy</span>
+            <span class="stat-lbl">montos de referencia</span>
           </div>
         )}
       </div>
       </div>
       <div class="autor-chip">
         <img src="/img/foto-tom.jpg" alt="Tom, Contador Colegiado y fundador de TomContable" width="52" height="52" />
-        <div><b>Revisado por Tom</b><span>Ingeniero Comercial y Contador Colegiado</span></div>
+        <div><b>TomContable</b><span>Información orientativa · Confirma las bases oficiales</span></div>
       </div>
     </div>
   </section>
@@ -187,8 +183,8 @@ const faqSchema = {
 
   <section class="sec-cal">
     <div class="wrap">
-      <h2 class="cal-titulo">En qué mes abre cada fondo</h2>
-      <p class="cal-bajada">Estas son las fechas en que se abrió cada convocatoria durante 2026. Las instituciones suelen repetir sus llamados en fechas parecidas, así que sirven para calcular cuándo volver a revisar y, sobre todo, para llegar con los papeles listos antes de que abra.</p>
+      <h2 class="cal-titulo">Meses de apertura registrados</h2>
+      <p class="cal-bajada">Estas son las fechas de apertura registradas para las convocatorias de 2026 incluidas en esta selección. Sirven como referencia histórica, no como pronóstico de nuevos llamados. Antes de adelantar trámites, revisa qué exige cada convocatoria y en qué etapa.</p>
       <ol class="cal-lista">
         {calendario.map((c) => (
           <li>
@@ -199,7 +195,7 @@ const faqSchema = {
           </li>
         ))}
       </ol>
-      <p class="cal-nota">Fechas de las convocatorias 2026. Las de 2027 no están publicadas todavía, así que estas son referenciales: confirma siempre en el sitio oficial de la institución antes de contar con un plazo.</p>
+      <p class="cal-nota">Las fechas registradas no confirman convocatorias de 2027 ni futuras reaperturas: consulta el sitio oficial de la institución antes de contar con un plazo.</p>
     </div>
   </section>
 
@@ -218,7 +214,7 @@ const faqSchema = {
           <label class="toggle">
             <input id="soloAbiertos" type="checkbox" />
             <span class="toggle-track"><span class="toggle-dot"></span></span>
-            <span class="toggle-lbl">Solo abiertos</span>
+            <span class="toggle-lbl">Solo con apertura actual acreditada</span>
           </label>
         </div>
       </div>
@@ -240,7 +236,7 @@ const faqSchema = {
             <div class="card-top">
               <span class="tag-inst">{f.data.institucion}</span>
               <span class={`cat cat-${f.data.categoria.toLowerCase()}`}>{f.data.categoria}</span>
-              <span class={`estado ${f.abierto ? 'abierto' : 'cerrado'}`}>{f.abierto ? 'Abierto' : 'Cerrado'}</span>
+              <span class="estado cerrado">{f.data.estadoVerificado === 'cerrado' ? 'Convocatoria cerrada' : 'Disponibilidad por confirmar'}</span>
             </div>
             <h2>{f.data.title}</h2>
             <p class="card-lead">{f.data.beneficio}</p>
@@ -265,21 +261,21 @@ const faqSchema = {
     <div class="wrap angosto">
       <h2>Cómo aprovechar los fondos concursables para tu pyme</h2>
       <p>Cada año, Corfo, Sercotec, Sence y otras instituciones reparten miles de millones de pesos en <strong>fondos concursables y subsidios</strong> para que los emprendedores y las pymes de Chile puedan partir, formalizarse, comprar máquinas, digitalizarse o dar el salto a otro tamaño. La mayoría son aportes <strong>no reembolsables</strong>: plata que no se devuelve si la usas en lo comprometido y rindes bien.</p>
-      <p>El problema casi nunca es la falta de fondos, sino enterarse a tiempo y <strong>llegar al cierre cumpliendo los requisitos</strong>. Por eso armamos esta página: para que veas de un vistazo qué está abierto, cuánto entrega, hasta cuándo puedes postular y qué te van a pedir.</p>
+      <p>Esta página reúne referencias de montos, requisitos y fechas históricas. No es un registro certificado de convocatorias abiertas. Antes de presupuestar un aporte o realizar trámites, confirma la disponibilidad y las bases regionales en la fuente oficial.</p>
 
-      <h3>Los requisitos que se repiten (y donde se cae la mayoría)</h3>
-      <p>Cambian de un fondo a otro, pero casi todos revisan lo mismo:</p>
+      <h3>Aspectos que debes revisar en las bases</h3>
+      <p>Las condiciones cambian entre convocatorias. Comprueba, cuando corresponda:</p>
       <ul>
-        <li><strong>Formalización:</strong> según la etapa, te piden <em>no</em> tener inicio de actividades (fondos para emprender) o justamente <em>sí</em> tenerlo, con cierta antigüedad (fondos para crecer).</li>
-        <li><strong>Situación tributaria al día:</strong> sin deudas con el SII, sin IVA observado y sin cartas ni bloqueos pendientes.</li>
-        <li><strong>Sin deudas laborales ni previsionales:</strong> cotizaciones e impuestos de tus trabajadores pagados.</li>
+        <li><strong>Formalización:</strong> algunas convocatorias exigen <em>no</em> tener inicio de actividades en primera categoría y otras exigen tenerlo, con cierta antigüedad. No deduzcas el requisito solo por la categoría del fondo: revisa las bases.</li>
+        <li><strong>Situación tributaria:</strong> revisa las restricciones sobre deudas y los antecedentes exigidos; una observación no determina por sí sola la elegibilidad.</li>
+        <li><strong>Obligaciones laborales y previsionales:</strong> revisa los requisitos y certificados exigidos por la convocatoria.</li>
         <li><strong>Nivel de ventas:</strong> varios exigen un rango de ventas anuales (en UF) para calzar con el instrumento.</li>
         <li><strong>Un buen proyecto:</strong> qué problema resuelves, en qué gastarás la plata y qué resultado esperas.</li>
       </ul>
-      <p>Los tres primeros son administrativos y se resuelven con anticipación. Es exactamente donde entra TomContable: te dejamos con la <a href="/constitucion-de-empresas/">empresa formalizada</a>, la <a href="/contabilidad-mensual/">contabilidad al día</a> y, si hace falta, tu <a href="/problemas-con-el-sii/">situación con el SII regularizada</a>, para que la postulación no se caiga por un papel.</p>
+      <p>Revisa las bases antes de realizar trámites: iniciar actividades no es un requisito universal y puede ser incompatible con una convocatoria para personas sin inicio de actividades en primera categoría. Si después de revisar tu caso necesitas apoyo, puedes conocer el alcance de <a href="/constitucion-de-empresas/">constitución de empresas</a>, <a href="/contabilidad-mensual/">contabilidad mensual</a> o <a href="/problemas-con-el-sii/">revisión de tu situación con el SII</a>. Son servicios distintos de la postulación y no garantizan admisibilidad ni adjudicación.</p>
 
       <h3>Cómo elegir el fondo correcto</h3>
-      <p>Parte por tu momento: si todavía no facturas, mira los de <strong>emprender</strong> (Capital Semilla, Capital Abeja, Semilla Inicia). Si ya tienes empresa y quieres invertir, revisa los de <strong>crecer</strong> o <strong>digitalizar</strong> (Fondo Crece, Kit Digital, Escalamiento). Usa los filtros de arriba por objetivo e institución, y ordena tu postulación con tiempo: los buenos proyectos se preparan semanas antes del cierre, no el último día.</p>
+      <p>Usa las categorías <strong>emprender</strong>, <strong>crecer</strong> o <strong>digitalizar</strong> como orientación, no como prueba de elegibilidad. No facturar no equivale a no tener inicio de actividades, y tener empresa no garantiza cumplir los requisitos. Compara las bases oficiales, la región, la etapa y los plazos antes de realizar trámites.</p>
     </div>
   </section>
 
@@ -297,11 +293,7 @@ const faqSchema = {
     </div>
   </section>
 
-  <section class="sec-banner">
-    <div class="wrap">
-      <BannerServicios orden={['constitucion', 'contabilidad', 'sii', 'proyeccion', 'asesorias']} />
-    </div>
-  </section>
+
 
   <section class="paseo-final">
     <div class="wrap">

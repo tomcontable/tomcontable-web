@@ -126,7 +126,7 @@ const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year
     {respuestaRapida && (
       <div class="resp-rapida">
         <p><strong>Respuesta rápida:</strong> <span set:html={respuestaRapida} /></p>
-        <p class="resp-fecha">Última actualización: {actualizado}.{fuente ? ` Fuente: ${fuente}.` : ''}</p>
+        <p class="resp-fecha">Página generada en {actualizado}; esta fecha no acredita revisión normativa.{fuente ? ` Fuente: ${fuente}.` : ''}</p>
       </div>
     )}
     {secciones.map((s) => (

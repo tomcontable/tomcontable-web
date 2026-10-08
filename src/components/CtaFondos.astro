@@ -1,29 +1,29 @@
 ---
 // Puente honesto entre los fondos concursables y los servicios de TomContable.
-// Casi todos estos fondos exigen inicio de actividades, empresa formalizada,
-// contabilidad al dia o estar sin deudas con el SII. Eso es justo lo que hacemos.
+// No inferir elegibilidad por categoria: revisar las bases antes de formalizar.
+// El enlace a un servicio no garantiza admisibilidad ni adjudicacion.
 // Reutilizable en el listado y en cada ficha. La prop "compacto" reduce el bloque
 // para la ficha (donde ya hay mucho contenido).
 const { compacto = false, titulo, bajada } = Astro.props;
 
 const puntos = [
   {
-    req: 'Casi todos piden inicio de actividades o empresa formalizada',
-    servicio: 'Te dejamos con inicio de actividades o tu empresa constituida y lista para postular.',
-    cta: 'Iniciar actividades o constituir',
+    req: 'Antes de formalizar, revisa las bases de tu convocatoria',
+    servicio: 'Constituir una empresa e iniciar actividades son trámites distintos. Revisa si corresponden y en qué etapa antes de realizarlos.',
+    cta: 'Conocer el servicio de constitución',
     href: '/constitucion-de-empresas',
     icono: 'M3 21h18M5 21V7l8-4v18M19 21V11l-6-3M9 9h.01M9 12h.01M9 15h.01',
   },
   {
-    req: 'Varios exigen la contabilidad al día y sin deudas',
-    servicio: 'Llevamos tu IVA, F29 y remuneraciones al día, para que llegues a postular sin observaciones.',
-    cta: 'Ordenar mi contabilidad',
+    req: '¿Tu empresa necesita apoyo contable?',
+    servicio: 'Consulta el alcance, las condiciones y los servicios adicionales de la contabilidad mensual. Contratarla no garantiza cumplir las bases del fondo.',
+    cta: 'Ver alcance de contabilidad',
     href: '/contabilidad-mensual',
     icono: 'M9 17V7m4 10V4m4 13v-6M4 21h16',
   },
   {
     req: '¿Tienes una carta, un IVA observado o un bloqueo del SII?',
-    servicio: 'Regularizamos tu situación tributaria antes de que te deje fuera de la postulación.',
+    servicio: 'Conoce el servicio de revisión tributaria. La admisibilidad y los plazos dependen de las bases y de la institución convocante.',
     cta: 'Revisar mi caso con el SII',
     href: '/problemas-con-el-sii',
     icono: 'M12 9v4m0 4h.01M10.29 3.86l-8.48 14.7A2 2 0 003.53 21h16.94a2 2 0 001.72-3.44l-8.48-14.7a2 2 0 00-3.42 0z',
@@ -32,12 +32,12 @@ const puntos = [
 
 const waMsg = encodeURIComponent('Hola, quiero postular a un fondo y necesito ayuda para cumplir los requisitos (empresa, contabilidad o SII).');
 ---
-<section class={`cf ${compacto ? 'cf-mini' : ''}`} aria-label="Cómo te ayuda TomContable a postular">
+<section class={`cf ${compacto ? 'cf-mini' : ''}`} aria-label="Revisa las bases antes de contratar servicios">
   <div class="cf-box">
     <div class="cf-head">
-      <span class="cf-eyebrow">Llega a postular con todo en regla</span>
-      <h2>{titulo ?? '¿Te falta algo para postular? Nosotros lo dejamos listo'}</h2>
-      <p>{bajada ?? 'Estos fondos no los tramita TomContable, pero casi ninguno se puede postular sin la empresa formalizada, la contabilidad al día y la situación tributaria sin observaciones. En eso sí te acompañamos, para que el subsidio no se te escape por un requisito administrativo.'}</p>
+      <span class="cf-eyebrow">Primero las bases, después los trámites</span>
+      <h2>{titulo ?? 'Revisa qué exige tu convocatoria antes de formalizar'}</h2>
+      <p>{bajada ?? 'TomContable no tramita postulaciones. Antes de iniciar actividades o constituir una empresa, revisa las bases oficiales de tu región y la etapa del fondo: no todos exigen lo mismo. Contratar un servicio no garantiza elegibilidad ni adjudicación.'}</p>
     </div>
 
     <div class="cf-grid">

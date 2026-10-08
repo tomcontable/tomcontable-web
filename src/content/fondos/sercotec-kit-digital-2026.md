@@ -6,7 +6,7 @@ keyword: "kit digital sercotec 2026"
 institucion: "Sercotec"
 categoria: "Digitalizar"
 montoMax: 1200000
-resumen: "Kit Digital es el fondo de Sercotec para pymes que ya completaron el programa gratuito Ruta Digital y quieren invertir en herramientas tecnológicas. Entrega $1.200.000 no reembolsables. La convocatoria 2026 estuvo abierta entre el 16 y el 26 de junio, y ya cerró."
+resumen: "Kit Digital es el fondo de Sercotec para pymes que ya completaron el programa gratuito Ruta Digital y quieren invertir en herramientas tecnológicas. Contempla $1.200.000 no reembolsables, sujetos a las bases. Esta ficha registra fechas del 16 al 26 de junio de 2026, ya transcurridas; no acredita disponibilidad actual ni nuevas convocatorias. Consulta la fuente oficial."
 fechaInicio: 2026-06-16
 fechaCierre: 2026-06-26
 beneficio: "Subsidio de $1.200.000 para activos intangibles: sitio web, sistema de administración del negocio (CRM o ERP), facturación electrónica o marketing digital."
@@ -19,7 +19,7 @@ link: "https://www.sercotec.cl/ruta-digital/"
 fuenteTexto: "Ministerio de Economía, Fomento y Turismo"
 fuenteHref: "https://www.economia.gob.cl/2026/06/18/sercotec-lanza-fondo-kit-digital-al-cual-podran-postular-cerca-de-4-mil-pymes.htm"
 pubDate: 2026-07-01
-updatedDate: 2026-08-06
+updatedDate: 2026-10-07
 faqs:
   - q: "¿Para quién es Kit Digital?"
     a: "Para pymes con inicio de actividades en primera categoría y ventas netas anuales de hasta 25.000 UF, que ya completaron el programa gratuito Ruta Digital."

@@ -26,7 +26,7 @@ const webSite = {
 const problemas = [
   {
     frase: 'Quiero partir mi propia empresa',
-    resp: 'Te la entregamos constituida, iniciada ante el SII y lista para facturar*. Tú eliges el nombre; nosotros hacemos todo lo demás.',
+    resp: 'Constitución e inicio de actividades ante el SII. Acreditación incluida con contabilidad mensual; sin mensualidad, $79.000 + IVA adicionales. Facturación sujeta a autorización del SII.',
     precio: '$159.900 + IVA',
     nota: 'hasta en 3 cuotas sin interés',
     href: '/constitucion-de-empresas',
@@ -34,7 +34,7 @@ const problemas = [
   },
   {
     frase: 'Necesito que alguien lleve mi mes',
-    resp: 'Nuestro plan principal: F29, libros y reporte mensual claro, con asesoría ilimitada por WhatsApp. Si tienes equipo, también podemos integrar remuneraciones como servicio adicional.',
+    resp: 'Nuestro plan principal: F29, libros y reporte mensual claro, con asesoría ilimitada por WhatsApp. Remuneraciones como servicio adicional desde 0,15 UF por trabajador; renta anual de empresa y socios y conciliación bancaria especial aparte.',
     precio: 'Desde 1 UF + IVA',
     nota: 'al mes, según tu empresa y ventas',
     href: '/contabilidad-mensual',
@@ -51,7 +51,7 @@ const problemas = [
   },
   {
     frase: 'Quiero saber cuánto pagaré en abril',
-    resp: 'Proyectamos el impuesto de tu empresa y de cada socio con meses de anticipación, cuando todavía puedes tomar decisiones.',
+    resp: 'Antes del cierre, proyectamos para planificar decisiones del ejercicio. Después del cierre, estimamos el impuesto de tu empresa y de cada socio para preparar la declaración, sin cambiar retroactivamente operaciones.',
     precio: 'Desde $79.000 + IVA',
     nota: 'antes de que llegue la cuenta',
     href: '/proyeccion-tributaria',
@@ -69,9 +69,9 @@ const problemas = [
 
 // FAQ visible espejada para FAQPage (las dudas reales antes de que las piensen).
 const faqs = [
-  { q: '¿Cuánto cuesta la contabilidad mensual?', a: 'Los planes parten en 1 UF + IVA al mes (unos $40.800) y el valor final depende de tu tipo de empresa y tus ventas. Te lo decimos claro y por escrito antes de empezar, sin sorpresas después.' },
-  { q: '¿Qué incluye el plan mensual?', a: 'Incluye reporte mensual, libros de compra y venta, F29, Estado de Resultados Express, asesoría ilimitada por WhatsApp y prebalance gratuito en julio. No incluye conciliación bancaria, liquidaciones de sueldo ni operación renta anual; esos servicios se cotizan y cobran por separado según el caso.' },
-  { q: '¿Qué tan rápido responden?', a: 'Por WhatsApp, en horario hábil, lo antes posible y siempre dentro del día. Una duda puntual no debería esperar una semana: esa es la razón por la que existimos.' },
+  { q: '¿Cuánto cuesta la contabilidad mensual?', a: 'Los planes parten desde 1 UF + IVA al mes. El valor final depende de tu empresa, ventas, volumen de movimientos, régimen tributario y servicios adicionales. Te lo decimos claro y por escrito antes de empezar.' },
+  { q: '¿Qué incluye el plan mensual?', a: 'Incluye reporte mensual, libros de compra y venta, F29, Estado de Resultados Express, asesoría ilimitada por WhatsApp y prebalance gratuito en julio. La conciliación bancaria especial y la renta anual de empresa y socios se cobran aparte. Las remuneraciones son adicionales desde 0,15 UF por trabajador.' },
+  { q: '¿Qué tan rápido responden?', a: 'Respondemos por WhatsApp en horario hábil, con atención cercana y seguimiento de tu consulta. Confirma con nosotros los tiempos de atención aplicables a tu servicio; dependen del alcance y la complejidad de lo que necesitas.' },
   { q: 'Ya tengo un problema con el SII, ¿me pueden ayudar igual?', a: 'Sí, es uno de nuestros servicios más pedidos. Revisamos tu situación completa (3 UF + IVA), encontramos el origen del problema y te decimos qué hacer. Muchos de nuestros clientes mensuales llegaron así.' },
   { q: '¿Trabajan con negocios como el mío?', a: 'Atendemos emprendedores, profesionales independientes y pymes de todos los rubros, en todo Chile, 100% online. Si recién estás partiendo o llevas años funcionando, el plan se ajusta a tu momento.' },
 ];
@@ -89,10 +89,10 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
         </a>
         <p class="h2-kicker">Contabilidad para pymes y emprendedores en Chile</p>
         <h1>Tus impuestos en orden.<br />Tu cabeza, <span class="h2-marca">en tu negocio</span>.</h1>
-        <p class="h2-lead">Somos el equipo contable detrás de la cuenta que ya sigues. Llevamos tu empresa mes a mes: declaraciones a tiempo, respuestas el mismo día y alguien mirando el detalle antes de que se vuelva multa.</p>
+        <p class="h2-lead">Somos TomContable, un equipo contable para emprendedores y pymes en Chile. Llevamos tu empresa mes a mes: declaraciones a tiempo, atención cercana por WhatsApp y alguien mirando el detalle antes de que se vuelva multa, con el alcance y los canales de atención acordados.</p>
         <p class="h2-lema"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2 14.5 9.5 22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5z"/></svg>Más que contabilidad, tranquilidad.</p>
         <div class="h2-cta-row">
-          <BotonWhatsApp texto="Conversemos tu caso" mensaje="Hola Tom, vengo de Instagram y quiero ordenar la contabilidad de mi negocio" />
+          <BotonWhatsApp texto="Conversemos tu caso" mensaje="Hola Tom, vengo desde la web y quiero ordenar la contabilidad de mi negocio" />
           <a class="btn btn-ghost" href="#h2-servicios">Ver servicios y precios</a>
         </div>
         <ul class="h2-micro">
@@ -108,7 +108,7 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
           <img src="/img/foto-tom.jpg" alt="Tom, contador para pymes y emprendedores, fundador de TomContable" width="520" height="390" />
           <div class="photo-badge">
             <span class="stars">★★★★★</span>
-            <div><b>5,0</b><br><small>124 evaluaciones</small></div>
+            <div><b>5,0</b><br><small>125 evaluaciones visibles</small></div>
           </div>
           <div class="photo-chip"><span class="wa"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.82 11.82 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24z"/></svg></span>Respondemos por WhatsApp</div>
         </div>
@@ -119,10 +119,10 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
   <!-- ============ PRUEBA SOCIAL ============ -->
   <div class="proof">
     <div class="wrap proof-grid">
-      <div><span class="n" data-cifra="5.0" data-dec="1">5,0</span><span class="l">en Encuadrado, 124 evaluaciones</span></div>
+      <div><span class="n" data-cifra="5.0" data-dec="1">5,0</span><span class="l">en Encuadrado, 125 evaluaciones visibles</span></div>
       <div><span class="n" data-cifra="300" data-pref="+">+300</span><span class="l">empresas constituidas</span></div>
       <div><span class="n" data-cifra="1000" data-pref="+" data-miles>+1.000</span><span class="l">emprendedores asesorados</span></div>
-      <div><span class="n" data-cifra="98" data-suf="K">98K</span><span class="l">en Instagram</span></div>
+      <div><span class="n" data-cifra="100" data-suf="K">100K</span><span class="l">en Instagram</span></div>
     </div>
   </div>
 
@@ -164,7 +164,7 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
           <div class="h2-mes-cta">
             <div class="h2-mes-precio">
               <span class="h2-precio-monto">Desde 1 UF + IVA al mes</span>
-              <span class="h2-precio-eq">unos $40.800 · el valor exacto depende de tu empresa y tus ventas</span>
+              <span class="h2-precio-eq">El valor final depende de tu empresa y sus necesidades. Remuneraciones, renta anual de empresa y socios y conciliación bancaria especial aparte.</span>
             </div>
             <span class="h2-cta-glow">
               <BotonWhatsApp texto="Quiero cotizar mi plan" mensaje="Hola, quiero cotizar contabilidad mensual para mi empresa" clase="btn-wa h2-cta-big" />
@@ -199,7 +199,7 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
               </a>
             </div>
           </div>
-          <p class="h2-phone-nota">Conversación recreada a partir de casos reales de clientes.</p>
+          <p class="h2-phone-nota">Conversación recreada a partir de casos reales de clientes. Los tiempos del ejemplo no son un plazo garantizado de atención o resolución.</p>
         </div>
       </div>
     </div>
@@ -246,13 +246,13 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
     <div class="wrap h2-tom-grid">
       <div class="h2-tom-media">
         <img src="/img/foto-tom.jpg" alt="Tom, Ingeniero Comercial y Contador Colegiado, fundador de TomContable" width="520" height="390" loading="lazy" />
-        <span class="h2-tom-sello">La misma cara que ves en Instagram</span>
+        <span class="h2-tom-sello">También nos encuentras en Instagram</span>
       </div>
       <div>
         <p class="eyebrow">Quiénes somos</p>
         <h2>No contratas solo a Tom. Contratas una forma de trabajar.</h2>
         <p>Tom es la cara visible: Ingeniero Comercial y Contador Colegiado, más de 12 años ayudando a emprendedores chilenos a entender sus impuestos sin tecnicismos. La misma voz de los videos es la que define cómo se trabaja acá.</p>
-        <p>Detrás hay un equipo de contadores auditores y profesionales tributarios que puede acompañar tu empresa mes a mes: impuestos, reportes, operación renta y, si corresponde, remuneraciones y apoyo laboral como servicios adicionales. Tu contabilidad no depende de la agenda de una sola persona.</p>
+        <p>Detrás hay un equipo de contadores auditores y profesionales tributarios que puede acompañar tu empresa mes a mes con impuestos y reportes. La operación renta de empresa y socios, las remuneraciones y el apoyo laboral se contratan como servicios adicionales. Tu contabilidad no depende de la agenda de una sola persona.</p>
         <div class="h2-creds">
           <span>Ingeniero Comercial</span>
           <span>Contador Colegiado</span>
@@ -290,7 +290,7 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
       <div class="h2-cierre-cta">
         <BotonWhatsApp texto="Hablar por WhatsApp ahora" mensaje="Hola Tom, quiero ordenar mi contabilidad, les cuento mi caso" />
       </div>
-      <p class="h2-cierre-nota">Respondemos el mismo día, en horario hábil.</p>
+      <p class="h2-cierre-nota">Atención por WhatsApp en horario hábil, con tiempos de respuesta según tu servicio y consulta.</p>
     </div>
   </section>
 

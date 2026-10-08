@@ -4,7 +4,7 @@ import BotonWhatsApp from '../components/BotonWhatsApp.astro';
 
 const seo = {
   title: 'Proyección Tributaria: llega a abril sabiendo cuánto pagas · TomContable',
-  description: 'Antes del cierre del año proyectamos cuánto pagará tu empresa y cada socio. Informe claro y Excel de escenarios. Desde $79.000 + IVA.',
+  description: 'Planifica antes del cierre; después, estima el impuesto y prepara la declaración sin cambiar operaciones del año cerrado. Desde $79.000 + IVA.',
 };
 
 const sinSueldos = 'https://tomcontable.parrotfy.com/e/proyeccion-tributaria';
@@ -18,7 +18,7 @@ const servicio = {
   "serviceType": "Proyección y planificación tributaria",
   "provider": { "@type": "Organization", "name": "TomContable" },
   "areaServed": { "@type": "Country", "name": "Chile" },
-  "description": "Proyección del resultado tributario de la empresa y del impuesto personal de cada socio antes del cierre del año, con informe claro y Excel de escenarios.",
+  "description": "Proyección del resultado tributario de la empresa y del impuesto personal de cada socio, con informe claro y Excel de escenarios. Antes del cierre permite planificar decisiones del ejercicio; después, estimar el impuesto y preparar la declaración, sin cambiar retroactivamente operaciones del año cerrado.",
   "offers": [
     { "@type": "Offer", "price": "79000", "priceCurrency": "CLP", "description": "Proyección tributaria sin sueldos, $79.000 + IVA" },
     { "@type": "Offer", "price": "99000", "priceCurrency": "CLP", "description": "Proyección tributaria con sueldos, $99.000 + IVA" }
@@ -29,9 +29,9 @@ const servicio = {
 const faqs = [
   { q: '¿Cuál es la diferencia entre con y sin sueldos?', a: 'La diferencia está en si tu empresa paga cotizaciones en Previred. Si tiene trabajadores contratados o sueldo patronal (es decir, paga Previred), te corresponde la versión con sueldos. Si no paga cotizaciones, la versión sin sueldos.' },
   { q: '¿Tengo que enviarles información?', a: 'No. El reporte se hace con los documentos que ya están en tu portal del SII. Si necesitas reflejar gastos que no están ahí, lo cotizamos aparte por WhatsApp.' },
-  { q: '¿En qué se diferencia de la operación renta?', a: 'La proyección es antes del cierre del año, para que alcances a tomar decisiones. La operación renta es la declaración formal en abril. La proyección te prepara para llegar bien a esa fecha.' },
+  { q: '¿En qué se diferencia de la operación renta?', a: 'Antes del cierre, la proyección permite planificar decisiones del ejercicio. Después del cierre, permite estimar el impuesto y preparar la declaración, sin cambiar retroactivamente operaciones. La operación renta es la declaración formal en abril.' },
   { q: '¿Sirve si tengo problemas con el SII?', a: 'La proyección es para planificar. Si lo que necesitas es revisar observaciones o inconsistencias ya existentes, eso es nuestra revisión de situación tributaria.' },
-  { q: '¿Cuándo conviene hacer la proyección?', a: 'Lo ideal es antes del cierre del año, entre octubre y enero, cuando todavía puedes tomar decisiones que bajen la cuenta. Después de diciembre el resultado ya está jugado y solo queda declarar lo que salga.' },
+  { q: '¿Cuándo conviene hacer la proyección?', a: 'Para planificar decisiones del ejercicio, conviene hacerla antes del cierre del año, por ejemplo entre octubre y diciembre, considerando los plazos de cada operación. En enero, una vez cerrado ese ejercicio, sirve para estimar el impuesto y preparar la declaración, no para cambiar retroactivamente operaciones del año cerrado.' },
   { q: '¿Qué me entregan al final?', a: 'Un informe claro con cuánto pagaría tu empresa y cada socio, más un Excel con los escenarios, para que veas el efecto de cada decisión antes de tomarla.' },
 ];
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
@@ -47,7 +47,7 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
     <div class="wrap">
       <p class="eyebrow">Proyección Tributaria</p>
       <h1>Llega a abril sabiendo cuánto va a pagar tu empresa.</h1>
-      <p class="lead">Antes de que cierre el año revisamos tus números en el SII y proyectamos tu resultado tributario. Así sabes con tiempo si tu empresa va a pagar o le van a devolver en abril, y cómo queda la renta personal de cada socio. Con ese número en la mano todavía alcanzas a actuar. Y mientras antes la hagas, mejor: cada mes que pasa se cierra alguna puerta para ajustar, y en diciembre varias ya no se pueden abrir.</p>
+      <p class="lead">Revisamos tus números en el SII y proyectamos tu resultado tributario para estimar cuánto pagaría tu empresa en abril y cómo queda la renta personal de cada socio. Antes del cierre del año, te ayuda a planificar decisiones del ejercicio considerando los plazos de cada operación. Después del cierre, incluido enero, te ayuda a estimar el impuesto y preparar la declaración: no permite cambiar retroactivamente operaciones del año cerrado.</p>
       <div class="cta-row">
         <a class="btn btn-amber" href="#precio">Quiero mi proyección</a>
         <BotonWhatsApp texto="Tengo dudas" mensaje={waMsg} clase="btn-ghost" />
@@ -59,7 +59,7 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   <section class="sec">
     <div class="wrap">
       <div class="sec-head"><h2>Para qué te sirve saberlo antes</h2>
-      <p>Con la proyección en la mano puedes hacer lo que en abril ya no alcanza:</p></div>
+      <p>Antes del cierre puedes evaluar decisiones para el ejercicio en curso, según los plazos y requisitos aplicables. Después del cierre, el foco es estimar el impuesto y preparar la caja y la declaración, no cambiar retroactivamente operaciones:</p></div>
       <div class="cards-3">
         <div class="card"><div class="card-head"><span class="ico"><svg viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></span><h3>Ajustar tu PPM</h3></div><p>Si estás adelantando de más, lo bajas a tiempo y no le prestas plata al SII sin necesidad.</p></div>
         <div class="card"><div class="card-head"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg></span><h3>Sumar gastos</h3></div><p>Incorporas gastos que estabas dejando fuera y que reducen tu carga.</p></div>
@@ -108,7 +108,7 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
         <div class="tst"><span class="stars">★★★★★</span><p>"Nos ayudó a aclarar varias dudas que teníamos y además nos dio recomendaciones. Como siempre, 10 de 10. Tom y su equipo son tremendos profesionales y nos dan la tranquilidad, como empresa, de tener nuestros números en orden."</p><span class="who">Claudio Gómez</span></div>
         <div class="tst"><span class="stars">★★★★★</span><p>"Muy claro, preciso, y lo principal es que al transmitir su conocimiento genera tranquilidad, que es justo lo que busco en un profesional que asesora en temas contables y tributarios."</p><span class="who">Andrea Díaz</span></div>
       </div>
-      <p class="tst-foot">5,0 de 5 en 124 evaluaciones en <a href="https://encuadrado.com/p/tomcontable" target="_blank" rel="noopener">Encuadrado</a>.</p>
+      <p class="tst-foot">5,0 de 5 en 125 evaluaciones visibles en <a href="https://encuadrado.com/p/tomcontable" target="_blank" rel="noopener">Encuadrado</a>.</p>
     </div>
   </section>
 
@@ -118,9 +118,9 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
       <div class="faq">
         <details open><summary>¿Cuál es la diferencia entre con y sin sueldos?<span class="plus">+</span></summary><div class="ans">La diferencia está en si tu empresa paga cotizaciones en Previred. Si tiene trabajadores contratados o sueldo patronal (es decir, paga Previred), te corresponde la versión con sueldos. Si no paga cotizaciones, la versión sin sueldos.</div></details>
         <details><summary>¿Tengo que enviarles información?<span class="plus">+</span></summary><div class="ans">No. El reporte se hace con los documentos que ya están en tu portal del SII. Si necesitas reflejar gastos que no están ahí, lo cotizamos aparte por WhatsApp.</div></details>
-        <details><summary>¿En qué se diferencia de la operación renta?<span class="plus">+</span></summary><div class="ans">La proyección es antes del cierre del año, para que alcances a tomar decisiones. La operación renta es la declaración formal en abril. La proyección te prepara para llegar bien a esa fecha.</div></details>
+        <details><summary>¿En qué se diferencia de la operación renta?<span class="plus">+</span></summary><div class="ans">Antes del cierre, la proyección permite planificar decisiones del ejercicio. Después del cierre, permite estimar el impuesto y preparar la declaración, sin cambiar retroactivamente operaciones. La operación renta es la declaración formal en abril.</div></details>
         <details><summary>¿Sirve si tengo problemas con el SII?<span class="plus">+</span></summary><div class="ans">La proyección es para planificar. Si lo que necesitas es revisar observaciones o inconsistencias ya existentes, eso es nuestra revisión de situación tributaria.</div></details>
-        <details><summary>¿Cuándo conviene hacer la proyección?<span class="plus">+</span></summary><div class="ans">Lo ideal es antes del cierre del año, entre octubre y enero, cuando todavía puedes tomar decisiones que bajen la cuenta. Después de diciembre el resultado ya está jugado y solo queda declarar lo que salga.</div></details>
+        <details><summary>¿Cuándo conviene hacer la proyección?<span class="plus">+</span></summary><div class="ans">Para planificar decisiones del ejercicio, conviene hacerla antes del cierre del año, por ejemplo entre octubre y diciembre, considerando los plazos de cada operación. En enero, una vez cerrado ese ejercicio, sirve para estimar el impuesto y preparar la declaración, no para cambiar retroactivamente operaciones del año cerrado.</div></details>
         <details><summary>¿Qué me entregan al final?<span class="plus">+</span></summary><div class="ans">Un informe claro con cuánto pagaría tu empresa y cada socio, más un Excel con los escenarios, para que veas el efecto de cada decisión antes de tomarla.</div></details>
       </div>
     </div>
@@ -136,7 +136,7 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   <section class="cierre">
     <div class="wrap">
       <h2>Que abril no te sorprenda.</h2>
-      <p>Proyecta tu resultado a tiempo y llega con la caja preparada y las decisiones tomadas.</p>
+      <p>Antes del cierre, planifica tus decisiones. Después, estima tu impuesto y prepara la caja y la declaración, sin cambiar retroactivamente operaciones del año cerrado.</p>
       <div class="cta-row center">
         <a class="btn btn-amber" href="#precio">Quiero mi proyección</a>
         <BotonWhatsApp texto="Hablar por WhatsApp" mensaje={waMsg} />

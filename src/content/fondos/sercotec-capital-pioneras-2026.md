@@ -6,7 +6,7 @@ keyword: "capital pioneras sercotec 2026"
 institucion: "Sercotec"
 categoria: "Mujeres"
 montoMax: 3500000
-resumen: "Capital Pioneras es el fondo de Sercotec para mujeres que emprenden en rubros donde tradicionalmente hay poca participación femenina, como construcción, transporte o tecnología. Entrega $3.500.000 no reembolsables. La convocatoria 2026 está abierta desde el 1 de julio hasta el 15 de julio."
+resumen: "Capital Pioneras es el fondo de Sercotec para mujeres que emprenden en rubros donde tradicionalmente hay poca participación femenina, como construcción, transporte o tecnología. Entrega $3.500.000 no reembolsables. El plazo registrado en esta ficha fue del 1 al 15 de julio de 2026 y ya transcurrió. Confirma en Sercotec las fechas y bases de tu región; esta ficha no acredita una reapertura."
 fechaInicio: 2026-07-01
 fechaCierre: 2026-07-15
 beneficio: "Subsidio no reembolsable de $3.500.000: entre $3.000.000 y $3.300.000 para inversión en activos, infraestructura y capital de trabajo, y entre $200.000 y $500.000 para gestión empresarial."
@@ -19,14 +19,14 @@ link: "https://www.sercotec.cl/capital-pioneras/"
 fuenteTexto: "Sercotec, ficha del programa Capital Pioneras"
 fuenteHref: "https://www.sercotec.cl/programas/capital-pioneras/"
 pubDate: 2026-07-01
-updatedDate: 2026-08-06
+updatedDate: 2026-10-07
 faqs:
   - q: "¿Qué diferencia a Capital Pioneras de Capital Abeja Emprende?"
     a: "Ambos son para mujeres, pero Capital Pioneras exige que el proyecto sea en un rubro con tradicionalmente menor participación femenina, como construcción, transporte, tecnología o industria."
   - q: "¿Cuánto entrega el fondo?"
     a: "$3.500.000, con aporte propio equivalente al 3% del subsidio."
   - q: "¿Hasta cuándo se puede postular en 2026?"
-    a: "La convocatoria 2026 abrió el 1 de julio a las 12:00 horas y cierra el 15 de julio a las 15:00 horas."
+    a: "El plazo registrado en esta ficha fue del 1 de julio de 2026 a las 12:00 al 15 de julio a las 15:00; esas fechas ya transcurrieron. Confirma fechas y bases regionales en Sercotec antes de postular."
 draft: false
 ---
 
@@ -41,4 +41,4 @@ Capital Pioneras apunta a un problema puntual: hay rubros donde las mujeres empr
 
 ## Cómo postular
 
-La postulación se hace en el sitio de Sercotec, con las bases de la convocatoria vigente en tu región. La convocatoria 2026 abarca varias regiones del país, con la misma ventana de postulación.
+La postulación se hace en el sitio de Sercotec, conforme a las bases y fechas de cada convocatoria regional. El plazo histórico registrado en esta ficha no acredita que todas las regiones compartan fechas ni que exista una convocatoria abierta.

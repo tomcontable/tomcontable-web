@@ -6,7 +6,7 @@ keyword: "digitaliza tu almacén sercotec 2026"
 institucion: "Sercotec"
 categoria: "Digitalizar"
 montoMax: 3000000
-resumen: "Digitaliza tu Almacén es el fondo de Sercotec para almacenes de barrio que quieren modernizarse e incorporar herramientas digitales. Entrega $3.000.000 no reembolsables. La convocatoria 2026 estuvo abierta entre el 30 de enero y el 10 de febrero, y ya cerró."
+resumen: "Digitaliza tu Almacén es el fondo de Sercotec para almacenes de barrio que quieren modernizarse e incorporar herramientas digitales. Contempla $3.000.000 no reembolsables, sujetos a las bases. Esta ficha registra fechas del 30 de enero al 10 de febrero de 2026, ya transcurridas; no acredita disponibilidad actual ni nuevas convocatorias. Consulta la fuente oficial y las bases regionales."
 fechaInicio: 2026-01-30
 fechaCierre: 2026-02-10
 beneficio: "Subsidio de $3.000.000: entre $2.500.000 y $2.800.000 para inversión en activos e infraestructura, y entre $200.000 y $500.000 para gestión empresarial."
@@ -19,7 +19,7 @@ link: "https://www.sercotec.cl/digitaliza-tu-almacen/"
 fuenteTexto: "Sercotec, ficha del programa Digitaliza tu Almacén"
 fuenteHref: "https://www.sercotec.cl/digitaliza-tu-almacen/"
 pubDate: 2026-07-01
-updatedDate: 2026-08-06
+updatedDate: 2026-10-07
 faqs:
   - q: "¿Para quién es Digitaliza tu Almacén?"
     a: "Para almaceneros y almaceneras con local físico, más de 12 meses de actividad e inicio de actividades en primera categoría ante el SII."

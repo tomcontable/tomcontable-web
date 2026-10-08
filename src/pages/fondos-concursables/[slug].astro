@@ -17,14 +17,15 @@ export async function getStaticPaths() {
         beneficio: x.data.beneficio,
         montoMax: x.data.montoMax ?? null,
         fechaCierre: x.data.fechaCierre,
-        abierto: ahora <= x.data.fechaCierre,
+        abierto: false,
+        estadoVerificado: x.data.estadoVerificado,
       }))
       .sort((a, b) => {
         if (a.abierto !== b.abierto) return a.abierto ? -1 : 1;
         const ca = a.categoria === fondo.data.categoria ? 0 : 1;
         const cb = b.categoria === fondo.data.categoria ? 0 : 1;
         if (ca !== cb) return ca - cb;
-        return a.fechaCierre.getTime() - b.fechaCierre.getTime();
+        return (a.fechaCierre?.getTime() ?? Infinity) - (b.fechaCierre?.getTime() ?? Infinity);
       })
       .slice(0, 3);
     return { params: { slug: fondo.slug }, props: { fondo, relacionados } };
@@ -38,7 +39,7 @@ const d = fondo.data;
 const url = `https://tomcontable.cl/fondos-concursables/${fondo.slug}`;
 const DIA = 86400000;
 const fmtFecha = (x) =>
-  x.toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' });
+  x ? x.toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }) : 'No acreditado en esta ficha';
 
 const fmtMonto = (m) => {
   if (!m) return null;
@@ -50,16 +51,10 @@ const fmtMonto = (m) => {
   return `$${m.toLocaleString('es-CL')}`;
 };
 
-const hoy = new Date();
-const abierto = hoy <= d.fechaCierre;
-const dias = Math.ceil((d.fechaCierre.getTime() - hoy.getTime()) / DIA);
-const etiquetaPlazo = () => {
-  if (!abierto) return 'Convocatoria cerrada';
-  if (dias <= 0) return 'Cierra hoy';
-  if (dias === 1) return 'Cierra mañana';
-  return `Quedan ${dias} días`;
-};
-const urge = abierto && dias <= 7;
+const abierto = false;
+const etiquetaEstado = (estado) => estado === 'cerrado' ? 'Convocatoria cerrada' : 'Disponibilidad por confirmar';
+const etiquetaPlazo = () => etiquetaEstado(d.estadoVerificado);
+const urge = false;
 
 const seo = {
   title: d.seoTitle,
@@ -122,10 +117,10 @@ const schema = [articleSchema, breadcrumb, ...(faqSchema ? [faqSchema] : [])];
         <div class="tags">
           <span class="tag-inst">{d.institucion}</span>
           <span class={`cat cat-${d.categoria.toLowerCase()}`}>{d.categoria}</span>
-          <span class={`estado ${abierto ? 'abierto' : 'cerrado'}`}>{abierto ? 'Abierto' : 'Cerrado'}</span>
+          <span class="estado cerrado">{etiquetaEstado(d.estadoVerificado)}</span>
         </div>
         <h1>{d.title}</h1>
-        <p class="meta">Postulación: {fmtFecha(d.fechaInicio)} al {fmtFecha(d.fechaCierre)}</p>
+        <p class="meta">{d.fechaInicio && d.fechaCierre ? `Fechas históricas registradas: ${fmtFecha(d.fechaInicio)} al ${fmtFecha(d.fechaCierre)}.` : 'No se acredita un plazo universal de postulación en esta ficha.'} Las fechas no confirman disponibilidad actual; consulta las condiciones regionales y posibles extensiones en la fuente oficial.</p>
       </div>
     </header>
 
@@ -142,10 +137,10 @@ const schema = [articleSchema, breadcrumb, ...(faqSchema ? [faqSchema] : [])];
           <span class={`fr-val ${urge ? 'urge' : ''}`}>{etiquetaPlazo()}</span>
         </div>
         <div class="fr-item">
-          <span class="fr-lbl">Cierra</span>
+          <span class="fr-lbl">Cierre registrado</span>
           <span class="fr-val">{fmtFecha(d.fechaCierre)}</span>
         </div>
-        <a class="fr-cta" href={d.link} target="_blank" rel="noopener">Postular →</a>
+        <a class="fr-cta" href={abierto ? d.link : d.fuenteHref} target="_blank" rel="noopener">{abierto ? 'Revisar postulación →' : 'Consultar convocatoria →'}</a>
       </div>
     </div>
 
@@ -173,18 +168,17 @@ const schema = [articleSchema, breadcrumb, ...(faqSchema ? [faqSchema] : [])];
           </div>
         </div>
 
-        <a class="btn-postular" href={d.link} target="_blank" rel="noopener" onclick={`window.posthog&&window.posthog.capture('fondo_postular_click',{fondo:document.title,institucion:${JSON.stringify(d.institucion)}})`}>Postular en el sitio de {d.institucion}</a>
+        <a class="btn-postular" href={abierto ? d.link : d.fuenteHref} target="_blank" rel="noopener" onclick={`window.posthog&&window.posthog.capture('fondo_postular_click',{fondo:document.title,institucion:${JSON.stringify(d.institucion)}})`}>{abierto ? 'Revisar postulación' : 'Consultar convocatoria'} en el sitio de {d.institucion}</a>
 
         <p class="fuente">
           <img src="/img/foto-tom.jpg" alt="Tom, Contador Colegiado y fundador de TomContable" width="24" height="24" />
-          Fuente: <a href={d.fuenteHref} target="_blank" rel="noopener">{d.fuenteTexto}</a>. Revisado por Tom el {fmtFecha(d.updatedDate ?? d.pubDate)}.
+          Fuente: <a href={d.fuenteHref} target="_blank" rel="noopener">{d.fuenteTexto}</a>. Fecha editorial: {fmtFecha(d.updatedDate ?? d.pubDate)}. Confirma los requisitos y plazos en las bases oficiales.
         </p>
 
         <div class="cta-wrap">
           <CtaFondos
             compacto={true}
-            titulo="¿Cumples los requisitos para postular?"
-            bajada="Este fondo lo postulas en el sitio oficial, pero antes tienes que cumplir la parte administrativa. Si te falta la empresa, la contabilidad al día o resolver algo con el SII, lo dejamos listo a tiempo."
+            titulo="Antes de contratar servicios, revisa las bases"
           />
         </div>
 
@@ -210,12 +204,12 @@ const schema = [articleSchema, breadcrumb, ...(faqSchema ? [faqSchema] : [])];
                 <a class="rel-card" href={`/fondos-concursables/${r.slug}`}>
                   <div class="rel-top">
                     <span class="tag-inst">{r.institucion}</span>
-                    <span class={`estado ${r.abierto ? 'abierto' : 'cerrado'}`}>{r.abierto ? 'Abierto' : 'Cerrado'}</span>
+                    <span class="estado cerrado">{etiquetaEstado(r.estadoVerificado)}</span>
                   </div>
                   <h3>{r.title}</h3>
                   <p class="rel-meta">
                     {fmtMonto(r.montoMax) && <span class="rel-monto">Hasta {fmtMonto(r.montoMax)}</span>}
-                    <span class="rel-fecha">{r.abierto ? 'Cierra' : 'Cerró'} el {fmtFecha(r.fechaCierre)}</span>
+                    <span class="rel-fecha">Cierre registrado: {fmtFecha(r.fechaCierre)}</span>
                   </p>
                 </a>
               ))}

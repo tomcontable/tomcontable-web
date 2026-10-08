@@ -3,6 +3,7 @@ title: Qué es el SUCC y qué cambia si tienes trabajadores
 seoTitle: "SUCC: el nuevo cobro de cotizaciones impagas · TomContable"
 description: Desde junio de 2026 funciona el SUCC, que centraliza el cobro de las cotizaciones previsionales impagas. Te explicamos qué cambia si eres empleador pyme.
 pubDate: 2026-06-08
+updatedDate: 2026-10-07
 lead: Si tienes trabajadores, esto te conviene tener claro. Desde junio de 2026 cambia la forma en que se cobran las cotizaciones que no se pagaron, y el sistema es bastante más eficiente que antes.
 keyword: qué es el SUCC cobranza de cotizaciones
 servicioHref: /contabilidad-mensual
@@ -22,6 +23,7 @@ faqs:
     a: Lo primero es saber exactamente cuánto debes y desde cuándo, porque los reajustes e intereses la van aumentando. Con eso se puede ver cómo regularizar de forma ordenada. Si quieres, lo revisamos contigo.
 ---
 
+Ajuste editorial del 7 de octubre de 2026: se aclaran el alcance y los límites de esta guía. No constituye una revisión profesional integral ni acredita vigencia normativa.
 Si eres empleador, aunque sea de una sola persona, esto te toca directo. Desde el 1 de junio de 2026 funciona el SUCC, el Sistema Único de Cobranza de Cotizaciones, que viene de la reforma de pensiones, la Ley 21.735. En simple, es la nueva forma, más ordenada y más eficiente, de cobrarles a los empleadores las cotizaciones previsionales que no pagaron. Te explico qué es y por qué te conviene tenerlo en el radar.
 
 ## Qué es el SUCC
@@ -44,12 +46,12 @@ Acá viene la parte que tranquiliza. El SUCC no cambia cómo declaras y pagas la
 
 Hay una práctica común cuando una empresa anda apretada de caja: declarar las cotizaciones pero no pagarlas. Se llama declarar y no pagar, y mucha gente cree que así queda más o menos cubierta. No es así. Esa cotización declarada y no pagada es deuda previsional con todas sus letras, genera reajustes e intereses mes a mes y es exactamente lo que el SUCC va a perseguir mejor que antes. Con el sistema viejo quizás esa deuda se demoraba en aparecer. Con el nuevo, el cobro es más ágil y coordinado.
 
-## Por qué esto importa el doble ahora
+## Cotizaciones y rebaja Pro Pyme son revisiones distintas
 
-Si leíste lo que escribimos sobre la [rebaja de impuesto del régimen Pro Pyme](/blog/cuanto-impuesto-paga-tu-pyme-2026/), te va a hacer sentido. Esa rebaja tributaria está condicionada a estar al día con las cotizaciones previsionales. O sea que tener tus cotizaciones pagadas dejó de ser solo una obligación laboral, ahora también es la llave de un beneficio tributario. Por un lado el SUCC hace más eficiente el cobro de lo que debes, y por el otro, estar al día te mantiene dentro de la rebaja. Las dos cosas empujan en la misma dirección: pagar las cotizaciones a tiempo conviene más que nunca.
+Las obligaciones previsionales y los requisitos de la [rebaja de impuesto del régimen Pro Pyme](/blog/cuanto-impuesto-paga-tu-pyme-2026/) deben revisarse por separado según la normativa aplicable. Para la rebaja, revisa el régimen, el ejercicio y los requisitos de la Ley 21.755 y la [Circular 53 del SII](https://www.sii.cl/normativa_legislacion/circulares/2025/circu53.pdf). No debe deducirse de esta guía que un atraso individual en cotizaciones implica por sí solo perder la rebaja. Regularizar una deuda previsional sigue siendo importante por sus propios efectos laborales y previsionales; consulta con asesoría tributaria antes de concluir cómo afecta a tu caso concreto.
 
 ## Qué hacer con esto
 
 Si pagas todo al día, tranquilo, esto no te complica. Si vienes arrastrando deuda previsional, lo peor es dejarla quieta esperando que no la cobren, porque ahora la van a cobrar mejor y mientras tanto crece con reajustes e intereses. Lo sano es saber cuánto debes, desde cuándo, y ordenar un plan para regularizar.
 
-En TomContable llevamos las remuneraciones y cotizaciones como parte de la [contabilidad mensual](/contabilidad-mensual/), justamente para que esto no se te escape y no termines con una deuda que se podía evitar. Si tienes trabajadores y quieres dejar este tema ordenado, escríbenos por WhatsApp y lo vemos.
+En TomContable puedes sumar remuneraciones y cotizaciones como servicio adicional a la [contabilidad mensual](/contabilidad-mensual/), desde 0,15 UF por trabajador, fuera de la mensualidad base. Si tienes trabajadores y quieres dejar este tema ordenado, escríbenos por WhatsApp y lo vemos.

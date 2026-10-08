@@ -6,7 +6,7 @@ keyword: "fondo crece sercotec 2026"
 institucion: "Sercotec"
 categoria: "Crecer"
 montoMax: 5000000
-resumen: "Fondo Crece es el subsidio de Sercotec para pymes y cooperativas ya formalizadas que quieren invertir para crecer. Entrega hasta $5.000.000 no reembolsables. La convocatoria 2026 estuvo abierta entre el 2 y el 11 de junio, y ya cerró; Sercotec repite este llamado durante el año."
+resumen: "Fondo Crece es el subsidio de Sercotec para pymes y cooperativas ya formalizadas que quieren invertir para crecer. Contempla hasta $5.000.000 no reembolsables, sujetos a las bases. Esta ficha registra fechas del 2 al 11 de junio de 2026, ya transcurridas; no acredita disponibilidad actual ni nuevas convocatorias. Consulta la fuente oficial y las condiciones regionales."
 fechaInicio: 2026-06-02
 fechaCierre: 2026-06-11
 beneficio: "Subsidio no reembolsable de $5.000.000, con hasta $4.000.000 destinables a la compra de activos fijos, habilitación de infraestructura o capital de trabajo."
@@ -18,14 +18,14 @@ link: "https://www.sercotec.cl/crece/"
 fuenteTexto: "Sercotec, ficha del programa Crece"
 fuenteHref: "https://www.sercotec.cl/programas/crece/"
 pubDate: 2026-07-01
-updatedDate: 2026-08-06
+updatedDate: 2026-10-07
 faqs:
   - q: "¿Para quién es el Fondo Crece?"
     a: "Para micro y pequeñas empresas y cooperativas ya formalizadas, con ventas netas anuales entre 200 y 25.000 UF, que quieren invertir para crecer."
   - q: "¿Cuánto entrega el fondo?"
     a: "Hasta $5.000.000 no reembolsables, con hasta $4.000.000 destinables a activos fijos, infraestructura o capital de trabajo."
   - q: "¿Sigue abierta la convocatoria 2026?"
-    a: "Cerró el 11 de junio de 2026. Sercotec suele volver a abrir Crece más adelante en el año; revisa sercotec.cl/postulaciones-abiertas."
+    a: "El cierre registrado en esta ficha es el 11 de junio de 2026, fecha ya transcurrida. No se acredita disponibilidad actual ni una nueva apertura. Consulta las bases regionales y la fuente oficial de Sercotec."
 draft: false
 ---
 

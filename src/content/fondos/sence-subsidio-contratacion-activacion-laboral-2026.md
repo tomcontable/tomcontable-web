@@ -1,50 +1,46 @@
 ---
-title: "Subsidio a la Contratación 2026 (Sence): requisitos, montos y cómo postular"
+title: "Subsidio a la Contratación 2026 (Sence): requisitos, montos y postulación"
 seoTitle: "Subsidio a la Contratación Sence 2026 · TomContable"
-description: "El Subsidio a la Contratación de Sence paga hasta el 60% del sueldo mínimo por 4 meses por cada persona cesante que contrates. Requisitos, montos y plazo hasta diciembre."
+description: "Referencia del Subsidio a la Contratación Sence: requisitos y pagos sujetos a postulación y aprobación. Consulta disponibilidad y calendario en la fuente oficial."
 keyword: "subsidio a la contratación sence 2026"
 institucion: "Sence"
 categoria: "Crecer"
-montoMax: 1328527
 destacado: true
-resumen: "El Subsidio a la Contratación, línea Activación Laboral, es un aporte de Sence a las empresas que contraten a personas cesantes desde el 15 de julio de 2026. Paga cada mes hasta el 60% del ingreso mínimo por trabajadora contratada y hasta el 50% por trabajador, por un máximo de 4 meses, con tope de 200 subsidios por empresa. Los pagos llegan hasta diciembre de 2026, así que mientras antes contrates, más meses alcanzas a cobrar."
-fechaInicio: 2026-07-15
-fechaCierre: 2026-12-31
-beneficio: "Bonificación mensual de hasta el 60% del ingreso mínimo por cada mujer contratada (unos $332.132 con el mínimo de $553.553) y hasta el 50% por cada hombre (unos $276.777), por un máximo de 4 meses. Quien contrató en julio o agosto alcanza los 4 pagos; en septiembre, 3; desde octubre, 2, porque el programa paga hasta diciembre de 2026. Tope de 200 subsidios por empresa."
+resumen: "El Subsidio a la Contratación, línea Activación Laboral, contempla una bonificación de hasta el 60% del ingreso mínimo mensual por trabajadora y hasta el 50% por trabajador, con un máximo de cuatro pagos y 200 subsidios por empresa. El número de pagos depende de la postulación y aprobación, no solo del mes de contratación. Consulta el calendario y la disponibilidad en Sence."
+beneficio: "Según el comunicado de Sence, las postulaciones realizadas y aprobadas entre julio y agosto de 2026 pueden acceder hasta a cuatro pagos; las de septiembre, a tres, y las de octubre, a dos. El devengo hasta diciembre de 2026 no acredita un cierre universal de postulaciones el 31 de diciembre. Confirma el calendario oficial antes de presupuestar el beneficio."
 requisitos:
-  - "Empresa que tributa en primera categoría; no puede ser empresa del Estado ni recibir otros aportes estatales incompatibles con este subsidio"
-  - "Contratar a una persona mayor de 18 años que no registre cotizaciones previsionales en los 3 meses anteriores a la contratación"
-  - "Relación laboral iniciada desde el 15 de julio de 2026, con el contrato registrado en la plataforma electrónica de la Dirección del Trabajo"
-  - "Remuneración bruta del trabajador de hasta 3 ingresos mínimos mensuales"
-  - "La persona contratada no puede ser socio, cónyuge, hijo ni pariente hasta el tercer grado del empleador"
+  - "Empresa que tribute en primera categoría y cumpla las exclusiones y condiciones de la resolución del beneficio; consulta las restricciones sobre aportes estatales"
+  - "Persona mayor de 18 años, sin cotizaciones previsionales con ningún empleador en los tres meses inmediatamente anteriores al inicio de la relación laboral"
+  - "Relación laboral iniciada desde el 15 de julio de 2026, con contrato registrado en la plataforma electrónica de la Dirección del Trabajo"
+  - "Remuneración bruta mensual de hasta tres ingresos mínimos mensuales"
+  - "Se excluyen socios o accionistas y los vínculos familiares indicados por Sence, incluidos hasta tercer grado de consanguinidad y segundo de afinidad; revisa también las restricciones por recontratación"
 link: "https://www.subsidioalempleo.cl/SUBCONTRATACION2026/index.html"
 fuenteTexto: "Sence, comunicado oficial del Subsidio a la Contratación, línea Activación Laboral"
 fuenteHref: "https://sence.gob.cl/empresas/noticias/subsidio-la-contratacion-linea-activacion-laboral-postule-aqui"
 pubDate: 2026-09-11
+updatedDate: 2026-10-07
 faqs:
   - q: "¿Cuánto paga el Subsidio a la Contratación?"
-    a: "Hasta el 60% del ingreso mínimo mensual por cada mujer contratada y hasta el 50% por cada hombre, durante un máximo de 4 meses. Con el mínimo de $553.553, son unos $332.132 o $276.777 al mes por persona."
+    a: "El comunicado de Sence contempla hasta el 60% del ingreso mínimo mensual por trabajadora y hasta el 50% por trabajador, por un máximo de cuatro pagos. El número de pagos depende de la postulación y aprobación y del calendario oficial; no basta con el mes de contratación."
   - q: "¿Hasta cuándo se puede postular?"
-    a: "La postulación se hace hasta el mes siguiente al inicio de la relación laboral, y el programa paga hasta diciembre de 2026. Por eso la cantidad de meses que cobras depende de cuándo contrates: en julio o agosto se alcanzan los 4 pagos, en septiembre 3, y desde octubre 2."
-  - q: "¿A quién tengo que contratar para acceder?"
-    a: "A una persona mayor de 18 años que lleve al menos 3 meses sin cotizaciones previsionales, con sueldo bruto de hasta 3 ingresos mínimos. No puede ser tu socio, tu cónyuge, tu hijo ni un pariente hasta el tercer grado."
+    a: "Sence indica que las postulaciones pueden realizarse hasta el mes siguiente al inicio de la relación laboral, según las condiciones del programa. El devengo hasta diciembre de 2026 no acredita un cierre universal el 31 de diciembre. Esta ficha no confirma que la postulación esté abierta o cerrada: consulta la disponibilidad y el calendario oficial."
+  - q: "¿Cómo se determina el número de pagos?"
+    a: "Según el comunicado de Sence, las postulaciones realizadas y aprobadas entre julio y agosto de 2026 pueden acceder hasta a cuatro pagos; las de septiembre, a tres, y las de octubre, a dos. No se extiende automáticamente esta regla a meses posteriores."
   - q: "¿Tiene tope por empresa?"
-    a: "Sí, 200 subsidios por empresa durante toda la vigencia del programa. El presupuesto total es de $24.500 millones, con una meta de 25.000 empleos."
+    a: "El comunicado oficial indica un máximo de 200 subsidios por empresa durante la vigencia del programa. La adjudicación y los pagos están sujetos a los requisitos y condiciones oficiales."
 draft: false
 ---
 
-Este no es un fondo al que postulas con un proyecto: es un subsidio que se activa cuando contratas. Si tu pyme necesita sumar a alguien y esa persona lleva un tiempo sin trabajo, Sence te devuelve cada mes una parte importante del sueldo durante los primeros meses. Es de los pocos apoyos estatales para pymes que siguen vigentes en el segundo semestre de 2026.
+Es un subsidio a la contratación sujeto a postulación, aprobación y cumplimiento de condiciones; contratar no garantiza recibirlo. Esta ficha resume el comunicado oficial y no certifica disponibilidad actual ni elegibilidad para un caso particular.
 
-## Requisitos mínimos
+## Requisitos y restricciones
 
-- Tu empresa tributa en primera categoría y no recibe otros aportes estatales incompatibles.
-- La persona que contratas es mayor de 18 años y no ha cotizado en los 3 meses anteriores.
-- El contrato parte desde el 15 de julio de 2026 y queda registrado en la plataforma de la Dirección del Trabajo.
-- El sueldo bruto no supera 3 ingresos mínimos mensuales.
-- No puedes contratar a socios, cónyuge, hijos ni parientes hasta el tercer grado.
+La empresa debe tributar en primera categoría. La fuente contempla relaciones laborales iniciadas desde el 15 de julio de 2026, con personas mayores de 18 años que no registren cotizaciones con ningún empleador en los tres meses inmediatamente anteriores. Esa fecha corresponde al inicio de la relación laboral elegible, no acredita por sí sola la apertura de postulaciones.
 
-## Cómo postular
+El contrato debe estar registrado en la Dirección del Trabajo y la remuneración bruta mensual no debe superar tres ingresos mínimos mensuales. Revisa la resolución para las exclusiones de empresas estatales o receptoras de aportes estatales, recontrataciones, socios, accionistas y vínculos familiares.
 
-Se postula en línea en subsidioalempleo.cl, con la empresa como solicitante, hasta el mes siguiente a la fecha en que empezó la relación laboral. El detalle que más conviene tener claro es el calendario: el programa paga hasta diciembre de 2026, así que una contratación de septiembre alcanza 3 pagos y una de octubre en adelante, 2. Si tenías pensado contratar de todas formas, adelantarlo unas semanas cambia cuánto recibes.
+## Postulación, aprobación y calendario de pagos
 
-Como el subsidio exige el contrato registrado en la Dirección del Trabajo y las cotizaciones al día, conviene llegar con la parte laboral ordenada antes de postular.
+Sence señala que las postulaciones pueden hacerse hasta el mes siguiente al inicio de la relación laboral, según las condiciones del programa. Para los pagos, el comunicado se refiere a **postulaciones realizadas y aprobadas** entre julio y agosto de 2026 (hasta cuatro pagos), septiembre (tres) y octubre (dos). No corresponde atribuir esas cantidades solamente al mes en que se contrató ni extender la regla de octubre a meses posteriores.
+
+El comunicado indica devengo hasta diciembre de 2026. No usamos ese dato como una fecha universal de cierre de postulaciones. Antes de contratar o presupuestar este apoyo, consulta la disponibilidad, el calendario y las condiciones en la [fuente oficial de Sence](https://sence.gob.cl/empresas/noticias/subsidio-la-contratacion-linea-activacion-laboral-postule-aqui) y su enlace al [calendario del programa](https://www.subsidioalempleo.cl/SUBCONTRATACION2026/index.html).

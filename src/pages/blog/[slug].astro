@@ -15,7 +15,7 @@ const { post } = Astro.props;
 const { Content } = await post.render();
 const d = post.data;
 
-const url = `https://tomcontable.cl/blog/${post.slug}`;
+const url = `https://tomcontable.cl/blog/${post.slug}/`;
 const fmtFecha = (x) =>
   x.toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' });
 
@@ -23,10 +23,10 @@ const fmtFecha = (x) =>
 const palabras = post.body.trim().split(/\s+/).length;
 const minutos = Math.max(1, Math.round(palabras / 200));
 
-// Artículos relacionados: los 3 más recientes, sin contar este mismo.
+// Prioriza guías del mismo servicio existente; después, las más recientes.
 const relacionados = (await getCollection('blog', ({ data }) => !data.draft))
   .filter((p) => p.slug !== post.slug)
-  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .sort((a, b) => Number(b.data.servicioHref === d.servicioHref) - Number(a.data.servicioHref === d.servicioHref) || b.data.pubDate.getTime() - a.data.pubDate.getTime())
   .slice(0, 3);
 
 const seo = {
@@ -91,7 +91,7 @@ const schema = [articleSchema, breadcrumb, ...(faqSchema ? [faqSchema] : [])];
         <p class="lead">{d.lead}</p>
         <div class="meta">
           <img src="/img/foto-tom.jpg" alt="Tom, Contador Colegiado y fundador de TomContable" width="36" height="36" />
-          <span>Por Tom · {fmtFecha(d.pubDate)}{d.updatedDate && d.updatedDate.getTime() !== d.pubDate.getTime() && ` · actualizado el ${fmtFecha(d.updatedDate)}`} · {minutos} min de lectura</span>
+          <span>Por <a href="/sobre-tomcontable/" rel="author">Tom</a> · {fmtFecha(d.pubDate)}{d.updatedDate && d.updatedDate.getTime() !== d.pubDate.getTime() && ` · actualizado el ${fmtFecha(d.updatedDate)}`} · {minutos} min de lectura</span>
         </div>
       </div>
     </header>
@@ -136,7 +136,7 @@ const schema = [articleSchema, breadcrumb, ...(faqSchema ? [faqSchema] : [])];
         <h2>Otras guías que te pueden servir</h2>
         <div class="grid">
           {relacionados.map((rp) => (
-            <a class="card" href={`/blog/${rp.slug}`}>
+            <a class="card" href={`/blog/${rp.slug}/`}>
               <p class="card-tag">{rp.data.keyword}</p>
               <h3>{rp.data.title}</h3>
               <p class="card-lead">{rp.data.lead}</p>

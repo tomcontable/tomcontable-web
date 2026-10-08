@@ -4,7 +4,7 @@ import BotonWhatsApp from '../components/BotonWhatsApp.astro';
 
 const seo = {
   title: 'Contabilidad mensual para pymes y emprendedores · TomContable',
-  description: 'Tu contabilidad al día, tus dudas resueltas y alguien mirando tu negocio cada mes. Revisamos todo en el SII por ti. Cotiza por WhatsApp.',
+  description: 'Contabilidad mensual desde 1 UF + IVA. Revisamos la información disponible en SII y te pedimos solo lo necesario. Remuneraciones y renta anual aparte.',
 };
 
 const waMsg = 'Hola vengo desde la web y quiero cotizar contabilidad mensual';
@@ -16,17 +16,17 @@ const servicio = {
   "serviceType": "Contabilidad mensual para pymes y emprendedores",
   "provider": { "@type": "Organization", "name": "TomContable" },
   "areaServed": { "@type": "Country", "name": "Chile" },
-  "description": "Llevamos tu contabilidad mes a mes: reporte mensual, libros electrónicos, F29, Estado de Resultados Express, asesoría ilimitada y prebalance gratuito en julio. Conciliación bancaria, liquidaciones de sueldo y operación renta anual se cotizan y cobran por separado según tu empresa."
+  "description": "Contabilidad mensual desde 1 UF + IVA: reporte mensual, libros electrónicos, F29, Estado de Resultados Express, asesoría ilimitada y prebalance gratuito en julio. Conciliación bancaria especial y renta anual de empresa y socios aparte. Remuneraciones adicionales desde 0,15 UF por trabajador. Acreditación incluida con mensualidad; sin mensualidad, $79.000 + IVA."
 };
 
 // FAQ visible espejada para FAQPage (mantener en sync con el accordion de la página).
 const faqs = [
-  { q: '¿Cuánto cuesta exactamente?', a: 'Depende de tus ventas del mes, desde 1 UF + IVA (unos $40.800 mensuales). Cuéntanos cuánto vendes y te calculamos tu plan exacto por WhatsApp.' },
-  { q: '¿Tengo que mandarles mis documentos?', a: 'No. Revisamos todo directamente en el SII. No tienes que escanear ni enviar boletas.' },
+  { q: '¿Cuánto cuesta exactamente?', a: 'La contabilidad mensual parte desde 1 UF + IVA. El valor final depende de tus ventas, volumen de movimientos, régimen tributario y servicios adicionales. Cuéntanos tu caso y te cotizamos el plan y los extras por separado.' },
+  { q: '¿Tengo que mandarles mis documentos?', a: 'Nosotros revisamos la información disponible en SII y te pedimos solo lo necesario para cerrar bien tu contabilidad. Menos correos, menos boletas sueltas y más orden.' },
   { q: '¿Ustedes pagan mis impuestos?', a: 'No tocamos tu dinero. Te enviamos el link y el pago lo haces tú, para que todo quede bajo tu control.' },
   { q: '¿Y si cometen un error?', a: 'Lo asumimos nosotros. Si una multa o interés se genera por un error o atraso nuestro, lo pagamos nosotros.' },
   { q: '¿Incluye la operación renta?', a: 'No. La operación renta anual no está incluida en el precio mensual base. Se cobra una vez al año como pago único de 3 mensualidades promedio del año anterior, más 1 UF por cada declaración personal de socio.' },
-  { q: '¿Incluye conciliación bancaria o remuneraciones?', a: 'No están incluidas en el plan mensual base. La conciliación bancaria se cotiza aparte. Las liquidaciones de sueldo de socios o trabajadores son adicionales: liquidación mensual 0,15 UF por trabajador; contratos, finiquitos, licencias y requerimientos 0,30 UF cada uno.' },
+  { q: '¿Incluye conciliación bancaria o remuneraciones?', a: 'La conciliación bancaria especial y las remuneraciones no están incluidas en el plan mensual base y se cotizan aparte. Las liquidaciones de sueldo de socios o trabajadores son adicionales: liquidación mensual desde 0,15 UF por trabajador; contratos, finiquitos, licencias y requerimientos 0,30 UF cada uno.' },
 ];
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
@@ -56,7 +56,7 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
     <div class="wrap">
       <div class="sec-head"><p class="eyebrow">Por qué con nosotros</p><h2>Lo que de verdad cambia tu día a día</h2></div>
       <div class="cards-2">
-        <div class="card"><div class="card-head"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span><h3>No tienes que mandarnos nada</h3></div><p>Tu información ya está en el SII. Revisamos ahí directamente tus compras, ventas, boletas y honorarios. Se acabó escanear documentos o mandar boletas por correo.</p></div>
+        <div class="card"><div class="card-head"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span><h3>Tú no tienes que perseguir papeles</h3></div><p>Nosotros revisamos la información disponible en SII y te pedimos solo lo necesario para cerrar bien tu contabilidad. Menos correos, menos boletas sueltas y más orden.</p></div>
         <div class="card"><div class="card-head"><span class="ico"><svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span><h3>No tocamos tu dinero</h3></div><p>El pago de tus impuestos siempre lo haces tú, con un link que te enviamos. Todo queda claro, seguro y bajo tu control.</p></div>
         <div class="card"><div class="card-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></span><h3>Garantía TomContable</h3></div><p>Si presentamos algo fuera de plazo o con un error nuestro, nosotros asumimos la multa o el interés. Tu tranquilidad es parte del trato.</p></div>
         <div class="card"><div class="card-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></svg></span><h3>Asesoría ilimitada</h3></div><p>Pregúntanos lo que necesites por WhatsApp, teléfono, correo o videollamada, de lunes a viernes. Sin contar consultas.</p></div>
@@ -77,7 +77,7 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
         <li>Prebalance gratuito en julio, para llegar a la renta con más claridad.</li>
         <li>Acceso gratis a nuestra comunidad de emprendedores.</li>
       </ul>
-      <p class="nota">La conciliación bancaria, las liquidaciones de sueldo y la operación renta anual no están incluidas en el precio mensual base. Se pueden sumar como servicios adicionales: operación renta anual como pago único de 3 mensualidades promedio del año anterior, más 1 UF por declaración personal de cada socio; liquidaciones mensuales a 0,15 UF por trabajador; contratos, finiquitos, licencias y requerimientos a 0,30 UF cada uno.</p>
+      <p class="nota">La conciliación bancaria especial, las liquidaciones de sueldo y la operación renta anual de empresa y socios no están incluidas en el precio mensual base. Se pueden sumar como servicios adicionales: operación renta anual como pago único de 3 mensualidades promedio del año anterior, más 1 UF por declaración personal de cada socio; liquidaciones mensuales desde 0,15 UF por trabajador; contratos, finiquitos, licencias y requerimientos a 0,30 UF cada uno.</p>
     </div>
   </section>
 
@@ -98,8 +98,8 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   <section class="sec alt" id="precio">
     <div class="wrap sec-head">
       <h2>Cuánto cuesta</h2>
-      <p>Nuestro plan se ajusta a tus ventas del mes. Así quien recién parte accede a un servicio completo a un precio acorde a su realidad, y quien vende más recibe un acompañamiento más estratégico. No tienes que calcular nada: revisamos tus ventas, aplicamos la tarifa que corresponde y el monto queda indicado en tu factura.</p>
-      <p class="ancla"><b>Desde 1 UF + IVA al mes</b> (unos $40.800). El plan crece contigo: pagas según lo que vende tu empresa, no un monto fijo que no calza con tu momento.</p>
+      <p>Nuestro plan cubre la operación tributaria mensual estándar. El valor final depende de tus ventas, volumen de movimientos, régimen tributario y necesidades. Te explicamos el alcance y cotizamos los servicios adicionales por separado.</p>
+      <p class="ancla"><b>Desde 1 UF + IVA al mes</b>. Remuneraciones desde 0,15 UF por trabajador, renta anual de empresa y socios y conciliación bancaria especial se cobran aparte. La acreditación de actividad, cuando corresponde, está incluida con contabilidad mensual; sin mensualidad cuesta $79.000 + IVA.</p>
       <p>Cuéntanos cuánto vendes al mes y te calculamos tu plan exacto, sin compromiso.</p>
       <div class="cta-row"><BotonWhatsApp texto="Cotizar contabilidad mensual" mensaje={waMsg} /></div>
     </div>
@@ -113,7 +113,7 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
         <div class="tst"><span class="stars">★★★★★</span><p>"Nos ayudó a aclarar varias dudas que teníamos y además nos dio recomendaciones. Como siempre, 10 de 10. Tom y su equipo son tremendos profesionales y nos dan la tranquilidad, como empresa, de tener nuestros números en orden. Muchas gracias."</p><span class="who">Claudio Gómez</span></div>
         <div class="tst"><span class="stars">★★★★★</span><p>"Muy buen feedback, entendieron todas mis dudas y me dieron todas las opciones para resolver mis preocupaciones tributarias, demostrando amplio conocimiento. Asesorías que a veces cuesta conseguir. Gracias."</p><span class="who">Mónica Jiménez</span></div>
       </div>
-      <p class="tst-foot">5,0 de 5 en 124 evaluaciones en <a href="https://encuadrado.com/p/tomcontable" target="_blank" rel="noopener">Encuadrado</a>.</p>
+      <p class="tst-foot">5,0 de 5 en 125 evaluaciones visibles en <a href="https://encuadrado.com/p/tomcontable" target="_blank" rel="noopener">Encuadrado</a>.</p>
     </div>
   </section>
 
@@ -122,12 +122,12 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
     <div class="wrap">
       <div class="sec-head center"><h2>Preguntas frecuentes</h2></div>
       <div class="faq">
-        <details open><summary>¿Cuánto cuesta exactamente?<span class="plus">+</span></summary><div class="ans">Depende de tus ventas del mes, desde 1 UF + IVA (unos $40.800 mensuales). Cuéntanos cuánto vendes y te calculamos tu plan exacto por WhatsApp.</div></details>
-        <details><summary>¿Tengo que mandarles mis documentos?<span class="plus">+</span></summary><div class="ans">No. Revisamos todo directamente en el SII. No tienes que escanear ni enviar boletas.</div></details>
+        <details open><summary>¿Cuánto cuesta exactamente?<span class="plus">+</span></summary><div class="ans">La contabilidad mensual parte desde 1 UF + IVA. El valor final depende de tus ventas, volumen de movimientos, régimen tributario y servicios adicionales. Cuéntanos tu caso y te cotizamos el plan y los extras por separado.</div></details>
+        <details><summary>¿Tengo que mandarles mis documentos?<span class="plus">+</span></summary><div class="ans">Nosotros revisamos la información disponible en SII y te pedimos solo lo necesario para cerrar bien tu contabilidad. Menos correos, menos boletas sueltas y más orden.</div></details>
         <details><summary>¿Ustedes pagan mis impuestos?<span class="plus">+</span></summary><div class="ans">No tocamos tu dinero. Te enviamos el link y el pago lo haces tú, para que todo quede bajo tu control.</div></details>
         <details><summary>¿Y si cometen un error?<span class="plus">+</span></summary><div class="ans">Lo asumimos nosotros. Si una multa o interés se genera por un error o atraso nuestro, lo pagamos nosotros.</div></details>
         <details><summary>¿Incluye la operación renta?<span class="plus">+</span></summary><div class="ans">No. La operación renta anual no está incluida en el precio mensual base. Se cobra una vez al año como pago único de 3 mensualidades promedio del año anterior, más 1 UF por cada declaración personal de socio.</div></details>
-        <details><summary>¿Incluye conciliación bancaria o remuneraciones?<span class="plus">+</span></summary><div class="ans">No están incluidas en el plan mensual base. La conciliación bancaria se cotiza aparte. Las liquidaciones de sueldo de socios o trabajadores son adicionales: liquidación mensual 0,15 UF por trabajador; contratos, finiquitos, licencias y requerimientos 0,30 UF cada uno.</div></details>
+        <details><summary>¿Incluye conciliación bancaria o remuneraciones?<span class="plus">+</span></summary><div class="ans">La conciliación bancaria especial y las remuneraciones no están incluidas en el plan mensual base y se cotizan aparte. Las liquidaciones de sueldo de socios o trabajadores son adicionales: liquidación mensual desde 0,15 UF por trabajador; contratos, finiquitos, licencias y requerimientos 0,30 UF cada uno.</div></details>
       </div>
     </div>
   </section>

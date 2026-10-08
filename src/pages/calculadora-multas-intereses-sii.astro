@@ -4,11 +4,11 @@ import BannerServicios from '../components/BannerServicios.astro';
 
 const seo = {
   title: 'Calculadora Multas e Intereses SII 2026 · TomContable',
-  description: 'Calcula la multa, el reajuste por IPC y el interés penal diario por declarar o pagar impuestos fuera de plazo en Chile (IVA, renta). Con la tasa vigente 2026. Gratis y al instante.',
+  description: 'Estimación orientativa de multas, reajustes e intereses por impuestos fuera de plazo en Chile. Las tasas varían por período y caso. Confirma el monto final en SII.',
   canonical: '/calculadora-multas-intereses-sii',
 };
 
-const actualizado = new Date().toLocaleDateString('es-CL', { month: 'long', year: 'numeric' });
+
 
 const faqs = [
   { q: '¿Cómo se calcula una multa del SII por declarar fuera de plazo?', a: 'Sobre el impuesto adeudado se suman tres cosas: el reajuste por la variación del IPC entre el vencimiento y el pago, el interés penal diario, y la multa que corresponde según el tipo de declaración. El interés y la multa se calculan sobre el impuesto ya reajustado.' },
@@ -17,12 +17,12 @@ const faqs = [
   { q: '¿De cuánto es la multa por declarar la renta (F22) fuera de plazo con pago?', a: 'Una declaración de renta con impuesto a pagar presentada fuera de plazo se rige por el artículo 97 N°2: 10% del impuesto hasta 5 meses de atraso, más 2% por cada mes o fracción desde el sexto, con tope de 30%. Se suma el reajuste por IPC y el interés penal diario.' },
   { q: '¿Qué multa tiene un F29 sin movimiento o en remanente?', a: 'Cuando la declaración no tiene impuesto a pagar (calzada, sin movimiento o en remanente a favor) se aplica el artículo 97 N°1: una multa regulada entre 1 UTM y 1 UTA. No lleva reajuste ni interés porque no hay impuesto adeudado.' },
   { q: '¿El SII todavía cobra el 1,5% mensual de interés?', a: 'No. Ese 1,5% mensual fue reemplazado por la Ley 21.713. Hoy el interés es diario y lo fija el SII cada semestre a partir de la tasa de interés corriente que publica la CMF más un 3,5%. Aplica también a deudas antiguas.' },
-  { q: '¿La multa se puede rebajar con condonación?', a: 'Sí, pero la condonación es transitoria y se evalúa caso a caso. La política vigente desde junio de 2026 condona parte del interés y de la multa según la antigüedad de la deuda, sin garantizar un porcentaje fijo. Por la misma multa, a una persona pueden rebajarle bastante y a otra nada. Esta calculadora muestra el monto máximo, sin condonación.' },
-  { q: '¿Esta calculadora reemplaza el cálculo del SII?', a: 'No. Es una estimación referencial pensada para tener claro el techo de lo que te pueden cobrar y dejar de calcularlo a ojo. El monto definitivo, y la condonación que aplique a tu caso, los confirma el SII.' },
+  { q: '¿La multa se puede rebajar con condonación?', a: 'Puede corresponder una condonación, que debe revisarse según las reglas vigentes y el caso. Esta calculadora entrega una estimación orientativa sin condonación; no garantiza un monto máximo ni una rebaja. Confirma el monto final en SII.' },
+  { q: '¿Esta calculadora reemplaza el cálculo del SII?', a: 'No. Entrega una estimación orientativa. Las tasas de interés, reajustes y multas pueden variar por período y caso. El motor usa una tasa fija del primer semestre de 2026 y no está certificado para otros períodos. Antes de pagar o presupuestar una deuda, revisa el valor final en SII o con asesoría profesional.' },
 ];
 
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((it) => ({ '@type': 'Question', name: it.q, acceptedAnswer: { '@type': 'Answer', text: it.a } })) };
-const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication', name: 'Calculadora de multas e intereses del SII', applicationCategory: 'FinanceApplication', operatingSystem: 'Web', inLanguage: 'es-CL', url: 'https://tomcontable.cl/calculadora-multas-intereses-sii', description: 'Calcula la multa, el reajuste por IPC y el interés penal diario por declarar o pagar impuestos fuera de plazo en Chile, según el tipo de impuesto.', offers: { '@type': 'Offer', price: '0', priceCurrency: 'CLP' }, publisher: { '@type': 'Organization', name: 'TomContable' } };
+const appSchema = { '@context': 'https://schema.org', '@type': 'WebApplication', name: 'Calculadora de multas e intereses del SII', applicationCategory: 'FinanceApplication', operatingSystem: 'Web', inLanguage: 'es-CL', url: 'https://tomcontable.cl/calculadora-multas-intereses-sii', description: 'Estimación orientativa de multas, reajustes e intereses, sin condonación. Usa una tasa fija del primer semestre de 2026, no validada para otros períodos. Confirma el monto final en SII.', offers: { '@type': 'Offer', price: '0', priceCurrency: 'CLP' }, publisher: { '@type': 'Organization', name: 'TomContable' } };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
   { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://tomcontable.cl/' },
   { '@type': 'ListItem', position: 2, name: 'Herramientas', item: 'https://tomcontable.cl/herramientas' },
@@ -35,7 +35,7 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
     <div class="wrap">
       <p class="eyebrow">Herramienta gratis</p>
       <h1>Calculadora de multas e intereses del SII por pagar fuera de plazo</h1>
-      <p class="lead">Estima cuánto suma una declaración atrasada: el reajuste por IPC, el interés penal diario y la multa que corresponde según el tipo de impuesto. Con la tasa vigente en Chile, sin tener que calcularlo a ojo.</p>
+      <p class="lead">Obtén una estimación orientativa del reajuste por IPC, el interés penal diario y la multa de una declaración atrasada. Las tasas y reglas pueden variar por período y caso; confirma el monto final en SII.</p>
     </div>
     <svg class="hero-ill" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="26" y="18" width="50" height="68" rx="6" stroke="#1E2F73" stroke-width="3.5"/><path d="M38 38h26M38 50h26M38 62h15" stroke="#1E2F73" stroke-width="3" stroke-linecap="round"/><circle cx="84" cy="82" r="18" fill="#F6B11A" fill-opacity="0.28" stroke="#1E2F73" stroke-width="3"/><path d="M84 74v9" stroke="#1E2F73" stroke-width="3.2" stroke-linecap="round"/><circle cx="84" cy="89" r="1.9" fill="#1E2F73"/></svg>
   </section>
@@ -74,19 +74,20 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
             <div class="crow"><span id="l-multa">Multa</span><b id="r-multa">$0</b></div>
           </div>
           <div class="comp-factura" id="total-block">
-            <div class="cfrow total"><span id="l-total">Total a pagar (máximo)</span><b id="r-total">$0</b></div>
+            <div class="cfrow total"><span id="l-total">Total estimado (referencial)</span><b id="r-total">$0</b></div>
           </div>
           <div class="comp-sinimp" id="sinimp-block">
             <div class="comp-neto"><span>Multa Art. 97 N°1, entre 1 UTM y 1 UTA</span><strong id="r-rango">—</strong></div>
           </div>
-          <p class="comp-cond">Es el monto máximo, sin condonación. La condonación es transitoria y caso a caso. <a href="/problemas-con-el-sii/">Revisa tu caso con nosotros</a>.</p>
-          <p class="comp-pie">Estimación referencial · interés vigente 1er semestre 2026 · tomcontable.cl</p>
+          <p class="comp-cond">Es una estimación orientativa, sin condonación; no garantiza el monto final ni un máximo. La condonación es transitoria y caso a caso. <a href="/problemas-con-el-sii/">Revisa tu caso con nosotros</a>.</p>
+          <p class="comp-pie">Estimación referencial · tasa fija del primer semestre de 2026, no validada para otros períodos · tomcontable.cl</p>
           <p class="msg" id="r-msg"></p>
         </div>
       </div>
 
       <div class="descargo">
-        <p>Cálculo referencial generado en tomcontable.cl con los datos ingresados. Considera el reajuste por la variación del IPC del INE, el interés penal diario vigente para el primer semestre de 2026 (0,022% diario, Resolución Exenta SII N°205) y la multa del artículo 97 del Código Tributario según el tipo de declaración. Es el monto máximo, sin condonación. No constituye asesoría tributaria ni reemplaza el cálculo oficial del SII.</p>
+        <p><strong>Esta calculadora entrega una estimación orientativa.</strong> Las tasas de interés, reajustes y multas pueden variar por período y caso. Antes de pagar o presupuestar una deuda, revisa el valor final en SII o con asesoría profesional. El motor usa una tasa fija del primer semestre de 2026; no está certificado para otros períodos.</p>
+        <p>Cálculo referencial generado en tomcontable.cl con los datos ingresados. Considera el reajuste por la variación del IPC del INE, el interés penal diario vigente para el primer semestre de 2026 (0,022% diario, Resolución Exenta SII N°205) y la multa del artículo 97 del Código Tributario según el tipo de declaración. Es una estimación orientativa, sin condonación; no garantiza el monto final ni un máximo. No constituye asesoría tributaria ni reemplaza el cálculo oficial del SII.</p>
         <p class="firma">TomContable.cl · Cálculo referencial</p>
       </div>
     </div>
@@ -97,8 +98,8 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
   <section class="sec-texto">
     <div class="wrap angosto">
       <div class="resp-rapida">
-        <p><strong>Respuesta rápida:</strong> cuando una declaración se paga fuera de plazo, el SII suma sobre el impuesto el reajuste por IPC, un interés penal diario (0,022% al día en el primer semestre de 2026) y una multa que depende del tipo de impuesto: 10% a 30% en IVA y renta con pago, o de 1 UTM a 1 UTA cuando no hay impuesto. Esta calculadora estima ese total máximo, sin condonación.</p>
-        <p class="resp-fecha">Última actualización: {actualizado}. Fuente: Código Tributario (artículos 53 y 97) y Resolución Exenta SII N°205 de 2026.</p>
+        <p><strong>Respuesta rápida:</strong> una declaración pagada fuera de plazo puede generar reajustes, intereses y multas según el tipo de impuesto y el caso. Esta calculadora entrega una estimación orientativa sin condonación, no un monto máximo garantizado. Usa una tasa fija del primer semestre de 2026; las tasas pueden variar por período. Confirma el valor final en SII antes de pagar o presupuestar.</p>
+        <p class="resp-fecha">Referencias del modelo: Código Tributario (artículos 53 y 97) y Resolución Exenta SII N°205 citada para el primer semestre de 2026. Esto no acredita revisión profesional ni vigencia para otros períodos.</p>
       </div>
 
       <h2>¿Cómo se calcula una multa del SII?</h2>
@@ -120,7 +121,7 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
       <p>Supón un IVA con $1.000.000 de impuesto, que vencía el 12 de febrero de 2026 y se paga el 20 de junio: 128 días y poco más de cuatro meses de atraso. El impuesto se reajusta por el IPC del período, sobre ese monto reajustado corre el interés de 0,022% por día (cerca de un 2,8%), y la multa del artículo 97 N°11 es del 10%, porque el atraso no supera los 5 meses. El total termina bastante por encima del millón original. La calculadora arma ese desglose con tus propias fechas y montos.</p>
 
       <h2>¿Y las condonaciones?</h2>
-      <p>La condonación puede bajar harto lo que finalmente pagas, pero es transitoria y se resuelve caso a caso. La política vigente desde junio de 2026 condona una parte del interés y de la multa según la antigüedad de la deuda, y se pide por internet o de forma presencial. Lo importante: no hay un porcentaje garantizado. Por la misma multa, hay quien obtiene una rebaja grande y quien no obtiene nada. Por eso esta calculadora te muestra el techo, el máximo que te pueden cobrar, y la condonación real conviene revisarla con tu caso a la vista. Si quieres entender cómo funciona, lee nuestra guía sobre la <a href="/blog/condonacion-de-intereses-y-multas-sii-2026/">condonación de intereses y multas del SII</a>.</p>
+      <p>La condonación puede reducir lo que finalmente pagas, pero debe revisarse según las reglas vigentes y tu caso. No hay un porcentaje garantizado. Esta calculadora entrega una estimación orientativa sin condonación y no garantiza un monto máximo. Revisa el monto definitivo y la condonación aplicable en SII o con asesoría profesional. Puedes consultar nuestra guía sobre la <a href="/blog/condonacion-de-intereses-y-multas-sii-2026/">condonación de intereses y multas del SII</a>.</p>
 
       <h2>Cómo dejar de pagar multas por atraso</h2>
       <p>La mejor multa es la que nunca llega. Si te pasa seguido que las fechas se te van encima, o ya tienes una deuda con el SII y no sabes por dónde tomarla, podemos ayudarte a ordenarlo: revisamos tu situación, vemos qué condonación aplica y armamos un plan para ponerte al día sin que el problema siga creciendo. Mira cómo abordamos los <a href="/problemas-con-el-sii/">problemas con el SII</a> o cómo funciona la <a href="/contabilidad-mensual/">contabilidad mensual</a> para que esto deje de pasar.</p>
@@ -257,13 +258,13 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
     $('r-interes').textContent = '+ ' + fmt0.format(interes);
     $('l-multa').textContent = `Multa Art. 97 N°${art} (${(multaPct * 100).toLocaleString('es-CL', { maximumFractionDigits: 0 })}%)`;
     $('r-multa').textContent = '+ ' + fmt0.format(multa);
-    $('l-total').textContent = 'Total a pagar (máximo, sin condonación)';
+    $('l-total').textContent = 'Total estimado (referencial, sin condonación)';
     $('r-total').textContent = fmt0.format(total);
 
     const msg = $('r-msg');
     if (monto <= 0) { msg.textContent = 'Ingresa el impuesto adeudado para ver el cálculo.'; msg.className = 'msg'; return; }
     if (dias <= 0) { msg.textContent = 'Con estas fechas no hay atraso: no se genera multa ni interés.'; msg.className = 'msg ok'; return; }
-    msg.textContent = 'Es el monto máximo, sin condonación. El interés y la multa se calculan sobre el impuesto ya reajustado.';
+    msg.textContent = 'Es una estimación orientativa, sin condonación; no garantiza el monto final ni un máximo. El interés y la multa se calculan sobre el impuesto ya reajustado.';
     msg.className = 'msg info';
   };
 

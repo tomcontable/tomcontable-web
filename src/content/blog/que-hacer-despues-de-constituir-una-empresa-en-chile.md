@@ -38,7 +38,7 @@ El cuarto es habilitarte como emisor de facturación electrónica. Sin esto, leg
 
 Muchos emprendedores creen que, una vez que la sociedad queda inscrita, el resto es automático. No lo es. Y el costo de dejarlo a medias no es solo la molestia de resolverlo después: son semanas sin poder facturar, con clientes esperando, mientras se ordenan trámites que se pudieron dejar listos desde el principio.
 
-Por eso en TomContable la constitución no termina en la escritura. Dejamos la empresa iniciada ante el SII, con el giro acreditado, el régimen definido y la facturación electrónica habilitada, para que el día que necesites vender, puedas hacerlo.
+Por eso en TomContable la constitución no termina en la escritura: incluye inicio de actividades y orientación tributaria. La acreditación del giro, cuando corresponde, está incluida al contratar contabilidad mensual; sin mensualidad cuesta $79.000 + IVA adicionales. La habilitación de facturación electrónica depende de la autorización del SII.
 
 ## El primer F29 y por qué importa
 

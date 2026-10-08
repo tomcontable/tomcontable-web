@@ -3,6 +3,7 @@ title: Cómo calcular un finiquito en Chile en 2026
 seoTitle: "Cómo calcular un finiquito en Chile 2026 · TomContable"
 description: "Aprende a calcular un finiquito en Chile en 2026: qué incluye, la fórmula, los topes y los errores más comunes. Con ejemplos y una calculadora gratis."
 pubDate: 2026-06-20
+updatedDate: 2026-10-07
 lead: Cuando desvinculas a un trabajador, calcular bien el finiquito te evita pagar de menos y arriesgar un reclamo, o pagar de más sin necesidad. Te explicamos cómo se hace, con ejemplos.
 keyword: cómo calcular un finiquito en Chile
 servicioHref: /calculadora-finiquito
@@ -22,6 +23,7 @@ faqs:
     a: Da una estimación de referencia muy útil para tener el número antes de preparar el documento. El monto definitivo depende de detalles como bonos, comisiones, licencias o anticipos, que conviene revisar caso a caso.
 ---
 
+Ajuste editorial del 7 de octubre de 2026: se aclaran el alcance y los límites de esta guía. No constituye una revisión profesional integral ni acredita vigencia normativa.
 Si tienes empleados, en algún momento te va a tocar terminar un contrato, y ahí necesitas calcular el finiquito que le corresponde al trabajador. Hacerlo bien importa por dos razones: si pagas de menos, te arriesgas a un reclamo, y si pagas de más, es plata que sale de tu caja sin necesidad. La buena noticia es que el cálculo sigue reglas claras. Un finiquito se arma sumando cuatro cosas, y lo que cambia de un caso a otro es la causal de término. Te lo explicamos en simple, con un ejemplo, y al final puedes calcularlo en un minuto.
 
 ## Qué es un finiquito
@@ -70,6 +72,6 @@ Por último, muchos olvidan que la fracción superior a seis meses cuenta como u
 
 ## Calcula el finiquito
 
-Para no hacer las cuentas a mano, tenemos una [calculadora de finiquito](/calculadora-finiquito/) gratis y al día con el valor de la UF. Pones el sueldo, el tiempo trabajado, la causal y los días de vacaciones pendientes, y te entrega una estimación al instante. Es gratis y no necesitas registrarte.
+Puedes usar la [calculadora de finiquito](/calculadora-finiquito/) como orientación según el período, el valor de referencia de la UF y los supuestos indicados en la herramienta. Ingresa el sueldo, el tiempo trabajado, la causal y las vacaciones pendientes para obtener una estimación. Confirma la fecha y fuente del dato y la base aplicable antes de presupuestar, firmar o pagar; si la carga del indicador falla, no asumas que corresponde al período requerido. Es gratis y no necesitas registrarte.
 
 Eso sí, una calculadora te da el número de referencia, no reemplaza una revisión. Si hay bonos, comisiones, licencias de por medio, o simplemente quieres asegurarte de que el cálculo está bien antes de firmarlo, conviene que alguien lo revise contigo.
