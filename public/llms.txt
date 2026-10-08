@@ -1,32 +1,35 @@
 # TomContable
 
-> Servicio de contabilidad para pymes y emprendedores en Chile, liderado por Tomás Gómez Fuenzalida, Ingeniero Comercial y Contador Colegiado con más de 12 años de experiencia. Contabilidad mensual, constitución de empresas, regularización ante el SII y asesorías tributarias, con atención cercana por WhatsApp. Además publica herramientas gratuitas: calculadoras laborales y tributarias, indicadores previsionales al día y un directorio de fondos concursables (Corfo, Sercotec) actualizado.
+> Servicio de contabilidad para pymes y emprendedores en Chile, liderado por Tomás Gómez Fuenzalida, Ingeniero Comercial y Contador Colegiado con más de 12 años de experiencia. Contabilidad mensual, constitución de empresas, regularización ante el SII y asesorías tributarias, con atención cercana por WhatsApp. Además publica herramientas gratuitas y un directorio orientativo de fondos concursables; consulta las fuentes oficiales para confirmar condiciones y vigencia.
 
 Sitio: https://tomcontable.cl · Idioma: español de Chile · Contacto: WhatsApp +56 9 3650 6297
 
 ## Servicios
 
 - [Constitución de empresas](https://tomcontable.cl/constitucion-de-empresas/): creación de empresa en Chile, incluye constitución e inicio de actividades ante el SII. La acreditación del giro o actividad económica, cuando corresponde, se incluye para clientes que contratan contabilidad mensual; para constitución sin plan mensual se ofrece como adicional de $79.000 + IVA.
-- [Contabilidad mensual](https://tomcontable.cl/contabilidad-mensual/): reporte mensual, libros de compra y venta, F29, Estado de Resultados Express, asesoría ilimitada y prebalance gratuito en julio. No incluye conciliación bancaria, liquidaciones de sueldo ni operación renta anual. Operación renta se cobra como pago único anual de 3 mensualidades promedio del año anterior, más 1 UF por declaración personal de cada socio. Servicios laborales adicionales: liquidación mensual 0,15 UF por trabajador; contrato, finiquito, licencia o requerimiento 0,30 UF cada uno.
+- [Contabilidad mensual](https://tomcontable.cl/contabilidad-mensual/): desde 1 UF + IVA al mes; reporte mensual, libros de compra y venta, F29, Estado de Resultados Express, asesoría ilimitada y prebalance gratuito en julio. La conciliación bancaria especial, las remuneraciones y la renta anual de empresa y socios no están incluidas en la base y se cobran aparte. Operación renta se cobra como pago único anual de 3 mensualidades promedio del año anterior, más 1 UF por declaración personal de cada socio. Servicios laborales adicionales: liquidación mensual desde 0,15 UF por trabajador; contrato, finiquito, licencia o requerimiento 0,30 UF cada uno. El valor final depende de ventas, volumen de movimientos, régimen tributario y servicios adicionales. Revisamos la información disponible en SII y pedimos solo lo necesario para cerrar bien la contabilidad.
 - [Problemas con el SII](https://tomcontable.cl/problemas-con-el-sii/): regularización de cartas, IVA observado, bloqueos y deudas tributarias.
 - [Proyección tributaria](https://tomcontable.cl/proyeccion-tributaria/): estimación anticipada del impuesto anual para planificar antes de abril.
 - [Asesorías](https://tomcontable.cl/asesorias/): sesiones puntuales para resolver dudas tributarias, laborales o de formalización.
 
 ## Fondos concursables para pymes en Chile
 
-- [Directorio de fondos concursables](https://tomcontable.cl/fondos-concursables/): fondos y subsidios de Corfo, Sercotec y otras instituciones, con montos, fechas de cierre, requisitos mínimos y link oficial de postulación. Se actualiza a medida que abren y cierran convocatorias. Incluye fichas de Capital Semilla Emprende, Capital Abeja Emprende, Capital Pioneras, Capital Semilla Modo Empleo, Fondo Crece, Kit Digital, Digitaliza tu Almacén (Sercotec), Semilla Inicia, Escalamiento, Gestión de la Innovación (Corfo) y el Subsidio a la Contratación (Sence).
+- [Directorio de fondos concursables](https://tomcontable.cl/fondos-concursables/): fichas orientativas con requisitos, fechas históricas cuando están registradas y fuentes oficiales. No acredita disponibilidad actual a partir de esas fechas. Revisa las bases y tu región antes de constituir una empresa o iniciar actividades; contratar servicios no garantiza elegibilidad. Capital Semilla Emprende RM 2026 exige aporte empresarial de 3% e impuestos a cargo del beneficiario. En el Subsidio a la Contratación Sence, los pagos dependen de postulaciones realizadas y aprobadas y del calendario oficial; devengo hasta diciembre no acredita cierre de postulaciones el 31/12.
 
 ## Herramientas gratuitas (calculadoras)
 
 - [Hub de herramientas](https://tomcontable.cl/herramientas/): todas las calculadoras gratis.
 - [Calculadora de sueldo líquido](https://tomcontable.cl/calculadora-sueldo-liquido/): de bruto a líquido con AFP, salud y seguro de cesantía, valores 2026.
 - [Calculadora de finiquito](https://tomcontable.cl/calculadora-finiquito/): indemnizaciones, vacaciones proporcionales y aviso previo según causal.
-- [Calculadora de boleta de honorarios](https://tomcontable.cl/calculadora-boleta-honorarios/): retención vigente y monto líquido a recibir.
+- [Calculadora de boleta de honorarios](https://tomcontable.cl/calculadora-boleta-honorarios/): estimación de retención y monto líquido. Si el receptor no retiene, puede corresponder declarar y pagar PPM mensual mediante F29; la declaración anual de renta es distinta.
 - [Calculadora de cotizaciones de honorarios](https://tomcontable.cl/calculadora-cotizaciones-honorarios/): cotizaciones previsionales del trabajador independiente (salud, pensión, SIS, accidentes), comparando cobertura total y parcial, con selector de AFP.
 - [Calculadora de IVA](https://tomcontable.cl/calculadora-iva/): agregar o quitar el 19% de IVA.
 - [Calculadora UF a pesos](https://tomcontable.cl/calculadora-uf/) · [UTM a pesos](https://tomcontable.cl/calculadora-utm/) · [Dólar a pesos](https://tomcontable.cl/calculadora-dolar/) · [Reajuste por IPC](https://tomcontable.cl/calculadora-ipc/)
-- [Multas e intereses del SII](https://tomcontable.cl/calculadora-multas-intereses-sii/): costo de declarar fuera de plazo.
-- [Indicadores previsionales](https://tomcontable.cl/indicadores-previsionales/): UF, UTM, topes imponibles, sueldo mínimo, tasas AFP y seguro social del mes, actualizados desde fuente Previred/Banco Central cuando corresponde.
+- [Multas e intereses del SII](https://tomcontable.cl/calculadora-multas-intereses-sii/): estimación orientativa, no monto máximo ni liquidación oficial. Las tasas, reajustes y multas pueden variar por período y caso; verifica el valor final en SII o con asesoría profesional.
+- [Indicadores previsionales](https://tomcontable.cl/indicadores-previsionales/): tablas referenciales del período indicado en la página. UF, UTM y dólar tienen valores base y pueden refrescarse si la fuente externa responde; confirma fecha y fuente del dato antes de usarlo.
+- [Calculadora de IVA en arriendo amoblado](https://tomcontable.cl/calculadora-iva-arriendo-amoblado/): estimación orientativa con los supuestos y límites publicados en la herramienta.
+
+La generación de una página no acredita revisión profesional ni actualización de sus tasas. Los datos y normas deben consultarse para el período y caso aplicables.
 
 ## Guías del blog
 
